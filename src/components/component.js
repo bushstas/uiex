@@ -52,7 +52,7 @@ export const getComponentClassName = (nativeClassName, props, otherClasses) => {
 	if (float == 'left' || float == 'right') {
 		classNames.push(getWithPrefix('float-' + float, !isCustomClassName));
 	}
-	if (!isCustomClassName && otherClasses.length > 0) {
+	if (!isCustomClassName && otherClasses instanceof Array && otherClasses.length > 0) {
 		classNames.push(otherClasses);
 	}
 	return mergeClassNames(classNames);
@@ -144,7 +144,11 @@ export class UIEXComponent extends React.Component {
 		return null;
 	}
 
-	getClassName() {
+	getNativeClassName() {
 		return null;
+	}
+
+	getClassNames() {
+		return null;	
 	}
 }

@@ -1,6 +1,6 @@
 {
   "name": "uiex",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "UI library",
   "main": "src/index.js",
   "repository": {

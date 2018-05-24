@@ -1,98 +1,30 @@
 import React from 'react';
+import {UIEXComponent} from '../component';
 
 import './style.scss';
 
 /**
  * Properties of component Button.
- * @prop {string} [title] HTML title.
- * @prop {string | string[]} [classes] Custom class names.
- * @prop {string} [className] Your own class name instead of native one.
- * @prop {string | JSX.Element | JSX.Element[]} [children] Inner content.
+ * 
  * @prop {string} [href] Href makes the button hyperlink element with tag name A.
  * @prop {string} [target] Hyperlink element target.
  * @prop {any} [value] Value of a button that will return on mouse click.
- * @prop {boolean} [disabled] Disability flag.
- * @prop {string | number} [width] Button minimal width.
  * @prop {string} [size] Size of button (small|medium|large|huge|giant).
  * @prop {string} [color] Prewritten button style (black|gray|white|red|blue|green|yellow|orange).
  * @prop {string | number | boolean} [border] Border width (no border if is false).
  * @prop {Function} [onClick] Mouse click handler on enabled button.
  * @prop {Function} [onDisabledClick] Mouse click handler on disabled button.
  */
-export class Button extends React.Component {
-	constructor(props) {
-		super(props);		
-		this.defineWidthStyle(props.width);
-		this.defineBorderStyle(props.border);
+export class Button extends UIEXComponent {
+
+	getNativeClassName() {
+		return 'button';
 	}
 
-	defineWidthStyle(width) {
-		if (width) {
-			if (typeof width == 'number') {
-				width += 'px';
-			}
-			if (typeof width == 'string') {
-				if (width == ~~width) {
-					width += 'px';		
-				}
-				this.style = this.style || {};
-				this.style.width = width;
-			}
-		}
-	}
-
-	defineBorderStyle(border) {
-		if (typeof border != 'undefined') {
-			if (border === false) {
-				border = 0;
-			}
-			if (typeof border == 'string' && ~~border == border) {
-				border = ~~border;
-			}
-			if (typeof border == 'number' && border != 1) {
-				this.style = this.style || {};
-				this.style.borderWidth = border + 'px';
-			}
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.width != this.props.width) {
-			this.defineWidthStyle(nextProps.width);
-		}
-		if (nextProps.border != this.props.border) {
-			this.defineBorderStyle(nextProps.border);
-		}
-	}
-
-	defineClassNames(props) {
-		let {
-			classes,
-			className,
-			disabled,
-			color,
-			size
-		} = this.props;
-
-		let isCustomClassName = false;
-		
-		if (!className || typeof className != 'string') {
-			className = 'uiex-button';
-		} else {
-			isCustomClassName = true;
-		}
-		props.className = className;
-
-		if (classes instanceof Array) {
-			classes = classes.filter(item => item && typeof item == 'string').join(' ');
-		}
-		if (typeof classes == 'string') {
-			props.className += ' ' + classes;
-		}
-		if (disabled) {
-			props.className += isCustomClassName ? ' disabled' : ' uiex-disabled';
-		}
-		if (!isCustomClassName && color && typeof color == 'string') {
+	getClassNames() {
+		const {color, size} = this.props;
+		const classNames = [];		
+		if (color && typeof color == 'string') {
 			switch (color) {
 				case 'black':
 				case 'gray':
@@ -102,56 +34,44 @@ export class Button extends React.Component {
 				case 'green':
 				case 'yellow':
 				case 'orange':
-					props.className += ' uiex-button-color-' + color;
+					classNames.push('uiex-button-color-' + color);
 				break;
 			}
 		}
-		if (!isCustomClassName && size && typeof size == 'string') {
+		if (size && typeof size == 'string') {
 			switch (size) {
 				case 'small':
 				case 'medium':
 				case 'large':
 				case 'huge':
 				case 'giant':
-					props.className += ' uiex-button-size-' + size;
+					classNames.push('uiex-button-size-' + size);
 				break;
 			}
 		}
+		return classNames;
 	}
 
 	render() {
-		const {
-			children,
-			title,
-			href,
-			target,
-			onClick,
-			disabled
-		} = this.props;
-
-		const props = {
-			title,
-			onClick: this.handleClick,
-			style: this.style,
-			disabled
-		};
-		this.defineClassNames(props);
-
+		const {href, children, target} = this.props;
 		if (typeof href == 'string') {
-			if (typeof target == 'string') {
-				props.target = target;
-			}
 			return (
-				<a href={href} {...props}>
+				<a {...this.getProps({href, target})}>
 					{children}
 				</a>
 			)
 		}
 		return (
-			<button {...props}>
+			<button {...this.getProps()}>
 				{children}
 			</button>
 		)
+	}
+
+	getCustomProps() {
+		return {
+			onClick: this.handleClick
+		}
 	}
 
 	handleClick = (e) => {

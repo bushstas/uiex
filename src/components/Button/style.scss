@@ -1,0 +1,129 @@
+button.uiex-button,
+a.uiex-button {
+	line-height: 32px;
+	padding: 0 10px;
+	cursor: pointer;
+	text-decoration: none;
+	color: #333;
+	display: inline-block;
+	border: 1px solid #e1e1e1;
+	background-color: #f1f1f1;
+	border-radius: 4px;
+	text-align: center;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	box-sizing: border-box;
+
+	&:hover {
+		background-color: #e9e9e9;
+		border-color: #d1d1d1;
+	}
+	&:focus {
+		outline: none !important;
+		box-shadow: none !important;
+	}
+
+	&.uiex-button-size-small {
+		font-size: 14px;
+	}
+	&.uiex-button-size-medium {
+		line-height: 36px;
+		padding: 0 15px;
+		font-size: 16px;
+	}
+	&.uiex-button-size-large {
+		line-height: 42px;
+		padding: 0 20px;
+		font-size: 18px;
+	}
+	&.uiex-button-size-huge {
+		line-height: 48px;
+		padding: 0 24px;
+		font-size: 20px;
+	}
+	&.uiex-button-size-giant {
+		line-height: 54px;
+		padding: 0 30px;
+		font-size: 26px;
+	}
+
+	&.uiex-button-color-black {
+		background-color: #333;
+		color: #f1f1f1;
+		border-color: #111;
+
+		&:hover {
+			background-color: #444;
+			border-color: #222;
+		}
+	}
+	&.uiex-button-color-white {
+		background-color: #fff;
+		border-color: #e1e1e1;
+
+		&:hover {
+			border-color: #c1c1c1;
+		}
+	}
+	&.uiex-button-color-gray {
+		background-color: #d1d1d1;
+		border-color: #aaa;
+
+		&:hover {
+			background-color: #e1e1e1;
+			border-color: #bbb;
+		}
+	}
+	&.uiex-button-color-red {
+		background-color: #e0424c;
+		color: #fff;
+		border-color: #c52f39;
+
+		&:hover {
+			background-color: #f1555f;
+			border-color: #e0424c;
+		}
+	}
+	&.uiex-button-color-blue {
+		background-color: #4a90e4;
+		color: #fff;
+		border-color: #377bcc;
+
+		&:hover {
+			background-color: #559cf1;
+			border-color: #3b80d2;
+		}
+	}
+	&.uiex-button-color-green {
+		background-color: #53bb44;
+		color: #fff;
+		border-color: #46ad38;
+
+		&:hover {
+			background-color: #5dc54e;
+			border-color: #49b13b;
+		}
+	}
+	&.uiex-button-color-yellow {
+		background-color: #f9e622;
+		color: #5c5d00;
+		border-color: #d0be08;
+
+		&:hover {
+			background-color: #efdc1a;
+			border-color: #c3b205;
+			color: #474800;
+		}
+	}
+	&.uiex-button-color-orange {
+		background-color: #ff9b0c;
+		color: #6b3700;
+		border-color: #de8402;
+
+		&:hover {
+			background-color: #fda931;
+			border-color: #de8e1c;
+		}
+	}
+}

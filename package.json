@@ -1,0 +1,11 @@
+{
+  "name": "uiex",
+  "version": "0.0.1",
+  "description": "UI library",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bushstas/uiex"
+  },
+  "author": "Bushmakin Stas",
+  "email": "bushstas@mail.ru"
+}

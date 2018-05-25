@@ -1,5 +1,5 @@
 import React from 'react';
-import {UIEXComponent} from '../component';
+import {UIEXComponent} from '../UIEXComponent';
 import {Button} from '../Button';
 
 import './style.scss';
@@ -9,6 +9,7 @@ import './style.scss';
  * @prop {boolean} [vertical] Buttons are displayed vertically as fullwidth blocks.
  * @prop {string} [align] Buttons position (left|center|right).
  * @prop {string | number} [buttonWidth] Buttons' width.
+ * @prop {string} [buttonColor] Buttons' color.
  * @prop {Function} [onClick] Mouse click handler on enabled button.
  */
 export class ButtonGroup extends UIEXComponent {
@@ -17,61 +18,55 @@ export class ButtonGroup extends UIEXComponent {
 		return 'button-group';
 	}
 
+	getChildType() {
+		return Button;
+	}
+
 	getClassNames() {
-		const {vertical, align} = this.props;
-		const classNames = [];		
-		if (!vertical && align && typeof align == 'string') {
-			switch (align) {
-				case 'left':
-				case 'right':
-				case 'center':
-					classNames.push('uiex-button-group-align-' + align);
-				break;
+		if (this.props.vertical) {
+			return ['uiex-button-group-vertical'];
+		}
+	}
 
-				default:
-					console.error('Unknown ButtonGroup "align" property value: ' + align + '. Available values: left, right, center');
+	addChildProps(child, props) {
+		if (child.type == Button) {
+			const {
+				vertical,
+				disabled,
+				buttonWidth,
+				buttonColor,
+				iconSize,
+				iconAtRight
+			} = this.props;
+
+			if (vertical) {
+				props.block = true;
 			}
-		}
-		if (vertical) {
-			classNames.push('uiex-button-group-vertical');
-		}
-		return classNames;
-	}
-
-	renderChildren(children) {
-		if (children instanceof Array) {
-			return children.map(this.renderChild);
-		}
-		return this.renderChild(children);
-	}
-
-	renderChild = (child, idx = 0) => {
-		if (React.isValidElement(child)) {
-			const props = {
-				key: child.props.key || idx
-			};
-			if (child.type == Button) {
-				if (this.props.vertical) {
-					props.block = true;
-				}
-				if (this.props.disabled) {
-					props.disabled = true;
-				}
-				if (this.props.buttonWidth && !child.props.width) {
-					props.width = this.props.buttonWidth;
-				}
-				props.onClick = child.props.onClick || this.handleButtonClick;
+			if (disabled) {
+				props.disabled = true;
 			}
-			child = React.cloneElement(child, props);
+			if (buttonWidth && !child.props.width) {
+				props.width = buttonWidth;
+			}
+			if (buttonColor && !child.props.color) {
+				props.color = buttonColor;
+			}
+			if (iconSize && !child.props.iconSize) {
+				props.iconSize = iconSize;
+			}
+			if (iconAtRight && !child.props.iconAtRight) {
+				props.iconAtRight = iconAtRight;
+			}
+			props.onClick = child.props.onClick || this.handleButtonClick;
 		}
-		return child;
 	}
 
-
-	render() {
+	renderInternal() {
 		return (
 			<div {...this.getProps()}>
-				{this.renderChildren(this.props.children)}
+				<div className="uiex-button-group-inner">
+					{this.renderChildren()}
+				</div>
 			</div>
 		)
 	}

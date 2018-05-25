@@ -1,4 +1,13 @@
 div.uiex-button-group {
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+
+	.uiex-button-group-inner {
+		display: block;
+		width: 100%;
+	}
+	
 	button.uiex-button,
 	a.uiex-button {
 		margin-right: 6px;
@@ -24,8 +33,7 @@ div.uiex-button-group {
 			}
 		}
 	}
-	&.uiex-button-group-align-right {
-		text-align: right;
+	&.uiex-align-right {
 
 		button.uiex-button,
 		a.uiex-button {
@@ -43,8 +51,7 @@ div.uiex-button-group {
 		}
 	}
 
-	&.uiex-button-group-align-center {
-		text-align: center;
+	&.uiex-align-center {
 
 		button.uiex-button,
 		a.uiex-button {

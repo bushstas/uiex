@@ -1,5 +1,6 @@
 import React from 'react';
-import {UIEXComponent} from '../component';
+import {UIEXComponent} from '../UIEXComponent';
+import {Icon} from '../Icon';
 
 import './style.scss';
 
@@ -8,7 +9,7 @@ import './style.scss';
  * 
  * @prop {string} [href] Href makes the button hyperlink element with tag name A.
  * @prop {string} [target] Hyperlink element target.
- * @prop {any} [value] Value of a button that will return on mouse click.
+ * @prop {any} [value] Value of a button that will be returned on mouse click.
  * @prop {string} [size] Size of button (small|medium|large|huge|giant).
  * @prop {string} [color] Prewritten button style (black|gray|white|red|blue|green|yellow|orange).
  * @prop {string | number | boolean} [border] Border width (no border if is false).
@@ -22,50 +23,28 @@ export class Button extends UIEXComponent {
 	}
 
 	getClassNames() {
-		const {color, size} = this.props;
-		const classNames = [];		
-		if (color && typeof color == 'string') {
-			switch (color) {
-				case 'black':
-				case 'gray':
-				case 'white':
-				case 'red':
-				case 'blue':
-				case 'green':
-				case 'yellow':
-				case 'orange':
-					classNames.push('uiex-button-color-' + color);
-				break;
-			}
+		const {iconAtRight} = this.props;
+		if (iconAtRight) {
+			return ['uiex-icon-at-right'];
 		}
-		if (size && typeof size == 'string') {
-			switch (size) {
-				case 'small':
-				case 'medium':
-				case 'large':
-				case 'huge':
-				case 'giant':
-					classNames.push('uiex-button-size-' + size);
-				break;
-			}
-		}
-		return classNames;
 	}
 
-	render() {
-		const {href, children, target} = this.props;
-		if (typeof href == 'string') {
-			return (
-				<a {...this.getProps({href, target})}>
-					{children}
-				</a>
-			)
-		}
+	renderInternal() {
+		const {href, children, target, icon, iconAtRight, iconSize} = this.props;
+		const TagName = typeof href == 'string' ? 'a' : 'button';
+		const props = typeof href == 'string' ? {href, target} : null;		
+
 		return (
-			<button {...this.getProps()}>
+			<TagName {...this.getProps(props)}>
+				{icon && !iconAtRight &&
+					<Icon name={icon} fontSize={iconSize}/>
+				}
 				{children}
-			</button>
-		)
+				{icon && iconAtRight &&
+					<Icon name={icon} fontSize={iconSize}/>
+				}
+			</TagName>
+		)		
 	}
 
 	getCustomProps() {

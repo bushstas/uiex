@@ -28,30 +28,6 @@ a.uiex-button {
 		box-shadow: none !important;
 	}
 
-	&.uiex-size-small {
-		font-size: 14px;
-	}
-	&.uiex-size-medium {
-		height: 36px;
-		padding: 0 15px;
-		font-size: 16px;
-	}
-	&.uiex-size-large {
-		height: 42px;
-		padding: 0 20px;
-		font-size: 18px;
-	}
-	&.uiex-size-huge {
-		height: 48px;
-		padding: 0 24px;
-		font-size: 20px;
-	}
-	&.uiex-size-giant {
-		height: 54px;
-		padding: 0 30px;
-		font-size: 26px;
-	}
-
 	&.uiex-color-black {
 		background-color: #333;
 		color: #f1f1f1;
@@ -144,5 +120,8 @@ a.uiex-button {
 			margin-right: 0;
 			margin-left: 5px;
 		}	
+	}
+	&.uiex-block {
+		display: flex !important;
 	}
 }

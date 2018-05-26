@@ -1,4 +1,4 @@
-import {ICommonProps, EColor, ESize} from '../UIEXComponentProps';
+import {ICommonProps, EColor} from '../UIEXComponentProps';
 
 /**
  * Properties of component Button.
@@ -6,9 +6,7 @@ import {ICommonProps, EColor, ESize} from '../UIEXComponentProps';
  * @prop {string} [href] Href makes the button hyperlink element with tag name A.
  * @prop {string} [target] Hyperlink element target.
  * @prop {any} [value] Value of a button that will be returned on mouse click.
- * @prop {ESize} [size] Size of button (small|medium|large|huge|giant).
  * @prop {EColor} [color] Prewritten button style (black|gray|white|red|blue|green|yellow|orange).
- * @prop {string | number | boolean} [border] Border width (no border if is false).
  * @prop {Function} [onClick] Mouse click handler on enabled button.
  * @prop {Function} [onDisabledClick] Mouse click handler on disabled button.
  */
@@ -16,9 +14,7 @@ interface IButtonProps extends ICommonProps {
 	href?: string;
 	target?: string;
 	value?: any;	
-	size?: ESize;
 	color?: EColor;
-	border?: string | number | boolean;	
 	onClick?: (value?: any) => void;
 	onDisabledClick?: (value?: any) => void;
 }

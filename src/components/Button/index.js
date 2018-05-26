@@ -4,18 +4,6 @@ import {Icon} from '../Icon';
 
 import './style.scss';
 
-/**
- * Properties of component Button.
- * 
- * @prop {string} [href] Href makes the button hyperlink element with tag name A.
- * @prop {string} [target] Hyperlink element target.
- * @prop {any} [value] Value of a button that will be returned on mouse click.
- * @prop {string} [size] Size of button (small|medium|large|huge|giant).
- * @prop {string} [color] Prewritten button style (black|gray|white|red|blue|green|yellow|orange).
- * @prop {string | number | boolean} [border] Border width (no border if is false).
- * @prop {Function} [onClick] Mouse click handler on enabled button.
- * @prop {Function} [onDisabledClick] Mouse click handler on disabled button.
- */
 export class Button extends UIEXComponent {
 
 	getNativeClassName() {
@@ -30,18 +18,27 @@ export class Button extends UIEXComponent {
 	}
 
 	renderInternal() {
-		const {href, children, target, icon, iconAtRight, iconSize} = this.props;
+		const {
+			href,
+			children,
+			target,
+			icon,
+			iconAtRight,
+			iconSize,
+			iconType
+		} = this.props;
+
 		const TagName = typeof href == 'string' ? 'a' : 'button';
 		const props = typeof href == 'string' ? {href, target} : null;		
 
 		return (
 			<TagName {...this.getProps(props)}>
 				{icon && !iconAtRight &&
-					<Icon name={icon} fontSize={iconSize}/>
+					<Icon name={icon} fontSize={iconSize} type={iconType}/>
 				}
 				{children}
 				{icon && iconAtRight &&
-					<Icon name={icon} fontSize={iconSize}/>
+					<Icon name={icon} fontSize={iconSize} type={iconType}/>
 				}
 			</TagName>
 		)		

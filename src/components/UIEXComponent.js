@@ -30,7 +30,6 @@ export const getComponentClassName = (component) => {
 		block,
 		float,
 		color,
-		size,
 		align,
 		valign
 	} = component.props;
@@ -39,7 +38,9 @@ export const getComponentClassName = (component) => {
 	const classNames = [];
 	
 	if (!className || typeof className != 'string') {
-		classNames.push(nativeClassName);
+		if (nativeClassName) {
+			classNames.push(nativeClassName);
+		}
 	} else {
 		classNames.push(className);
 		isCustomClassName = true;
@@ -79,20 +80,6 @@ export const getComponentClassName = (component) => {
 				logUnknownValueError(component, 'color', color, ['black', 'gray', 'white', 'red', 'blue', 'green', 'yellow', 'orange']);
 		}
 	}
-	if (size && typeof size == 'string') {
-		switch (size) {
-			case 'small':
-			case 'medium':
-			case 'large':
-			case 'huge':
-			case 'giant':
-				classNames.push('uiex-size-' + size);
-			break;
-
-			default:
-				logUnknownValueError(component, 'size', size, ['small', 'medium', 'large', 'huge', 'giant']);
-		}
-	}
 	if (align && typeof align == 'string') {
 		switch (align) {
 			case 'left':
@@ -121,7 +108,7 @@ export const getComponentClassName = (component) => {
 }
 
 const getWithPrefix = (className, isWithPrefix = true) => {
-	return isWithPrefix ? (UIEX_PREFIX  + '-' + className) : className;
+	return isWithPrefix && className && typeof className == 'string' ? (UIEX_PREFIX  + '-' + className) : className;
 }
 
 const logUnknownValueError = (component, propertyName, propertyValue, values) => {
@@ -135,8 +122,16 @@ const logUnknownValueError = (component, propertyName, propertyValue, values) =>
  * @prop {string | string[]} [classes] Custom class names.
  * @prop {string} [className] Your own class name instead of native one.
  * @prop {string | JSX.Element | JSX.Element[]} [children] Inner content.
- * @prop {boolean} [disabled] Disability flag.
+ 
  * @prop {string | number} [width] Component main element width.
+ * @prop {string | number} [height] Component main element height.
+ * @prop {string | number} [fontSize] Component main element fontSize. 
+ * @prop {string | number} [radius] Component main element borderRadius. 
+ * @prop {string | number} [borderWidth] Component main element borderWidth. 
+ 
+ * @prop {boolean} [disabled] Disability flag.
+ * @prop {EAlign} [align] Content align (left|center|right).
+ * @prop {EAlign} [valign] Content vertical flex align (left|center|right).
  * @prop {boolean} [block] Displayed as block.
  * @prop {string} [float] Adds style float (left|right).
  * @prop {boolean} [hidden] Component won't be rendered if true.
@@ -147,7 +142,8 @@ export class UIEXComponent extends React.Component {
 		this.defineStyle(props.width, 'width');
 		this.defineStyle(props.height, 'height');
 		this.defineStyle(props.fontSize, 'fontSize');
-		this.defineBorderStyle(props.border);
+		this.defineStyle(props.radius, 'borderRadius');
+		this.defineStyle(props.borderWidth, 'borderWidth');
 	}
 
 	defineStyle(value, name) {
@@ -165,21 +161,6 @@ export class UIEXComponent extends React.Component {
 		}
 	}
 
-	defineBorderStyle(border) {
-		if (typeof border != 'undefined') {
-			if (border === false) {
-				border = 0;
-			}
-			if (typeof border == 'string' && ~~border == border) {
-				border = ~~border;
-			}
-			if (typeof border == 'number' && border != 1) {
-				this.style = this.style || {};
-				this.style.borderWidth = border + 'px';
-			}
-		}
-	}
-
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.width != this.props.width) {
 			this.defineStyle(nextProps.width, 'width');
@@ -190,8 +171,11 @@ export class UIEXComponent extends React.Component {
 		if (nextProps.fontSize != this.props.fontSize) {
 			this.defineStyle(nextProps.fontSize, 'fontSize');
 		}
-		if (nextProps.border != this.props.border) {
-			this.defineBorderStyle(nextProps.border);
+		if (nextProps.radius != this.props.radius) {
+			this.defineStyle(nextProps.radius, 'borderRadius');
+		}
+		if (nextProps.borderWidth != this.props.borderWidth) {
+			this.defineStyle(nextProps.borderWidth, 'borderWidth');
 		}
 	}
 
@@ -253,4 +237,59 @@ export class UIEXComponent extends React.Component {
 
 	initRendering() {}
 	addChildProps() {}
+}
+
+
+/**
+ * Properties of component Tabs.
+ *
+ * @prop {EColor} [buttonColor] Buttons' color.
+ * @prop {string | number} [buttonWidth] Buttons' width.
+ * @prop {string | number} [buttonHeight] Buttons' height. 
+ * @prop {string | number} [iconSize] Button icon size.
+ * @prop {EIconType} [iconType] Button icon type (material|awesome).
+ * @prop {boolean} [iconAtRight] Button icons are placed at right.
+ */
+export class UIEXButtons extends UIEXComponent {
+	addCommonButtonsProps(child, props) {
+		const {
+			vertical,
+			disabled,
+			buttonWidth,
+			buttonHeight,
+			buttonColor,
+			buttonRadius,
+			iconSize,
+			iconType,
+			iconAtRight
+		} = this.props;
+
+		if (vertical) {
+			props.block = true;
+		}
+		if (disabled) {
+			props.disabled = true;
+		}
+		if (buttonWidth && !child.props.width) {
+			props.width = buttonWidth;
+		}
+		if (buttonHeight && !child.props.height) {
+			props.height = buttonHeight;
+		}
+		if (buttonColor && !child.props.color) {
+			props.color = buttonColor;
+		}
+		if (buttonRadius && !child.props.radius) {
+			props.radius = buttonRadius;
+		}
+		if (iconSize && !child.props.iconSize) {
+			props.iconSize = iconSize;
+		}
+		if (iconType && !child.props.iconType) {
+			props.iconType = iconType;
+		}
+		if (iconAtRight && !child.props.iconAtRight) {
+			props.iconAtRight = iconAtRight;
+		}
+	}
 }

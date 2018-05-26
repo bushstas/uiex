@@ -20,6 +20,15 @@ div.uiex-button-group {
 			margin-right: 0 !important;
 			margin-left: 6px;
 		}
+		&.uiex-block {
+			margin-right: 0 !important;
+			margin-left: 0 !important;
+			margin-bottom: 4px;
+			
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
 	}
 
 	&.uiex-button-group-vertical {

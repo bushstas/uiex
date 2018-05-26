@@ -1,18 +1,10 @@
 import React from 'react';
-import {UIEXComponent} from '../UIEXComponent';
+import {UIEXButtons} from '../UIEXComponent';
 import {Button} from '../Button';
 
 import './style.scss';
 
-/**
- * Properties of component ButtonGroup.
- * @prop {boolean} [vertical] Buttons are displayed vertically as fullwidth blocks.
- * @prop {string} [align] Buttons position (left|center|right).
- * @prop {string | number} [buttonWidth] Buttons' width.
- * @prop {string} [buttonColor] Buttons' color.
- * @prop {Function} [onClick] Mouse click handler on enabled button.
- */
-export class ButtonGroup extends UIEXComponent {
+export class ButtonGroup extends UIEXButtons {
 	
 	getNativeClassName() {
 		return 'button-group';
@@ -29,34 +21,8 @@ export class ButtonGroup extends UIEXComponent {
 	}
 
 	addChildProps(child, props) {
-		if (child.type == Button) {
-			const {
-				vertical,
-				disabled,
-				buttonWidth,
-				buttonColor,
-				iconSize,
-				iconAtRight
-			} = this.props;
-
-			if (vertical) {
-				props.block = true;
-			}
-			if (disabled) {
-				props.disabled = true;
-			}
-			if (buttonWidth && !child.props.width) {
-				props.width = buttonWidth;
-			}
-			if (buttonColor && !child.props.color) {
-				props.color = buttonColor;
-			}
-			if (iconSize && !child.props.iconSize) {
-				props.iconSize = iconSize;
-			}
-			if (iconAtRight && !child.props.iconAtRight) {
-				props.iconAtRight = iconAtRight;
-			}
+		if (child.type == Button) {			
+			this.addCommonButtonsProps(child, props);
 			props.onClick = child.props.onClick || this.handleButtonClick;
 		}
 	}

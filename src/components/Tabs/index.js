@@ -1,22 +1,10 @@
 import React from 'react';
-import {UIEXComponent} from '../UIEXComponent';
+import {UIEXButtons} from '../UIEXComponent';
 import {Tab} from '../Tab';
 
 import './style.scss';
 
-/**
- * Properties of component Tabs.
- *
- * @prop {string | number} [activeTab] Value of the active tab.
- * @prop {string} [activeColor] Color of an active tab.
- * @prop {string} [align] Tab buttons position (left|center|right).
- * @prop {string | number} [buttonWidth] Tab buttons' width.
- * @prop {boolean} [simple] Tabs with no content if true.
- * @prop {boolean} [multiple] You can select few tabs if true.
- * @prop {boolean} [optional] None of tabs can be selected if true (multiple is always optional).
- * @prop {Function} [onSelect] Mouse click handler on enabled tab button.
- */
-export class Tabs extends UIEXComponent {
+export class Tabs extends UIEXButtons {
 	
 	getNativeClassName() {
 		return 'tabs';
@@ -33,17 +21,7 @@ export class Tabs extends UIEXComponent {
 
 	addChildProps(child, props, idx) {
 		if (child.type == Tab) {
-			const {
-				disabled,
-				buttonWidth,
-				buttonHeight,
-				buttonColor,
-				activeColor,
-				optional,
-				iconSize,
-				iconAtRight
-			} = this.props;
-
+			const {optional, activeColor} = this.props;
 			const activeTab = this.activeTab;
 			let value = child.props.value;
 			let active;
@@ -61,25 +39,7 @@ export class Tabs extends UIEXComponent {
 			} else {					
 				active = activeTab == value;
 			}
-			
-			if (disabled) {
-				props.disabled = true;
-			}
-			if (buttonWidth && !child.props.width) {
-				props.width = buttonWidth;
-			}
-			if (buttonHeight && !child.props.height) {
-				props.height = buttonHeight;
-			}
-			if (buttonColor && !child.props.color) {
-				props.color = buttonColor;
-			}
-			if (iconSize && !child.props.iconSize) {
-				props.iconSize = iconSize;
-			}
-			if (iconAtRight && !child.props.iconAtRight) {
-				props.iconAtRight = iconAtRight;
-			}
+			this.addCommonButtonsProps(child, props);
 			props.onSelect = child.props.onSelect || this.handleSelectTab;
 			if (active) {
 				props.active = active;
@@ -119,8 +79,8 @@ export class Tabs extends UIEXComponent {
 		const {simple} = this.props;
 		return (
 			<div {...this.getProps()}>
-				<div className="uiex-tabs-menu">
-					<div className="uiex-tabs-menu-inner">
+				<div className="uiex-button-group">
+					<div className="uiex-button-group-inner">
 						{this.renderChildren()}
 					</div>
 				</div>

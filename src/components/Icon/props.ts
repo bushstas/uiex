@@ -1,12 +1,12 @@
-import {ICommonProps} from '../UIEXComponentProps';
+import {ICommonProps, EIconType} from '../UIEXComponentProps';
 
 /**
  * Properties of component Icon.
  *
  * @prop {string} name Icon name.
- * @prop {string | number} [size] Icon font size.
+ * @prop {EIconType} [type] Icon type (material|awesome).
  */
 interface IIconProps extends ICommonProps {
 	name: string;
-	size?: string | number;
+	type?: EIconType;
 }

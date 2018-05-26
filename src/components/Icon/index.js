@@ -1,26 +1,15 @@
 import React from 'react';
-import {UIEXComponent} from '../UIEXComponent';
+import {MaterialIcon} from './MaterialIcon';
+import {AwesomeIcon} from './AwesomeIcon';
 
-import './style.scss';
-
-/**
- * Properties of component Icon.
- * 
- * @prop {string} name Icon name.
- * @prop {string | number} [size] Icon font size.
- */
-export class Icon extends UIEXComponent {
-
-	getNativeClassName() {
-		return 'icon';
-	}
-
-	renderInternal() {
-		const {name} = this.props;
+export const Icon = (props) => {	
+	const {type, name, fontSize} = props;
+	if (type == 'awesome') {
 		return (
-			<i {...this.getProps()}>
-				{name}
-			</i>
+			<AwesomeIcon name={name} fontSize={fontSize}/>
 		)
 	}
+	return (
+		<MaterialIcon name={name} fontSize={fontSize}/>
+	)
 }

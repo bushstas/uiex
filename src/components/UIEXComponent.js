@@ -115,70 +115,18 @@ const logUnknownValueError = (component, propertyName, propertyValue, values) =>
 	console.error('Unknown ' + component.getNativeClassName() + ' "' + propertyName + '" property value: ' + propertyValue + '. Available values: ' + values);
 }
 
-/**
- * Common properties of components.
- *
- * @prop {string} [title] HTML title.
- * @prop {string | string[]} [classes] Custom class names.
- * @prop {string} [className] Your own class name instead of native one.
- * @prop {string | JSX.Element | JSX.Element[]} [children] Inner content.
- 
- * @prop {string | number} [width] Component main element width.
- * @prop {string | number} [height] Component main element height.
- * @prop {string | number} [fontSize] Component main element fontSize. 
- * @prop {string | number} [radius] Component main element borderRadius. 
- * @prop {string | number} [borderWidth] Component main element borderWidth. 
- 
- * @prop {boolean} [disabled] Disability flag.
- * @prop {EAlign} [align] Content align (left|center|right).
- * @prop {EAlign} [valign] Content vertical flex align (left|center|right).
- * @prop {boolean} [block] Displayed as block.
- * @prop {string} [float] Adds style float (left|right).
- * @prop {boolean} [hidden] Component won't be rendered if true.
- */
 export class UIEXComponent extends React.Component {
-	constructor(props) {
-		super(props);
-		this.defineStyle(props.width, 'width');
-		this.defineStyle(props.height, 'height');
-		this.defineStyle(props.fontSize, 'fontSize');
-		this.defineStyle(props.radius, 'borderRadius');
-		this.defineStyle(props.borderWidth, 'borderWidth');
-	}
-
-	defineStyle(value, name) {
-		if (typeof value != 'undefined') {
-			if (typeof value == 'number') {
-				value += 'px';
-			}
-			if (typeof value == 'string') {
-				if (value == ~~value) {
-					value += 'px';
-				}
-				this.style = this.style || {};
-				this.style[name] = value;
-			}
-		}
-	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.width != this.props.width) {
-			this.defineStyle(nextProps.width, 'width');
-		}
-		if (nextProps.height != this.props.height) {
-			this.defineStyle(nextProps.height, 'height');
-		}
-		if (nextProps.fontSize != this.props.fontSize) {
-			this.defineStyle(nextProps.fontSize, 'fontSize');
-		}
-		if (nextProps.radius != this.props.radius) {
-			this.defineStyle(nextProps.radius, 'borderRadius');
-		}
-		if (nextProps.borderWidth != this.props.borderWidth) {
-			this.defineStyle(nextProps.borderWidth, 'borderWidth');
-		}
+		const {width, height, fontSize, style} = nextProps;
+		this.stylesChanged = (
+			width != this.props.width ||
+			 height != this.props.height || 
+			 fontSize != this.props.fontSize || 
+			 style != this.props.style
+		);
 	}
-
+	
 	renderChildren(children = this.props.children) {
 		if (children instanceof Array) {
 			return children.map(this.renderChild);
@@ -189,7 +137,7 @@ export class UIEXComponent extends React.Component {
 	renderChild = (child, idx = 0) => {
 		if (React.isValidElement(child)) {
 			const props = {
-				key: child.props.key || idx
+				key: idx
 			};
 			this.addChildProps(child, props, idx);
 			const children = child.type == this.getChildType() ? child.props.children : this.renderChildren(child.props.children);
@@ -198,12 +146,39 @@ export class UIEXComponent extends React.Component {
 		return child;
 	}
 
+	getStyle() {
+		if (!this.style || this.stylesChanged) {
+			const {width, height, fontSize, style} = this.props;
+			this.style = {
+				...this.getDefaultStyle(),
+				width: this.addStyle(width, 'width'),
+				height: this.addStyle(height, 'height'),
+				fontSize: this.addStyle(fontSize, 'fontSize'),
+				...style
+			};
+		}
+		return this.style;
+	}
+
+	addStyle(value, name) {
+		if (typeof value != 'undefined') {
+			if (typeof value == 'number') {
+				value += 'px';
+			}
+			if (typeof value == 'string') {
+				if (value == ~~value) {
+					value += 'px';
+				}
+				return value;
+			}
+		}
+	}
+
 	getProps(props) {
 		const {title, disabled} = this.props;
 		return {
 			title,
-			disabled,
-			style: this.style,
+			style: this.getStyle(),
 			className: getComponentClassName(this),
 			...props,
 			...this.getCustomProps()
@@ -231,6 +206,10 @@ export class UIEXComponent extends React.Component {
 		return null;
 	}
 
+	getDefaultStyle() {
+		return null;
+	}
+
 	getChildType() {
 		return () => {};
 	}
@@ -240,25 +219,15 @@ export class UIEXComponent extends React.Component {
 }
 
 
-/**
- * Properties of component Tabs.
- *
- * @prop {EColor} [buttonColor] Buttons' color.
- * @prop {string | number} [buttonWidth] Buttons' width.
- * @prop {string | number} [buttonHeight] Buttons' height. 
- * @prop {string | number} [iconSize] Button icon size.
- * @prop {EIconType} [iconType] Button icon type (material|awesome).
- * @prop {boolean} [iconAtRight] Button icons are placed at right.
- */
 export class UIEXButtons extends UIEXComponent {
 	addCommonButtonsProps(child, props) {
 		const {
 			vertical,
 			disabled,
+			buttonColor,
 			buttonWidth,
 			buttonHeight,
-			buttonColor,
-			buttonRadius,
+			buttonStyle,
 			iconSize,
 			iconType,
 			iconAtRight
@@ -270,17 +239,17 @@ export class UIEXButtons extends UIEXComponent {
 		if (disabled) {
 			props.disabled = true;
 		}
+		if (buttonColor && !child.props.color) {
+			props.color = buttonColor;
+		}
 		if (buttonWidth && !child.props.width) {
 			props.width = buttonWidth;
 		}
 		if (buttonHeight && !child.props.height) {
 			props.height = buttonHeight;
 		}
-		if (buttonColor && !child.props.color) {
-			props.color = buttonColor;
-		}
-		if (buttonRadius && !child.props.radius) {
-			props.radius = buttonRadius;
+		if (buttonStyle && !child.props.style) {
+			props.style = buttonStyle;
 		}
 		if (iconSize && !child.props.iconSize) {
 			props.iconSize = iconSize;

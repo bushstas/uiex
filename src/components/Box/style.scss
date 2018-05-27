@@ -1,0 +1,61 @@
+div.uiex-box {
+	position: relative;
+	overflow: hidden;
+	transition-property: height;
+	transition-duration: .2s;
+	transition-timing-function: linear;
+
+	&.uiex-speed-1 {
+		transition-duration: .1s;
+	}
+	&.uiex-speed-3 {
+		transition-duration: .3s;
+	}
+	&.uiex-speed-4 {
+		transition-duration: .4s;
+	}
+	&.uiex-speed-5 {
+		transition-duration: .5s;
+	}
+	&.uiex-speed-6 {
+		transition-duration: .6s;
+	}
+	&.uiex-speed-7 {
+		transition-duration: .7s;
+	}
+	&.uiex-speed-8 {
+		transition-duration: .8s;
+	}
+	&.uiex-speed-9 {
+		transition-duration: .9s;
+	}
+	&.uiex-speed-10 {
+		transition-duration: 1s;
+	}
+
+	&.uiex-effect-ease {
+		transition-timing-function: ease;
+	}
+	&.uiex-effect-ease-out {
+		transition-timing-function: ease-out;
+	}
+	&.uiex-effect-ease-in {
+		transition-timing-function: ease-in;
+	}
+	&.uiex-effect-ease-in-out {
+		transition-timing-function: ease-in-out;
+	}
+
+	&.uiex-inverted-box {
+		display: flex;
+		align-items: flex-end;
+	}
+	&.uiex-fading-box {
+		transition-property: height, opacity;
+	}
+}
+.uiex-box-button {
+	&.uiex-box-button-under {
+		margin-top: 10px;
+	}
+}

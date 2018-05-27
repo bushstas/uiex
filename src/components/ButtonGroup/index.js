@@ -24,6 +24,7 @@ export class ButtonGroup extends UIEXButtons {
 		if (child.type == Button) {			
 			this.addCommonButtonsProps(child, props);
 			props.onClick = child.props.onClick || this.handleButtonClick;
+			props.onDisabledClick = child.props.onDisabledClick || this.handleDisabledButtonClick;
 		}
 	}
 
@@ -41,6 +42,13 @@ export class ButtonGroup extends UIEXButtons {
 		const {onClick} = this.props;
 		if (typeof onClick == 'function') {
 			onClick(value);
+		}
+	}
+
+	handleDisabledButtonClick = (value) => {
+		const {onDisabledClick} = this.props;
+		if (typeof onDisabledClick == 'function') {
+			onDisabledClick(value);
 		}
 	}
 }

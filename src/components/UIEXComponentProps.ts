@@ -3,20 +3,18 @@
  *
  * @prop {string} [title] HTML title.
  * @prop {string | string[]} [classes] Custom class names.
- * @prop {string} [className] Your own class name instead of native one.
+ * @prop {string} [className] Your own class name instead of uiex native one.
  * @prop {string | JSX.Element | JSX.Element[]} [children] Inner content.
  
  * @prop {string | number} [width] Component main element width.
  * @prop {string | number} [height] Component main element height.
- * @prop {string | number} [fontSize] Component main element fontSize. 
- * @prop {string | number} [radius] Component main element borderRadius. 
- * @prop {string | number} [borderWidth] Component main element borderWidth.
+ * @prop {IStyle} [style] Component main element style.
  
  * @prop {boolean} [disabled] Disability flag.
  * @prop {EAlign} [align] Content align (left|center|right).
- * @prop {EAlign} [valign] Content vertical flex align (left|center|right).
+ * @prop {EValign} [valign] Content vertical flex align (top|center|bottom).
  * @prop {boolean} [block] Displayed as block.
- * @prop {string} [float] Adds style float (left|right).
+ * @prop {EFloat} [float] Adds style float (left|right).
  * @prop {boolean} [hidden] Component won't be rendered if true.
  */
 export interface ICommonProps {
@@ -27,15 +25,13 @@ export interface ICommonProps {
 	
 	width?: string | number;
 	height?: string | number;
-	fontSize?: string | number;
-	radius?: string | number;
-	borderWidth?: string | number;
+	style?: IStyle;
 	
 	disabled?: boolean;
 	align?: EAlign;
-	valign?: EAlign;
+	valign?: EValign;
 	block?: boolean;
-	float?: string;
+	float?: EFloat;
 	hidden?: boolean;
 }
 
@@ -43,8 +39,9 @@ export interface ICommonProps {
  * Common properties of button group components.
  *
  * @prop {EColor} [buttonColor] Buttons' color.
- * @prop {string | number} [buttonWidth] Tab buttons' width.
- * @prop {string | number} [buttonHeight] Tab buttons' height. 
+ * @prop {string | number} [buttonWidth] Buttons' width.
+ * @prop {string | number} [buttonHeight] Buttons' height.
+ * @prop {IStyle} [buttonStyle] Buttons' style.
  * @prop {string | number} [iconSize] Buttons' icon size.
  * @prop {EIconType} [iconType] Buttons' icon type (material|awesome).
  * @prop {boolean} [iconAtRight] Buttons' icons are placed at right.
@@ -54,6 +51,7 @@ export interface IButtonsProps extends ICommonProps {
 	buttonColor?: EColor;
 	buttonWidth?: string | number;
 	buttonHeight?: string | number;
+	buttonStyle?: IStyle;
 	iconSize?: string | number;
 	iconType?: EIconType;
 	iconAtRight?: boolean;
@@ -64,6 +62,17 @@ export interface IButtonsProps extends ICommonProps {
 export enum EAlign {
 	LEFT = <any>'left',
     CENTER = <any>'center',
+    RIGHT = <any>'right'
+}
+
+export enum EValign {
+	TOP = <any>'top',
+    CENTER = <any>'center',
+    BOTTOM = <any>'bottom'
+}
+
+export enum EFloat {
+	LEFT = <any>'left',
     RIGHT = <any>'right'
 }
 
@@ -81,3 +90,5 @@ export interface EIconType {
 	MATERIAL = <any>'material',
 	AWESOME = <any>'awesome'
 }
+
+export interface IStyle {}

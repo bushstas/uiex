@@ -26,6 +26,13 @@ div.uiex-checkbox {
 		display: none;
 	}
 
+	&:hover {
+		span.uiex-checkbox-marker {
+			background-color: #555;
+			color: #555;
+		}
+	}
+
 	&.uiex-with-icon {
 		span.uiex-checkbox-marker {
 			background-color: transparent !important;

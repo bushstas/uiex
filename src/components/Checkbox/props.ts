@@ -23,6 +23,6 @@ interface ICheckboxProps extends ICommonProps {
 	controlStyle?: IStyle;
 	markerStyle?: IStyle;
 	labelStyle?: IStyle;
-	onChange?: (name: string, value: any, checked: boolean) => void;
-	onDisabledClick?: (name: string, value: any, checked: boolean) => void;
+	onChange?: (checked: boolean, name: string, value: any) => void;
+	onDisabledClick?: (name: string) => void;
 }

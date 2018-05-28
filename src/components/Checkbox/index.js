@@ -153,7 +153,7 @@ export class Checkbox extends UIEXComponent {
 		const nextChecked = !checked;
 		const handler = !disabled ? onChange : onDisabledClick;
 		if (typeof handler == 'function') {
-			handler(name, value, nextChecked);
+			handler(nextChecked, name, value);
 		}
 	}
 }

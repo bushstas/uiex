@@ -92,3 +92,13 @@ export interface EIconType {
 }
 
 export interface IStyle {}
+
+export enum EInputFilter {
+	NUMBER = <any>'number',
+	EMAIL = <any>'email',
+	PHONE = <any>'phone',
+	KEY =  <any>'key',
+	DATE =  <any>'date',
+	TIME =  <any>'time',
+	URL =  <any>'url'
+}

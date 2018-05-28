@@ -54,7 +54,7 @@ export class Box extends UIEXComponent {
 		if (isOpening) {
 			height = inner.getBoundingClientRect().height;
 			if (!onMount) {
-				this.changeMargins();
+				this.hideStyles();
 			}
 		}
 		outer.style.height = height + 'px';
@@ -62,21 +62,29 @@ export class Box extends UIEXComponent {
 			this.animating = true;
 			setTimeout(() => {
 				if (!isOpening) {
-					this.changeMargins(0);
+					this.hideStyles(0);
 				}
 				this.animating = false;
-			}, speed * 100 - 50);
+			}, speed * 100);
 		} else if (!isOpening) {
-			this.changeMargins(0);
+			this.hideStyles(0);
 		}
 	}
 
-	changeMargins(value = '') {
+	hideStyles(value = '') {
 		const {outer} = this.refs;
+		const {fading} = this.props;
+		if (!fading && value === '') {
+			outer.style.opacity = '1';
+		}
+		outer.style.visibility = value;
 		outer.style.paddingTop = value;
 		outer.style.paddingBottom = value;
 		outer.style.marginTop = value;
 		outer.style.marginBottom = value;
+		outer.style.borderTop = value;
+		outer.style.borderBottom = value;
+		outer.style.boxShadow = value === 0 ? 'none' : '';
 	}
 
 	changeOpacity(isOpen) {
@@ -92,37 +100,42 @@ export class Box extends UIEXComponent {
 			isOpen
 		} = this.props;
 
+		const withButton = button && typeof button == 'string';
 		return (
 			<div>
-				{button && !buttonUnder && 
-					<Button 
-						classes="uiex-box-button"
-						onClick={this.handleToggle}
-						iconAtRight
-						icon={!isOpen ? 'expand_more' : 'expand_less'}
-						iconSize={20}
-					>
-						{!isOpen ? 'Open' : 'Close'} the box
-					</Button>
-				}
+				{withButton && !buttonUnder && this.renderButton()}
 				<div {...this.getProps()} ref="outer">
 					<div className="uiex-box-inner" ref="inner">
 						{children}	
 					</div>
 				</div>
-				{button && buttonUnder && 
-					<Button 
-						classes="uiex-box-button uiex-box-button-under"
-						onClick={this.handleToggle}
-						iconAtRight
-						icon={!isOpen ? 'expand_more' : 'expand_less'}
-						iconSize={30}
-					>
-						{!isOpen ? 'Open' : 'Close'} the box
-					</Button>
-				}
+				{withButton && buttonUnder && this.renderButton()}
 			</div>
 		)
+	}
+
+	renderButton() {
+		const {isOpen} = this.props;
+		return (
+			<Button 
+				classes="uiex-box-button uiex-box-button-under"
+				onClick={this.handleToggle}
+				iconAtRight
+				icon={!isOpen ? 'expand_more' : 'expand_less'}
+				iconSize={30}
+			>
+				{this.getButtonTitle()}
+			</Button>
+		)
+	}
+
+	getButtonTitle() {
+		const {button, isOpen} = this.props;
+		const parts = button.split('/');
+		if (isOpen && parts[1]) {
+			return parts[1].trim();
+		}
+		return (parts[0] || parts[1]).trim();
 	}
 
 	handleToggle = () => {

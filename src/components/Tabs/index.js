@@ -1,13 +1,30 @@
 import React from 'react';
 import {UIEXButtons} from '../UIEXComponent';
 import {Tab} from '../Tab';
+import {Button} from '../Button';
+import {Icon} from '../Icon';
 
 import './style.scss';
+
+const ADD_TAB_VALUE = 'ADD_TAB_VALUE';
+const NEW_TAB_CAPTION = 'New tab';
 
 export class Tabs extends UIEXButtons {
 	
 	getNativeClassName() {
 		return 'tabs';
+	}
+
+	getClassNames() {
+		const {dynamic, united} = this.props;
+		let className = '';
+		if (dynamic) {
+			className += ' uiex-dynamic-tabs';
+		}
+		if (united) {
+			className += ' uiex-united-tabs';
+		}
+		return className;
 	}
 
 	getChildType() {
@@ -21,7 +38,14 @@ export class Tabs extends UIEXButtons {
 
 	addChildProps(child, props, idx) {
 		if (child.type == Tab) {
-			const {optional, activeColor} = this.props;
+			const {
+				optional,
+				activeColor,
+				activeStyle,
+				dynamic,
+				emptyTabName
+			} = this.props;
+
 			const activeTab = this.activeTab;
 			let value = child.props.value;
 			let active;
@@ -39,12 +63,36 @@ export class Tabs extends UIEXButtons {
 			} else {					
 				active = activeTab == value;
 			}
+			props.caption = child.props.caption;
+			if (dynamic) {
+				props.caption = (
+					<span className="uiex-tab-content">
+						{props.caption} 
+						<span 
+							className="uiex-tab-close"
+							onClick={this.handleRemoveTab.bind(null, idx, value)}
+						>
+							<Icon name="clear" fontSize="14"/>
+						</span>
+					</span>
+				)
+			}
 			this.addCommonButtonsProps(child, props);
 			props.onSelect = child.props.onSelect || this.handleSelectTab;
 			if (active) {
 				props.active = active;
 				if (activeColor) {
 					props.color = activeColor;
+				}
+				if (activeStyle instanceof Object) {
+					if (props.style instanceof Object) {
+						props.style = {
+							...props.style,
+							...activeStyle
+						};
+					} else {
+						props.style = activeStyle;
+					}
 				}
 			}
 		}
@@ -76,12 +124,13 @@ export class Tabs extends UIEXButtons {
 	}
 
 	renderInternal() {
-		const {simple} = this.props;
+		const {simple, dynamic} = this.props;
 		return (
 			<div {...this.getProps()}>
-				<div className="uiex-button-group">
+				<div className="uiex-tabs-menu uiex-button-group">
 					<div className="uiex-button-group-inner">
 						{this.renderChildren()}
+						{dynamic && this.renderAddTabButton()}
 					</div>
 				</div>
 				{!simple &&
@@ -90,6 +139,28 @@ export class Tabs extends UIEXButtons {
 					</div>
 				}
 			</div>
+		)
+	}
+
+	renderAddTabButton() {
+		const {
+			buttonColor,
+			buttonHeight,
+			buttonStyle,
+			disable
+		} = this.props;
+
+		return (
+			<Button 
+				classes="uiex-add-tab-button"
+				icon="add"
+				iconSize="24"
+				onClick={this.handleAddTab}
+				color={buttonColor}
+				height={buttonHeight}
+				style={buttonStyle}
+				disable={disable}
+			/>
 		)
 	}
 
@@ -129,5 +200,28 @@ export class Tabs extends UIEXButtons {
 			}
 			onSelect(activeTab);
 		}
+	}
+
+	handleAddTab = () => {
+		let {onAddTab, emptyTabName} = this.props;
+		if (typeof onAddTab == 'function') {
+			if (!emptyTabName || typeof emptyTabName != 'string') {
+				emptyTabName = NEW_TAB_CAPTION;
+			}
+			onAddTab(emptyTabName + ' ' + this.getNextIndex());
+		}
+	}
+
+	handleRemoveTab = (index, value, e) => {
+		e.stopPropagation();
+		const {onRemoveTab} = this.props;
+		if (typeof onRemoveTab == 'function') {
+			onRemoveTab(index, value);
+		}
+	}
+
+	getNextIndex() {
+		this.index = this.index || 0;
+		return ++this.index;
 	}
 }

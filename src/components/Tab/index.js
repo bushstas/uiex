@@ -3,6 +3,15 @@ import {Button} from '../Button';
 import {Icon} from '../Icon';
 
 export class Tab extends Button {
+
+	getClassNames() {
+		return super.getClassNames() + ' uiex-tab';
+	}
+
+	renderInternalChildren() {
+		return this.props.caption;
+	}
+
 	handleClick = (e) => {
 		e.stopPropagation();
 		const {

@@ -28,6 +28,13 @@ a.uiex-button {
 		box-shadow: none !important;
 	}
 
+	&.uiex-icon-button {
+		.uiex-icon {
+			margin-right: 0;
+			margin-left: 0; 
+		}
+	}
+
 	&.uiex-color-black {
 		background-color: #333;
 		color: #f1f1f1;
@@ -78,11 +85,11 @@ a.uiex-button {
 	&.uiex-color-green {
 		background-color: #53bb44;
 		color: #fff;
-		border-color: #46ad38;
+		border-color: #328c26;
 
 		&:hover {
 			background-color: #5dc54e;
-			border-color: #49b13b;
+			border-color: #297d1e;
 		}
 	}
 	&.uiex-color-yellow {

@@ -248,8 +248,15 @@ export class UIEXButtons extends UIEXComponent {
 		if (buttonHeight && !child.props.height) {
 			props.height = buttonHeight;
 		}
-		if (buttonStyle && !child.props.style) {
-			props.style = buttonStyle;
+		if (buttonStyle instanceof Object) {
+			if (child.props.style instanceof Object) {
+				props.style = {
+					...buttonStyle,
+					...child.props.style
+				};
+			} else {
+				props.style = buttonStyle;
+			}
 		}
 		if (iconSize && !child.props.iconSize) {
 			props.iconSize = iconSize;

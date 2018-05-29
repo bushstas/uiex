@@ -11,16 +11,20 @@ export class Button extends UIEXComponent {
 	}
 
 	getClassNames() {
-		const {iconAtRight} = this.props;
-		if (iconAtRight) {
-			return ['uiex-icon-at-right'];
+		const {iconAtRight, icon, children} = this.props;
+		let className = '';
+		if (iconAtRight && children) {
+			className += ' uiex-icon-at-right';
 		}
+		if (icon && typeof icon == 'string' && !children) {
+			className += ' uiex-icon-button';	
+		}
+		return className;
 	}
 
 	renderInternal() {
 		const {
 			href,
-			children,
 			target,
 			icon,
 			iconAtRight,
@@ -36,12 +40,16 @@ export class Button extends UIEXComponent {
 				{icon && !iconAtRight &&
 					<Icon name={icon} fontSize={iconSize} type={iconType}/>
 				}
-				{children}
+				{this.renderInternalChildren()}
 				{icon && iconAtRight &&
 					<Icon name={icon} fontSize={iconSize} type={iconType}/>
 				}
 			</TagName>
 		)		
+	}
+
+	renderInternalChildren() {
+		return this.props.children;
 	}
 
 	getCustomProps() {

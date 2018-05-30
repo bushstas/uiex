@@ -1,19 +1,20 @@
-div.uiex-checkbox {
+.uiex-checkbox {
 	display: inline-flex;
 	align-items: center;
 
-	span.uiex-checkbox-control {
+	.uiex-checkbox-control {
 		position: relative;
 		display: inline-block;
 		width: 20px;
 		height: 20px;
 		border-radius: 2px;
+		background-color: #fff;
 		border: 1px solid #aaa;
 		cursor: pointer;
 		box-sizing: border-box;
 	}
 
-	span.uiex-checkbox-marker {
+	.uiex-checkbox-marker {
 		position: absolute;
 		left: 2px;
 		top: 2px;
@@ -27,36 +28,37 @@ div.uiex-checkbox {
 	}
 
 	&:hover {
-		span.uiex-checkbox-marker {
+		.uiex-checkbox-marker {
 			background-color: #555;
 			color: #555;
 		}
 	}
 
 	&.uiex-with-icon {
-		span.uiex-checkbox-marker {
+		.uiex-checkbox-marker {
 			background-color: transparent !important;
 		}
 	}
 
 	&.uiex-checked,
 	&.uiex-undetermined {
-		span.uiex-checkbox-marker {
+		.uiex-checkbox-marker {
 			display: flex;
 			justify-content: center;
 			align-items: center;
 		}
 	}
 	&.uiex-undetermined {		
-		span.uiex-checkbox-marker {
+		.uiex-checkbox-marker {
 			opacity: 0.3;
 		}		
 	}
 
-	span.uiex-checkbox-label {
+	.uiex-checkbox-label {
 		display: inline-block;
 		margin-left: 10px;
 		cursor: pointer;
 		padding-bottom: 2px;
+		font-size: 15px;
 	}
 }

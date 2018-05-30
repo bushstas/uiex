@@ -126,24 +126,48 @@ export class UIEXComponent extends React.Component {
 			 style != this.props.style
 		);
 	}
+
+	renderChildren() {
+		return this.doRenderChildren(this.props.children);
+	}
 	
-	renderChildren(children = this.props.children) {
-		if (children instanceof Array) {
-			return children.map(this.renderChild);
+	doRenderChildren(children) {
+		if (children) {
+			if (children instanceof Array) {
+				return children.map(this.renderChild);
+			}
+			return this.renderChild(children);
 		}
-		return this.renderChild(children);
+		return null;
 	}
 
 	renderChild = (child, idx = 0) => {
-		if (React.isValidElement(child)) {
-			const props = {
-				key: idx
-			};
-			this.addChildProps(child, props, idx);
-			const children = child.type == this.getChildType() ? child.props.children : this.renderChildren(child.props.children);
-			child = React.cloneElement(child, props, children);
+		if (child) {
+			if (React.isValidElement(child)) {
+				const props = {
+					key: idx
+				};
+				const isProperChild = this.isProperChild(child);
+				if (isProperChild) {
+					const {
+						disabled,
+						vertical
+					} = this.props;
+
+					if (disabled) {
+						props.disabled = true;
+					}
+					if (vertical) {
+						props.block = true;
+					}
+					this.addChildProps(child, props, idx);
+				}
+				const children = isProperChild ? child.props.children : this.doRenderChildren(child.props.children);
+				child = React.cloneElement(child, props, children);
+			}
+			return child;
 		}
-		return child;
+		return null;
 	}
 
 	getStyle() {
@@ -151,10 +175,10 @@ export class UIEXComponent extends React.Component {
 			const {width, height, fontSize, style} = this.props;
 			this.style = {
 				...this.getDefaultStyle(),
+				...style,
 				width: this.addStyle(width, 'width'),
 				height: this.addStyle(height, 'height'),
-				fontSize: this.addStyle(fontSize, 'fontSize'),
-				...style
+				fontSize: this.addStyle(fontSize, 'fontSize')
 			};
 		}
 		return this.style;
@@ -210,8 +234,8 @@ export class UIEXComponent extends React.Component {
 		return null;
 	}
 
-	getChildType() {
-		return () => {};
+	isProperChild() {
+		return false;
 	}
 
 	initRendering() {}
@@ -242,8 +266,6 @@ export class UIEXButtons extends UIEXComponent {
 
 	addCommonButtonsProps(child, props) {
 		const {
-			vertical,
-			disabled,
 			buttonColor,
 			buttonWidth,
 			buttonHeight,
@@ -253,12 +275,6 @@ export class UIEXButtons extends UIEXComponent {
 			iconAtRight
 		} = this.props;
 
-		if (vertical) {
-			props.block = true;
-		}
-		if (disabled) {
-			props.disabled = true;
-		}
 		if (buttonColor && !child.props.color) {
 			props.color = buttonColor;
 		}

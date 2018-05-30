@@ -10,15 +10,17 @@ export class ButtonGroup extends UIEXButtons {
 		return 'button-group';
 	}
 
-	getChildType() {
-		return Button;
+	isProperChild(child) {
+		return child.type == Button;
 	}
 
 	addChildProps(child, props) {
-		if (child.type == Button) {			
-			this.addCommonButtonsProps(child, props);
-			props.onClick = child.props.onClick || this.handleButtonClick;
-			props.onDisabledClick = child.props.onDisabledClick || this.handleDisabledButtonClick;
+		this.addCommonButtonsProps(child, props);
+		if (typeof child.props.onClick != 'function') {
+			props.onClick = this.handleButtonClick;
+		}
+		if (typeof child.props.onDisabledClick != 'function') {
+			props.onDisabledClick = this.handleDisabledButtonClick;
 		}
 	}
 

@@ -1,4 +1,4 @@
-div.uiex-input {
+.uiex-input {
 	position: relative;
 	display: inline-block;
 	box-sizing: border-box;
@@ -82,15 +82,17 @@ div.uiex-input {
 		padding: 10px 12px;
 		font-size: 14px;
 		border-radius: 2px;
-		background-color: transparent;
+		background-color: #fff;
 		border: 1px solid #aaa;
-		box-shadow: inset -3px -3px 5px #f1f1f1;
+		box-shadow: inset -3px -3px 7px #f1f1f1;
 		transition: border-color .3s, box-shadow .3s;
+		color: #555;
 
 		&:focus {
 			outline: 0;
 			border-color: #888;
-			box-shadow: inset 3px 3px 5px #e1e1e1;
+			box-shadow: inset 3px 3px 7px #e4e4e4;
+			color: #000;
 		}
 		
 	}

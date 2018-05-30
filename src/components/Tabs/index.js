@@ -24,8 +24,8 @@ export class Tabs extends UIEXButtons {
 		return className;
 	}
 
-	getChildType() {
-		return Tab;
+	isProperChild(child) {
+		return child.type == Tab;
 	}
 
 	initRendering() {
@@ -34,62 +34,60 @@ export class Tabs extends UIEXButtons {
 	}
 
 	addChildProps(child, props, idx) {
-		if (child.type == Tab) {
-			const {
-				optional,
-				activeColor,
-				activeStyle,
-				dynamic,
-				emptyTabName
-			} = this.props;
+		const {
+			optional,
+			activeColor,
+			activeStyle,
+			dynamic,
+			emptyTabName
+		} = this.props;
 
-			const activeTab = this.activeTab;
-			let value = child.props.value;
-			let active;
-			if (value == null && !optional) {
-				value = props.value = idx;
-			}
-			if (child.props.single) {
-				this.singles.push(value);
-			}
-			if (activeTab instanceof Array) {
-				active = activeTab.indexOf(value) > -1;
-			} else if (activeTab == null) {
-				active = idx == 0;
-				this.activeTab = value;
-			} else {					
-				active = activeTab == value;
-			}
-			props.caption = child.props.caption;
-			if (dynamic) {
-				props.caption = (
-					<span className="uiex-tab-content">
-						{props.caption} 
-						<span 
-							className="uiex-tab-close"
-							onClick={this.handleRemoveTab.bind(null, idx, value)}
-						>
-							<Icon name="clear" fontSize="14"/>
-						</span>
+		const activeTab = this.activeTab;
+		let value = child.props.value;
+		let active;
+		if (value == null && !optional) {
+			value = props.value = idx;
+		}
+		if (child.props.single) {
+			this.singles.push(value);
+		}
+		if (activeTab instanceof Array) {
+			active = activeTab.indexOf(value) > -1;
+		} else if (activeTab == null) {
+			active = idx == 0;
+			this.activeTab = value;
+		} else {					
+			active = activeTab == value;
+		}
+		props.caption = child.props.caption;
+		if (dynamic) {
+			props.caption = (
+				<span className="uiex-tab-content">
+					{props.caption} 
+					<span 
+						className="uiex-tab-close"
+						onClick={this.handleRemoveTab.bind(null, idx, value)}
+					>
+						<Icon name="clear" fontSize="14"/>
 					</span>
-				)
+				</span>
+			)
+		}
+		this.addCommonButtonsProps(child, props);
+		props.onSelect = child.props.onSelect || this.handleSelectTab;
+		if (active) {
+			props.active = active;
+			if (activeColor) {
+				props.color = activeColor;
 			}
-			this.addCommonButtonsProps(child, props);
-			props.onSelect = child.props.onSelect || this.handleSelectTab;
-			if (active) {
-				props.active = active;
-				if (activeColor) {
-					props.color = activeColor;
-				}
-				if (activeStyle instanceof Object) {
-					if (props.style instanceof Object) {
-						props.style = {
-							...props.style,
-							...activeStyle
-						};
-					} else {
-						props.style = activeStyle;
-					}
+			if (activeStyle instanceof Object) {
+				if (props.style instanceof Object) {
+					props.style = {
+						...props.style,
+						...activeStyle
+					};
+				} else {
+					props.style = activeStyle;
 				}
 			}
 		}

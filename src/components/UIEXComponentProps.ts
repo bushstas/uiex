@@ -21,7 +21,7 @@ export interface ICommonProps {
 	title?: string;
 	classes?: string | string[];	
 	className?: string;
-	children?: string | JSX.Element | JSX.Element[];
+	children?: IChildren;
 	
 	width?: string | number;
 	height?: string | number;
@@ -34,6 +34,8 @@ export interface ICommonProps {
 	float?: EFloat;
 	hidden?: boolean;
 }
+
+export type IChildren = string | JSX.Element | JSX.Element[];
 
 /**
  * Common properties of button group components.
@@ -91,8 +93,6 @@ export interface EIconType {
 	AWESOME = <any>'awesome'
 }
 
-export interface IStyle {}
-
 export enum EInputFilter {
 	NUMBER = <any>'number',
 	EMAIL = <any>'email',
@@ -102,3 +102,6 @@ export enum EInputFilter {
 	TIME =  <any>'time',
 	URL =  <any>'url'
 }
+
+export interface IStyle {}
+export interface IFormData {}

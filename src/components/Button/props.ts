@@ -10,7 +10,7 @@ import {ICommonProps, EColor} from '../UIEXComponentProps';
  * @prop {Function} [onClick] Mouse click handler on enabled button.
  * @prop {Function} [onDisabledClick] Mouse click handler on disabled button.
  */
-interface IButtonProps extends ICommonProps {
+export interface IButtonProps extends ICommonProps {
 	href?: string;
 	target?: string;
 	value?: any;	

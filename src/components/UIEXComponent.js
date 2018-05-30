@@ -220,6 +220,26 @@ export class UIEXComponent extends React.Component {
 
 
 export class UIEXButtons extends UIEXComponent {
+	getClassNames() {
+		const {vertical, view} = this.props;
+		let className = '';
+		if (vertical) {
+			className += ' uiex-button-group-vertical';
+		}
+		if (view && typeof view == 'string') {
+			switch (view) {
+				case 'united':
+				case 'underlined':
+					className += ' uiex-button-group-' + view;
+				break;
+
+				default:
+					logUnknownValueError(this, 'view', view, ['united', 'underlined']);
+			}
+		}
+		return className;
+	}
+
 	addCommonButtonsProps(child, props) {
 		const {
 			vertical,

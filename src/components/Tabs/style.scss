@@ -1,4 +1,4 @@
-div.uiex-tabs {
+.uiex-tabs {
 	.uiex-tabs-content {
 		margin-top: 10px;
 		text-align: left;
@@ -30,31 +30,6 @@ div.uiex-tabs {
 		bottom: 0;
 		padding-top: 2px;
 		padding-left: 4px;
-	}
-	&.uiex-united-tabs {
-		.uiex-button {
-			&:not(.uiex-add-tab-button) {
-				margin-left: 0 !important;
-				margin-right: 0 !important;
-				border-radius: 0;
-				border-right-width: 0;
-			}
-			&:first-child {
-				border-radius: 10px 0 0 10px;
-			}
-		}
-
-		&.uiex-dynamic-tabs {			
-			.uiex-button:nth-last-child(2) {
-				border-radius: 0 10px 10px 0;
-				border-right-width: 1px;
-			}
-		}
-		&:not(.uiex-dynamic-tabs) {
-			.uiex-button:last-child {
-				border-radius: 0 10px 10px 0;
-				border-right-width: 1px;
-			}	
-		}
+		z-index: 2;
 	}
 }

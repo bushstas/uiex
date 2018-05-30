@@ -12,6 +12,10 @@ export class Tab extends Button {
 		return this.props.caption;
 	}
 
+	getDefaultTagName() {
+		return 'div';
+	}
+
 	handleClick = (e) => {
 		e.stopPropagation();
 		const {

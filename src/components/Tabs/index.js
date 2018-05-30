@@ -16,13 +16,10 @@ export class Tabs extends UIEXButtons {
 	}
 
 	getClassNames() {
-		const {dynamic, united} = this.props;
+		const {dynamic} = this.props;
 		let className = '';
 		if (dynamic) {
 			className += ' uiex-dynamic-tabs';
-		}
-		if (united) {
-			className += ' uiex-united-tabs';
 		}
 		return className;
 	}
@@ -123,11 +120,15 @@ export class Tabs extends UIEXButtons {
 		});
 	}
 
+	getButtonGroupClassName() {
+		return 'uiex-tabs-menu uiex-button-group' + super.getClassNames();
+	}
+
 	renderInternal() {
 		const {simple, dynamic} = this.props;
 		return (
 			<div {...this.getProps()}>
-				<div className="uiex-tabs-menu uiex-button-group">
+				<div className={this.getButtonGroupClassName()}>
 					<div className="uiex-button-group-inner">
 						{this.renderChildren()}
 						{dynamic && this.renderAddTabButton()}

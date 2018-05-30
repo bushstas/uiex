@@ -68,4 +68,24 @@ div.uiex-button-group {
 			margin-right: 3px;
 		}
 	}
+
+	&.uiex-button-group-united {
+		.uiex-button {
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+			border-radius: 0;
+			border-right-width: 0;
+			
+			&:first-child {
+				border-radius: 10px 0 0 10px;
+			}
+			&:last-child {
+				border-radius: 0 10px 10px 0;
+				border-right-width: 1px;
+			}
+			&:only-child {
+				border-radius: 10px;
+			}	
+		}
+	}
 }

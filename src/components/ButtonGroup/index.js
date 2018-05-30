@@ -14,12 +14,6 @@ export class ButtonGroup extends UIEXButtons {
 		return Button;
 	}
 
-	getClassNames() {
-		if (this.props.vertical) {
-			return ['uiex-button-group-vertical'];
-		}
-	}
-
 	addChildProps(child, props) {
 		if (child.type == Button) {			
 			this.addCommonButtonsProps(child, props);

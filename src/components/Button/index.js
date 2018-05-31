@@ -4,7 +4,17 @@ import {Icon} from '../Icon';
 
 import './style.scss';
 
+let DEFAULT_STYLE;
+
 export class Button extends UIEXComponent {
+	
+	static setDefaultStyle(style) {
+		DEFAULT_STYLE = style;
+	}
+
+	getDefaultStyle() {
+		return DEFAULT_STYLE;
+	}
 
 	getNativeClassName() {
 		return 'button';

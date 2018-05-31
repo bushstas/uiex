@@ -1,10 +1,26 @@
 .uiex-form-control {
 	display: inline-block;
 	vertical-align: top;
+	box-sizing: border-box;
+	position: relative;
+	z-index: 1;
+
+	&:hover {
+		z-index: 2;
+	}
 
 	.uiex-form-control-caption {
 		margin-bottom: 7px;
 		color: #777;
 		font-size: 14px;
+		display: inline-block;
 	}
+
+	.uiex-checkbox,
+	.uiex-select,
+	.uiex-input {
+		width: 100% !important;
+		display: block !important;
+	}
+
 }

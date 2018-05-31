@@ -1,0 +1,13 @@
+.uiex-form-control-group {
+	white-space: nowrap;
+	position: relative;
+	z-index: 1;
+
+	&:hover {
+		z-index: 2;
+	}
+
+	.uiex-form-control {
+		display: inline-block !important;
+	}
+}

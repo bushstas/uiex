@@ -1,5 +1,62 @@
 .uiex-select {
 	display: inline-block;
 	box-sizing: border-box;
+	position: relative;
+	cursor: pointer;
 
+	.uiex-input {
+		input {
+			cursor: pointer !important;
+			padding-right: 30px !important;
+		}
+	}
+	.uiex-select-arrow-icon {
+		position: absolute;
+		top: 50%;
+		margin-top: -14px;
+		right: 3px;
+		font-size: 28px;
+		color: #555;
+		transform: rotate(0deg);
+		transition: transform 0.1s;
+	}
+
+	.uiex-select-popup {
+		overflow: auto;
+		max-height: 350px;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 100%;
+		margin-top: 1px;
+		background-color: #fff;
+		border: 1px solid #888;
+		border-radius: 2px;
+	}
+	.uiex-select-option {
+		padding: 10px 12px;
+		color: #555;
+		line-height: 15px;
+		font-size: 15px;
+
+		&:hover {
+			background-color: #f1f1f1;
+			color: #000;
+		}
+	}
+
+	&.uiex-select-focused {
+		.uiex-select-arrow-icon {
+			color: #000;
+			transform: rotate(180deg);
+		}
+		.uiex-input {
+			input {
+				outline: 0;
+				border-color: #888;
+				box-shadow: inset 3px 3px 7px #e4e4e4;
+				color: #000;
+			}
+		}
+	}
 }

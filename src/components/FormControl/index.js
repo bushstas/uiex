@@ -1,6 +1,7 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Input} from '../Input';
+import {Select} from '../Select';
 import {Checkbox} from '../Checkbox';
 
 
@@ -24,6 +25,7 @@ export class FormControl extends UIEXComponent {
 
 	isProperChild(child) {
 		return child.type == Input || 
+			   child.type == Select || 
 			   child.type == Checkbox;
 	}
 
@@ -47,6 +49,33 @@ export class FormControl extends UIEXComponent {
 		}
 	}
 
+	getCustomStyle() {
+		let {leftPadding: l, rightPadding: r} = this.props;
+		let style;
+		if (l) {
+			if (typeof l == 'string' && l == ~~l) {
+				l = ~~l;
+			}
+			if (typeof l == 'number') {
+				style = {paddingLeft: l};
+				if (!r) {
+					return style;
+				}
+
+			}
+		}
+		if (r) {
+			if (typeof r == 'string' && r == ~~r) {
+				r = ~~r;
+			}
+			if (typeof r == 'number') {
+				style = style || {};
+				style.paddingRight = r;
+				return style;
+			}
+		}
+	}
+
 	renderInternal() {
 		const {children, caption} = this.props;
 		
@@ -57,12 +86,14 @@ export class FormControl extends UIEXComponent {
 						{caption}
 					</div>
 				}
-				{this.renderChildren()}
+				<div className="uiex-form-control-content">
+					{this.renderChildren()}
+				</div>
 			</div>
 		)
 	}
 
-	handleChange = (name, value) => {
+	handleChange = (value, name) => {
 		const {onChange} = this.props;
 		if (typeof onChange == 'function') {
 			onChange(name, value);

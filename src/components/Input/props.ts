@@ -20,6 +20,7 @@ import {ICommonProps, IStyle, EInputFilter} from '../UIEXComponentProps';
  * @prop {number} [minValue] Input numeric min value (only for number filter).
  * @prop {number} [maxValue] Input numeric max value (only for number filter).
  * @prop {string | number} [defaultValue] Input value if value is empty (input cannot be empty).
+ * @prop {string} [measure] Input value measure at right.
  * @prop {Function} onChange Input value change handler.
  * @prop {Function} [onFocus] Input focus handler.
  * @prop {Function} [onBlur] Input blur handler.
@@ -43,6 +44,7 @@ interface IInputProps extends ICommonProps {
 	minValue?: number;
 	maxValue?: number;
 	defaultValue?: string | number;
+	measure?: string;
 	onChange: (value: string, name: string) => void;
 	onFocus: (value: string, name: string) => void;
 	onBlur: (value: string, name: string) => void;

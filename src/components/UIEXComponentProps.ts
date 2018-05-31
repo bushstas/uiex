@@ -16,6 +16,7 @@
  * @prop {boolean} [block] Displayed as block.
  * @prop {EFloat} [float] Adds style float (left|right).
  * @prop {boolean} [hidden] Component won't be rendered if true.
+ * @prop {boolean} [vertical] Children are displayed vertically as blocks.
  */
 export interface ICommonProps {
 	title?: string;
@@ -33,6 +34,7 @@ export interface ICommonProps {
 	block?: boolean;
 	float?: EFloat;
 	hidden?: boolean;
+	vertical?: boolean;
 }
 
 export type IChildren = string | JSX.Element | JSX.Element[];
@@ -47,7 +49,6 @@ export type IChildren = string | JSX.Element | JSX.Element[];
  * @prop {string | number} [iconSize] Buttons' icon size.
  * @prop {EIconType} [iconType] Buttons' icon type (material|awesome).
  * @prop {boolean} [iconAtRight] Buttons' icons are placed at right.
- * @prop {boolean} [vertical] Buttons are displayed vertically as blocks.
  */
 export interface IButtonsProps extends ICommonProps {
 	buttonColor?: EColor;
@@ -57,9 +58,22 @@ export interface IButtonsProps extends ICommonProps {
 	iconSize?: string | number;
 	iconType?: EIconType;
 	iconAtRight?: boolean;
-	vertical?: boolean;
+	view?: EButtonsView;
 }
 
+export enum EAnimationEffect {
+	LINEAR = <any>'linear',
+	EASE = <any>'ease',
+	EASE_IN = <any>'ease-in',
+	EASE_OUT = <any>'ease-out',
+	EASE_IN_OUT = <any>'ease-in-out'
+}
+
+export enum EButtonsView {
+	UNITED = <any>'united',
+	UNDERLINED = <any>'underlined',
+	BORDERED = <any>'bordered'
+}
 
 export enum EAlign {
 	LEFT = <any>'left',

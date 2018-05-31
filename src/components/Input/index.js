@@ -4,13 +4,24 @@ import {Icon} from '../Icon';
 
 import './style.scss';
 
+let DEFAULT_STYLE;
+
 export class Input extends UIEXComponent {
+
+	static setDefaultStyle(style) {
+		DEFAULT_STYLE = style;
+	}
+
+	getDefaultStyle() {
+		return DEFAULT_STYLE;
+	}
+
 	getNativeClassName() {
 		return 'input';
 	}
 
 	getClassNames() {
-		const {textarea, readOnly, clearable, valid, invalid} = this.props;
+		const {textarea, readOnly, clearable, valid, invalid, measure} = this.props;
 		let className = '';
 		if (textarea) {
 			className += ' uiex-textarea';
@@ -27,29 +38,41 @@ export class Input extends UIEXComponent {
 		if (invalid) {
 			className += ' uiex-invalid';
 		}
+		if (measure && typeof measure == 'string') {
+			className += ' uiex-with-measure';
+		}
 		return className;
 	}
 
 	renderInternal() {
-		const {clearable} = this.props;
+		const {clearable, measure} = this.props;
 		return (
 			<div {...this.getProps()}>
 				{this.renderInput()}
-				{clearable && (
+				{clearable && 
 					<div 
 						className="uiex-input-clear"
 						onClick={this.handleClear}
 					>
 						<Icon name="clear"/>
 					</div>
-				)}
+				}
+				{measure && 
+					<div className="uiex-input-measure">
+						{measure}
+					</div>
+				}
 			</div>
 		)
 	}
 
 	renderInput() {
 		const {defaultValue} = this.props;
-		const {type = 'text', name, value = defaultValue, placeholder, textarea} = this.props;
+		let {value = defaultValue} = this.props;
+		const {type = 'text', name, placeholder, textarea} = this.props;
+		if (value == null) {
+			value = '';
+		}
 		const inputProps = {
 			type,
 			name,

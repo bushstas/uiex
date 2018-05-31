@@ -4,8 +4,18 @@ import {Button} from '../Button';
 
 import './style.scss';
 
+let DEFAULT_STYLE;
+
 export class ButtonGroup extends UIEXButtons {
 	
+	static setDefaultStyle(style) {
+		DEFAULT_STYLE = style;
+	}
+
+	getDefaultStyle() {
+		return DEFAULT_STYLE;
+	}
+
 	getNativeClassName() {
 		return 'button-group';
 	}

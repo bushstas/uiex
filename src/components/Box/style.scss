@@ -53,6 +53,9 @@
 	&.uiex-fading-box {
 		transition-property: height, opacity;
 	}
+	.uiex-box-inner {
+		width: 100%;
+	}
 }
 .uiex-box-button {
 	&.uiex-box-button-under {

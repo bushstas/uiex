@@ -3,7 +3,17 @@ import {UIEXComponent} from '../UIEXComponent';
 
 import './material.scss';
 
+let DEFAULT_STYLE;
+
 export class MaterialIcon extends UIEXComponent {
+
+	static setDefaultStyle(style) {
+		DEFAULT_STYLE = style;
+	}
+
+	getDefaultStyle() {
+		return DEFAULT_STYLE;
+	}
 
 	getNativeClassName() {
 		return 'icon';

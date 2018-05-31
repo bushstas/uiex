@@ -4,7 +4,18 @@ import {Button} from '../Button';
 
 import './style.scss';
 
+let DEFAULT_STYLE;
+
 export class Box extends UIEXComponent {
+	
+	static setDefaultStyle(style) {
+		DEFAULT_STYLE = style;
+	}
+
+	getDefaultStyle() {
+		return DEFAULT_STYLE;
+	}
+
 	getNativeClassName() {
 		return 'box';
 	}
@@ -94,22 +105,30 @@ export class Box extends UIEXComponent {
 
 	renderInternal() {
 		const {
-			children,
 			button,
 			buttonUnder,
 			isOpen
 		} = this.props;
 
 		const withButton = button && typeof button == 'string';
-		return (
-			<div>
-				{withButton && !buttonUnder && this.renderButton()}
-				<div {...this.getProps()} ref="outer">
-					<div className="uiex-box-inner" ref="inner">
-						{children}	
-					</div>
+		if (withButton) {
+			return (
+				<div>
+					{withButton && !buttonUnder && this.renderButton()}
+					{this.renderBox()}
+					{withButton && buttonUnder && this.renderButton()}
 				</div>
-				{withButton && buttonUnder && this.renderButton()}
+			)
+		}
+		return this.renderBox();
+	}
+
+	renderBox() {
+		return (
+			<div {...this.getProps()} ref="outer">
+				<div className="uiex-box-inner" ref="inner">
+					{this.props.children}	
+				</div>
 			</div>
 		)
 	}

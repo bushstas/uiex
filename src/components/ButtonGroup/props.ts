@@ -1,4 +1,4 @@
-import {IButtonsProps, EAlign, EColor} from '../UIEXComponentProps';
+import {IButtonsProps} from '../UIEXComponentProps';
 
 /**
  * Properties of component ButtonGroup.

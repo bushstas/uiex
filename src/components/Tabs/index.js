@@ -6,10 +6,19 @@ import {Icon} from '../Icon';
 
 import './style.scss';
 
+let DEFAULT_STYLE;
 const ADD_TAB_VALUE = 'ADD_TAB_VALUE';
 const NEW_TAB_CAPTION = 'New tab';
 
 export class Tabs extends UIEXButtons {
+
+	static setDefaultStyle(style) {
+		DEFAULT_STYLE = style;
+	}
+
+	getDefaultStyle() {
+		return DEFAULT_STYLE;
+	}
 	
 	getNativeClassName() {
 		return 'tabs';
@@ -45,7 +54,7 @@ export class Tabs extends UIEXButtons {
 		const activeTab = this.activeTab;
 		let value = child.props.value;
 		let active;
-		if (value == null && !optional) {
+		if (value == null) {
 			value = props.value = idx;
 		}
 		if (child.props.single) {
@@ -55,7 +64,9 @@ export class Tabs extends UIEXButtons {
 			active = activeTab.indexOf(value) > -1;
 		} else if (activeTab == null) {
 			active = idx == 0;
-			this.activeTab = value;
+			if (!optional) {
+				this.activeTab = value;
+			}
 		} else {					
 			active = activeTab == value;
 		}
@@ -99,7 +110,7 @@ export class Tabs extends UIEXButtons {
 		return children.map((child, idx) => {
 			if (React.isValidElement(child) && child.type == Tab) {
 				let value = child.props.value;
-				if (value == null && !optional) {
+				if (value == null) {
 					value = idx;
 				}
 				let active;				

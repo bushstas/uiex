@@ -2,7 +2,17 @@ import React from 'react';
 import {Button} from '../Button';
 import {Icon} from '../Icon';
 
+let DEFAULT_STYLE;
+
 export class Tab extends Button {
+
+	static setDefaultStyle(style) {
+		DEFAULT_STYLE = style;
+	}
+
+	getDefaultStyle() {
+		return DEFAULT_STYLE;
+	}
 
 	getClassNames() {
 		return super.getClassNames() + ' uiex-tab';

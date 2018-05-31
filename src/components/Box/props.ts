@@ -1,22 +1,24 @@
-import {ICommonProps, EColor} from '../UIEXComponentProps';
+import {ICommonProps, EAnimationEffect} from '../UIEXComponentProps';
 
 /**
- * Properties of component Tab.
+ * Properties of component Box.
  *
- * @prop {string} [href] Href makes the button hyperlink element with tag name A.
- * @prop {string} [target] Hyperlink element target.
- * @prop {any} [value] Value of a button that will return on mouse click.
- * @prop {EColor} [color] Prewritten button style (black|gray|white|red|blue|green|yellow|orange).
- * @prop {boolean} [single] If Tabs component has multiple values, single tab will reset the values to just one value.
- * @prop {Function} [onClick] Mouse click handler on enabled button.
- * @prop {Function} [onDisabledClick] Mouse click handler on disabled button.
+ * @prop {boolean} isOpen Flag that box is open.
+ * @prop {boolean} inverted Flag that direction of animation is inverted.
+ * @prop {boolean} fading Flag that animation has additional fading effect.
+ * @prop {string | number} speed Animation speed from 1 to 10. (1 - fastest).
+ * @prop {EAnimationEffect} effect Animation effect (linear|ease|ease-in|ease-out|ease-in-out).
+ * @prop {string} button Text of button for open and close actions (for example Open/Close).
+ * @prop {boolean} buttonUnder Flag shows that the button is under the box.
+ * @prop {Function} onToggle Toggle box handler.
  */
-interface ITabProps extends ICommonProps {
-	href?: string;
-	target?: string;
-	value?: any;	
-	color?: EColor;
-	single?: boolean;
-	onClick?: (value?: any) => void;
-	onDisabledClick?: (value?: any) => void;
+interface IBoxProps extends ICommonProps {
+	isOpen: boolean;
+	inverted?: boolean;
+	fading?: boolean;
+	speed?: string | number;
+	effect?: EAnimationEffect;
+	button?: string;
+	buttonUnder?: boolean;
+	onToggle?: () => void;
 }

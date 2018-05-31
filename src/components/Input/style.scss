@@ -27,6 +27,15 @@
 		textarea {
 			padding-right: 35px;
 		}
+		&.uiex-with-measure {
+			input,
+			textarea {
+				padding-right: 70px;
+			}
+		}
+		.uiex-input-measure {
+			right: 40px;
+		}
 	}
 	&.uiex-valid {
 		input,
@@ -49,6 +58,22 @@
 				box-shadow: inset 3px 3px 5px #f1c9ca;
 			}
 		}
+	}
+	&.uiex-with-measure {
+		input,
+		textarea {
+			padding-right: 40px;
+		}
+	}
+	.uiex-input-measure {
+		position: absolute;
+		right: 12px;
+		color: #777;
+		font-size: 14px;
+		top: 0;
+		bottom: 0;
+		display: flex;
+		align-items: center;
 	}
 	.uiex-input-clear {
 		position: absolute;

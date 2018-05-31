@@ -115,6 +115,39 @@ const logUnknownValueError = (component, propertyName, propertyValue, values) =>
 	console.error('Unknown ' + component.getNativeClassName() + ' "' + propertyName + '" property value: ' + propertyValue + '. Available values: ' + values);
 }
 
+const getProperStyleProperty = (value) => {
+	if (typeof value != 'undefined') {
+		if (typeof value == 'number') {
+			value += 'px';
+		}
+		if (typeof value == 'string') {
+			if (value == ~~value) {
+				value += 'px';
+			}
+			return value;
+		}
+	}
+}
+
+const addStyleProperty = (value, name, style) => {
+	value = getProperStyleProperty(value);
+	if (value) {
+		style = style || {};
+		style[name] = value;
+	}
+	return style
+}
+
+const addObject = (obj1, obj2) => {
+	if (obj1 instanceof Object) {
+		obj2 = obj2 || {};
+		for (let k in obj1) {
+			obj2[k] = obj1[k];
+		}
+	}
+	return obj2;
+}
+
 export class UIEXComponent extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
@@ -141,13 +174,16 @@ export class UIEXComponent extends React.Component {
 		return null;
 	}
 
-	renderChild = (child, idx = 0) => {
+	renderChild = (child, idx = 0, arr = null) => {
 		if (child) {
+			const isProperChild = this.isProperChild(child);
+			if (!isProperChild && this.canHaveOnlyProperChildren()) {
+				return null;
+			}
 			if (React.isValidElement(child)) {
 				const props = {
 					key: idx
 				};
-				const isProperChild = this.isProperChild(child);
 				if (isProperChild) {
 					const {
 						disabled,
@@ -160,7 +196,11 @@ export class UIEXComponent extends React.Component {
 					if (vertical) {
 						props.block = true;
 					}
-					this.addChildProps(child, props, idx);
+					let isLast = false;
+					if (arr instanceof Array) {
+						isLast = idx == arr.length - 1;
+					}
+					this.addChildProps(child, props, idx, isLast);
 				}
 				const children = isProperChild ? child.props.children : this.doRenderChildren(child.props.children);
 				child = React.cloneElement(child, props, children);
@@ -171,42 +211,45 @@ export class UIEXComponent extends React.Component {
 	}
 
 	getStyle() {
-		if (!this.style || this.stylesChanged) {
-			const {width, height, fontSize, style} = this.props;
-			this.style = {
-				...this.getDefaultStyle(),
-				...style,
-				width: this.addStyle(width, 'width'),
-				height: this.addStyle(height, 'height'),
-				fontSize: this.addStyle(fontSize, 'fontSize')
-			};
+		if (typeof this.style == 'undefined' || this.stylesChanged) {
+			let {width, height, fontSize, style} = this.props;
+			this.style = null;		
+			this.style = addObject(this.getDefaultStyle(), this.style);
+			this.style = addObject(this.getCustomStyle(), this.style);
+			this.style = addObject(style, this.style);
+			this.style = addStyleProperty(width, 'width', this.style);
+			this.style = addStyleProperty(height, 'height', this.style);
+			this.style = addStyleProperty(fontSize, 'fontSize', this.style);
 		}
 		return this.style;
 	}
 
-	addStyle(value, name) {
-		if (typeof value != 'undefined') {
-			if (typeof value == 'number') {
-				value += 'px';
-			}
-			if (typeof value == 'string') {
-				if (value == ~~value) {
-					value += 'px';
-				}
-				return value;
+	getProps(props) {
+		const {title} = this.props;
+		const componentProps = {};
+		if (typeof title == 'string') {
+			componentProps.title = title;
+		}
+		const style = this.getStyle();
+		if (style) {
+			componentProps.style = style;
+		}
+		const className = getComponentClassName(this);
+		if (className) {
+			componentProps.className = className;
+		}
+		if (props instanceof Object) {
+			for (let k in props) {
+				componentProps[k] = props[k];
 			}
 		}
-	}
-
-	getProps(props) {
-		const {title, disabled} = this.props;
-		return {
-			title,
-			style: this.getStyle(),
-			className: getComponentClassName(this),
-			...props,
-			...this.getCustomProps()
-		};
+		const customProps = this.getCustomProps();
+		if (customProps instanceof Object) {
+			for (let k in customProps) {
+				componentProps[k] = customProps[k];
+			}
+		}
+		return componentProps;
 	}
 
 	render() {
@@ -215,6 +258,10 @@ export class UIEXComponent extends React.Component {
 	}
 
 	getCustomProps() {
+		return null;
+	}
+
+	getCustomStyle() {
 		return null;
 	}
 
@@ -227,7 +274,11 @@ export class UIEXComponent extends React.Component {
 	}
 
 	renderInternal() {
-		return null;
+		return (
+			<div {...this.getProps()}>
+				{this.renderChildren()}
+			</div>
+		)
 	}
 
 	getDefaultStyle() {
@@ -235,6 +286,10 @@ export class UIEXComponent extends React.Component {
 	}
 
 	isProperChild() {
+		return false;
+	}
+
+	canHaveOnlyProperChildren() {
 		return false;
 	}
 
@@ -254,6 +309,7 @@ export class UIEXButtons extends UIEXComponent {
 			switch (view) {
 				case 'united':
 				case 'underlined':
+				case 'bordered':
 					className += ' uiex-button-group-' + view;
 				break;
 

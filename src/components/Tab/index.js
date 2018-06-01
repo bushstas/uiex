@@ -15,7 +15,12 @@ export class Tab extends Button {
 	}
 
 	getClassNames() {
-		return super.getClassNames() + ' uiex-tab';
+		let className = super.getClassNames() + ' uiex-tab';
+		const {afterActive} = this.props;
+		if (afterActive) {
+			className += ' uiex-after-active';
+		}
+		return className;
 	}
 
 	renderInternalChildren() {

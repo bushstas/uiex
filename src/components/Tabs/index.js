@@ -7,7 +7,6 @@ import {Icon} from '../Icon';
 import './style.scss';
 
 let DEFAULT_STYLE;
-const ADD_TAB_VALUE = 'ADD_TAB_VALUE';
 const NEW_TAB_CAPTION = 'New tab';
 
 export class Tabs extends UIEXButtons {
@@ -39,37 +38,18 @@ export class Tabs extends UIEXButtons {
 
 	initRendering() {
 		this.singles = [];
+		this.isActive = false;
 		this.activeTab = this.props.activeTab;
 	}
 
 	addChildProps(child, props, idx) {
 		const {
-			optional,
 			activeColor,
 			activeStyle,
 			dynamic,
 			emptyTabName
 		} = this.props;
 
-		const activeTab = this.activeTab;
-		let value = child.props.value;
-		let active;
-		if (value == null) {
-			value = props.value = idx;
-		}
-		if (child.props.single) {
-			this.singles.push(value);
-		}
-		if (activeTab instanceof Array) {
-			active = activeTab.indexOf(value) > -1;
-		} else if (activeTab == null) {
-			active = idx == 0;
-			if (!optional) {
-				this.activeTab = value;
-			}
-		} else {					
-			active = activeTab == value;
-		}
 		props.caption = child.props.caption;
 		if (dynamic) {
 			props.caption = (
@@ -86,8 +66,13 @@ export class Tabs extends UIEXButtons {
 		}
 		this.addCommonButtonsProps(child, props);
 		props.onSelect = child.props.onSelect || this.handleSelectTab;
-		if (active) {
-			props.active = active;
+		const isPrevTabActive = this.isActive;
+		if (isPrevTabActive) {
+			props.afterActive = true;
+		}
+		this.isActive = this.isTabActive(child, idx, props);
+		if (this.isActive) {
+			props.active = true;
 			if (activeColor) {
 				props.color = activeColor;
 			}
@@ -105,28 +90,36 @@ export class Tabs extends UIEXButtons {
 	}
 
 	renderContent() {
-		const {children, optional} = this.props;
+		const {children} = this.props;
 		const activeTab = this.activeTab;
-		return children.map((child, idx) => {
-			if (React.isValidElement(child) && child.type == Tab) {
-				let value = child.props.value;
-				if (value == null) {
-					value = idx;
-				}
-				let active;				
-				if (activeTab instanceof Array) {
-					active = activeTab.indexOf(value) > -1;
-				} else if (activeTab == null) {
-					active = idx == 0;
-				} else {
-					active = activeTab == value;
-				}				
-				if (active) {
-					return child.props.children;
-				}
+		return children.map((child, idx) => 
+			React.isValidElement(child) && child.type == Tab && this.isTabActive(child, idx) ? child.props.children : null
+		);
+	}
+
+	isTabActive(child, idx, props = null) {
+		const {optional} = this.props;
+		const activeTab = this.activeTab;
+		let value = child.props.value;
+		let active;
+		if (value == null) {
+			value = idx;
+			if (props) {
+				props.value = idx;
 			}
-			return null;
-		});
+		}
+		if (child.props.single) {
+			this.singles.push(value);
+		}
+		if (activeTab instanceof Array) {
+			active = activeTab.indexOf(value) > -1;
+		} else if (activeTab == null && !optional) {
+			active = idx == 0;
+			this.activeTab = value;
+		} else {
+			active = activeTab == value;
+		}
+		return active;
 	}
 
 	getButtonGroupClassName() {

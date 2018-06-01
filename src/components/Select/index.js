@@ -44,17 +44,23 @@ export class Select extends UIEXComponent {
 	}
 
 	getClassNames() {
-		const {focused} = this.state;
+		const {focused, disabled} = this.state;
 		let className = '';
 		if (focused) {
 			className += ' uiex-select-focused';
+		}
+		if (disabled) {
+			className += ' uiex-disabled';
 		}
 		return className;
 	}
 
 	getCustomProps() {
-		return {
-			onClick: this.handleClick
+		const {disabled} = this.props;
+		if (!disabled) {
+			return {
+				onClick: this.handleClick
+			}
 		}
 	}
 
@@ -69,11 +75,12 @@ export class Select extends UIEXComponent {
 	}
 
 	renderInput() {
-		const {placeholder} = this.props;
+		const {placeholder, disabled} = this.props;
 		return (
 			<Input 
 				value={this.getTitle()}
 				placeholder={placeholder}
+				disabled={disabled}
 				readOnly
 			/>
 		)

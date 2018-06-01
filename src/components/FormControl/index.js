@@ -1,9 +1,16 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Input} from '../Input';
+import {InputNumber} from '../InputNumber';
 import {Select} from '../Select';
 import {Checkbox} from '../Checkbox';
 
+const PROPER_CHILDREN = [
+	Input, 
+	InputNumber,
+	Select,
+	Checkbox
+];
 
 import './style.scss';
 
@@ -24,9 +31,7 @@ export class FormControl extends UIEXComponent {
 	}
 
 	isProperChild(child) {
-		return child.type == Input || 
-			   child.type == Select || 
-			   child.type == Checkbox;
+		return PROPER_CHILDREN.indexOf(child.type) > -1;
 	}
 
 	addChildProps(child, props) {

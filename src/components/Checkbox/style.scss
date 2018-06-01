@@ -27,7 +27,7 @@
 		display: none;
 	}
 
-	&:hover {
+	&:not(.uiex-disabled):hover {
 		.uiex-checkbox-marker {
 			background-color: #555;
 			color: #555;
@@ -48,10 +48,24 @@
 			align-items: center;
 		}
 	}
-	&.uiex-undetermined {		
+	&.uiex-undetermined {
 		.uiex-checkbox-marker {
 			opacity: 0.3;
-		}		
+		}
+	}
+	&.uiex-disabled {
+		.uiex-checkbox-control {
+			background-color: #f1f1f1;
+			border-color: #bbb;
+			cursor: not-allowed;
+		}
+		.uiex-checkbox-marker {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+		.uiex-checkbox-label {
+			cursor: not-allowed;
+		}
 	}
 
 	.uiex-checkbox-label {

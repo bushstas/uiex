@@ -8,6 +8,11 @@ let DEFAULT_STYLE;
 
 export class Input extends UIEXComponent {
 
+	constructor(props) {
+		super(props);
+		this.handleKeyUp = this.keyUpHandler.bind(this);
+	}
+
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;
 	}
@@ -21,7 +26,7 @@ export class Input extends UIEXComponent {
 	}
 
 	getClassNames() {
-		const {textarea, readOnly, clearable, valid, invalid, measure} = this.props;
+		const {textarea, readOnly, clearable, valid, invalid} = this.props;
 		let className = '';
 		if (textarea) {
 			className += ' uiex-textarea';
@@ -38,57 +43,58 @@ export class Input extends UIEXComponent {
 		if (invalid) {
 			className += ' uiex-invalid';
 		}
-		if (measure && typeof measure == 'string') {
-			className += ' uiex-with-measure';
-		}
 		return className;
 	}
 
 	renderInternal() {
-		const {clearable, measure} = this.props;
 		return (
 			<div {...this.getProps()}>
 				{this.renderInput()}
-				{clearable && 
-					<div 
-						className="uiex-input-clear"
-						onClick={this.handleClear}
-					>
-						<Icon name="clear"/>
-					</div>
-				}
-				{measure && 
-					<div className="uiex-input-measure">
-						{measure}
-					</div>
-				}
+				{this.props.clearable && this.renderClearButton()}
+				{this.renderAdditionalContent()}
 			</div>
 		)
 	}
 
 	renderInput() {
 		const {defaultValue} = this.props;
-		let {value = defaultValue} = this.props;
-		const {type = 'text', name, placeholder, textarea} = this.props;
+		let {type, value = defaultValue} = this.props;
+		const {name, placeholder, textarea, maxLength} = this.props;
+		if (!type || typeof type != 'string') {
+			type = 'text';
+		}
 		if (value == null) {
 			value = '';
 		}
-		const inputProps = {
-			type,
-			name,
-			value,
-			placeholder,
-			autoComplete: 'off',
-			spellCheck: 'off',
-			onMouseDown: this.handleMouseDown,
-			onChange: this.handleChange,
-			onFocus: this.handleFocus,
-			onBlur: this.handleBlur
-		}
 		const TagName = !textarea ? 'input' : 'textarea';
 		return (
-			<TagName ref="input" {...inputProps}/>
+			<TagName 
+				ref="input"
+				type={type}
+				name={name}
+				value={value}
+				placeholder={placeholder}
+				maxLength={maxLength}
+				autoComplete="off"
+				spellCheck="off"
+				onMouseDown={this.handleMouseDown}
+				onChange={this.handleChange}
+				onFocus={this.handleFocus}
+				onBlur={this.handleBlur}
+				onKeyUp={this.handleKeyUp}
+			/>
 		)	
+	}
+
+	renderClearButton() {
+		return (
+			<div 
+				className="uiex-input-clear"
+				onClick={this.handleClear}
+			>
+				<Icon name="clear"/>
+			</div>
+		)
 	}
 
 	handleMouseDown = (e) => {
@@ -102,9 +108,16 @@ export class Input extends UIEXComponent {
 	}
 
 	handleChange = () => {
-		const {onChange, name, disabled, readOnly} = this.props;
-		if (!disabled && !readOnly && typeof onChange == 'function') {
-			const value = this.filterValue(this.refs.input.value);
+		const {disabled, readOnly} = this.props;
+		if (!disabled && !readOnly) {
+			this.fireChange(this.props);
+		}
+	}
+
+	fireChange(props) {
+		const {onChange, name} = props;
+		if (typeof onChange == 'function') {
+			const value = this.filterValue(this.refs.input.value, props);
 			onChange(value, name);
 		}
 	}
@@ -142,34 +155,30 @@ export class Input extends UIEXComponent {
 	handleClear = () => {
 		const {onChange, name, disabled, readOnly} = this.props;
 		if (!disabled && !readOnly && typeof onChange == 'function') {
-			const value = this.filterValue('');
+			const value = this.filterValue('', this.props);
 			onChange(value, name);
 		}
 	}
 
-	filterValue(value) {
-		const {filter, customFilter, defaultValue} = this.props;
+	keyUpHandler(e) {
+		const {key} = e;
+		const {onEnter, name, value, textarea} = this.props;
+		if (!textarea && key == 'Enter' && typeof onEnter == 'function') {
+			this.refs.input.blur();
+			onEnter(value, name);
+		}
+	}
+
+	filterValue(value, props) {
+		const {customFilter, defaultValue} = props;
 		if (value === '') {
-			if (defaultValue) {
-				return defaultValue;
-			}
-			return '';
+			return defaultValue || '';
 		}
 		if (typeof customFilter == 'function') {
-			value = customFilter(value);
-		}
-		switch (filter) {
-			case 'number':
-				value = value.replace(/[^\d]/g, '');
-				const {maxValue, minValue} = this.props;
-				if (typeof maxValue == 'number') {
-					value = Math.min(maxValue, value);
-				}
-				if (typeof minValue == 'number') {
-					value = Math.max(minValue, value);
-				}
-			break;
+			return customFilter(value);
 		}
 		return value;
 	}
+
+	renderAdditionalContent() {}
 }

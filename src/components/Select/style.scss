@@ -4,7 +4,7 @@
 	position: relative;
 	cursor: pointer;
 
-	.uiex-input {
+	.uiex-input:not(.uiex-disabled) {
 		input {
 			cursor: pointer !important;
 			padding-right: 30px !important;
@@ -19,6 +19,12 @@
 		color: #555;
 		transform: rotate(0deg);
 		transition: transform 0.1s;
+	}
+	&.uiex-disabled {
+		cursor: not-allowed;
+		.uiex-select-arrow-icon {
+			color: #aaa;
+		}
 	}
 
 	.uiex-select-popup {

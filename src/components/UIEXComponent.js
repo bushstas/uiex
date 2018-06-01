@@ -73,6 +73,7 @@ export const getComponentClassName = (component) => {
 			case 'green':
 			case 'yellow':
 			case 'orange':
+			case 'none':
 				classNames.push('uiex-color-' + color);
 			break;
 

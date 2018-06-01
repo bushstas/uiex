@@ -93,6 +93,7 @@ export enum EFloat {
 }
 
 export enum EColor {
+	NONE = <any>'none',
 	BLACK = <any>'black',
     GRAY = <any>'gray',
     WHITE = <any>'white',

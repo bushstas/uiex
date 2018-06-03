@@ -1,4 +1,7 @@
+@import "../../variables";
+
 .uiex-button {
+	position: relative;
 	height: 32px;
 	padding: 0 10px;
 	cursor: pointer;
@@ -34,9 +37,6 @@
 		}
 	}
 	
-	&.uiex-color-none {
-		background-color: transparent
-	}
 	&.uiex-color-black {
 		background-color: #333;
 		color: #f1f1f1;
@@ -65,13 +65,13 @@
 		}
 	}
 	&.uiex-color-red {
-		background-color: #e0424c;
+		background-color: $red;
 		color: #fff;
-		border-color: #c52f39;
+		border-color: $darkred;
 
 		&:hover {
-			background-color: #f1555f;
-			border-color: #e0424c;
+			background-color: $red_hover;
+			border-color: $darkred_hover;
 		}
 	}
 	&.uiex-color-blue {
@@ -85,13 +85,13 @@
 		}
 	}
 	&.uiex-color-green {
-		background-color: #53bb44;
+		background-color: $green;
 		color: #fff;
-		border-color: #328c26;
+		border-color: $darkgreen;
 
 		&:hover {
-			background-color: #5dc54e;
-			border-color: #297d1e;
+			background-color: $green_hover;
+			border-color: $darkgreen_hover;
 		}
 	}
 	&.uiex-color-yellow {

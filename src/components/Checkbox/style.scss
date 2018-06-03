@@ -1,10 +1,14 @@
 .uiex-checkbox {
-	display: inline-flex;
-	align-items: center;
+	display: inline-block;
+	box-sizing: border-box;
+    padding-left: 28px;
+    position: relative;
+    min-width: 80px;
 
 	.uiex-checkbox-control {
-		position: relative;
-		display: inline-block;
+		position: absolute;
+		left: 0;
+		top: 0;
 		width: 20px;
 		height: 20px;
 		border-radius: 2px;
@@ -69,10 +73,10 @@
 	}
 
 	.uiex-checkbox-label {
-		display: inline-block;
-		margin-left: 10px;
 		cursor: pointer;
 		padding-bottom: 2px;
 		font-size: 15px;
+		line-height: 18px;
+		display: block;
 	}
 }

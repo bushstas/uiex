@@ -42,7 +42,7 @@ export class Button extends UIEXComponent {
 			iconType
 		} = this.props;
 
-		const TagName = typeof href == 'string' ? 'a' : this.getDefaultTagName();
+		const TagName = typeof href == 'string' ? 'a' : 'div';
 		const props = typeof href == 'string' ? {href, target} : null;		
 
 		return (
@@ -56,10 +56,6 @@ export class Button extends UIEXComponent {
 				}
 			</TagName>
 		)		
-	}
-
-	getDefaultTagName() {
-		return 'button';
 	}
 
 	renderInternalChildren() {

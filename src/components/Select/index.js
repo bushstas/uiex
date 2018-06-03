@@ -104,6 +104,13 @@ export class Select extends UIEXComponent {
 					onCollapse={this.handlePopupCollapse}
 					animated={animated}
 				>
+					<SelectOption 
+						classes="uiex-empty-option"
+						key={''}
+						value={''} 
+						title={'.....'}
+						onChange={this.handleChange}
+					/>
 					{options.map(this.renderOption)}
 				</SelectPopup>
 			)

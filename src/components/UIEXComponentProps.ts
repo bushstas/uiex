@@ -70,6 +70,7 @@ export enum EAnimationEffect {
 }
 
 export enum EButtonsView {
+	SIMPLE = <any>'simple',
 	UNITED = <any>'united',
 	UNDERLINED = <any>'underlined',
 	BORDERED = <any>'bordered'
@@ -93,7 +94,6 @@ export enum EFloat {
 }
 
 export enum EColor {
-	NONE = <any>'none',
 	BLACK = <any>'black',
     GRAY = <any>'gray',
     WHITE = <any>'white',

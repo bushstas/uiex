@@ -73,8 +73,7 @@ export const getComponentClassName = (component) => {
 			case 'green':
 			case 'yellow':
 			case 'orange':
-			case 'none':
-				classNames.push('uiex-color-' + color);
+				classNames.push('uiex-colored uiex-color-' + color);
 			break;
 
 			default:
@@ -311,6 +310,7 @@ export class UIEXButtons extends UIEXComponent {
 				case 'united':
 				case 'underlined':
 				case 'bordered':
+				case 'simple':
 					className += ' uiex-button-group-' + view;
 				break;
 
@@ -329,13 +329,18 @@ export class UIEXButtons extends UIEXComponent {
 			buttonStyle,
 			iconSize,
 			iconType,
-			iconAtRight
+			iconAtRight,
+			view
 		} = this.props;
 
+		
+		if (view == 'simple') {
+			props.width = 'auto';
+		}
 		if (buttonColor && !child.props.color) {
 			props.color = buttonColor;
 		}
-		if (buttonWidth && !child.props.width) {
+		if (!props.width && buttonWidth && !child.props.width) {
 			props.width = buttonWidth;
 		}
 		if (buttonHeight && !child.props.height) {

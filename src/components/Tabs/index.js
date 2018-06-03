@@ -47,30 +47,22 @@ export class Tabs extends UIEXButtons {
 			activeColor,
 			activeStyle,
 			dynamic,
-			emptyTabName
+			noRemoving
 		} = this.props;
 
 		props.caption = child.props.caption;
-		if (dynamic) {
-			props.caption = (
-				<span className="uiex-tab-content">
-					{props.caption} 
-					<span 
-						className="uiex-tab-close"
-						onClick={this.handleRemoveTab.bind(null, idx, value)}
-					>
-						<Icon name="clear" fontSize="14"/>
-					</span>
-				</span>
-			)
+		const isPrevTabActive = this.isActive;
+		const isRemovable = !noRemoving && !child.props.noRemoving;
+		this.isActive = this.isTabActive(child, idx, props);
+		if (dynamic && isRemovable) {
+			props.caption = this.renderDynamicTabContent(props.caption, idx);
 		}
 		this.addCommonButtonsProps(child, props);
 		props.onSelect = child.props.onSelect || this.handleSelectTab;
-		const isPrevTabActive = this.isActive;
 		if (isPrevTabActive) {
 			props.afterActive = true;
 		}
-		this.isActive = this.isTabActive(child, idx, props);
+		
 		if (this.isActive) {
 			props.active = true;
 			if (activeColor) {
@@ -87,6 +79,17 @@ export class Tabs extends UIEXButtons {
 				}
 			}
 		}
+	}
+
+	renderDynamicTabContent(caption, index) {
+		return (
+			<TabCloseButton
+				caption={caption}
+				value={this.value}
+				index={index}
+				onClick={this.handleRemoveTab}
+			/>
+		)
 	}
 
 	renderContent() {
@@ -119,6 +122,7 @@ export class Tabs extends UIEXButtons {
 		} else {
 			active = activeTab == value;
 		}
+		this.value = value;
 		return active;
 	}
 
@@ -150,12 +154,15 @@ export class Tabs extends UIEXButtons {
 			buttonColor,
 			buttonHeight,
 			buttonStyle,
-			disable
+			disable,
 		} = this.props;
-
+		let classes = 'uiex-add-tab-button';
+		if (this.isActive) {
+			classes += ' uiex-after-active';
+		}
 		return (
 			<Button 
-				classes="uiex-add-tab-button"
+				classes={classes}
 				icon="add"
 				iconSize="24"
 				onClick={this.handleAddTab}
@@ -215,8 +222,7 @@ export class Tabs extends UIEXButtons {
 		}
 	}
 
-	handleRemoveTab = (index, value, e) => {
-		e.stopPropagation();
+	handleRemoveTab = (index, value) => {
 		const {onRemoveTab} = this.props;
 		if (typeof onRemoveTab == 'function') {
 			onRemoveTab(index, value);
@@ -226,5 +232,24 @@ export class Tabs extends UIEXButtons {
 	getNextIndex() {
 		this.index = this.index || 0;
 		return ++this.index;
+	}
+}
+
+class TabCloseButton extends React.Component {
+	render() {
+		return(
+			<span className="uiex-tab-content">
+				{this.props.caption} 
+				<span className="uiex-tab-close" onClick={this.handleClick}>
+					<Icon name="clear" fontSize="14"/>
+				</span>
+			</span>
+		)
+	}
+
+	handleClick = (e) => {
+		const {onClick, value, index} = this.props;
+		e.stopPropagation();
+		onClick(value, index);
 	}
 }

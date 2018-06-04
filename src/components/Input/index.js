@@ -1,12 +1,14 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
+import {InputPropTypes} from './proptypes';
 
 import './style.scss';
 
 let DEFAULT_STYLE;
 
 export class Input extends UIEXComponent {
+	static propTypes = InputPropTypes;
 
 	constructor(props) {
 		super(props);

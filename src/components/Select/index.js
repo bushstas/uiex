@@ -4,10 +4,13 @@ import {Input} from '../Input';
 import {Icon} from '../Icon';
 import {Popup} from '../Popup';
 import {Box} from '../Box';
+import {SelectPropTypes} from './proptypes';
 
 import './style.scss';
 
 export class Select extends UIEXComponent {
+	static propTypes = SelectPropTypes;
+
 	constructor(props) {
 		super(props);		
 		
@@ -56,11 +59,8 @@ export class Select extends UIEXComponent {
 	}
 
 	getCustomProps() {
-		const {disabled} = this.props;
-		if (!disabled) {
-			return {
-				onClick: this.handleClick
-			}
+		return {
+			onClick: this.handleClick
 		}
 	}
 
@@ -107,9 +107,9 @@ export class Select extends UIEXComponent {
 					<SelectOption 
 						classes="uiex-empty-option"
 						key={''}
-						value={''} 
+						value={null} 
 						title={'.....'}
-						onChange={this.handleChange}
+						onSelect={this.handleChange}
 					/>
 					{options.map(this.renderOption)}
 				</SelectPopup>
@@ -130,13 +130,21 @@ export class Select extends UIEXComponent {
 				key={value}
 				value={value} 
 				title={title}
-				onChange={this.handleChange}
+				onSelect={this.handleChange}
 			/>
 		)
 	}
 
 	handleClick = () => {
-		this.setState({focused: true});
+		const {value, name, onFocus, disabled, onDisabledClick} = this.props;
+		if (!disabled) {
+			this.setState({focused: true});		
+			if (typeof onFocus == 'function') {
+				onFocus(value, name);
+			}
+		} else if (typeof onDisabledClick == 'function') {
+			onDisabledClick(name);
+		}
 	}
 
 	handlePopupCollapse = () => {
@@ -145,14 +153,18 @@ export class Select extends UIEXComponent {
 
 	handleChange = (value) => {
 		this.hidePopup();
-		const {onChange} = this.props;
+		const {onChange, name} = this.props;
 		if (typeof onChange == 'function') {
-			onChange(value, this.props.name);
+			onChange(value, name);
 		}
 	}
 
 	hidePopup = () => {
 		this.setState({focused: false});
+		const {value, name, onBlur} = this.props;
+		if (typeof onBlur == 'function') {
+			onBlur(value, name);
+		}
 	}
 }
 
@@ -214,9 +226,9 @@ class SelectOption extends UIEXComponent {
 	}
 
 	handleMouseDown = () => {
-		const {value, title, onChange} = this.props;
-		if (typeof onChange == 'function') {
-			onChange(value, title);
+		const {value, title, onSelect} = this.props;
+		if (typeof onSelect == 'function') {
+			onSelect(value, title);
 		}
 	}
 }

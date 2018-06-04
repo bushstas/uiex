@@ -1,12 +1,14 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Button} from '../Button';
+import {BoxPropTypes} from './proptypes';
 
 import './style.scss';
 
 let DEFAULT_STYLE;
 
 export class Box extends UIEXComponent {
+	static propTypes = BoxPropTypes;
 	
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;

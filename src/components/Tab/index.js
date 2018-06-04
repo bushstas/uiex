@@ -1,10 +1,12 @@
 import React from 'react';
 import {Button} from '../Button';
 import {Icon} from '../Icon';
+import {TabPropTypes} from './proptypes';
 
 let DEFAULT_STYLE;
 
 export class Tab extends Button {
+	static propTypes = TabPropTypes;
 
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;

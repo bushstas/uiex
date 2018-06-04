@@ -1,6 +1,7 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
+import {CheckboxPropTypes} from './proptypes';
 
 import './style.scss';
 
@@ -15,6 +16,7 @@ let DEFAULT_ICON;
 let DEFAULT_ICON_TYPE;
 
 export class Checkbox extends UIEXComponent {
+	static propTypes = CheckboxPropTypes;
 
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;

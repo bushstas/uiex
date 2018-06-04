@@ -1,10 +1,12 @@
 import React from 'react';
 import {Input} from '../Input';
 import {Icon} from '../Icon';
+import {InputNumberPropTypes} from './proptypes';
 
 import './style.scss';
 
 export class InputNumber extends Input {
+	static propTypes = InputNumberPropTypes;
 
 	componentWillReceiveProps(props) {
 		const {minValue, maxValue} = this.props;

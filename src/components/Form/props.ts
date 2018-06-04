@@ -7,6 +7,6 @@ import {ICommonProps, IFormData, IChildren} from '../UIEXComponentProps';
  * @prop {Function} onChange Change handler when FormControl changed.
  */
 interface IFormProps extends ICommonProps {
-	caption?: IChildren;	
+	caption?: IChildren;
 	onChange: (name: string, value: string, checked?: boolean) => void;
 }

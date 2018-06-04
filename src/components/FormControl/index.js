@@ -4,6 +4,7 @@ import {Input} from '../Input';
 import {InputNumber} from '../InputNumber';
 import {Select} from '../Select';
 import {Checkbox} from '../Checkbox';
+import {FormControlPropTypes} from './proptypes';
 
 const PROPER_CHILDREN = [
 	Input, 
@@ -17,6 +18,7 @@ import './style.scss';
 let DEFAULT_STYLE;
 
 export class FormControl extends UIEXComponent {
+	static propTypes = FormControlPropTypes;
 
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;

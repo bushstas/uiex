@@ -1,8 +1,10 @@
 import React from 'react';
+import {PROPTYPE} from '../consts';
 import {UIEXButtons} from '../UIEXComponent';
 import {Tab} from '../Tab';
 import {Button} from '../Button';
 import {Icon} from '../Icon';
+import {TabsPropTypes} from './proptypes';
 
 import './style.scss';
 
@@ -10,6 +12,7 @@ let DEFAULT_STYLE;
 const NEW_TAB_CAPTION = 'New tab';
 
 export class Tabs extends UIEXButtons {
+	static propTypes = TabsPropTypes
 
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;

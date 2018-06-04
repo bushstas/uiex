@@ -1,12 +1,14 @@
 import React from 'react';
 import {UIEXButtons} from '../UIEXComponent';
 import {Button} from '../Button';
+import {ButtonGroupPropTypes} from './proptypes';
 
 import './style.scss';
 
 let DEFAULT_STYLE;
 
 export class ButtonGroup extends UIEXButtons {
+	static propTypes = ButtonGroupPropTypes;
 	
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;

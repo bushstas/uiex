@@ -1,13 +1,15 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {FormControl} from '../FormControl';
-import {FormControlsGroup} from '../FormControlsGroup';
+import {FormControlGroup} from '../FormControlGroup';
+import {FormPropTypes} from './proptypes';
 
 import './style.scss';
 
 let DEFAULT_STYLE;
 
 export class Form extends UIEXComponent {
+	static propTypes = FormPropTypes;
 
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;
@@ -23,7 +25,7 @@ export class Form extends UIEXComponent {
 
 	isProperChild(child) {
 		return child.type == FormControl ||
-			   child.type == FormControlsGroup;
+			   child.type == FormControlGroup;
 	}
 
 	addChildProps(child, props) {
@@ -34,7 +36,7 @@ export class Form extends UIEXComponent {
 				}
 			break;
 
-			case FormControlsGroup:
+			case FormControlGroup:
 				if (typeof child.props.onChange != 'function') {
 					props.onChange = this.handleChange;
 				}

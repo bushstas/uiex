@@ -1,9 +1,11 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
+import {PopupPropTypes} from './proptypes';
 
 let DEFAULT_STYLE;
 
 export class Popup extends UIEXComponent {
+	static propTypes = PopupPropTypes;
 	
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;

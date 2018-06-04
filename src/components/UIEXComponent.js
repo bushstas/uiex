@@ -1,7 +1,5 @@
 import React from 'react';
 
-const UIEX_PREFIX = 'uiex';
-
 const mergeClassNames = (cls) => {
 	var cs = [], c;
 	for (var i = 0; i < cls.length; i++) {
@@ -19,7 +17,7 @@ const mergeClassNames = (cls) => {
 }
 
 export const getComponentClassName = (component) => {	
-	const nativeClassName = getWithPrefix(component.getNativeClassName());
+	const nativeClassName = 'uiex-' + component.getNativeClassName();
 	const otherClasses = component.getClassNames();
 
 	let {
@@ -49,70 +47,31 @@ export const getComponentClassName = (component) => {
 		classNames.push(classes);
 	}
 	if (disabled) {
-		classNames.push(getWithPrefix('disabled', !isCustomClassName));
+		classNames.push('uiex-disabled');
 	}
 	if (active) {
-		classNames.push(getWithPrefix('active', !isCustomClassName));
+		classNames.push('uiex-active');
 	}
 	if (block) {
-		classNames.push(getWithPrefix('block', !isCustomClassName));
-	}
-	if (float == 'left' || float == 'right') {
-		classNames.push(getWithPrefix('float-' + float, !isCustomClassName));
+		classNames.push('uiex-block');
 	}
 	if ((otherClasses instanceof Array && otherClasses.length > 0) || typeof otherClasses == 'string') {
 		classNames.push(otherClasses);
-	}
-	if (color && typeof color == 'string') {
-		switch (color) {
-			case 'black':
-			case 'gray':
-			case 'white':
-			case 'red':
-			case 'blue':
-			case 'green':
-			case 'yellow':
-			case 'orange':
-				classNames.push('uiex-colored uiex-color-' + color);
-			break;
+	}	
 
-			default:
-				logUnknownValueError(component, 'color', color, ['black', 'gray', 'white', 'red', 'blue', 'green', 'yellow', 'orange']);
-		}
+	if (color) {
+		classNames.push('uiex-colored uiex-color-' + color);
 	}
-	if (align && typeof align == 'string') {
-		switch (align) {
-			case 'left':
-			case 'right':
-			case 'center':
-				classNames.push('uiex-align-' + align);
-			break;
-
-			default:
-				logUnknownValueError(component, 'align', align, ['left', 'right', 'center']);
-		}
+	if (align) {
+		classNames.push('uiex-align-' + align);
 	}
-	if (valign && typeof valign == 'string') {
-		switch (valign) {
-			case 'top':
-			case 'bottom':
-			case 'center':
-				classNames.push('uiex-valign-' + valign);
-			break;
-
-			default:
-				logUnknownValueError(component, 'valign', valign, ['top', 'bottom', 'center']);
-		}
+	if (valign) {
+		classNames.push('uiex-valign-' + valign);
+	}
+	if (float) {
+		classNames.push('uiex-float-' + float);
 	}
 	return mergeClassNames(classNames);
-}
-
-const getWithPrefix = (className, isWithPrefix = true) => {
-	return isWithPrefix && className && typeof className == 'string' ? (UIEX_PREFIX  + '-' + className) : className;
-}
-
-const logUnknownValueError = (component, propertyName, propertyValue, values) => {
-	console.error('Unknown ' + component.getNativeClassName() + ' "' + propertyName + '" property value: ' + propertyValue + '. Available values: ' + values);
 }
 
 const getProperStyleProperty = (value) => {
@@ -149,7 +108,7 @@ const addObject = (obj1, obj2) => {
 }
 
 export class UIEXComponent extends React.Component {
-
+	
 	componentWillReceiveProps(nextProps) {
 		const {width, height, fontSize, style} = nextProps;
 		this.stylesChanged = (
@@ -305,18 +264,8 @@ export class UIEXButtons extends UIEXComponent {
 		if (vertical) {
 			className += ' uiex-button-group-vertical';
 		}
-		if (view && typeof view == 'string') {
-			switch (view) {
-				case 'united':
-				case 'underlined':
-				case 'bordered':
-				case 'simple':
-					className += ' uiex-button-group-' + view;
-				break;
-
-				default:
-					logUnknownValueError(this, 'view', view, ['united', 'underlined']);
-			}
+		if (view) {
+			className += ' uiex-button-group-' + view;
 		}
 		return className;
 	}

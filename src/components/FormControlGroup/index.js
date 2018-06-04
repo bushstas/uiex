@@ -2,12 +2,14 @@ import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {FormControl} from '../FormControl';
 import {getNumber} from '../utils';
+import {FormControlGroupPropTypes} from './proptypes';
 
 import './style.scss';
 
 let DEFAULT_STYLE;
 
-export class FormControlsGroup extends UIEXComponent {
+export class FormControlGroup extends UIEXComponent {
+	static propTypes = FormControlGroupPropTypes;
 
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;

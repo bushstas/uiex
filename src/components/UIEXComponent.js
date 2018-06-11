@@ -135,8 +135,12 @@ export class UIEXComponent extends React.Component {
 
 	renderChild = (child, idx = 0, arr = null) => {
 		if (child) {
+			if (child instanceof Array) {
+				return this.doRenderChildren(child);
+			}
 			const isProperChild = this.isProperChild(child);
 			if (!isProperChild && this.canHaveOnlyProperChildren()) {
+				this.showImproperChildError(child);
 				return null;
 			}
 			if (React.isValidElement(child)) {
@@ -252,6 +256,27 @@ export class UIEXComponent extends React.Component {
 		return false;
 	}
 
+	showImproperChildError(child) {
+		let childType = 'text';
+		if (React.isValidElement(child)) {
+			childType = 'element';
+			if (typeof child.type == 'function') {
+				child = child.type.name;
+			} else {
+				child = child.type;
+			}			
+		}
+		console.error('Improper ' + childType + ' child "' + child + '" in ' + this.getDisplayName() + '. Expected children: ' + this.getExpectedChildren());
+	}
+
+	getDisplayName() {
+		return 'UIEXComponent';
+	}
+
+	getExpectedChildren() {
+		return '...';
+	}
+
 	initRendering() {}
 	addChildProps() {}
 }
@@ -279,12 +304,16 @@ export class UIEXButtons extends UIEXComponent {
 			iconSize,
 			iconType,
 			iconAtRight,
-			view
+			view,
+			gradient
 		} = this.props;
 
 		
 		if (view == 'simple') {
 			props.width = 'auto';
+		}
+		if (gradient && typeof child.props.gradient == 'undefined') {
+			props.gradient = true;
 		}
 		if (buttonColor && !child.props.color) {
 			props.color = buttonColor;

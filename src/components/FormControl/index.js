@@ -4,7 +4,10 @@ import {Input} from '../Input';
 import {InputNumber} from '../InputNumber';
 import {Select} from '../Select';
 import {Checkbox} from '../Checkbox';
+import {getNumber} from '../utils';
 import {FormControlPropTypes} from './proptypes';
+
+import './style.scss';
 
 const PROPER_CHILDREN = [
 	Input, 
@@ -12,8 +15,6 @@ const PROPER_CHILDREN = [
 	Select,
 	Checkbox
 ];
-
-import './style.scss';
 
 let DEFAULT_STYLE;
 
@@ -38,9 +39,6 @@ export class FormControl extends UIEXComponent {
 
 	addChildProps(child, props) {
 		if (this.isProperChild(child)) {
-			if (this.props.disabled) {
-				props.disabled = true;
-			}
 			switch (child.type) {
 				case Checkbox:
 					if (typeof child.props.onChange != 'function') {
@@ -57,30 +55,20 @@ export class FormControl extends UIEXComponent {
 	}
 
 	getCustomStyle() {
-		let {leftPadding: l, rightPadding: r} = this.props;
+		let {leftPadding: l, rightPadding: r, leftMargin: m} = this.props;
 		let style;
 		if (l) {
-			if (typeof l == 'string' && l == ~~l) {
-				l = ~~l;
-			}
-			if (typeof l == 'number') {
-				style = {paddingLeft: l};
-				if (!r) {
-					return style;
-				}
-
-			}
+			style = {paddingLeft: l};
 		}
 		if (r) {
-			if (typeof r == 'string' && r == ~~r) {
-				r = ~~r;
-			}
-			if (typeof r == 'number') {
-				style = style || {};
-				style.paddingRight = r;
-				return style;
-			}
+			style = style || {};
+			style.paddingRight = r;
 		}
+		if (m) {
+			style = style || {};
+			style.marginLeft = m;
+		}
+		return style;
 	}
 
 	renderInternal() {

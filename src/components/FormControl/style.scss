@@ -3,11 +3,6 @@
 	vertical-align: top;
 	box-sizing: border-box;
 	position: relative;
-	z-index: 1;
-
-	&:hover {
-		z-index: 2;
-	}
 
 	.uiex-form-control-caption {
 		margin-bottom: 7px;

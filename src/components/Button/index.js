@@ -23,13 +23,16 @@ export class Button extends UIEXComponent {
 	}
 
 	getClassNames() {
-		const {iconAtRight, icon, children} = this.props;
+		const {iconAtRight, icon, children, gradient} = this.props;
 		let className = '';
 		if (iconAtRight && children) {
 			className += ' uiex-icon-at-right';
 		}
 		if (icon && typeof icon == 'string' && !children) {
 			className += ' uiex-icon-button';	
+		}
+		if (gradient) {
+			className += ' uiex-gradient-button';	
 		}
 		return className;
 	}

@@ -118,6 +118,7 @@ export class Select extends UIEXComponent {
 	}
 
 	renderOption = (item, idx) => {
+		const {value: selectValue} = this.props;
 		let value, title;
 		if (typeof item == 'string' || typeof item == 'number') {
 			value = item;
@@ -125,9 +126,14 @@ export class Select extends UIEXComponent {
 		} else if (item instanceof Object) {
 			let {value, title} = item;
 		}
+		const selected = selectValue == value;
+		if (selected) {
+			this.selectedIdx = idx;
+		}
 		return (
 			<SelectOption 
 				key={value}
+				selected={selected}
 				value={value} 
 				title={title}
 				onSelect={this.handleChange}
@@ -142,6 +148,7 @@ export class Select extends UIEXComponent {
 			if (typeof onFocus == 'function') {
 				onFocus(value, name);
 			}
+			window.addEventListener('keydown', this.handleKeyDown, false);
 		} else if (typeof onDisabledClick == 'function') {
 			onDisabledClick(name);
 		}
@@ -160,10 +167,27 @@ export class Select extends UIEXComponent {
 	}
 
 	hidePopup = () => {
+		window.removeEventListener('keydown', this.handleKeyDown, false);
 		this.setState({focused: false});
 		const {value, name, onBlur} = this.props;
 		if (typeof onBlur == 'function') {
 			onBlur(value, name);
+		}
+	}
+
+	handleKeyDown = (e) => {
+		const {options} = this.props;
+		if (options instanceof Array && options.count > 0) {
+			this.selectedIdx = this.selectedIdx || 0;
+			const {key} = e;
+			if (key == 'ArrowDown') {
+				if (this.selectedIdx + 1) {
+					
+				}
+				
+			} else if (key == 'ArrowUp') {
+				alert(this.selectedIdx - 1)
+			}
 		}
 	}
 }
@@ -209,6 +233,13 @@ class SelectPopup extends Popup {
 class SelectOption extends UIEXComponent {
 	getNativeClassName() {
 		return 'select-option';
+	}
+
+	getClassNames() {
+		const {selected} = this.props;
+		if (selected) {
+			return 'uiex-selected';
+		}
 	}
 
 	getCustomProps() {

@@ -38,6 +38,7 @@
 		background-color: #fff;
 		border: 1px solid #888;
 		border-radius: 2px;
+		z-index: 100;
 	}
 	.uiex-select-option {
 		padding: 10px 12px;
@@ -48,8 +49,11 @@
 		&.uiex-empty-option {
 			color: #aaa;
 		}
-
-		&:hover {
+		&.uiex-selected {
+			background-color: #d1d1d1;
+			color: #000;
+		}
+		&:hover:not(.uiex-selected) {
 			background-color: #f1f1f1;
 			color: #000;
 		}

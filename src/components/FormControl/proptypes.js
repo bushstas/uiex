@@ -6,5 +6,6 @@ export const FormControlPropTypes = {
 	...UIEXComponentPropTypes,
 	caption: PROPTYPE.REACT_NODES,
 	size: PROPTYPE.STRNUM,
+	shift: PROPTYPE.STRNUM,
 	onChange: PropTypes.func
 }

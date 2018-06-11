@@ -10,7 +10,7 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	border: 1px solid #e1e1e1;
+	border: 1px solid #ccc;
 	background-color: #f1f1f1;
 	border-radius: 4px;
 	overflow: hidden;
@@ -25,9 +25,9 @@
 		background-color: #e9e9e9;
 		border-color: #d1d1d1;
 	}
-	&:focus {
-		outline: none !important;
-		box-shadow: none !important;
+	&.uiex-active:not(.uiex-colored) {
+		background-color: #dde0e6;
+		border-color: #c9ccd2;
 	}
 
 	&.uiex-icon-button {
@@ -36,32 +36,46 @@
 			margin-left: 0; 
 		}
 	}
+	&.uiex-gradient-button {
+		background: linear-gradient(#f1f1f1, #e6e6e6);
+		border-bottom-color: #d7d7d7;
+		&:hover {
+			border-bottom-color: #c6c6c6;
+		}
+	}
 	
 	&.uiex-color-black {
-		background-color: #333;
+		background-color: $black;
 		color: #f1f1f1;
-		border-color: #111;
+		border-color: $darkblack;
 
 		&:hover {
-			background-color: #444;
-			border-color: #222;
+			background-color: $black_hover;
+			border-color: $darkblack_hover;
+		}
+
+		&.uiex-gradient-button {
+			background: linear-gradient($black, $black_hover);
+			&:hover {
+
+			}
 		}
 	}
 	&.uiex-color-white {
 		background-color: #fff;
-		border-color: #e1e1e1;
+		border-color: #aaa;
 
 		&:hover {
-			border-color: #c1c1c1;
+			border-color: #888;
 		}
 	}
 	&.uiex-color-gray {
 		background-color: #d1d1d1;
-		border-color: #aaa;
+		border-color: #929090;
+		color: #000;
 
 		&:hover {
 			background-color: #e1e1e1;
-			border-color: #bbb;
 		}
 	}
 	&.uiex-color-red {
@@ -73,15 +87,22 @@
 			background-color: $red_hover;
 			border-color: $darkred_hover;
 		}
+
+		&.uiex-gradient-button {
+			background: linear-gradient($red, $darkred);
+			&:hover {
+
+			}
+		}
 	}
 	&.uiex-color-blue {
-		background-color: #4a90e4;
+		background-color: $blue;
 		color: #fff;
-		border-color: #377bcc;
+		border-color: $darkblue;
 
 		&:hover {
-			background-color: #559cf1;
-			border-color: #3b80d2;
+			background-color: $blue_hover;
+			border-color: $darkblue_hover;
 		}
 	}
 	&.uiex-color-green {
@@ -95,24 +116,23 @@
 		}
 	}
 	&.uiex-color-yellow {
-		background-color: #f9e622;
-		color: #5c5d00;
-		border-color: #d0be08;
+		background-color: $yellow;
+		border-color: $darkyellow;
+		color: #3d3e00;
 
 		&:hover {
-			background-color: #efdc1a;
-			border-color: #c3b205;
-			color: #474800;
+			background-color: $yellow_hover;
+			border-color: $darkyellow_hover;
 		}
 	}
 	&.uiex-color-orange {
-		background-color: #ff9b0c;
-		color: #6b3700;
-		border-color: #de8402;
+		background-color: $orange;
+		border-color: $darkorange;
+		color: #4a2600;
 
 		&:hover {
-			background-color: #fda931;
-			border-color: #de8e1c;
+			background-color: $orange_hover;
+			border-color: $darkorange_hover;
 		}
 	}
 	&.uiex-disabled {

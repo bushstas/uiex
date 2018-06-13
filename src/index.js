@@ -8,6 +8,7 @@ import {FormControlGroup} from './components/FormControlGroup';
 import {Icon} from './components/Icon';
 import {Input} from './components/Input';
 import {InputNumber} from './components/InputNumber';
+import {InputPhone} from './components/InputPhone';
 import {Popup} from './components/Popup';
 import {Select} from './components/Select';
 import {Tab} from './components/Tab';
@@ -29,6 +30,7 @@ export {
     Icon,
     Input,
     InputNumber,
+    InputPhone,
     Popup,
     Select,
     Tab,

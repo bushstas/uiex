@@ -63,22 +63,19 @@ export class Input extends UIEXComponent {
 	}
 
 	renderInput() {
-		const {defaultValue} = this.props;
-		let {type, value = defaultValue} = this.props;
+		let {type} = this.props;
 		const {name, placeholder, textarea, maxLength} = this.props;
 		if (!type || typeof type != 'string') {
 			type = 'text';
 		}
-		if (value == null) {
-			value = '';
-		}
 		const TagName = !textarea ? 'input' : 'textarea';
+		const customInputProps = this.getCustomInputProps();
 		return (
 			<TagName 
 				ref="input"
 				type={type}
 				name={name}
-				value={value}
+				value={this.getValue()}
 				placeholder={placeholder}
 				maxLength={maxLength}
 				autoComplete="off"
@@ -88,8 +85,18 @@ export class Input extends UIEXComponent {
 				onFocus={this.handleFocus}
 				onBlur={this.handleBlur}
 				onKeyUp={this.handleKeyUp}
+				{...customInputProps}
 			/>
 		)	
+	}
+
+	getValue() {
+		const {defaultValue} = this.props;
+		let {value = defaultValue} = this.props;
+		if (value == null) {
+			value = '';
+		}
+		return value;
 	}
 
 	renderClearButton() {
@@ -186,5 +193,6 @@ export class Input extends UIEXComponent {
 		return value;
 	}
 
+	getCustomInputProps() {}
 	renderAdditionalContent() {}
 }

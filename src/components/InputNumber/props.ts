@@ -6,7 +6,7 @@ interface IInputMeasure {
 }
 
 /**
- * Properties of component Input.
+ * Properties of component NumberInput.
  *
  * @prop {number} [minValue] Input numeric min value.
  * @prop {number} [maxValue] Input numeric max value.

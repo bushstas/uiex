@@ -53,29 +53,42 @@
 			background-color: $black_hover;
 			border-color: $darkblack_hover;
 		}
-
 		&.uiex-gradient-button {
-			background: linear-gradient($black, $black_hover);
+			background: linear-gradient($black, $darkblack_hover);
+			&:hover {
+
+			}
+		}
+	}
+	&.uiex-color-gray {
+		background-color: $gray;
+		border-color: $darkgray;
+		color: #000;
+
+		&:hover {
+			background-color: $gray_hover;
+			border-color: $darkgray_hover;
+		}
+		&.uiex-gradient-button {
+			background: linear-gradient($gray_hover, #b7b7b7);
 			&:hover {
 
 			}
 		}
 	}
 	&.uiex-color-white {
-		background-color: #fff;
-		border-color: #aaa;
+		background-color: $white;
+		border-color: $darkwhite;
 
 		&:hover {
-			border-color: #888;
+			background-color: $white_hover;
+			border-color: $darkwhite_hover;
 		}
-	}
-	&.uiex-color-gray {
-		background-color: #d1d1d1;
-		border-color: #929090;
-		color: #000;
+		&.uiex-gradient-button {
+			background: linear-gradient($white, #e0e0e0);
+			&:hover {
 
-		&:hover {
-			background-color: #e1e1e1;
+			}
 		}
 	}
 	&.uiex-color-red {
@@ -87,7 +100,6 @@
 			background-color: $red_hover;
 			border-color: $darkred_hover;
 		}
-
 		&.uiex-gradient-button {
 			background: linear-gradient($red, $darkred);
 			&:hover {
@@ -104,6 +116,12 @@
 			background-color: $blue_hover;
 			border-color: $darkblue_hover;
 		}
+		&.uiex-gradient-button {
+			background: linear-gradient($blue, $darkblue);
+			&:hover {
+
+			}
+		}
 	}
 	&.uiex-color-green {
 		background-color: $green;
@@ -113,6 +131,12 @@
 		&:hover {
 			background-color: $green_hover;
 			border-color: $darkgreen_hover;
+		}
+		&.uiex-gradient-button {
+			background: linear-gradient($green, $darkgreen);
+			&:hover {
+
+			}
 		}
 	}
 	&.uiex-color-yellow {
@@ -124,6 +148,13 @@
 			background-color: $yellow_hover;
 			border-color: $darkyellow_hover;
 		}
+		&.uiex-gradient-button {
+			background: linear-gradient($yellow, #b5a500);
+			color: #000;
+			&:hover {
+
+			}
+		}
 	}
 	&.uiex-color-orange {
 		background-color: $orange;
@@ -133,6 +164,13 @@
 		&:hover {
 			background-color: $orange_hover;
 			border-color: $darkorange_hover;
+		}
+		&.uiex-gradient-button {
+			background: linear-gradient($orange, #c17300);
+			color: #000;
+			&:hover {
+
+			}
 		}
 	}
 	&.uiex-disabled {

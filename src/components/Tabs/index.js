@@ -18,6 +18,10 @@ export class Tabs extends UIEXButtons {
 		DEFAULT_STYLE = style;
 	}
 
+	static setDefaultProps(props) {
+		Tabs.defaultProps = props;
+	}
+
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
 	}

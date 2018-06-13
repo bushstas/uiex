@@ -25,6 +25,10 @@ export class FormControl extends UIEXComponent {
 		DEFAULT_STYLE = style;
 	}
 
+	static setDefaultProps(props) {
+		FormControl.defaultProps = props;
+	}
+
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
 	}

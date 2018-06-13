@@ -8,6 +8,8 @@ import {SelectPropTypes} from './proptypes';
 
 import './style.scss';
 
+let DEFAULT_STYLE;
+
 export class Select extends UIEXComponent {
 	static propTypes = SelectPropTypes;
 
@@ -17,6 +19,22 @@ export class Select extends UIEXComponent {
 		this.state = {
 			focused: false
 		};
+	}
+
+	static setDefaultStyle(style) {
+		DEFAULT_STYLE = style;
+	}
+
+	static setDefaultProps(props) {
+		Select.defaultProps = props;
+	}
+
+	getDefaultStyle() {
+		return DEFAULT_STYLE;
+	}
+
+	getNativeClassName() {
+		return 'select';
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -40,10 +58,6 @@ export class Select extends UIEXComponent {
 			}
 		}
 		return '';
-	}
-
-	getNativeClassName() {
-		return 'select';
 	}
 
 	getClassNames() {

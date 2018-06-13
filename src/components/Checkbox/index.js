@@ -22,6 +22,10 @@ export class Checkbox extends UIEXComponent {
 		DEFAULT_STYLE = style;
 	}
 
+	static setDefaultProps(props) {
+		Checkbox.defaultProps = props;
+	}
+
 	static setDefaultControlStyle(style) {
 		DEFAULT_CONTROL_STYLE = style;
 	}

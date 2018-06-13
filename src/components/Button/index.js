@@ -14,6 +14,10 @@ export class Button extends UIEXComponent {
 		DEFAULT_STYLE = style;
 	}
 
+	static setDefaultProps(props) {
+		Button.defaultProps = props;
+	}
+
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
 	}

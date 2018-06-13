@@ -11,6 +11,10 @@ export class Popup extends UIEXComponent {
 		DEFAULT_STYLE = style;
 	}
 
+	static setDefaultProps(props) {
+		Popup.defaultProps = props;
+	}
+
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
 	}

@@ -14,6 +14,10 @@ export class Box extends UIEXComponent {
 		DEFAULT_STYLE = style;
 	}
 
+	static setDefaultProps(props) {
+		Box.defaultProps = props;
+	}
+
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
 	}

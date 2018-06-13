@@ -14,6 +14,10 @@ export class ButtonGroup extends UIEXButtons {
 		DEFAULT_STYLE = style;
 	}
 
+	static setDefaultProps(props) {
+		ButtonGroup.defaultProps = props;
+	}
+
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
 	}

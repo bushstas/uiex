@@ -1,14 +1,14 @@
 import React from 'react';
-import {UIEXComponent} from '../UIEXComponent';
-import {IconPropTypes} from './proptypes';
+import {UIEXComponent} from '../../UIEXComponent';
+import {IconPropTypes} from '../proptypes';
 
-import './material.scss';
+import './style.scss';
 
 let DEFAULT_STYLE;
 
-export class MaterialIcon extends UIEXComponent {
+export class GenericonsIcon extends UIEXComponent {
 	static propTypes = IconPropTypes;
-
+	
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;
 	}
@@ -16,21 +16,19 @@ export class MaterialIcon extends UIEXComponent {
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
 	}
-
+	
 	getNativeClassName() {
 		return 'icon';
 	}
 
 	getClassNames() {
-		return 'uiex-material-icon';
+		const {name} = this.props;
+		return 'uiex-gnr uiex-gnr-' + name;
 	}
 
 	renderInternal() {
-		const {name} = this.props;
 		return (
-			<i {...this.getProps()}>
-				{name}
-			</i>
+			<i {...this.getProps()}/>
 		)
 	}
 }

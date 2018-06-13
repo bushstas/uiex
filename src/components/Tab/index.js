@@ -12,6 +12,10 @@ export class Tab extends Button {
 		DEFAULT_STYLE = style;
 	}
 
+	static setDefaultProps(props) {
+		Tab.defaultProps = props;
+	}
+
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
 	}

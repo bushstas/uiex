@@ -1,12 +1,12 @@
 import React from 'react';
-import {UIEXComponent} from '../UIEXComponent';
-import {IconPropTypes} from './proptypes';
+import {UIEXComponent} from '../../UIEXComponent';
+import {IconPropTypes} from '../proptypes';
 
-import './awesome.scss';
+import './style.scss';
 
 let DEFAULT_STYLE;
 
-export class AwesomeIcon extends UIEXComponent {
+export class IoniconsIcon extends UIEXComponent {
 	static propTypes = IconPropTypes;
 	
 	static setDefaultStyle(style) {
@@ -23,7 +23,7 @@ export class AwesomeIcon extends UIEXComponent {
 
 	getClassNames() {
 		const {name} = this.props;
-		return 'uiex-awesome-icon uiex-awesome-icon-' + name;
+		return 'uiex-ion uiex-ion-' + name;
 	}
 
 	renderInternal() {

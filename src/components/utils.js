@@ -10,3 +10,13 @@ export const getNumber = (n, d = 0) => {
 	}
 	return 0;
 }
+
+export const getNumberOrNull = (n) => {
+	if (typeof n == 'string' && n == ~~n) {
+		n = ~~n;
+	}
+	if (typeof n == 'number') {
+		return n;
+	}
+	return null;
+}

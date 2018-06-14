@@ -4,8 +4,9 @@ import {PROPTYPE} from '../consts';
 
 export const InputPhonePropTypes = {
 	...InputPropTypes,
-	code: PROPTYPE.STRINGS,
-	mask: PropTypes.string,
+	mask: PropTypes.string.isRequired,
+	code: PROPTYPE.STRNUM,
+	numericCode: PROPTYPE.STRNUM,
 	numeric: PropTypes.bool,
 	withCode: PropTypes.bool
 }

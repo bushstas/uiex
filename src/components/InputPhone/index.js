@@ -18,8 +18,11 @@ export class InputPhone extends Input {
 	}
 
 	renderAdditionalContent() {
-		const {code} = this.props;
+		let {code} = this.props;
 		if (code) {
+			if (typeof code == 'string') {
+				code = code.trim();
+			}
 			return (
 				<div className="uiex-phone-code">
 					{code}
@@ -39,21 +42,21 @@ export class InputPhone extends Input {
 
 	getValue() {
 		const {numeric} = this.props;
-		let value = super.getValue(); 
+		let value = this.getWithoutCode(super.getValue());
 		if (!numeric) {
 			return value;
 		}
 		return this.getMaskedValue(value);
 	}
 
-	filterValue(value, props) {
-		const {numeric} = props;		
-		return numeric ? value.replace(/[^\d]/g, '') : this.getMaskedValue(value);
+	filterValue(value, props) {		
+		const {numeric} = props;
+		return numeric ? this.getWithCode(value).replace(/[^\d]/g, '') : this.getWithCode(this.getMaskedValue(value));
 	}
 
 	getMaskedValue(value) {
 		let properValue = value;
-		let {mask} = this.props;
+		let {mask, code, withCode} = this.props;
 		if (typeof mask == 'string') {
 			value = value.replace(/[^\d]/g, '');
 			mask = mask.trim();
@@ -74,12 +77,34 @@ export class InputPhone extends Input {
 					}
 				}
 			}
-		}
+		}		
 		return properValue;
 	}
 
-	keyUpHandler(e) {
-		super.keyUpHandler(e);
-		
+	getWithCode(value) {
+		let {code, withCode, numericCode, numeric} = this.props;
+		if (numeric && numericCode) {
+			code = numericCode;
+		}
+		if (withCode && code) {
+			value = code + value;
+		}
+		return value;
+	}
+
+	getWithoutCode(value) {
+		let {numeric, code, withCode, numericCode} = this.props;
+		if (numeric && numericCode) {
+			code = numericCode;
+		}
+		if (withCode && code) {
+			code = code.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+			if (numeric) {
+				code = code.replace(/[^\d]/g, '');
+			}
+			const regex = new RegExp('^' + code);
+			value = value.replace(regex, '');
+		}
+		return value;
 	}
 }

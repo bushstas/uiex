@@ -7,6 +7,7 @@ import {FormControl} from './components/FormControl';
 import {FormControlGroup} from './components/FormControlGroup';
 import {Icon} from './components/Icon';
 import {Input} from './components/Input';
+import {InputDate} from './components/InputDate';
 import {InputNumber} from './components/InputNumber';
 import {InputPhone} from './components/InputPhone';
 import {Popup} from './components/Popup';
@@ -29,6 +30,7 @@ export {
     FormControlGroup,
     Icon,
     Input,
+    InputDate,
     InputNumber,
     InputPhone,
     Popup,

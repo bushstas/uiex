@@ -30,7 +30,7 @@ export class FormControlGroup extends UIEXComponent {
 	}
 
 	isProperChild(child) {
-		return child.type == FormControl;
+		return child == FormControl;
 	}
 
 	canHaveOnlyProperChildren() {
@@ -67,7 +67,7 @@ export class FormControlGroup extends UIEXComponent {
 				size = getNumber(size);
 				shift = getNumber(shift);
 				if (size) {
-					props.width = size * 100 / columns + '%';
+					props.width = (size * 100 / columns).toFixed(2) + '%';
 				}
 				
 				if (typeof sideMargin == 'undefined') {

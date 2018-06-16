@@ -1,0 +1,41 @@
+.uiex-box-section {
+	.uiex-box-section-caption {
+		display: flex;
+		align-items: center;
+		font-size: 20px;
+		line-height: 20px;
+		font-weight: bold;
+		padding: 0 15px;
+		height: 42px;
+		background-color: #f1f1f1;
+		cursor: pointer;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
+		.uiex-icon {
+			font-size: 28px;
+		}
+		&:hover {
+			background-color: #eee;
+		}
+	}
+	& > .uiex-box {
+		& > .uiex-box-inner {
+			padding-top: 15px;
+		}
+	}
+	&.uiex-icon-at-right {
+		.uiex-box-section-caption {
+			flex-direction: row-reverse;
+			justify-content: space-between;
+		}
+	}
+	&.uiex-disabled {
+		.uiex-box-section-caption {
+			color: #ccc;
+			cursor: not-allowed;
+			background-color: #f1f1f1 !important;
+		}
+	}
+}

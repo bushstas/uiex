@@ -40,7 +40,7 @@ export class Tabs extends UIEXButtons {
 	}
 
 	isProperChild(child) {
-		return child.type == Tab;
+		return child == Tab;
 	}
 
 	initRendering() {
@@ -169,7 +169,7 @@ export class Tabs extends UIEXButtons {
 		}
 		return (
 			<Button 
-				classes={classes}
+				className={classes}
 				icon="add"
 				iconSize="24"
 				onClick={this.handleAddTab}

@@ -38,12 +38,13 @@ export class FormControl extends UIEXComponent {
 	}
 
 	isProperChild(child) {
-		return PROPER_CHILDREN.indexOf(child.type) > -1;
+		return PROPER_CHILDREN.indexOf(child) > -1;
 	}
 
 	addChildProps(child, props) {
-		if (this.isProperChild(child)) {
-			switch (child.type) {
+		const {type} = child;
+		if (this.isProperChild(type)) {
+			switch (type) {
 				case Checkbox:
 					if (typeof child.props.onChange != 'function') {
 						props.onChange = this.handleCheckboxChange;

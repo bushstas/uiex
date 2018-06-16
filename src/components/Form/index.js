@@ -32,8 +32,8 @@ export class Form extends UIEXComponent {
 	}
 
 	isProperChild(child) {
-		return child.type == FormControl ||
-			   child.type == FormControlGroup;
+		return child == FormControl ||
+			   child == FormControlGroup;
 	}
 
 	addChildProps(child, props) {
@@ -83,7 +83,7 @@ export class Form extends UIEXComponent {
 		const {submit, clear} = this.props;
 		if (submit || clear) {
 			return (
-				<ButtonGroup classes="uiex-form-buttons">
+				<ButtonGroup className="uiex-form-buttons">
 					{submit && 
 						<Button>
 							{submit}

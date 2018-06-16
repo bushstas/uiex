@@ -1,4 +1,5 @@
 import React from 'react';
+import {BoxCommonPropTypes} from './Box/proptypes';
 
 const mergeClassNames = (cls) => {
 	var cs = [], c;
@@ -21,7 +22,6 @@ export const getComponentClassName = (component) => {
 	const otherClasses = component.getClassNames();
 
 	let {
-		classes,
 		className,
 		disabled,
 		active,
@@ -32,19 +32,13 @@ export const getComponentClassName = (component) => {
 		valign
 	} = component.props;
 
-	let isCustomClassName = false;
 	const classNames = [];
 	
-	if (!className || typeof className != 'string') {
-		if (nativeClassName) {
-			classNames.push(nativeClassName);
-		}
-	} else {
-		classNames.push(className);
-		isCustomClassName = true;
+	if (nativeClassName) {
+		classNames.push(nativeClassName);
 	}
-	if (classes) {
-		classNames.push(classes);
+	if (className) {
+		classNames.push(className);
 	}
 	if (disabled) {
 		classNames.push('uiex-disabled');
@@ -75,7 +69,7 @@ export const getComponentClassName = (component) => {
 }
 
 const getProperStyleProperty = (value) => {
-	if (typeof value != 'undefined') {
+	if (value && typeof value != 'undefined') {
 		if (typeof value == 'number') {
 			value += 'px';
 		}
@@ -120,6 +114,7 @@ export class UIEXComponent extends React.Component {
 	}
 
 	renderChildren() {
+		this.properChildrenCount = 0;
 		return this.doRenderChildren(this.props.children);
 	}
 	
@@ -138,7 +133,7 @@ export class UIEXComponent extends React.Component {
 			if (child instanceof Array) {
 				return this.doRenderChildren(child);
 			}
-			const isProperChild = this.isProperChild(child);
+			const isProperChild = this.isProperChild(child.type);
 			if (!isProperChild && this.canHaveOnlyProperChildren()) {
 				this.showImproperChildError(child);
 				return null;
@@ -148,6 +143,7 @@ export class UIEXComponent extends React.Component {
 					key: idx
 				};
 				if (isProperChild) {
+					this.properChildrenCount++;
 					const {
 						disabled,
 						vertical
@@ -189,7 +185,9 @@ export class UIEXComponent extends React.Component {
 
 	getProps(props) {
 		const {title} = this.props;
-		const componentProps = {};
+		const componentProps = {
+			ref: 'main'
+		};
 		if (typeof title == 'string') {
 			componentProps.title = title;
 		}
@@ -273,6 +271,21 @@ export class UIEXComponent extends React.Component {
 		return 'UIEXComponent';
 	}
 
+	isOwnChild(element) {
+		const {isInnerChild} = this.props;
+		const {main} = this.refs;
+		if (main instanceof Element) {
+			const parent = main.parentNode;
+			while (element instanceof Element) {
+				if (element == main || (isInnerChild && element == parent)) {
+					return true;
+				}
+				element = element.parentNode;
+			}
+		}
+		return false;
+	}
+
 	getExpectedChildren() {
 		return '...';
 	}
@@ -343,5 +356,16 @@ export class UIEXButtons extends UIEXComponent {
 		if (iconAtRight && !child.props.iconAtRight) {
 			props.iconAtRight = iconAtRight;
 		}
+	}
+}
+
+export class UIEXBoxContainer extends UIEXComponent {
+	getBoxProps() {
+		const keys = Object.keys(BoxCommonPropTypes);
+		const boxProps = {};
+		for (let k of keys) {
+			boxProps[k] = this.props[k];
+		}
+		return boxProps;
 	}
 }

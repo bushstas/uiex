@@ -1,0 +1,48 @@
+.uiex-popup-menu {	
+	overflow: auto;
+	max-height: 350px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 100%;
+	margin-top: 1px;
+	background-color: #fff;
+	border: 1px solid #888;
+	border-radius: 2px;
+	z-index: 100;
+	visibility: hidden;
+
+	&.uiex-shown {
+		visibility: visible;
+	}
+	.uiex-box {
+		margin-bottom: 0;
+	}
+}
+.uiex-popup-menu-item {
+	padding: 10px 12px;
+	color: #555;
+	line-height: 15px;
+	font-size: 15px;
+
+	&.uiex-empty-item {
+		color: #aaa;
+	}
+	&.uiex-selected {
+		background-color: #d1d1d1;
+		color: #000;
+	}
+	&:hover:not(.uiex-selected) {
+		background-color: #f1f1f1;
+		color: #000;
+	}
+	&.uiex-with-icon {
+		display: flex;
+		align-items: center;
+		padding-left: 8px;
+		.uiex-icon {
+			margin-right: 5px;
+			font-size: 20px;
+		}
+	}
+}

@@ -2,8 +2,7 @@
  * Common properties of components.
  *
  * @prop {string} [title] HTML title.
- * @prop {string | string[]} [classes] Custom class names.
- * @prop {string} [className] Your own class name instead of uiex native one.
+ * @prop {string} [className] Custom class names.
  * @prop {string | JSX.Element | JSX.Element[]} [children] Inner content.
  
  * @prop {string | number} [width] Component main element width.
@@ -20,7 +19,6 @@
  */
 export interface ICommonProps {
 	title?: string;
-	classes?: string | string[];	
 	className?: string;
 	children?: IChildren;
 	
@@ -106,16 +104,6 @@ export enum EColor {
 export interface EIconType {
 	MATERIAL = <any>'material',
 	AWESOME = <any>'awesome'
-}
-
-export enum EInputFilter {
-	NUMBER = <any>'number',
-	EMAIL = <any>'email',
-	PHONE = <any>'phone',
-	KEY =  <any>'key',
-	DATE =  <any>'date',
-	TIME =  <any>'time',
-	URL =  <any>'url'
 }
 
 export interface IStyle {}

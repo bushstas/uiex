@@ -1,4 +1,5 @@
 import {Box} from './components/Box';
+import {BoxSection} from './components/BoxSection';
 import {Button} from './components/Button';
 import {ButtonGroup} from './components/ButtonGroup';
 import {Checkbox} from './components/Checkbox';
@@ -11,7 +12,8 @@ import {InputDate} from './components/InputDate';
 import {InputNumber} from './components/InputNumber';
 import {InputPhone} from './components/InputPhone';
 import {Popup} from './components/Popup';
-import {Select} from './components/Select';
+import {PopupMenu, PopupMenuItem} from './components/PopupMenu';
+import {Select, SelectOption} from './components/Select';
 import {Tab} from './components/Tab';
 import {Tabs} from './components/Tabs';
 import * as UIEXCONSTS from './components/consts';
@@ -22,6 +24,7 @@ import './style.scss';
 export {
     UIEXCONSTS,
 	Box,
+    BoxSection,
     Button,
     ButtonGroup,
     Checkbox,
@@ -34,7 +37,10 @@ export {
     InputNumber,
     InputPhone,
     Popup,
+    PopupMenu,
+    PopupMenuItem,
     Select,
+    SelectOption,
     Tab,
     Tabs
 }

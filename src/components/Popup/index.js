@@ -1,10 +1,10 @@
 import React from 'react';
-import {UIEXComponent} from '../UIEXComponent';
+import {UIEXBoxContainer} from '../UIEXComponent';
 import {PopupPropTypes} from './proptypes';
 
 let DEFAULT_STYLE;
 
-export class Popup extends UIEXComponent {
+export class Popup extends UIEXBoxContainer {
 	static propTypes = PopupPropTypes;
 	
 	static setDefaultStyle(style) {
@@ -20,11 +20,11 @@ export class Popup extends UIEXComponent {
 	}
 
 	componentDidMount() {
-		document.body.addEventListener('click', this.handleBodyMouseDown, false);
+		document.body.addEventListener('click', this.handleBodyClick, false);
 	}
 
 	componentWillUnmount() {
-		document.body.removeEventListener('click', this.handleBodyMouseDown, false);
+		document.body.removeEventListener('click', this.handleBodyClick, false);
 	}
 
 	getNativeClassName() {
@@ -41,10 +41,12 @@ export class Popup extends UIEXComponent {
 		e.stopPropagation();
 	}
 
-	handleBodyMouseDown = () => {
-		const {onCollapse} = this.props;
-		if (typeof onCollapse == 'function') {
-			onCollapse();
+	handleBodyClick = (e) => {
+		if (!this.isOwnChild(e.target)) {
+			const {onCollapse} = this.props;
+			if (typeof onCollapse == 'function') {
+				onCollapse();
+			}
 		}
 	}
 }

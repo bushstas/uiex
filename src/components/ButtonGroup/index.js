@@ -27,7 +27,7 @@ export class ButtonGroup extends UIEXButtons {
 	}
 
 	isProperChild(child) {
-		return child.type == Button;
+		return child == Button;
 	}
 
 	addChildProps(child, props) {

@@ -7,7 +7,8 @@ export const FLOAT = ['left', 'right'];
 export const ICON_TYPE = ['Material', 'FontAwesome', 'LineAwesome', 'Foundation', 'LigatureSymbols', 'OpenWeb', 'Genericons', 'Glyphicons', 'Ionicons', 'IcoMoon'];
 export const BUTTONS_VIEW = ['united', 'underlined', 'bordered', 'simple'];
 export const ANIM_EFFECTS = ['linear', 'ease', 'ease-in', 'ease-out', 'ease-in-out'];
-export const ANIM_SPEED = ['', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+export const ANIM_SPEED = ['fast', 'normal', 'slow'];
+export const ANIM_TYPE = ['fade', 'roll', 'fall', 'fade-roll', 'fade-fall'];
 
 export const PROPTYPE = {
 	REACT_NODES: PropTypes.oneOfType([
@@ -36,6 +37,7 @@ export const PROPTYPE = {
 	BUTTONS_VIEWS: PropTypes.oneOf(BUTTONS_VIEW),
 	ANIM_EFFECTS: PropTypes.oneOf(ANIM_EFFECTS),
 	ANIM_SPEED: PropTypes.oneOf(ANIM_SPEED),
+	ANIM_TYPE: PropTypes.oneOf(ANIM_TYPE),
 	INPUT_MEASURES: PropTypes.arrayOf(PropTypes.shape({
 		id: PropTypes.oneOfType([
 			PropTypes.string,
@@ -49,8 +51,10 @@ export const PROPTYPE = {
 				value: PropTypes.oneOfType([
 					PropTypes.string,
 					PropTypes.number
-				]),
-				title: PropTypes.string
+				]).isRequired,
+				title: PropTypes.string.isRequired,
+				icon: PropTypes.string,
+				iconType: PropTypes.oneOf(ICON_TYPE)
 			})
 		),
 		PropTypes.arrayOf(

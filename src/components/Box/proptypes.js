@@ -18,5 +18,6 @@ export const BoxPropTypes = {
 	isOpen: PropTypes.bool,	
 	button: PropTypes.string,
 	buttonUnder: PropTypes.bool,
+	noHideAnimation: PropTypes.bool,
 	onToggle: PropTypes.func
 }

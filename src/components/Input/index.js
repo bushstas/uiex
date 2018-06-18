@@ -13,6 +13,7 @@ export class Input extends UIEXComponent {
 	constructor(props) {
 		super(props);
 		this.handleKeyUp = this.keyUpHandler.bind(this);
+		this.isValid = null;
 	}
 
 	static setDefaultStyle(style) {
@@ -21,6 +22,25 @@ export class Input extends UIEXComponent {
 
 	static setDefaultProps(props) {
 		Input.defaultProps = props;
+	}
+
+	componentDidMount() {
+		const {value} = this.props;
+		if (value) {
+			this.checkValidity();
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		super.componentWillReceiveProps(nextProps);
+		const {value} = this.props;
+		if (nextProps.value != value) {
+			this.checkValidity();
+		}
+	}
+
+	componentWillUnmount() {
+		this.fireChangeValidity(true);
 	}
 
 	getDefaultStyle() {
@@ -135,8 +155,24 @@ export class Input extends UIEXComponent {
 		}
 	}
 
+	checkValidity() {
+		const {value, pattern} = this.props;
+		if (pattern) {
+
+		}
+	}
+
+	fireChangeValidity(isValid) {
+		const {name, value, onValid} = this.props;
+		this.isValid = isValid;
+		if (typeof onValid == 'function') {
+			onValid(isValid, value, name);
+		}
+	}
+
 	handleFocus = () => {
-		const {onFocus, name, focusStyle, disabled, readOnly} = this.props;
+		const {onFocus, name, focusStyle, disabled, readOnly, value} = this.props;
+		this.valueBeforeFocus = value;
 		if (!disabled && !readOnly) {
 			if (focusStyle instanceof Object) {
 				const {input} = this.refs;
@@ -175,11 +211,26 @@ export class Input extends UIEXComponent {
 
 	keyUpHandler(e) {
 		const {key} = e;
-		const {onEnter, name, value, textarea} = this.props;
-		if (!textarea && key == 'Enter' && typeof onEnter == 'function') {
-			this.refs.input.blur();
-			onEnter(value, name);
+		const {onEnter, onChange, name, value, textarea} = this.props;
+		switch (key) {
+			case 'Enter':
+				if (!textarea && typeof onEnter == 'function') {
+					this.blur();
+					onEnter(value, name);
+				}
+			break;
+
+			case 'Escape':
+				if (typeof onChange == 'function') {
+					this.blur();
+					onChange(this.valueBeforeFocus, name);
+				}
+			break;
 		}
+	}
+
+	blur() {
+		this.refs.input.blur();
 	}
 
 	filterValue(value, props) {

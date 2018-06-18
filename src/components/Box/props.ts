@@ -10,6 +10,7 @@ import {ICommonProps, EAnimationEffect} from '../UIEXComponentProps';
  * @prop {EAnimationEffect} [effect] Animation effect (linear|ease|ease-in|ease-out|ease-in-out).
  * @prop {string} [button] Text of button for open and close actions (for example Open/Close).
  * @prop {boolean} [buttonUnder] Flag shows that the button is under the box.
+ * @prop {boolean} [noHideAnimation] No animation on hiding.
  * @prop {Function} [onToggle] Toggle box handler.
  */
 export interface IBoxProps extends ICommonProps {
@@ -20,5 +21,6 @@ export interface IBoxProps extends ICommonProps {
 	effect?: EAnimationEffect;
 	button?: string;
 	buttonUnder?: boolean;
+	noHideAnimation?: boolean;
 	onToggle?: (isOpen: boolean) => void;
 }

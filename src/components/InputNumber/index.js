@@ -9,10 +9,11 @@ import './style.scss';
 export class InputNumber extends Input {
 	static propTypes = InputNumberPropTypes;
 
-	componentWillReceiveProps(props) {
+	componentWillReceiveProps(nextProps) {
+		super.componentWillReceiveProps(nextProps);
 		const {minValue, maxValue} = this.props;
-		if (minValue != props.minValue || maxValue != props.maxValue) {
-			this.fireChange(props);
+		if (minValue != nextProps.minValue || maxValue != nextProps.maxValue) {
+			this.fireChange(nextProps);
 		}
 	}
 

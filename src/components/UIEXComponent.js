@@ -104,6 +104,7 @@ const addObject = (obj1, obj2) => {
 export class UIEXComponent extends React.Component {
 	
 	componentWillReceiveProps(nextProps) {
+		if (nextProps.name == 'iconSize') console.log(nextProps)
 		const {width, height, fontSize, style} = nextProps;
 		this.stylesChanged = (
 			width != this.props.width ||

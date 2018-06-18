@@ -92,6 +92,7 @@ export class PopupMenu extends Popup {
 					isOpen={this.props.isOpen} 
 					{...this.getBoxProps()}
 					onHide={this.handleBoxHide}
+					noHideAnimation
 				>
 					{this.renderChildren()}
 				</Box>

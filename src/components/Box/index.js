@@ -108,13 +108,16 @@ export class Box extends UIEXComponent {
 
 	animate(isOpen) {
 		this.animating = true;
-		const {animation, onHide} = this.props;
+		let {animation, onHide, noHideAnimation} = this.props;
 		const callback = () => {
 			if (!isOpen && typeof onHide == 'function') {
 				onHide();
 			}
 			this.animating = false;
 		};
+		if (!isOpen && noHideAnimation) {
+			animation = false;
+		}
 		if (animation) {
 			this.refs.outer.style.transitionDuration = this.getSpeed() / 10 + 's';
 			const delay = this.getDelay();

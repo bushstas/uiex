@@ -16,8 +16,12 @@ export const InputPropTypes = {
 	focusStyle: PropTypes.object,
 	clearButtonStyle: PropTypes.object,
 	customFilter: PropTypes.func,
+	pattern: PropTypes.oneOfType([
+		PropTypes.object, PropTypes.func
+	]),
 	maxLength: PROPTYPE.STRNUM,
 	defaultValue: PROPTYPE.STRNUM,
+	onValid: PropTypes.func,
 	onChange: PropTypes.func,
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,

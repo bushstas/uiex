@@ -4,13 +4,14 @@ import {FormControl} from '../FormControl';
 import {FormControlGroup} from '../FormControlGroup';
 import {ButtonGroup} from '../ButtonGroup';
 import {Button} from '../Button';
-import {FormPropTypes} from './proptypes';
 import {getNumber} from '../utils';
+import {FormPropTypes} from './proptypes';
 
 import './style.scss';
 
 let DEFAULT_STYLE;
 const DEFAULT_LINE_MARGIN = 15;
+const PROP_KEYS = Object.keys(FormPropTypes);
 
 export class Form extends UIEXComponent {
 	static propTypes = FormPropTypes;
@@ -25,6 +26,10 @@ export class Form extends UIEXComponent {
 
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
+	}
+
+	getPropKeys() {
+		return PROP_KEYS;
 	}
 
 	getNativeClassName() {

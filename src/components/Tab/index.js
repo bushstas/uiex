@@ -4,6 +4,7 @@ import {Icon} from '../Icon';
 import {TabPropTypes} from './proptypes';
 
 let DEFAULT_STYLE;
+const PROP_KEYS = Object.keys(TabPropTypes);
 
 export class Tab extends Button {
 	static propTypes = TabPropTypes;
@@ -19,6 +20,11 @@ export class Tab extends Button {
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
 	}
+
+	getPropKeys() {
+		return PROP_KEYS;
+	}
+
 
 	getClassNames() {
 		let className = super.getClassNames() + ' uiex-tab';

@@ -1,3 +1,4 @@
+import {AutoComplete} from './components/AutoComplete';
 import {Box} from './components/Box';
 import {BoxSection} from './components/BoxSection';
 import {Button} from './components/Button';
@@ -23,6 +24,7 @@ import './style.scss';
 
 export {
     UIEXCONSTS,
+    AutoComplete,
 	Box,
     BoxSection,
     Button,

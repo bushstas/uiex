@@ -1,12 +1,12 @@
 import React from 'react';
-import {UIEXComponent} from '../../UIEXComponent';
+import {UIEXIcon} from '../../UIEXComponent';
 import {IconPropTypes} from '../proptypes';
 
 import './style.scss';
 
 let DEFAULT_STYLE;
 
-export class OpenWebIcon extends UIEXComponent {
+export class OpenWebIcon extends UIEXIcon {
 	static propTypes = IconPropTypes;
 	
 	static setDefaultStyle(style) {

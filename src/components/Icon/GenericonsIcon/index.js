@@ -1,12 +1,12 @@
 import React from 'react';
-import {UIEXComponent} from '../../UIEXComponent';
+import {UIEXIcon} from '../../UIEXComponent';
 import {IconPropTypes} from '../proptypes';
 
 import './style.scss';
 
 let DEFAULT_STYLE;
 
-export class GenericonsIcon extends UIEXComponent {
+export class GenericonsIcon extends UIEXIcon {
 	static propTypes = IconPropTypes;
 	
 	static setDefaultStyle(style) {

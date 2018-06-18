@@ -38,6 +38,7 @@ export class PopupMenu extends Popup {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		super.componentWillReceiveProps(nextProps);
 		if (nextProps.isOpen) {
 			this.setState({isOpen: true});
 		}
@@ -81,6 +82,7 @@ export class PopupMenu extends Popup {
 				if (typeof onSelect != 'function') {
 					props.onSelect = this.props.onSelect;
 				}
+				props.itemIndex = idx;
 			break;
 		}
 	}
@@ -89,6 +91,7 @@ export class PopupMenu extends Popup {
 		return (
 			<div {...this.getProps()}>
 				<Box 					
+					ref="box"
 					isOpen={this.props.isOpen} 
 					{...this.getBoxProps()}
 					onHide={this.handleBoxHide}
@@ -140,10 +143,11 @@ export class PopupMenuItem extends UIEXComponent {
 		)
 	}
 
-	handleClick = () => {
-		const {value, children, onSelect} = this.props;
+	handleClick = (e) => {
+		e.stopPropagation();
+		const {value, children, onSelect, itemIndex} = this.props;
 		if (typeof onSelect == 'function') {
-			onSelect(value, children);
+			onSelect(value, children, itemIndex);
 		}
 	}
 }

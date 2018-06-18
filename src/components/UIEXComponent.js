@@ -102,9 +102,31 @@ const addObject = (obj1, obj2) => {
 }
 
 export class UIEXComponent extends React.Component {
-	
+	shouldComponentUpdate(nextProps, nextState) {
+		const propKeys = this.getPropKeys();
+		const stateKeys = this.getStateKeys();
+		
+		if (!propKeys && !stateKeys) {
+			return true;
+		}
+		if (stateKeys) {
+			for (let k of stateKeys) {
+				if (this.state[k] !== nextState[k]) {
+					return true;
+				}
+			}
+		}
+		if (propKeys) {
+			for (let k of propKeys) {
+				if (this.props[k] !== nextProps[k]) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.name == 'iconSize') console.log(nextProps)
 		const {width, height, fontSize, style} = nextProps;
 		this.stylesChanged = (
 			width != this.props.width ||
@@ -144,6 +166,9 @@ export class UIEXComponent extends React.Component {
 					key: idx
 				};
 				if (isProperChild) {
+					if (!this.isToRender(child)) {
+						return null;
+					}
 					this.properChildrenCount++;
 					const {
 						disabled,
@@ -216,7 +241,12 @@ export class UIEXComponent extends React.Component {
 
 	render() {
 		this.initRendering();
-		return this.props.hidden ? null : this.renderInternal();
+		const renderedChildren = this.props.hidden ? null : this.renderInternal();
+		if (typeof this.props.onCountProperChildren == 'function') {
+			window.clearTimeout(this.timeout);
+			this.timeout = window.setTimeout(() => this.props.onCountProperChildren(this.properChildrenCount || 0), 0);
+		}
+		return renderedChildren;
 	}
 
 	getCustomProps() {
@@ -249,6 +279,14 @@ export class UIEXComponent extends React.Component {
 
 	isProperChild() {
 		return false;
+	}
+
+	isToRender(child) {
+		const {childFilter} = this.props;
+		if (typeof childFilter == 'function') {
+			return childFilter(child);
+		}
+		return true;
 	}
 
 	canHaveOnlyProperChildren() {
@@ -293,6 +331,8 @@ export class UIEXComponent extends React.Component {
 
 	initRendering() {}
 	addChildProps() {}
+	getPropKeys() {}
+	getStateKeys() {}
 }
 
 
@@ -368,5 +408,16 @@ export class UIEXBoxContainer extends UIEXComponent {
 			boxProps[k] = this.props[k];
 		}
 		return boxProps;
+	}
+}
+
+export class UIEXIcon extends UIEXComponent {
+	getProps() {
+		const {disabled} = this.props;
+		const props = super.getProps();
+		if (!disabled) {
+			props.onClick = this.props.onClick;
+		}
+		return props;
 	}
 }

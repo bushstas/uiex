@@ -8,6 +8,9 @@ import './style.scss';
 
 let DEFAULT_STYLE;
 
+const PROP_KEYS = Object.keys(BoxSectionPropTypes);
+const STATE_KEYS = ['isOpen'];
+
 export class BoxSection extends UIEXComponent {
 	static propTypes = BoxSectionPropTypes;
 
@@ -31,6 +34,14 @@ export class BoxSection extends UIEXComponent {
 		return DEFAULT_STYLE;
 	}
 
+	getPropKeys() {
+		return PROP_KEYS;
+	}
+
+	getStateKeys() {
+		return STATE_KEYS;
+	}
+
 	getNativeClassName() {
 		return 'box-section';
 	}
@@ -45,6 +56,7 @@ export class BoxSection extends UIEXComponent {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		super.componentWillReceiveProps(nextProps);
 		if (nextProps.isOpen != this.props.isOpen) {
 			this.setState({isOpen: nextProps.isOpen});
 		}

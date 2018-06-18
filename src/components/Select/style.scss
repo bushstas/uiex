@@ -22,9 +22,6 @@
 	}
 	&.uiex-disabled {
 		cursor: not-allowed;
-		.uiex-select-arrow-icon {
-			color: #aaa;
-		}
 	}
 
 	.uiex-popup-menu-item {
@@ -34,7 +31,7 @@
 	}
 
 	&.uiex-select-focused {
-		.uiex-select-arrow-icon {
+		.uiex-select-arrow-icon:not(.uiex-disabled) {
 			color: #000;
 			transform: rotate(180deg);
 		}
@@ -44,6 +41,11 @@
 				border-color: #888;
 				box-shadow: inset 3px 3px 7px #e4e4e4;
 				color: #000;
+			}
+		}
+		&.uiex-without-options{
+			.uiex-popup-menu {
+				display: none !important;
 			}
 		}
 	}

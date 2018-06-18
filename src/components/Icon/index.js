@@ -10,6 +10,8 @@ import {GlyphiconsIcon} from './GlyphiconsIcon';
 import {IoniconsIcon} from './IoniconsIcon';
 import {IcomoonIcon} from './IcomoonIcon';
 
+import './style.scss';
+
 export class Icon extends React.Component {
 	
 	static setDefaultStyle(style) {

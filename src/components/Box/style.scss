@@ -2,7 +2,9 @@
 	position: relative;
 	overflow: hidden;
 	margin-bottom: 15px;
-
+	&.uiex-not-animated {
+		height: auto !important;
+	}
 	&.uiex-animated {
 		transition-timing-function: linear;
 

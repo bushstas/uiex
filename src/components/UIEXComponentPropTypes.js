@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import {PROPTYPE} from './consts';
 
 export const UIEXComponentPropTypes = {
-    children: PROPTYPE.REACT_NODES,
     title: PropTypes.string,
     className: PropTypes.string,
     width: PROPTYPE.STRNUM,

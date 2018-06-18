@@ -6,5 +6,8 @@ export const TabPropTypes = {
 	...ButtonPropTypes,
 	caption: PROPTYPE.REACT_NODES,
 	single: PropTypes.bool,
-	noRemoving: PropTypes.bool
+	noRemoving: PropTypes.bool,
+	// private
+	active: PropTypes.bool,
+	afterActive: PropTypes.bool
 }

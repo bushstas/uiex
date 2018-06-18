@@ -1,6 +1,7 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
+import {getNumber} from '../utils';
 import {InputPropTypes} from './proptypes';
 
 import './style.scss';
@@ -27,7 +28,7 @@ export class Input extends UIEXComponent {
 	componentDidMount() {
 		const {value} = this.props;
 		if (value) {
-			this.checkValidity();
+			this.checkValidity(value);
 		}
 	}
 
@@ -35,7 +36,7 @@ export class Input extends UIEXComponent {
 		super.componentWillReceiveProps(nextProps);
 		const {value} = this.props;
 		if (nextProps.value != value) {
-			this.checkValidity();
+			this.checkValidity(nextProps.value);
 		}
 	}
 
@@ -155,18 +156,42 @@ export class Input extends UIEXComponent {
 		}
 	}
 
-	checkValidity() {
-		const {value, pattern} = this.props;
-		if (pattern) {
-
+	checkValidity(value) {
+		let {pattern, required, minLength} = this.props;
+		let isValid = true;
+		if (value && pattern instanceof RegExp || typeof pattern == 'function') {
+			if (pattern instanceof RegExp) {
+				isValid = pattern.test(value);
+			} else {
+				isValid = pattern(value);
+			}
+		} else if (!required && !minLength) {
+			return;
+		}
+		if (isValid) {
+			if (value === '' && required) {
+				isValid = false;
+			} else {
+				minLength = getNumber(minLength);
+				value = String(value);
+				if (minLength) {
+					isValid = value.length >= minLength; 
+				}
+			}
+		}
+		if (isValid === false && this.isValid == null) {
+			return;
+		}
+		if (isValid !== this.isValid) {
+			this.fireChangeValidity(isValid, value);
 		}
 	}
 
-	fireChangeValidity(isValid) {
-		const {name, value, onValid} = this.props;
+	fireChangeValidity(isValid, value = undefined) {
+		const {name, onChangeValidity} = this.props;
 		this.isValid = isValid;
-		if (typeof onValid == 'function') {
-			onValid(isValid, value, name);
+		if (typeof onChangeValidity == 'function') {
+			onChangeValidity(isValid, value, name);
 		}
 	}
 
@@ -214,9 +239,11 @@ export class Input extends UIEXComponent {
 		const {onEnter, onChange, name, value, textarea} = this.props;
 		switch (key) {
 			case 'Enter':
-				if (!textarea && typeof onEnter == 'function') {
+				if (!textarea) {
 					this.blur();
-					onEnter(value, name);
+					if (typeof onEnter == 'function') {
+						onEnter(value, name);
+					}
 				}
 			break;
 

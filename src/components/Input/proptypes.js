@@ -19,9 +19,11 @@ export const InputPropTypes = {
 	pattern: PropTypes.oneOfType([
 		PropTypes.object, PropTypes.func
 	]),
+	required: PropTypes.bool,
+	minLength: PROPTYPE.STRNUM,
 	maxLength: PROPTYPE.STRNUM,
 	defaultValue: PROPTYPE.STRNUM,
-	onValid: PropTypes.func,
+	onChangeValidity: PropTypes.func,
 	onChange: PropTypes.func,
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,

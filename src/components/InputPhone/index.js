@@ -1,6 +1,7 @@
 import React from 'react';
 import {Input} from '../Input';
 import {InputPhonePropTypes} from './proptypes';
+import {regexEscape} from '../utils';
 
 import './style.scss';
 
@@ -98,7 +99,7 @@ export class InputPhone extends Input {
 			code = numericCode;
 		}
 		if (withCode && code) {
-			code = code.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+			code = regexEscape(code);
 			if (numeric) {
 				code = code.replace(/[^\d]/g, '');
 			}

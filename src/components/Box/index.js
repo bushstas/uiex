@@ -7,6 +7,7 @@ import './style.scss';
 
 let DEFAULT_STYLE;
 const DEFAULT_SPEED = 'normal';
+const PROP_KEYS = Object.keys(BoxPropTypes);
 
 export class Box extends UIEXComponent {
 	static propTypes = BoxPropTypes;
@@ -23,6 +24,10 @@ export class Box extends UIEXComponent {
 		return DEFAULT_STYLE;
 	}
 
+	getPropKeys() {
+		return PROP_KEYS;
+	}
+
 	getNativeClassName() {
 		return 'box';
 	}
@@ -35,6 +40,8 @@ export class Box extends UIEXComponent {
 			if (effect) {
 				className += ' uiex-effect-' + effect;
 			}
+		} else {
+			className = 'uiex-not-animated';
 		}
 		if (buttonUnder) {
 			className +=  ' uiex-box-button-under';
@@ -47,6 +54,7 @@ export class Box extends UIEXComponent {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		super.componentWillReceiveProps(nextProps);
 		if (nextProps.isOpen != this.props.isOpen) {
 			this.animate(nextProps.isOpen);
 		}
@@ -135,7 +143,6 @@ export class Box extends UIEXComponent {
 	processShowAnimation() {
 		const {outer} = this.refs;
 		const delay = this.getDelay();
-		console.log(delay);
 		switch (this.props.animation) {
 			case 'fall':
 			case 'roll':
@@ -193,7 +200,8 @@ export class Box extends UIEXComponent {
 			speed = DEFAULT_SPEED;
 		}
 		const height = this.getIntHeight();
-		const size = Math.min(10, Math.round(height / 150)) - 1;
+		let size = Math.min(10, Math.round(height / 150)) - 1;
+		size = Math.max(size, 0);
 		switch (speed) {
 			case 'fast':
 				return [1, 1, 2, 2, 3, 3, 4, 4, 5, 5][size];

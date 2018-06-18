@@ -1,12 +1,12 @@
 import React from 'react';
-import {UIEXComponent} from '../../UIEXComponent';
+import {UIEXIcon} from '../../UIEXComponent';
 import {IconPropTypes} from '../proptypes';
 
 import './style.scss';
 
 let DEFAULT_STYLE;
 
-export class LigatureSymbolsIcon extends UIEXComponent {
+export class LigatureSymbolsIcon extends UIEXIcon {
 	static propTypes = IconPropTypes;
 
 	static setDefaultStyle(style) {

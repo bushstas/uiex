@@ -20,3 +20,7 @@ export const getNumberOrNull = (n) => {
 	}
 	return null;
 }
+
+export const regexEscape = (str) => {
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}

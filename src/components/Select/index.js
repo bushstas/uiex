@@ -14,8 +14,6 @@ const INITIAL_STATE = {
 	focused: false,
 	hasOptions: null
 };
-const PROP_KEYS = Object.keys(SelectPropTypes);
-const STATE_KEYS = Object.keys(INITIAL_STATE);
 
 export class Select extends UIEXBoxContainer {
 	static propTypes = SelectPropTypes;
@@ -25,6 +23,8 @@ export class Select extends UIEXBoxContainer {
 		
 		this.state = INITIAL_STATE;
 		this.selectHandler = this.handleSelect.bind(this);
+		this.selectByArrowHandler = this.handleSelectByArrow.bind(this);
+		this.enterHandler = this.handleEnter.bind(this);
 	}
 
 	static setDefaultStyle(style) {
@@ -33,14 +33,6 @@ export class Select extends UIEXBoxContainer {
 
 	static setDefaultProps(props) {
 		Select.defaultProps = props;
-	}
-
-	getPropKeys() {
-		return PROP_KEYS;
-	}
-
-	getStateKeys() {
-		return STATE_KEYS;
 	}
 
 	getDefaultStyle() {
@@ -120,7 +112,6 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	renderInternal() {
-		console.log('render select with name ' + this.props.name)
 		return (
 			<div {...this.getProps()}>
 				{this.renderInput()}
@@ -164,27 +155,33 @@ export class Select extends UIEXBoxContainer {
 		} else if (React.isValidElement(children)) {
 			items.push(children);
 		}
+		if (this.hasEmptyOption()) {
+			items.unshift(
+				<SelectOption 
+					key=""
+					className="uiex-empty-option"
+					value={null} 
+				>
+					{empty === true ? '.....' : empty}
+				</SelectOption>
+			);
+		}
 		return (
 			<PopupMenu 
 				ref="popupMenu"
 				name={name}
 				iconType={iconType}
+				multiple={this.isMultiple()}
 				value={value}
 				isOpen={focused}
 				onSelect={this.selectHandler}
+				onSelectByArrow={this.selectByArrowHandler}
+				onEnter={this.enterHandler}
+				onEscape={this.handleEscape}
 				onCollapse={this.handlePopupCollapse}
-				onCountProperChildren={this.handleCountProperChildren}
-				childFilter={this.filterChild}
+				onMount={this.handlePopupMenuMount}
 				{...this.getBoxProps()}
 			>
-				{empty &&
-					<SelectOption 
-						className="uiex-empty-option"
-						value={null} 
-					>
-						{empty === true ? '.....' : empty}
-					</SelectOption>
-				}
 				{items}
 			</PopupMenu>
 		)
@@ -201,17 +198,19 @@ export class Select extends UIEXBoxContainer {
 			icon = item.icon;
 			iconType = item.iconType;
 		}
-		return (
-			<SelectOption 
-				key={value}
-				className="uiex-select-option"
-				value={value} 
-				icon={icon}
-				iconType={iconType}
-			>
-				{title}
-			</SelectOption>
-		)
+		if (this.filterOption(value)) {
+			return (
+				<SelectOption 
+					key={value}
+					className="uiex-select-option"
+					value={value} 
+					icon={icon}
+					iconType={iconType}
+				>
+					{title}
+				</SelectOption>
+			)
+		}
 	}
 
 	handleClick = (e) => {
@@ -226,7 +225,6 @@ export class Select extends UIEXBoxContainer {
 			} else if (focused && typeof onBlur == 'function') {
 				onBlur(value, name);
 			}
-			window.addEventListener('keydown', this.handleKeyDown, false);
 		} else if (typeof onDisabledClick == 'function') {
 			onDisabledClick(name);
 		}
@@ -236,10 +234,32 @@ export class Select extends UIEXBoxContainer {
 		this.hidePopup();
 	}
 
-	handleSelect(value, title, index) {
-		this.selectedIdx = index;
+	handleEnter() {
 		this.hidePopup();
+	}
+
+	handleEscape = () => {
+		this.hidePopup();
+		this.fireChange(this.valueBeforeFocus);
+	}
+
+	handleSelect(value) {
+		if (!this.props.multiple) {
+			this.hidePopup();
+		}
+		this.handleSelectByArrow(value);
+	}
+
+	handleSelectByArrow(value) {
 		this.fireChange(value);
+	}
+
+	handlePopupMenuMount = (count) => {
+		const {hasOptions} = this.state;
+		const nextHasOptions = count > 0;
+		if (hasOptions !== nextHasOptions) {
+			this.setState({hasOptions: nextHasOptions});
+		}
 	}
 
 	fireChange(value) {
@@ -249,12 +269,7 @@ export class Select extends UIEXBoxContainer {
 		}
 	}
 
-	fireSelect(value) {
-		this.fireChange(value);
-	}
-
 	hidePopup = () => {
-		window.removeEventListener('keydown', this.handleKeyDown, false);
 		this.setState({focused: false});
 		const {value, name, onBlur} = this.props;
 		if (typeof onBlur == 'function') {
@@ -262,85 +277,20 @@ export class Select extends UIEXBoxContainer {
 		}
 	}
 
-	handleKeyDown = (e) => {
-		const {key} = e;
-		if (key == 'Enter') {
-			return this.hidePopup();
-		} else if (key == 'Escape') {
-			this.hidePopup();
-			return this.fireChange(this.valueBeforeFocus);
-		} else if (key == 'ArrowDown' || key == 'ArrowUp') {
-			let properChildrenCount = 0;
-			if (this.refs.popupMenu) {
-				properChildrenCount = this.refs.popupMenu.properChildrenCount;
-			}
-			let {options, empty, children} = this.props;
-			if (typeof this.selectedIdx == 'undefined') {
-				this.selectedIdx = empty ? 0 : -1;
-			}
-			let idx = this.selectedIdx;
-			if (key == 'ArrowDown') {
-				if (this.selectedIdx + 1 < properChildrenCount) {
-					idx = this.selectedIdx + 1;
-				} else {
-					idx = 0;
-				}
-			} else {
-				if (this.selectedIdx - 1 >= 0) {
-					idx = this.selectedIdx - 1;
-				} else {
-					idx = properChildrenCount - 1;
-				}
-			}
-			this.selectedIdx = idx;
-			if (empty && idx == 0) {
-				return this.fireChange(null);
-			}
-			if (empty) {
-				idx--;
-			}
-			if (options instanceof Array && typeof options[idx] != 'undefined') {
-				let value;
-				if (options[idx] instanceof Object) {
-					value = options[idx].value;
-				} else if (typeof options[idx] == 'string') {
-					value = options[idx];
-				}
-				return this.fireSelect(value);
-			}
-			if (children) {
-				if (!(children instanceof Array)) {
-					children = [children];
-				}
-				let n = options instanceof Array ? options.length : 0;
-				for (let child of children) {
-					if (this.isProperChild(child) && idx == n) {
-						return this.fireSelect(child.props.value);
-					}
-					n++;
-				}
-			}
-		}
-	}
-
-	handleCountProperChildren = (count) => {
-		const {hasOptions} = this.state;
-		const nextHasOptions = count > 0;
-		if (hasOptions !== nextHasOptions) {
-			this.setState({hasOptions: nextHasOptions});
-		}
+	hasEmptyOption() {
+		return this.props.empty;
 	}
 
 	isFocused() {
 		return !this.state.focused;
 	}
 
-	filterChild = () => {
-		return true;
+	isMultiple() {
+		return this.props.multiple;
 	}
 
-	getBoxProps() {
-		return super.getBoxProps();
+	filterOption = () => {
+		return true;
 	}
 }
 

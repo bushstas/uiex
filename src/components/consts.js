@@ -19,6 +19,16 @@ export const PROPTYPE = {
 		PropTypes.string,
 		PropTypes.number
 	]),
+	STRNUMS: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
+		PropTypes.arrayOf(
+			PropTypes.oneOfType([
+				PropTypes.string,
+				PropTypes.number
+			])
+		)
+	]),
 	STRBOOL:PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.bool

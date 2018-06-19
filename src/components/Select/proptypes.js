@@ -5,10 +5,11 @@ import {PROPTYPE} from '../consts';
 export const SelectPropTypes = {
 	...BoxContainerPropTypes,
 	name: PropTypes.string,
-	value: PROPTYPE.STRNUM,
+	value: PROPTYPE.STRNUMS,
 	options: PROPTYPE.SELECT_OPTIONS,
 	placeholder: PropTypes.string,
 	empty: PROPTYPE.STRBOOL,
+	multiple: PropTypes.bool,
 	iconType: PROPTYPE.ICON_TYPES,
 	onChange: PropTypes.func,
 	onFocus: PropTypes.func,

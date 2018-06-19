@@ -4,6 +4,7 @@ import {PROPTYPE} from '../consts';
 
 export const AutoCompletePropTypes = {
 	...SelectPropTypes,
+	dynamic: PropTypes.bool,
 	onInput: PropTypes.func,
 	onSelect: PropTypes.func
 }

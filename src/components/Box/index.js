@@ -7,7 +7,6 @@ import './style.scss';
 
 let DEFAULT_STYLE;
 const DEFAULT_SPEED = 'normal';
-const PROP_KEYS = Object.keys(BoxPropTypes);
 
 export class Box extends UIEXComponent {
 	static propTypes = BoxPropTypes;
@@ -22,10 +21,6 @@ export class Box extends UIEXComponent {
 
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
-	}
-
-	getPropKeys() {
-		return PROP_KEYS;
 	}
 
 	getNativeClassName() {

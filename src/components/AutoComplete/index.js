@@ -8,7 +8,6 @@ import {AutoCompletePropTypes} from './proptypes';
 import './style.scss';
 
 let DEFAULT_STYLE;
-const PROP_KEYS = Object.keys(AutoCompletePropTypes);
 
 export class AutoComplete extends Select {
 	static propTypes = AutoCompletePropTypes;
@@ -23,10 +22,6 @@ export class AutoComplete extends Select {
 
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
-	}
-
-	getPropKeys() {
-		return PROP_KEYS;
 	}
 
 	getNativeClassName() {
@@ -63,6 +58,7 @@ export class AutoComplete extends Select {
 	}
 
 	handleInputValueChange = (value) => {
+		this.inputedValue = value;
 		const {name, onChange, onInput} = this.props;
 		if (typeof onChange == 'function') {
 			onChange(value, name);
@@ -70,23 +66,29 @@ export class AutoComplete extends Select {
 		if (typeof onInput == 'function') {
 			onInput(value, name);
 		}
-		this.selected = false;
-		this.inputed = true;
 	}
 
 	handleSelect(value) {
+		this.inputedValue = '';
 		super.handleSelect(value);
+		this.fireSelect(value);
+	}
+
+	handleEnter(value) {
+		this.inputedValue = '';
+		super.handleEnter();
+	}
+
+	handleSelectByArrow(value) {
+		super.handleSelectByArrow(value);
+		this.fireSelect(value);
+	}
+
+	fireSelect(value) {
 		const {name, onSelect} = this.props;
 		if (typeof onSelect == 'function') {
 			onSelect(value, name);
 		}
-		this.selected = true;
-		this.inputed = false;
-	}
-
-	fireSelect(value) {
-		this.selected = true;
-		super.fireSelect(value);
 	}
 
 	handleIconClick = (e) => {
@@ -97,21 +99,24 @@ export class AutoComplete extends Select {
 		input.focus();
 	}
 
-	filterChild = (child) => {
-		const {value} = this.props;
-		if (!value || !this.inputed) {
+	filterOption = (optionValue) => {
+		if (!this.inputedValue) {
 			return true;
 		}
-		const {value: childValue} = child.props;
-		const regex = new RegExp('^' + regexEscape(value), 'i');
-		if (typeof childValue == 'string') {
-			return regex.test(childValue);
-		}
+		const regexp = new RegExp('^' + regexEscape(this.inputedValue), 'i');		
+		return regexp.test(optionValue);
+	}
+
+	hasEmptyOption() {
 		return false;
 	}
 
 	isFocused() {
 		return true;
+	}
+
+	isMultiple() {
+		return false;
 	}
 
 	getBoxProps() {

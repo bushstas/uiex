@@ -12,7 +12,7 @@ import {IcomoonIcon} from './IcomoonIcon';
 
 import './style.scss';
 
-export class Icon extends React.Component {
+export class Icon extends React.PureComponent {
 	
 	static setDefaultStyle(style) {
 		MaterialIcon.setDefaultStyle(style);

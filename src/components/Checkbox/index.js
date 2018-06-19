@@ -14,7 +14,6 @@ let DEFAULT_MARKER_STYLE;
 let MARKER_STYLE_CHANGED = true;
 let DEFAULT_ICON;
 let DEFAULT_ICON_TYPE;
-const PROP_KEYS = Object.keys(CheckboxPropTypes);
 
 export class Checkbox extends UIEXComponent {
 	static propTypes = CheckboxPropTypes;
@@ -49,10 +48,6 @@ export class Checkbox extends UIEXComponent {
 
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
-	}
-
-	getPropKeys() {
-		return PROP_KEYS;
 	}
 
 	getNativeClassName() {

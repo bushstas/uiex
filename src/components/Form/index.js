@@ -11,7 +11,6 @@ import './style.scss';
 
 let DEFAULT_STYLE;
 const DEFAULT_LINE_MARGIN = 15;
-const PROP_KEYS = Object.keys(FormPropTypes);
 
 export class Form extends UIEXComponent {
 	static propTypes = FormPropTypes;
@@ -26,10 +25,6 @@ export class Form extends UIEXComponent {
 
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
-	}
-
-	getPropKeys() {
-		return PROP_KEYS;
 	}
 
 	getNativeClassName() {

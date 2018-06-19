@@ -6,7 +6,6 @@ import {ButtonPropTypes} from './proptypes';
 import './style.scss';
 
 let DEFAULT_STYLE;
-const PROP_KEYS = Object.keys(ButtonPropTypes);
 
 export class Button extends UIEXComponent {
 	static propTypes = ButtonPropTypes;
@@ -21,10 +20,6 @@ export class Button extends UIEXComponent {
 
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
-	}
-
-	getPropKeys() {
-		return PROP_KEYS;
 	}
 
 	getNativeClassName() {

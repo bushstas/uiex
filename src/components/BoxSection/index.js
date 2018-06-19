@@ -8,9 +8,6 @@ import './style.scss';
 
 let DEFAULT_STYLE;
 
-const PROP_KEYS = Object.keys(BoxSectionPropTypes);
-const STATE_KEYS = ['isOpen'];
-
 export class BoxSection extends UIEXComponent {
 	static propTypes = BoxSectionPropTypes;
 
@@ -32,14 +29,6 @@ export class BoxSection extends UIEXComponent {
 
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
-	}
-
-	getPropKeys() {
-		return PROP_KEYS;
-	}
-
-	getStateKeys() {
-		return STATE_KEYS;
 	}
 
 	getNativeClassName() {

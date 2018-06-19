@@ -1,4 +1,13 @@
-
+.uiex-scrollable {
+	&::-webkit-scrollbar {
+		width: 7px;
+		height: 7px;
+		background-color: #ccc;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: #888; 
+	}
+}
 .bggreen {
 	background-color: #53bb44;
 }

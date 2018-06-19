@@ -15,15 +15,34 @@
 	&.uiex-shown {
 		visibility: visible;
 	}
+	&.uiex-multiple {
+		.uiex-popup-menu-item {
+			&.uiex-selected {
+				background-color: #e8f3d8;
+				color: #1e3300;
+				&:hover {
+					background-color: #daecbf;
+				}
+				.uiex-icon {
+					color: green;
+				}
+			}
+		}
+	}
 	.uiex-box {
 		margin-bottom: 0;
 	}
 }
 .uiex-popup-menu-item {
-	padding: 10px 12px;
+	padding: 0 12px;
 	color: #555;
-	line-height: 15px;
+	height: 35px;
 	font-size: 15px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: flex;
+	align-items: center;
 
 	&.uiex-empty-item {
 		color: #aaa;
@@ -36,9 +55,7 @@
 		background-color: #f1f1f1;
 		color: #000;
 	}
-	&.uiex-with-icon {
-		display: flex;
-		align-items: center;
+	&.uiex-with-icon {		
 		padding-left: 8px;
 		.uiex-icon {
 			margin-right: 5px;

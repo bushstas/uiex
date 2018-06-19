@@ -10,7 +10,6 @@ import './style.scss';
 
 let DEFAULT_STYLE;
 const NEW_TAB_CAPTION = 'New tab';
-const PROP_KEYS = Object.keys(TabsPropTypes);
 
 export class Tabs extends UIEXButtons {
 	static propTypes = TabsPropTypes
@@ -27,10 +26,6 @@ export class Tabs extends UIEXButtons {
 		return DEFAULT_STYLE;
 	}
 
-	getPropKeys() {
-		return PROP_KEYS;
-	}
-	
 	getNativeClassName() {
 		return 'tabs';
 	}

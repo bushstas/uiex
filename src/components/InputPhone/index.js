@@ -1,7 +1,7 @@
 import React from 'react';
 import {Input} from '../Input';
-import {InputPhonePropTypes} from './proptypes';
 import {regexEscape} from '../utils';
+import {InputPhonePropTypes} from './proptypes';
 
 import './style.scss';
 

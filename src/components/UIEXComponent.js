@@ -101,30 +101,7 @@ const addObject = (obj1, obj2) => {
 	return obj2;
 }
 
-export class UIEXComponent extends React.Component {
-	shouldComponentUpdate(nextProps, nextState) {
-		const propKeys = this.getPropKeys();
-		const stateKeys = this.getStateKeys();
-		
-		if (!propKeys && !stateKeys) {
-			return true;
-		}
-		if (stateKeys) {
-			for (let k of stateKeys) {
-				if (this.state[k] !== nextState[k]) {
-					return true;
-				}
-			}
-		}
-		if (propKeys) {
-			for (let k of propKeys) {
-				if (this.props[k] !== nextProps[k]) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+export class UIEXComponent extends React.PureComponent {
 
 	componentWillReceiveProps(nextProps) {
 		const {width, height, fontSize, style} = nextProps;
@@ -136,8 +113,24 @@ export class UIEXComponent extends React.Component {
 		);
 	}
 
+	componentDidMount() {
+		this.handleMount();
+	}
+
+	componentDidUpdate() {
+		this.handleMount();
+	}
+
+	handleMount() {
+		const {onMount} = this.props;
+		if (typeof onMount == 'function') {
+			onMount(this.properChildrenCount);
+		}
+	}
+
 	renderChildren() {
 		this.properChildrenCount = 0;
+		this.currentProperChildIdx = -1;
 		return this.doRenderChildren(this.props.children);
 	}
 	
@@ -166,9 +159,7 @@ export class UIEXComponent extends React.Component {
 					key: idx
 				};
 				if (isProperChild) {
-					if (!this.isToRender(child)) {
-						return null;
-					}
+					this.currentProperChildIdx++;
 					this.properChildrenCount++;
 					const {
 						disabled,
@@ -185,7 +176,7 @@ export class UIEXComponent extends React.Component {
 					if (arr instanceof Array) {
 						isLast = idx == arr.length - 1;
 					}
-					this.addChildProps(child, props, idx, isLast);
+					this.addChildProps(child, props, this.currentProperChildIdx, isLast);
 				}
 				const children = isProperChild ? child.props.children : this.doRenderChildren(child.props.children);
 				child = React.cloneElement(child, props, children);
@@ -241,12 +232,7 @@ export class UIEXComponent extends React.Component {
 
 	render() {
 		this.initRendering();
-		const renderedChildren = this.props.hidden ? null : this.renderInternal();
-		if (typeof this.props.onCountProperChildren == 'function') {
-			window.clearTimeout(this.timeout);
-			this.timeout = window.setTimeout(() => this.props.onCountProperChildren(this.properChildrenCount || 0), 0);
-		}
-		return renderedChildren;
+		return this.props.hidden ? null : this.renderInternal();
 	}
 
 	getCustomProps() {
@@ -279,14 +265,6 @@ export class UIEXComponent extends React.Component {
 
 	isProperChild() {
 		return false;
-	}
-
-	isToRender(child) {
-		const {childFilter} = this.props;
-		if (typeof childFilter == 'function') {
-			return childFilter(child);
-		}
-		return true;
 	}
 
 	canHaveOnlyProperChildren() {
@@ -331,8 +309,6 @@ export class UIEXComponent extends React.Component {
 
 	initRendering() {}
 	addChildProps() {}
-	getPropKeys() {}
-	getStateKeys() {}
 }
 
 

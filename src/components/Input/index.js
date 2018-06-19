@@ -53,7 +53,7 @@ export class Input extends UIEXComponent {
 	}
 
 	getClassNames() {
-		const {textarea, readOnly, clearable, valid, invalid} = this.props;
+		const {textarea, readOnly, clearable, valid, invalid, value} = this.props;
 		let className = '';
 		if (textarea) {
 			className += ' uiex-textarea';
@@ -61,7 +61,7 @@ export class Input extends UIEXComponent {
 		if (readOnly) {
 			className += ' uiex-readonly';
 		}
-		if (clearable) {
+		if (value && clearable) {
 			className += ' uiex-clearable';
 		}
 		if (valid) {
@@ -77,7 +77,7 @@ export class Input extends UIEXComponent {
 		return (
 			<div {...this.getProps()}>
 				{this.renderInput()}
-				{this.props.clearable && this.renderClearButton()}
+				{this.renderClearButton()}
 				{this.renderAdditionalContent()}
 			</div>
 		)
@@ -121,14 +121,17 @@ export class Input extends UIEXComponent {
 	}
 
 	renderClearButton() {
-		return (
-			<div 
-				className="uiex-input-clear"
-				onClick={this.handleClear}
-			>
-				<Icon name="clear"/>
-			</div>
-		)
+		const {value, clearable} = this.props;
+		if (value && clearable) {
+			return (
+				<div 
+					className="uiex-input-clear"
+					onClick={this.handleClear}
+				>
+					<Icon name="clear"/>
+				</div>
+			)
+		}
 	}
 
 	handleMouseDown = (e) => {

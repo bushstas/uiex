@@ -7,9 +7,12 @@ import {PROPTYPE} from '../consts';
 export const PopupMenuPropTypes = {
 	...BoxContainerPropTypes,
 	...PopupPropTypes,
-	value: PROPTYPE.STRNUM,
+	value: PROPTYPE.STRNUMS,
+	multiple: PropTypes.bool,
 	iconType: PROPTYPE.ICON_TYPES,
-	onSelect: PropTypes.func
+	onChange: PropTypes.func,
+	onSelect: PropTypes.func,
+	onSelectByArrow: PropTypes.func	
 }
 
 export const PopupMenuItemPropTypes = {

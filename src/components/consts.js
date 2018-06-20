@@ -73,5 +73,14 @@ export const PROPTYPE = {
 				PropTypes.number
 			])
 		)
+	]),
+	CHECKBOX_GROUP_VALUE: PropTypes.oneOfType([
+		PropTypes.arrayOf(
+			PropTypes.oneOfType([
+				PropTypes.string,
+				PropTypes.number
+			])
+		),
+		PropTypes.objectOf(PropTypes.bool)
 	])
 }

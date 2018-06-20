@@ -1,7 +1,5 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
-import {FormControl} from '../FormControl';
-import {FormControlGroup} from '../FormControlGroup';
 import {ButtonGroup} from '../ButtonGroup';
 import {Button} from '../Button';
 import {getNumber} from '../utils';
@@ -32,19 +30,19 @@ export class Form extends UIEXComponent {
 	}
 
 	isProperChild(child) {
-		return child == FormControl ||
-			   child == FormControlGroup;
+		return child.name == 'FormControl' || child.name == 'FormControlGroup';
 	}
 
 	addChildProps(child, props) {
-		switch (child.type) {
-			case FormControl:
+		const {type: control} = child;
+		switch (control.name) {
+			case 'FormControl':
 				if (typeof child.props.onChange != 'function') {
 					props.onChange = this.handleChange;
 				}
 			break;
 
-			case FormControlGroup:
+			case 'FormControlGroup':
 				let {lineMargin = DEFAULT_LINE_MARGIN, columns, controlSize} = this.props;
 				lineMargin = getNumber(lineMargin);
 				if (lineMargin) {

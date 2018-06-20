@@ -1,6 +1,5 @@
 import React from 'react';
 import {UIEXButtons} from '../UIEXComponent';
-import {Button} from '../Button';
 import {ButtonGroupPropTypes} from './proptypes';
 
 import './style.scss';
@@ -27,7 +26,7 @@ export class ButtonGroup extends UIEXButtons {
 	}
 
 	isProperChild(child) {
-		return child == Button;
+		return child.name == 'Button';
 	}
 
 	addChildProps(child, props) {

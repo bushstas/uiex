@@ -11,6 +11,7 @@ let DEFAULT_STYLE;
 
 export class AutoComplete extends Select {
 	static propTypes = AutoCompletePropTypes;
+	static isControl = true;
 
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;

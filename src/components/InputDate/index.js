@@ -7,6 +7,7 @@ import './style.scss';
 
 export class InputDate extends Input {
 	static propTypes = InputDatePropTypes;
+	static isControl = true;
 
 	getClassNames() {
 		const {code} = this.props;

@@ -18,6 +18,7 @@ export const PopupMenuPropTypes = {
 export const PopupMenuItemPropTypes = {
 	...UIEXComponentPropTypes,
 	selected: PropTypes.bool,
+	checked: PropTypes.bool,
 	children: PropTypes.string,
 	icon: PropTypes.string,
 	iconType: PROPTYPE.ICON_TYPES,

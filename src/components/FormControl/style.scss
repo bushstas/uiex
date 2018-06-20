@@ -10,12 +10,18 @@
 		font-size: 14px;
 		display: inline-block;
 	}
-
-	.uiex-checkbox,
-	.uiex-select,
-	.uiex-input {
-		width: 100% !important;
-		display: block !important;
+	.uiex-form-control-content {
+		& > .uiex-control {
+			width: 100% !important;
+			display: block !important;
+		}
 	}
-
+}
+.uiex-control {
+	display: inline-block;
+	min-width: 60px;
+	box-sizing: border-box;
+    position: relative;
+    white-space: normal;
+    word-break: break-all;
 }

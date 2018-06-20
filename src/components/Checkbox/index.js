@@ -12,11 +12,10 @@ let DEFAULT_LABEL_STYLE;
 let LABEL_STYLE_CHANGED = true;
 let DEFAULT_MARKER_STYLE;
 let MARKER_STYLE_CHANGED = true;
-let DEFAULT_ICON;
-let DEFAULT_ICON_TYPE;
 
 export class Checkbox extends UIEXComponent {
 	static propTypes = CheckboxPropTypes;
+	static isControl = true;
 
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;
@@ -38,14 +37,6 @@ export class Checkbox extends UIEXComponent {
 		DEFAULT_MARKER_STYLE = style;
 	}
 
-	static setDefaultIcon(icon) {
-		DEFAULT_ICON = icon;
-	}
-
-	static setDefaultIconType(type) {
-		DEFAULT_ICON_TYPE = type;
-	}
-
 	getDefaultStyle() {
 		return DEFAULT_STYLE;
 	}
@@ -55,10 +46,13 @@ export class Checkbox extends UIEXComponent {
 	}
 
 	getClassNames() {
-		let {checked, icon = DEFAULT_ICON} = this.props;
-		let className = '';
+		let {checked, icon, multiline} = this.props;
+		let className = 'uiex-control';
 		if (icon) {
-			className = 'uiex-with-icon';
+			className += ' uiex-with-icon';
+		}
+		if (multiline) {
+			className += ' uiex-multilined';
 		}
 		if (checked) {
 			className += ' uiex-checked';
@@ -110,8 +104,8 @@ export class Checkbox extends UIEXComponent {
 	}
 
 	renderInternal() {
-		const {children, iconType = DEFAULT_ICON_TYPE} = this.props;
-		let {icon = DEFAULT_ICON} = this.props;
+		const {children, iconType} = this.props;
+		let {icon} = this.props;
 		if (icon && typeof icon != 'string') {
 			icon = 'check';
 		}

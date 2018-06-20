@@ -10,12 +10,7 @@ let DEFAULT_STYLE;
 
 export class Input extends UIEXComponent {
 	static propTypes = InputPropTypes;
-
-	constructor(props) {
-		super(props);
-		this.handleKeyUp = this.keyUpHandler.bind(this);
-		this.isValid = null;
-	}
+	static isControl = true;
 
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;
@@ -23,6 +18,12 @@ export class Input extends UIEXComponent {
 
 	static setDefaultProps(props) {
 		Input.defaultProps = props;
+	}
+
+	constructor(props) {
+		super(props);
+		this.handleKeyUp = this.keyUpHandler.bind(this);
+		this.isValid = null;
 	}
 
 	componentDidMount() {
@@ -54,7 +55,7 @@ export class Input extends UIEXComponent {
 
 	getClassNames() {
 		const {textarea, readOnly, clearable, valid, invalid, value} = this.props;
-		let className = '';
+		let className = 'uiex-control';
 		if (textarea) {
 			className += ' uiex-textarea';
 		}

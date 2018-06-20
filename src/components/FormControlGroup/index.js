@@ -1,6 +1,5 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
-import {FormControl} from '../FormControl';
 import {getNumber} from '../utils';
 import {FormControlGroupPropTypes} from './proptypes';
 
@@ -9,6 +8,7 @@ import './style.scss';
 let DEFAULT_STYLE;
 const DEFAULT_COLUMNS = 10;
 const DEFAULT_SIDE_MARGIN = 12;
+const EXPECTED_CHILD = 'FormControl';
 
 export class FormControlGroup extends UIEXComponent {
 	static propTypes = FormControlGroupPropTypes;
@@ -30,19 +30,19 @@ export class FormControlGroup extends UIEXComponent {
 	}
 
 	isProperChild(child) {
-		return child == FormControl;
+		return child.name == EXPECTED_CHILD;
 	}
 
 	canHaveOnlyProperChildren() {
 		return true;
 	}
 
-	getDisplayName() {
-		return 'FormControlGroup';
+	getExpectedChildren() {
+		return EXPECTED_CHILD;
 	}
 
-	getExpectedChildren() {
-		return 'FormControl';
+	initRendering() {
+		this.totalControlSize = 0;
 	}
 
 	getCustomStyle() {
@@ -55,43 +55,41 @@ export class FormControlGroup extends UIEXComponent {
 		return style;
 	}
 
-	addChildProps(child, props, idx, isLast) {
-		switch (child.type) {
-			case FormControl:
-				let {columns, sideMargin, controlSize} = this.props;
-				columns = getNumber(columns, DEFAULT_COLUMNS);				
-				let {size, shift} = child.props;
-				if (typeof size == 'undefined') {
-					size = controlSize;
-				}
-				size = getNumber(size);
-				shift = getNumber(shift);
-				if (size) {
-					props.width = (size * 100 / columns).toFixed(2) + '%';
-				}
-				
-				if (typeof sideMargin == 'undefined') {
-					sideMargin = getNumber(sideMargin, DEFAULT_SIDE_MARGIN);
-				} else {
-					sideMargin = getNumber(sideMargin);
-				}
-				let halfOfSideMargin = sideMargin / 2;
-				if (sideMargin) {
-					if (idx > 0) {
-						props.leftPadding = halfOfSideMargin;
-					}
-					if (!isLast) {
-						props.rightPadding = halfOfSideMargin;
-					}
-				}
-				if (shift) {
-					props.leftMargin = shift * 100 / columns + '%';
-				}
-				const {onChange} = child.props;
-				if (typeof onChange != 'function') {
-					props.onChange = this.props.onChange;
-				}
-			break;
+	addChildProps(child, props, idx) {		
+		let {columns, sideMargin, controlSize} = this.props;
+		columns = getNumber(columns, DEFAULT_COLUMNS);				
+		let {size, shift} = child.props;
+		if (typeof size == 'undefined') {
+			size = controlSize;
 		}
+		size = getNumber(size);
+		shift = getNumber(shift);
+		if (size) {
+			props.width = (size * 100 / columns).toFixed(2) + '%';
+			this.totalControlSize += size;
+		}
+		
+		if (typeof sideMargin == 'undefined') {
+			sideMargin = getNumber(sideMargin, DEFAULT_SIDE_MARGIN);
+		} else {
+			sideMargin = getNumber(sideMargin);
+		}
+		let halfOfSideMargin = sideMargin / 2;
+		const isLast = this.totalControlSize === columns;
+		if (sideMargin) {
+			if (idx > 0) {
+				props.leftPadding = halfOfSideMargin;
+			}
+			if (!isLast) {
+				props.rightPadding = halfOfSideMargin;
+			}
+		}
+		if (shift) {
+			props.leftMargin = shift * 100 / columns + '%';
+		}
+		const {onChange} = child.props;
+		if (typeof onChange != 'function') {
+			props.onChange = this.props.onChange;
+		}		
 	}
 }

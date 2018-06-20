@@ -34,7 +34,8 @@ export class PopupMenu extends Popup {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isOpen: props.isOpen
+			isOpen: props.isOpen,
+			currentSelected: -1
 		}
 		if (props.isOpen) {
 			this.addKeydownHandler();
@@ -107,12 +108,15 @@ export class PopupMenu extends Popup {
 	}
 
 	isProperChild(child) {
-		return child == PopupMenuItem ||
-			   child == SelectOption;
+		return child.name == 'PopupMenuItem' || child.name == 'SelectOption';
 	}
 
 	canHaveOnlyProperChildren() {
 		return true;
+	}
+
+	getExpectedChildren() {
+		return ['PopupMenuItem', 'SelectOption'];
 	}
 
 	initRendering() {
@@ -121,38 +125,41 @@ export class PopupMenu extends Popup {
 	}
 
 	addChildProps(child, props, idx, isLast) {
-		switch (child.type) {
-			case PopupMenuItem:
-			case SelectOption:
-				const {value: currentValue = '', multiple} = this.props;
-				const {onSelect, value, iconType} = child.props;
-				if (currentValue instanceof Array && multiple) {
-					const index = currentValue.indexOf(value);
-					if (index > -1) {
-						props.selected = true;
-						if (index == value.length - 1) {
-							props.ref = 'selected';
-							this.selectedIdx = idx;
-						}
-					}
-				} else if (value == currentValue) {
-					props.selected = true;
-					props.ref = 'selected';
-					this.selectedIdx = idx;
-				}
-				if (multiple && props.selected) {
-					props.icon = 'check';
-					props.iconType = 'Material';
-				}
-				if (!iconType) {
-					props.iconType = this.props.iconType;
-				}
-				if (typeof onSelect != 'function') {
-					props.onSelect = this.handleSelect;
-				}
-				this.itemValues.push(value);
-			break;
+		let {value: currentValue = '', multiple} = this.props;
+		const {currentSelected} = this.state;
+		const {onSelect, value, iconType} = child.props;
+		if (multiple) {
+			props.checked = false;
+			if (currentValue instanceof Array) {
+				props.checked = currentValue.indexOf(value) > -1;
+			} else {
+				props.checked = value && value == currentValue;
+			}
+			if (idx == currentSelected) {
+				props.selected = true;
+				props.ref = 'selected';
+			}
+		} else {
+			if (currentValue instanceof Array) {
+				currentValue = currentValue[0];
+			}
+			if (value == currentValue) {
+				props.selected = true;
+				props.ref = 'selected';
+				this.selectedIdx = idx;
+			}
 		}
+		if (props.checked) {
+			props.icon = 'check';
+			props.iconType = 'Material';
+		}
+		if (!iconType) {
+			props.iconType = this.props.iconType;
+		}
+		if (typeof onSelect != 'function') {
+			props.onSelect = this.handleSelectByClick;
+		}
+		this.itemValues.push(value);
 	}
 
 	renderInternal() {
@@ -176,9 +183,16 @@ export class PopupMenu extends Popup {
 	}
 
 	handleEnter() {
-		const {onEnter} = this.props;
-		if (typeof onEnter == 'function') {
-			onEnter();
+		const {onEnter, multiple} = this.props;
+		if (!multiple) {
+			if (typeof onEnter == 'function') {
+				onEnter();
+			}
+		} else {
+			const value = this.itemValues[this.state.currentSelected];
+			if (typeof value != 'undefined') {
+				this.handleSelect(value);
+			}
 		}
 	}
 
@@ -191,7 +205,7 @@ export class PopupMenu extends Popup {
 
 	handleSelect = (value) => {
 		const {onSelect, value: currentValue, multiple} = this.props;
-		if (multiple && currentValue) {		
+		if (multiple && currentValue && value) {
 			if (!(currentValue instanceof Array)) {
 				if (currentValue === value) {
 					value = '';
@@ -212,6 +226,14 @@ export class PopupMenu extends Popup {
 			onSelect(value);
 		}
 		this.fireChange(value);
+	}
+
+	handleSelectByClick = (value) => {
+		const currentSelected = this.itemValues.indexOf(value);
+		if (this.state.currentSelected > -1) {
+			this.setState({currentSelected});
+		}
+		this.handleSelect(value);
 	}
 
 	handleSelectByArrow(value) {
@@ -239,24 +261,35 @@ export class PopupMenu extends Popup {
 		
 			case 'ArrowDown':
 			case 'ArrowUp':
+				e.preventDefault();
 				if (this.itemValues.length == 0) {
 					return;
 				}
-				let idx = this.selectedIdx;
+				let idx;
+				const {multiple} = this.props;
+				if (!multiple) {
+					idx = this.selectedIdx;
+				} else {
+					idx = this.state.currentSelected; 
+				}
 				if (e.key == 'ArrowDown') {
-					if (this.selectedIdx + 1 < this.properChildrenCount) {
-						idx = this.selectedIdx + 1;
+					if (idx + 1 < this.properChildrenCount) {
+						idx += 1;
 					} else {
 						idx = 0;
 					}
 				} else {
-					if (this.selectedIdx - 1 >= 0) {
-						idx = this.selectedIdx - 1;
+					if (idx - 1 >= 0) {
+						idx -= 1;
 					} else {
 						idx = this.properChildrenCount - 1;
 					}
-				}				
-				return this.handleSelectByArrow(this.itemValues[idx]);				
+				}
+				if (!multiple) {
+					return this.handleSelectByArrow(this.itemValues[idx]);
+				} else {
+					this.setState({currentSelected: idx});
+				}
 			break;
 		}		
 	}
@@ -270,10 +303,13 @@ export class PopupMenuItem extends UIEXComponent {
 	}
 
 	getClassNames() {
-		const {selected, icon} = this.props;
+		const {selected, checked, icon} = this.props;
 		let classNames = '';
 		if (selected) {
 			classNames += ' uiex-selected';
+		}
+		if (checked) {
+			classNames += ' uiex-checked';
 		}
 		if (icon) {
 			classNames += ' uiex-with-icon';

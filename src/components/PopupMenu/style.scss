@@ -17,11 +17,14 @@
 	}
 	&.uiex-multiple {
 		.uiex-popup-menu-item {
-			&.uiex-selected {
+			&.uiex-checked {
 				background-color: #e8f3d8;
 				color: #1e3300;
 				&:hover {
 					background-color: #daecbf;
+				}
+				&.uiex-selected {
+					background-color: #bfde9b;
 				}
 				.uiex-icon {
 					color: green;

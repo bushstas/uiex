@@ -7,6 +7,7 @@ import './style.scss';
 
 export class InputPhone extends Input {
 	static propTypes = InputPhonePropTypes;
+	static isControl = true;
 
 	getClassNames() {
 		const {code} = this.props;

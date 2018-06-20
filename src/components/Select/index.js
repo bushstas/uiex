@@ -17,15 +17,7 @@ const INITIAL_STATE = {
 
 export class Select extends UIEXBoxContainer {
 	static propTypes = SelectPropTypes;
-
-	constructor(props) {
-		super(props);		
-		
-		this.state = INITIAL_STATE;
-		this.selectHandler = this.handleSelect.bind(this);
-		this.selectByArrowHandler = this.handleSelectByArrow.bind(this);
-		this.enterHandler = this.handleEnter.bind(this);
-	}
+	static isControl = true;
 
 	static setDefaultStyle(style) {
 		DEFAULT_STYLE = style;
@@ -33,6 +25,15 @@ export class Select extends UIEXBoxContainer {
 
 	static setDefaultProps(props) {
 		Select.defaultProps = props;
+	}
+
+	constructor(props) {
+		super(props);
+		
+		this.state = INITIAL_STATE;
+		this.selectHandler = this.handleSelect.bind(this);
+		this.selectByArrowHandler = this.handleSelectByArrow.bind(this);
+		this.enterHandler = this.handleEnter.bind(this);
 	}
 
 	getDefaultStyle() {
@@ -59,6 +60,9 @@ export class Select extends UIEXBoxContainer {
 		let i = 0;
 		const start = empty ? 1 : 0;
 		if (value) {
+			if (value instanceof Array) {
+				value = value[0];
+			}
 			if (options instanceof Array) {
 				for (let item of options) {
 					if (item instanceof Object) {
@@ -87,8 +91,9 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	getClassNames() {
-		const {focused, disabled, hasOptions} = this.state;
-		let className = '';
+		const {focused, hasOptions} = this.state;
+		const {disabled, value} = this.props;
+		let className = 'uiex-control';
 		if (focused) {
 			className += ' uiex-select-focused';
 		}
@@ -98,11 +103,14 @@ export class Select extends UIEXBoxContainer {
 		if (!hasOptions) {
 			className += ' uiex-without-options';
 		}
+		if (this.isMultiple() && value instanceof Array && value.length > 1) {
+			className += ' uiex-multi-valued';
+		}
 		return className;
 	}
 
 	isProperChild(child) {
-		return React.isValidElement(child) && child.type == SelectOption;
+		return typeof child == 'function' && child.name == 'SelectOption';
 	}
 
 	getCustomProps() {
@@ -117,6 +125,7 @@ export class Select extends UIEXBoxContainer {
 				{this.renderInput()}
 				{this.renderOptions()}
 				{this.renderArrowIcon()}
+				{this.renderQuantityLabel()}
 			</div>
 		)
 	}
@@ -141,6 +150,17 @@ export class Select extends UIEXBoxContainer {
 				className="uiex-select-arrow-icon"
 			/>
 		)	
+	}
+
+	renderQuantityLabel() {
+		if (this.isMultiple() && this.props.value instanceof Array && this.props.value.length > 1) {
+			const quantity = this.props.value.length - 1;
+			return (
+				<span className="uiex-quantity-label">
+					+{quantity}
+				</span>
+			)
+		}
 	}
 
 	renderOptions() {
@@ -187,7 +207,7 @@ export class Select extends UIEXBoxContainer {
 		)
 	}
 
-	renderOption = (item, idx) => {		
+	renderOption = (item, idx) => {
 		let value, title, icon, iconType;
 		if (typeof item == 'string' || typeof item == 'number') {
 			value = item;
@@ -244,13 +264,13 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	handleSelect(value) {
-		if (!this.props.multiple) {
+		if (!this.isMultiple()) {
 			this.hidePopup();
 		}
-		this.handleSelectByArrow(value);
+		this.fireChange(value);
 	}
 
-	handleSelectByArrow(value) {
+	handleSelectByArrow(value) {		
 		this.fireChange(value);
 	}
 

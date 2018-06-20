@@ -1,13 +1,18 @@
 .uiex-select {
-	display: inline-block;
-	box-sizing: border-box;
-	position: relative;
 	cursor: pointer;
 
-	.uiex-input:not(.uiex-disabled) {
+	.uiex-input {
+		width: 100%;
 		input {
 			cursor: pointer !important;
 			padding-right: 30px !important;
+		}
+	}
+	&.uiex-multi-valued {
+		.uiex-input {
+			input {
+		    	padding-right: 58px !important;
+		    }
 		}
 	}
 	.uiex-select-arrow-icon {
@@ -22,6 +27,18 @@
 	}
 	&.uiex-disabled {
 		cursor: not-allowed;
+	}
+	.uiex-quantity-label {
+		display: block;
+	    padding: 0px 3px 2px 3px;
+	    border-radius: 5px;
+	    background-color: #757575;
+	    color: #fff;
+	    position: absolute;
+	    top: 50%;
+	    margin-top: -11px;
+	    right: 30px;
+	    font-size: 14px;
 	}
 
 	.uiex-popup-menu-item {

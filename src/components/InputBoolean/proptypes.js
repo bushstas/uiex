@@ -2,17 +2,13 @@ import PropTypes from 'prop-types';
 import {UIEXComponentPropTypes} from '../UIEXComponentPropTypes';
 import {PROPTYPE} from '../consts';
 
-export const CheckboxPropTypes = {
+export const InputBooleanPropTypes = {
 	...UIEXComponentPropTypes,
 	name: PropTypes.string,
-	checked: PropTypes.bool,
-	value: PropTypes.any,
+	value: PropTypes.bool,
+	defaultValue: PropTypes.bool,
 	icon: PROPTYPE.STRBOOL,
 	iconType: PROPTYPE.ICON_TYPES,
-	multiline: PropTypes.bool,
-	controlStyle: PropTypes.object,
-	markerStyle: PropTypes.object,
-	labelStyle: PropTypes.object,
 	onChange: PropTypes.func,
 	onDisabledClick: PropTypes.func
 }

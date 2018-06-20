@@ -1,10 +1,6 @@
-.uiex-checkbox {
-	display: inline-block;
-	box-sizing: border-box;
+.uiex-checkbox {	
     padding-left: 28px;
-    position: relative;
-    min-width: 80px;
-
+ 
 	.uiex-checkbox-control {
 		position: absolute;
 		left: 0;
@@ -42,6 +38,15 @@
 		.uiex-checkbox-marker {
 			background-color: transparent !important;
 		}
+		&.uiex-checked {
+			.uiex-checkbox-control {
+				background-color: #555;
+				border-color: #555;
+			}
+			.uiex-checkbox-marker {
+				color: #fff;
+			}
+		}
 	}
 
 	&.uiex-checked,
@@ -78,5 +83,11 @@
 		font-size: 15px;
 		line-height: 18px;
 		display: block;
+		white-space: nowrap;
+	}
+	&.uiex-multilined {
+		.uiex-checkbox-label {
+			white-space: normal;
+		}
 	}
 }

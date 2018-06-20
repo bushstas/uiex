@@ -1,20 +1,9 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
-import {Input} from '../Input';
-import {InputNumber} from '../InputNumber';
-import {Select} from '../Select';
-import {Checkbox} from '../Checkbox';
 import {getNumber} from '../utils';
 import {FormControlPropTypes} from './proptypes';
 
 import './style.scss';
-
-const PROPER_CHILDREN = [
-	Input, 
-	InputNumber,
-	Select,
-	Checkbox
-];
 
 let DEFAULT_STYLE;
 
@@ -38,25 +27,23 @@ export class FormControl extends UIEXComponent {
 	}
 
 	isProperChild(child) {
-		return PROPER_CHILDREN.indexOf(child) > -1;
+		return child.isControl;
 	}
 
 	addChildProps(child, props) {
-		const {type} = child;
-		if (this.isProperChild(type)) {
-			switch (type) {
-				case Checkbox:
-					if (typeof child.props.onChange != 'function') {
-						props.onChange = this.handleCheckboxChange;
-					}
-				break;
+		const {type: control} = child;		
+		switch (control.name) {
+			case 'Checkbox':
+				if (typeof child.props.onChange != 'function') {
+					props.onChange = this.handleCheckboxChange;
+				}
+			break;
 
-				default:
-					if (typeof child.props.onChange != 'function') {
-						props.onChange = this.handleChange;
-					}
-			}
-		}
+			default:
+				if (typeof child.props.onChange != 'function') {
+					props.onChange = this.handleChange;
+				}
+		}		
 	}
 
 	getCustomStyle() {

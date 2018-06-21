@@ -62,7 +62,11 @@ export class FormControlGroup extends UIEXComponent {
 		if (typeof size == 'undefined') {
 			size = controlSize;
 		}
-		size = getNumber(size);
+		if (size == 'all') {
+			size = columns;
+		} else {
+			size = getNumber(size);
+		}
 		shift = getNumber(shift);
 		if (size) {
 			props.width = (size * 100 / columns).toFixed(2) + '%';

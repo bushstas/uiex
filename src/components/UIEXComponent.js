@@ -20,17 +20,23 @@ export class UIEXComponent extends React.PureComponent {
 	}
 
 	componentDidMount() {
-		this.handleMount();
+		const {onMount} = this.props;
+		if (typeof onMount == 'function') {
+			onMount(this);
+		}
 	}
 
 	componentDidUpdate() {
-		this.handleMount();
+		const {onUpdate} = this.props;
+		if (typeof onUpdate == 'function') {
+			onUpdate(this);
+		}
 	}
 
-	handleMount() {
-		const {onMount} = this.props;
-		if (typeof onMount == 'function') {
-			onMount(this.properChildrenCount);
+	componentWillUnmount() {
+		const {onUnmount} = this.props;
+		if (typeof onUnmount == 'function') {
+			onUnmount(this);
 		}
 	}
 
@@ -66,11 +72,14 @@ export class UIEXComponent extends React.PureComponent {
 					key: idx
 				};
 				if (isProperChild) {
+					if (!this.filterChild(child)) {
+						return null;
+					}
 					this.currentProperChildIdx++;
 					this.properChildrenCount++;
 					const {
 						disabled,
-						vertical
+						vertical,
 					} = this.props;
 
 					if (disabled) {
@@ -79,6 +88,7 @@ export class UIEXComponent extends React.PureComponent {
 					if (vertical) {
 						props.block = true;
 					}
+					props.nativeChildIdx = this.currentProperChildIdx;
 					let isLast = false;
 					if (arr instanceof Array) {
 						isLast = idx == arr.length - 1;
@@ -195,6 +205,10 @@ export class UIEXComponent extends React.PureComponent {
 
 	getExpectedChildren() {
 		return '...';
+	}
+
+	filterChild() {
+		return true;
 	}
 
 	initRendering() {}

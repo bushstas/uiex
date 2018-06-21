@@ -15,6 +15,8 @@ const INITIAL_STATE = {
 	hasOptions: null
 };
 
+const PROPER_CHILD = 'SelectOption';
+
 export class Select extends UIEXBoxContainer {
 	static propTypes = SelectPropTypes;
 	static isControl = true;
@@ -110,7 +112,15 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	isProperChild(child) {
-		return typeof child == 'function' && child.name == 'SelectOption';
+		return typeof child == 'function' && child.name == PROPER_CHILD;
+	}
+
+	canHaveOnlyProperChildren() {
+		return true;
+	}
+
+	getExpectedChildren() {
+		return PROPER_CHILD;
 	}
 
 	getCustomProps() {
@@ -170,11 +180,7 @@ export class Select extends UIEXBoxContainer {
 		if (options instanceof Array && options.length > 0) {
 			items = options.map(this.renderOption);
 		}
-		if (children instanceof Array) {
-			items = items.concat(children);
-		} else if (React.isValidElement(children)) {
-			items.push(children);
-		}
+		items = items.concat(this.renderChildren());
 		if (this.hasEmptyOption()) {
 			items.unshift(
 				<SelectOption 
@@ -200,6 +206,7 @@ export class Select extends UIEXBoxContainer {
 				onEscape={this.handleEscape}
 				onCollapse={this.handlePopupCollapse}
 				onMount={this.handlePopupMenuMount}
+				onUpdate={this.handlePopupMenuMount}
 				{...this.getBoxProps()}
 			>
 				{items}
@@ -274,9 +281,9 @@ export class Select extends UIEXBoxContainer {
 		this.fireChange(value);
 	}
 
-	handlePopupMenuMount = (count) => {
+	handlePopupMenuMount = (popupMenu) => {
 		const {hasOptions} = this.state;
-		const nextHasOptions = count > 0;
+		const nextHasOptions = popupMenu.properChildrenCount > 0;
 		if (hasOptions !== nextHasOptions) {
 			this.setState({hasOptions: nextHasOptions});
 		}

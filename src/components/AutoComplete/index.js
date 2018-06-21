@@ -100,7 +100,14 @@ export class AutoComplete extends Select {
 		input.focus();
 	}
 
+	filterChild(child) {
+		return this.filterOption(child.props.value);
+	}
+
 	filterOption = (optionValue) => {
+		if (typeof optionValue != 'string') {
+			optionValue = String(optionValue);
+		}
 		if (!this.inputedValue) {
 			return true;
 		}

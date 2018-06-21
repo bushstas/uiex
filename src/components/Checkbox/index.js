@@ -46,7 +46,7 @@ export class Checkbox extends UIEXComponent {
 	}
 
 	getClassNames() {
-		let {checked, icon, multiline} = this.props;
+		let {checked, icon, multiline, value} = this.props;
 		let className = 'uiex-control';
 		if (icon) {
 			className += ' uiex-with-icon';
@@ -58,6 +58,9 @@ export class Checkbox extends UIEXComponent {
 			className += ' uiex-checked';
 		} else if (checked === null) {
 			className += ' uiex-undetermined';	
+		}
+		if (this.properChildrenCount > 0) {
+			className += ' uiex-with-child-groups';
 		}
 		return className;
 	}
@@ -103,6 +106,31 @@ export class Checkbox extends UIEXComponent {
 		return this.markerStyle;
 	}
 
+	isProperChild(child) {
+		return child.name == 'CheckboxGroup';
+	}
+
+	addChildProps(child, props) {
+		let {value, icon, iconType, multiline, onDisabledClick} = this.props;
+		props.checkAll = false;
+		props.maxHeight = null;
+		props.icon = icon;
+		props.iconType = iconType;
+		if (typeof child.props.multiline != 'boolean') {
+			props.multiline = multiline;
+		}
+		props.onChange = this.handleChangeChildGroup;
+		props.onDisabledClick = onDisabledClick;
+		props.mapped = true;
+		props.onMount = this.handleChildGroupMount;
+		props.onUnmount = this.handleChildGroupUnmount;
+		props.name = value;
+		if (value instanceof Object) {
+			props.name = value.value;
+			props.value = value;
+		}
+	}
+
 	renderInternal() {
 		const {children, iconType} = this.props;
 		let {icon} = this.props;
@@ -110,6 +138,7 @@ export class Checkbox extends UIEXComponent {
 			icon = 'check';
 		}
 
+		const content = this.renderChildren();
 		return (
 			<div {...this.getProps()}>
 				<span 
@@ -127,13 +156,14 @@ export class Checkbox extends UIEXComponent {
 					</span>
 				</span>
 				{children &&
-					<span 
+					<div 
 						className="uiex-checkbox-label"
-						onClick={this.handleClick}
 						style={this.getLabelStyle()}
 					>
-						{children}
-					</span>
+						<span onClick={this.handleClick}>
+							{content}
+						</span>
+					</div>
 				}
 			</div>
 		)
@@ -142,18 +172,65 @@ export class Checkbox extends UIEXComponent {
 	handleClick = (e) => {
 		e.stopPropagation();
 		const {
-			disabled,
 			checked,
 			value,
 			name,
-			onChange,
-			onDisabledClick
+			onChange
 		} = this.props;
 
-		const nextChecked = !checked;
-		const handler = !disabled ? onChange : onDisabledClick;
-		if (typeof handler == 'function') {
-			handler(nextChecked, name, value);
+		if (typeof onChange == 'function') {
+			if (this.properChildrenCount > 0) {
+				const objectValue = {};
+				if (this.itemValues instanceof Array) {
+					for (let item of this.itemValues) {
+						objectValue[item] = true;
+					}
+				}
+				onChange(!checked, name, {value: objectValue, checked: !checked});
+			} else {
+				onChange(!checked, name, value);
+			}
+		}
+	}
+
+	handleChangeChildGroup = (groupValue, groupName) => {
+		const {
+			value,
+			name,
+			onChange
+		} = this.props;
+		if (typeof onChange == 'function') {
+			let isCheckedAll = false;
+			const count = groupValue instanceof Array ? groupValue.length : Object.keys(groupValue).length;
+			if (count > 0) {
+				isCheckedAll = null;
+				if (count == this.itemCount) {
+					isCheckedAll = true;
+				}
+			}
+			onChange(isCheckedAll, name, {value: groupValue, checked: isCheckedAll});
+		}
+	}
+
+	handleChildGroupMount = (checkboxGroup) => {
+		const {itemValues, props} = checkboxGroup;
+		const {nativeChildIdx} = props;
+		this.itemCount = this.itemCount || 0;
+		this.itemCount += itemValues.length;
+		this.itemValuesMap = this.itemValuesMap || {};
+		this.itemValuesMap[nativeChildIdx] = itemValues;
+		this.itemValues = this.itemValues || [];
+		this.itemValues = this.itemValues.concat(itemValues);
+	}
+
+	handleChildGroupUnmount = (checkboxGroup) => {
+		const {itemValues, props} = checkboxGroup;
+		const {nativeChildIdx} = props;
+		this.itemCount -= itemValues.length;		
+		delete this.itemValuesMap[nativeChildIdx];
+		this.itemValues = [];
+		for (let k in this.itemValuesMap) {
+			this.itemValues = this.itemValues.concat(this.itemValuesMap[k]);
 		}
 	}
 }

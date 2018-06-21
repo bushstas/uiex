@@ -6,7 +6,7 @@ export const SelectPropTypes = {
 	...BoxContainerPropTypes,
 	name: PropTypes.string,
 	value: PROPTYPE.STRNUMS,
-	options: PROPTYPE.SELECT_OPTIONS,
+	options: PROPTYPE.OPTIONS,
 	placeholder: PropTypes.string,
 	empty: PROPTYPE.STRBOOL,
 	multiple: PropTypes.bool,

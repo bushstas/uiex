@@ -126,7 +126,7 @@ export const getProperStyleProperty = (value) => {
 	}
 }
 
-export const addStyleProperty = (value, name, style) => {
+export const addStyleProperty = (value, name, style = null) => {
 	value = getProperStyleProperty(value);
 	if (value) {
 		style = style || {};

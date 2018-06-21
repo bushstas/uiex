@@ -10,6 +10,16 @@ export const ANIM_EFFECTS = ['linear', 'ease', 'ease-in', 'ease-out', 'ease-in-o
 export const ANIM_SPEED = ['fast', 'normal', 'slow'];
 export const ANIM_TYPE = ['fade', 'roll', 'fall', 'fade-roll', 'fade-fall'];
 
+const OPTION_SHAPE = PropTypes.shape({
+	value: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number
+	]).isRequired,
+	title: PropTypes.string.isRequired,
+	icon: PropTypes.string,
+	iconType: PropTypes.oneOf(ICON_TYPE)
+});
+
 export const PROPTYPE = {
 	REACT_NODES: PropTypes.oneOfType([
 		PropTypes.arrayOf(PropTypes.node),
@@ -55,25 +65,13 @@ export const PROPTYPE = {
 		]),
 		name: PropTypes.string
 	})),
-	SELECT_OPTIONS: PropTypes.oneOfType([
-		PropTypes.arrayOf(
-			PropTypes.shape({
-				value: PropTypes.oneOfType([
-					PropTypes.string,
-					PropTypes.number
-				]).isRequired,
-				title: PropTypes.string.isRequired,
-				icon: PropTypes.string,
-				iconType: PropTypes.oneOf(ICON_TYPE)
-			})
-		),
-		PropTypes.arrayOf(
-			PropTypes.oneOfType([
-				PropTypes.string,
-				PropTypes.number
-			])
-		)
-	]),
+	OPTIONS: PropTypes.arrayOf(
+		PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.number,
+			OPTION_SHAPE
+		])
+	),
 	CHECKBOX_GROUP_VALUE: PropTypes.oneOfType([
 		PropTypes.arrayOf(
 			PropTypes.oneOfType([
@@ -81,6 +79,6 @@ export const PROPTYPE = {
 				PropTypes.number
 			])
 		),
-		PropTypes.objectOf(PropTypes.bool)
+		PropTypes.object
 	])
 }

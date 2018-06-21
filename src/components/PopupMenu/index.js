@@ -10,6 +10,7 @@ import './style.scss';
 
 let DEFAULT_STYLE;
 const DEFAULT_MAX_HEIGHT = 350;
+const PROPER_CHILD = 'PopupMenuItem';
 
 export class PopupMenu extends Popup {
 	static propTypes = PopupMenuPropTypes;
@@ -108,7 +109,7 @@ export class PopupMenu extends Popup {
 	}
 
 	isProperChild(child) {
-		return child.name == 'PopupMenuItem' || child.name == 'SelectOption';
+		return child.name == PROPER_CHILD || child.name == 'SelectOption';
 	}
 
 	canHaveOnlyProperChildren() {
@@ -116,7 +117,7 @@ export class PopupMenu extends Popup {
 	}
 
 	getExpectedChildren() {
-		return ['PopupMenuItem', 'SelectOption'];
+		return PROPER_CHILD;
 	}
 
 	initRendering() {

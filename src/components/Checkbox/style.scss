@@ -3,6 +3,7 @@
  
 	.uiex-checkbox-control {
 		position: absolute;
+		z-index: 2;
 		left: 0;
 		top: 0;
 		width: 20px;
@@ -35,31 +36,37 @@
 	}
 
 	&.uiex-with-icon {
-		.uiex-checkbox-marker {
-			background-color: transparent !important;
+		& > .uiex-checkbox-control {
+			& > .uiex-checkbox-marker {
+				background-color: transparent !important;
+			}
 		}
 		&.uiex-checked {
-			.uiex-checkbox-control {
+			& > .uiex-checkbox-control {
 				background-color: #555;
 				border-color: #555;
-			}
-			.uiex-checkbox-marker {
-				color: #fff;
+				& > .uiex-checkbox-marker {
+					color: #fff;
+				}
 			}
 		}
 	}
 
 	&.uiex-checked,
 	&.uiex-undetermined {
-		.uiex-checkbox-marker {
-			display: flex;
-			justify-content: center;
-			align-items: center;
+		& > .uiex-checkbox-control {
+			& > .uiex-checkbox-marker {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
 		}
 	}
-	&.uiex-undetermined {
-		.uiex-checkbox-marker {
-			opacity: 0.3;
+	&.uiex-undetermined:not(.uiex-with-icon) {
+		& > .uiex-checkbox-control {
+			& > .uiex-checkbox-marker {
+				opacity: 0.3;
+			}
 		}
 	}
 	&.uiex-disabled {
@@ -78,16 +85,55 @@
 	}
 
 	.uiex-checkbox-label {
-		cursor: pointer;
 		padding-bottom: 2px;
 		font-size: 15px;
 		line-height: 18px;
-		display: block;
 		white-space: nowrap;
+
+		& > span {
+			cursor: pointer;
+
+			& > .uiex-checkbox-group {
+				cursor: default;
+				border: 0;
+				border-radius: 0;
+			    background-color: transparent;
+			    box-shadow: none;
+			    padding: 0;
+			    margin-top: 15px;
+			    margin-bottom: 10px;
+
+			    & > .uiex-checkbox-group-controls {
+			    	padding: 0;
+			    	overflow: visible;
+
+			    	& > .uiex-checkbox:before {
+			    		content: '';
+			    		position: absolute;
+			    		top: 10px;
+			    		left: -18px;
+			    		width: 20px;
+			    		border-top: 1px dotted #888;
+			    	}
+			    }
+			}
+		}
 	}
 	&.uiex-multilined {
 		.uiex-checkbox-label {
 			white-space: normal;
+		}
+	}
+	&.uiex-with-child-groups {
+		&:after {
+			content: '';
+			position: absolute;
+			z-index: 1;
+			left: 10px;
+			top: 10px;
+			bottom: 23px;
+			width: 0;
+			border-left: 1px dotted #888;
 		}
 	}
 }

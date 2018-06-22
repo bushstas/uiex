@@ -2,6 +2,7 @@ import React from 'react';
 import {BoxCommonPropTypes} from './Box/proptypes';
 import {
 	showImproperChildError,
+	showProperChildMaxCountError,
 	getComponentClassName,
 	addStyleProperty,
 	addObject
@@ -73,6 +74,11 @@ export class UIEXComponent extends React.PureComponent {
 				};
 				if (isProperChild) {
 					if (!this.filterChild(child)) {
+						return null;
+					}
+					const maxCount = this.getProperChildMaxCount();
+					if (maxCount && maxCount == this.properChildrenCount) {
+						showProperChildMaxCountError(child, this);
 						return null;
 					}
 					this.currentProperChildIdx++;
@@ -213,6 +219,7 @@ export class UIEXComponent extends React.PureComponent {
 
 	initRendering() {}
 	addChildProps() {}
+	getProperChildMaxCount() {}
 }
 
 

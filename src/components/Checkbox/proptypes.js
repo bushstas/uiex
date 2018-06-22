@@ -4,9 +4,10 @@ import {PROPTYPE} from '../consts';
 
 export const CheckboxPropTypes = {
 	...UIEXComponentPropTypes,
-	name: PropTypes.string,
+	name: PROPTYPE.STRNUM,
 	checked: PropTypes.bool,
 	value: PropTypes.any,
+	label: PROPTYPE.STRNUM,
 	icon: PROPTYPE.STRBOOL,
 	iconType: PROPTYPE.ICON_TYPES,
 	multiline: PropTypes.bool,

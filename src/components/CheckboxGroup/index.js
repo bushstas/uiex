@@ -2,13 +2,13 @@ import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Checkbox} from '../Checkbox';
 import {CheckboxGroupPropTypes} from './proptypes';
-import {addStyleProperty} from '../utils';
+import {addStyleProperty, getNumberOrNull} from '../utils';
 
 import './style.scss';
 
 let DEFAULT_STYLE;
 const EXPECTED_CHILD = 'Checkbox';
-const DEFAULT_CHECK_ALL = 'Check all'
+const DEFAULT_CHECK_ALL = 'Check all';
 
 export class CheckboxGroup extends UIEXComponent {
 	static propTypes = CheckboxGroupPropTypes;
@@ -50,10 +50,9 @@ export class CheckboxGroup extends UIEXComponent {
 	}
 
 	getClassNames() {
-		let {some} = this.props;
 		let className = 'uiex-control';
-		if (some) {
-			className += ' uiex-';
+		if (this.checkboxWidth) {
+			className += ' uiex-with-columns';
 		}
 		return className;
 	}
@@ -83,12 +82,14 @@ export class CheckboxGroup extends UIEXComponent {
 	}
 
 	initRendering() {
-		this.isСheckedAny = false;
-		this.isUncheckedAny = false;
+		this.checkedCount = 0;
+		this.undeterminedCount = 0;
+		this.checkedStatuses = {};
 	}
 
 	addChildProps(child, props) {
-		let {value, icon, iconType, multiline, onDisabledClick} = this.props;		
+		let {icon, iconType, multiline, onDisabledClick} = this.props;
+		const value = this.getValue();
 		const {onChange, value: childValue} = child.props;
 		const checked = this.getChecked(childValue, value);
 		props.icon = icon;
@@ -97,20 +98,25 @@ export class CheckboxGroup extends UIEXComponent {
 		if (typeof child.props.multiline != 'boolean') {
 			props.multiline = multiline;
 		}
+		props.width = this.checkboxWidth;
 		props.onChange = this.handleChange;
 		props.onDisabledClick = onDisabledClick;
 		props.name = childValue;
 		props.value = this.getChildValue(childValue, value);
 		props.onMount = this.handleCheckboxMount;
-		this.initCheckStatus(checked);
+		props.onUnmount = this.handleCheckboxUnmount;
+		props.onUpdateStatus = this.handleCheckboxUpdateStatus;
+		this.initCheckStatus(checked, childValue);
 	}
 
-	initCheckStatus(checked) {
-		if (checked === true || checked === null) {
-			this.isСheckedAny = true;
-		} else {
-			this.isUncheckedAny = true;
+	initCheckStatus(checked, name) {
+		if (checked) {
+			this.checkedCount++;
+		} else if (checked === null) {
+			this.checkedCount++;
+			this.undeterminedCount++;
 		}
+		this.checkedStatuses[name] = checked;
 	}
 
 	renderInternal() {
@@ -132,7 +138,14 @@ export class CheckboxGroup extends UIEXComponent {
 	}
 
  	renderContent() {
-		this.options = this.renderOptions().concat(this.renderChildren());
+ 		this.checkboxWidth = undefined;
+ 		let {columns} = this.props;
+ 		columns = getNumberOrNull(columns);
+ 		if (columns > 1) {
+ 			this.checkboxWidth = Math.floor(100 / columns) + '%';
+ 		}
+ 		const children = this.renderChildren();
+		this.options = this.renderOptions().concat(children);
 	}
 
 	renderTopFunctional() {
@@ -151,17 +164,11 @@ export class CheckboxGroup extends UIEXComponent {
 		if (typeof checkAll != 'string') {
 			checkAll = DEFAULT_CHECK_ALL;
 		}
-		let checked = false;
-		if (this.isСheckedAny) {
-			checked = true;
-			if (this.isUncheckedAny) {
-				checked = null;
-			}
-		}
 		return (
 			<div className="uiex-checkbox-group-checkall">
 				<Checkbox 
-					checked={checked}
+					ref="checkAll"
+					checked={this.isCheckedAll()}
 					icon={icon}
 					iconType={iconType}
 					onChange={this.handleChangeCheckAll}
@@ -172,6 +179,20 @@ export class CheckboxGroup extends UIEXComponent {
 		)
 	}
 
+	isCheckedAll() {
+		const total = this.properChildrenCount;
+		if (this.undeterminedCount > 0) {
+			return null;
+		}
+		if (this.checkedCount >= this.properChildrenCount) {
+			return true;
+		}
+		if (this.checkedCount > 0) {
+			return null;
+		}
+		return false;
+	}
+
 	renderOptions() {
 		const {options} = this.props;
 		if (options instanceof Array && options.length > 0) {
@@ -180,36 +201,55 @@ export class CheckboxGroup extends UIEXComponent {
 		return [];
 	}
 
+	getValue() {
+		let {value, mapped} = this.props;
+		if (typeof value == 'string' || typeof value == 'number') {
+			return [value];
+		}
+		if (value instanceof Object) {
+			return value;
+		}
+		return mapped ? {} : [];
+	}
+
 	renderOption = (item, idx) => {
-		const {value: currentValue, icon, iconType, disabled, onDisabledClick, multiline} = this.props;
-		let value, title;
+		const {icon, iconType, disabled, onDisabledClick, multiline} = this.props;
+		const currentValue = this.getValue();
+		let value, title, children;
 		if (typeof item == 'string' || typeof item == 'number') {
 			value = item;
 			title = item;
 		} else if (item instanceof Object) {
 			value = item.value;
 			title = item.title;
+			children = item.children;
 		}
 		const name = value;
 		if (this.filterOption(value)) {
 			const checked = this.getChecked(value, currentValue);
-			this.initCheckStatus(checked);
+			this.initCheckStatus(checked, value);
+			this.properChildrenCount++;
 			return (
 				<Checkbox 
 					key={value}
 					name={name}
+					label={title}
 					value={this.getChildValue(value, currentValue)}
 					checked={checked}
 					icon={icon}
 					iconType={iconType}
+					width={this.checkboxWidth}
 					disabled={disabled}
 					multiline={multiline}
 					onChange={this.handleChange}
 					onDisabledClick={onDisabledClick}
 					onMount={this.handleCheckboxMount}
 					onUnmount={this.handleCheckboxUnmount}
+					onUpdateStatus={this.handleCheckboxUpdateStatus}
 				>
-					{title}
+					{children instanceof Array && 
+						<CheckboxGroup options={children}/>
+					}
 				</Checkbox>
 			)
 		}
@@ -217,7 +257,7 @@ export class CheckboxGroup extends UIEXComponent {
 
 	getChildValue(itemValue, groupValue) {
 		if (groupValue instanceof Object && groupValue[itemValue] instanceof Object) {
-			return groupValue[itemValue].value;
+			return groupValue[itemValue];
 		}
 		return itemValue;
 	}
@@ -228,12 +268,7 @@ export class CheckboxGroup extends UIEXComponent {
 			checked = itemValue && groupValue.indexOf(itemValue) > -1;
 		} else if (groupValue instanceof Object) {
 			const value = groupValue[itemValue];
-			if (value instanceof Object) {
-				checked = value.checked;
-				if (typeof checked == 'undefined') {
-					checked = false;
-				}
-			} else {
+			if (!(value instanceof Object)) {
 				checked = !!value;
 			}
 		}
@@ -245,7 +280,8 @@ export class CheckboxGroup extends UIEXComponent {
 	}
 
 	handleChange = (checked, checkboxName, checkboxValue) => {
-		let {value, name, onChange, mapped} = this.props;
+		let {name, onChange, mapped} = this.props;
+		let value = this.getValue();
 		if (this.hasChildGroups || (value && !(value instanceof Array))) {
 			mapped = true;
 		}
@@ -312,7 +348,7 @@ export class CheckboxGroup extends UIEXComponent {
 			if (checked) {				
 				if (mapped) {
 					value = {};
-					this.fillValues(this.itemValues, value, checked);
+					this.fillValues(this.itemValues, value);
 				} else {
 					value = this.itemValues;
 				}
@@ -323,11 +359,11 @@ export class CheckboxGroup extends UIEXComponent {
 		}
 	}
 
-	fillValues(items, value, checked) {
+	fillValues(items, value) {
 		for (let item of items) {
 			if (item instanceof Object) {
-				const filledValue = {value: {}, checked};
-				this.fillValues(item.items, filledValue.value, checked);
+				const filledValue = {};
+				this.fillValues(item.items, filledValue);
 				value[item.value] = filledValue;
 			} else {
 				value[item] = true;
@@ -364,6 +400,28 @@ export class CheckboxGroup extends UIEXComponent {
 			newValues.push(item);
 		}
 		this.itemValues = newValues;
+	}
+
+	handleCheckboxUpdateStatus = (checked, checkbox) => {
+		const {onUpdate} = this.props;		
+		const {name} = checkbox.props;
+		const total = this.properChildrenCount;
+		this.checkedStatuses[name] = checked;		
+		this.checkedCount = 0;
+		this.undeterminedCount = 0;
+		for (let k in this.checkedStatuses) {
+			if (this.checkedStatuses[k] === true) {
+				this.checkedCount++;
+			} else if (this.checkedStatuses[k] === null) {
+				this.undeterminedCount++;
+			}
+		}
+		if (this.refs.checkAll) {
+			this.refs.checkAll.setState({checked: this.isCheckedAll()});
+		}
+		if (typeof onUpdate == 'function') {
+			onUpdate(this);
+		}
 	}
 
 	filterOption() {

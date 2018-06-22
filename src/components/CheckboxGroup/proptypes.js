@@ -11,6 +11,7 @@ export const CheckboxGroupPropTypes = {
 	maxHeight: PROPTYPE.STRNUM,
 	multiline: PropTypes.bool,
 	checkAll: PROPTYPE.STRBOOL,
+	columns: PROPTYPE.STRNUM,
 	onChange: PropTypes.func,
 	onDisabledClick: PropTypes.func
 }

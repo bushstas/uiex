@@ -45,6 +45,15 @@ export const showImproperChildError = (child, parent) => {
 	console.error('Improper ' + childType + ' child "' + child + '" in ' + parent.constructor.name + '. ' + expected + ': ' + expectedChildren);
 }
 
+export const showProperChildMaxCountError  = (child, parent) => {
+	let expectedChildren = parent.getExpectedChildren();
+	if (expectedChildren instanceof Array) {
+		expectedChildren = expectedChildren.join(', ');
+	}
+	const maxCount = parent.getProperChildMaxCount();
+	console.error('Component ' + parent.constructor.name + ' can have only ' + maxCount + ' child of type ' + expectedChildren);
+}
+
 export const mergeClassNames = (cls) => {
 	var cs = [], c;
 	for (var i = 0; i < cls.length; i++) {

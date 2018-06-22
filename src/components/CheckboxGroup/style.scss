@@ -5,6 +5,7 @@
     border: 1px solid #aaa;
     box-shadow: inset -3px -3px 7px #f1f1f1;
     padding: 10px 0;
+    font-weight: normal;
 
 	&.uiex-control {
 		display: block;
@@ -28,5 +29,18 @@
 	.uiex-checkbox-group-controls {
 		overflow: auto;
 		padding: 0 10px;
+	}
+	&.uiex-with-columns {
+		& > .uiex-checkbox-group-controls {
+			& > .uiex-checkbox {
+				vertical-align: top;
+				display: inline-block;
+				padding-right: 10px;
+				box-sizing: border-box;
+				&:before {
+					display: none;
+				}
+			}
+		}
 	}
 }

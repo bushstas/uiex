@@ -85,55 +85,73 @@
 	}
 
 	.uiex-checkbox-label {
+		display: block;
 		padding-bottom: 2px;
 		font-size: 15px;
 		line-height: 18px;
 		white-space: nowrap;
-
+		text-overflow: ellipsis;
+		overflow: hidden;
+		word-break: normal;
 		& > span {
 			cursor: pointer;
-
-			& > .uiex-checkbox-group {
-				cursor: default;
-				border: 0;
-				border-radius: 0;
-			    background-color: transparent;
-			    box-shadow: none;
-			    padding: 0;
-			    margin-top: 15px;
-			    margin-bottom: 10px;
-
-			    & > .uiex-checkbox-group-controls {
-			    	padding: 0;
-			    	overflow: visible;
-
-			    	& > .uiex-checkbox:before {
-			    		content: '';
-			    		position: absolute;
-			    		top: 10px;
-			    		left: -18px;
-			    		width: 20px;
-			    		border-top: 1px dotted #888;
-			    	}
-			    }
-			}
+			user-select: none;
 		}
 	}
+
+	.uiex-checkbox-content {
+		& > .uiex-checkbox-group {
+			cursor: default;
+			border: 0;
+			border-radius: 0;
+		    background-color: transparent;
+		    box-shadow: none;
+		    padding: 0;
+		    margin-top: 15px;
+		    margin-bottom: 15px;
+
+		    & > .uiex-checkbox-group-controls {
+		    	padding: 0;
+		    	overflow: visible;
+
+		    	& > .uiex-checkbox:before {
+		    		content: '';
+		    		position: absolute;
+		    		top: 10px;
+		    		left: -18px;
+		    		width: 20px;
+		    		border-top: 1px solid #d3d3d3;
+		    	}
+		    }
+		}
+	}
+
 	&.uiex-multilined {
 		.uiex-checkbox-label {
 			white-space: normal;
+			word-break: break-all;
+			text-overflow: clip;
+			overflow: visible;
 		}
 	}
 	&.uiex-with-child-groups {
+		margin-top: 12px;
+		&:first-child {
+			margin-top: 0;
+		}
+		& > .uiex-checkbox-label {
+			font-weight: bold;
+			font-size: larger;
+		}
 		&:after {
 			content: '';
 			position: absolute;
 			z-index: 1;
 			left: 10px;
 			top: 10px;
-			bottom: 23px;
+			bottom: 0;
 			width: 0;
-			border-left: 1px dotted #888;
+			border-left: 1px solid #d3d3d3;
 		}
 	}
 }

@@ -1,4 +1,4 @@
-.uiex-checkbox-group {
+.uiex-radio-group {
 	font-size: 14px;
     border-radius: 2px;
     background-color: #fff;
@@ -10,29 +10,20 @@
 	&.uiex-control {
 		display: block;
 	}
-	.uiex-checkbox {
+	.uiex-radio {
 		display: block;
 		margin-bottom: 5px;
 		&:last-child {
 			margin-bottom: 0;
 		}
 	}
-	.uiex-checkbox-group-top {
-		margin-bottom: 10px;
-		padding: 0 10px 10px 10px;
-		border-bottom: 1px solid #aaa;
-
-		.uiex-checkbox {
-			margin-bottom: 0;
-		}
-	}
-	.uiex-checkbox-group-controls {
+	.uiex-radio-group-controls {
 		overflow: auto;
 		padding: 0 10px;
 	}
 	&.uiex-with-columns {
-		& > .uiex-checkbox-group-controls {
-			& > .uiex-checkbox {
+		& > .uiex-radio-group-controls {
+			& > .uiex-radio {
 				vertical-align: top;
 				display: inline-block;
 				padding-right: 10px;

@@ -51,6 +51,10 @@ export class CheckboxGroup extends UIEXComponent {
 
 	getClassNames() {
 		let className = 'uiex-control';
+		const {noBorder} = this.props;
+		if (noBorder) {
+			className += ' uiex-without-border';
+		}
 		if (this.checkboxWidth) {
 			className += ' uiex-with-columns';
 		}

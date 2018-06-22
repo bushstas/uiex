@@ -51,12 +51,15 @@ export class Box extends UIEXComponent {
 	componentWillReceiveProps(nextProps) {
 		super.componentWillReceiveProps(nextProps);
 		if (nextProps.isOpen != this.props.isOpen) {
+			if (!nextProps.isOpen) {
+				this.setHeight();
+			}
 			this.animate(nextProps.isOpen);
 		}
 	}
 
 	changeStyles(isOpen) {		
-		if (isOpen) {			
+		if (isOpen) {
 			this.showAllStyles();
 		} else {
 			this.hideStyles();
@@ -83,8 +86,7 @@ export class Box extends UIEXComponent {
 	}
 
 	showOverflowStyles = () => {
-		const {outer} = this.refs;
-		outer.style.overflow = 'visible';
+		this.refs.outer.style.overflow = 'visible';
 	}
 
 	hideStyles = () => {
@@ -100,6 +102,14 @@ export class Box extends UIEXComponent {
 		outer.style.borderTop = '0';
 		outer.style.borderBottom = '0';
 		outer.style.boxShadow = 'none';
+	}
+
+	resetHeight = () => {
+		this.refs.outer.style.height = '';
+	}
+
+	setHeight = () => {
+		this.refs.outer.style.height = this.getHeight();	
 	}
 
 	isWithFading() {
@@ -145,6 +155,7 @@ export class Box extends UIEXComponent {
 			case 'fade-roll':
 				this.showStyles();
 				setTimeout(this.showOverflowStyles, delay);
+				setTimeout(this.resetHeight, delay);
 			break;
 
 			default:

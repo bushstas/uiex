@@ -29,9 +29,12 @@
 	}
 
 	&:not(.uiex-disabled):hover {
-		.uiex-checkbox-marker {
-			background-color: #555;
-			color: #555;
+		& > .uiex-checkbox-control {
+			border-color: #777;
+			& > .uiex-checkbox-marker {
+				background-color: #555;
+				color: #555;
+			}
 		}
 	}
 
@@ -47,6 +50,12 @@
 				border-color: #555;
 				& > .uiex-checkbox-marker {
 					color: #fff;
+				}
+			}
+			&:hover {
+				& > .uiex-checkbox-control {
+					background-color: #444;
+					border-color: #444;
 				}
 			}
 		}

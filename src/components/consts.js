@@ -49,6 +49,12 @@ export const PROPTYPE = {
 			PropTypes.string
 		)
 	]),
+	STRARR: PropTypes.arrayOf(
+		PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.number
+		])
+	),
 	COLORS: PropTypes.oneOf(COLORS),
 	ALIGN: PropTypes.oneOf(ALIGN),
 	VALIGN: PropTypes.oneOf(VALIGN),

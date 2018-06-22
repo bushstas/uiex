@@ -17,6 +17,9 @@ import {InputPhone} from './components/InputPhone';
 import {MultiSelect} from './components/MultiSelect';
 import {Popup} from './components/Popup';
 import {PopupMenu, PopupMenuItem} from './components/PopupMenu';
+import {Radio} from './components/Radio';
+import {RadioGroup} from './components/RadioGroup';
+import {SearchForm} from './components/SearchForm';
 import {Select, SelectOption} from './components/Select';
 import {Tab} from './components/Tab';
 import {Tabs} from './components/Tabs';
@@ -47,6 +50,9 @@ export {
     Popup,
     PopupMenu,
     PopupMenuItem,
+    Radio,
+    RadioGroup,
+    SearchForm,
     Select,
     SelectOption,
     Tab,

@@ -8,9 +8,9 @@ export class FoundationIcon extends UIEXComponent {
 	static propTypes = IconPropTypes;
 	static className = 'icon';
 
-	getClassNames() {
-		const {name} = this.props;
-		return 'uiex-fi uiex-fi-' + name;
+	addClassNames(add) {
+		add('fi');
+		add('fi-' + this.props.name);
 	}
 
 	renderInternal() {

@@ -65,27 +65,8 @@ export const showProperChildMaxCountError  = (child, parent) => {
 	console.error('Component ' + parent.constructor.name + ' can have only ' + maxCount + ' child of type ' + expectedChildren);
 }
 
-export const mergeClassNames = (cls) => {
-	var cs = [], c;
-	for (var i = 0; i < cls.length; i++) {
-		c = cls[i];
-		if (c instanceof Array) {
-			c = mergeClassNames(c);
-		}
-		if (!!c && typeof c == 'string') {
-			cs.push(c.trim());
-		}
-	}
-	if (cs.length > 0) {
-		return cs.join(' ');
-	}
-}
-
 export const getComponentClassName = (component) => {	
-	const nativeClassName = 'uiex-' + component.getNativeClassName();
-	const otherClasses = component.getClassNames();
-
-	let {
+	const {
 		className,
 		disabled,
 		active,
@@ -96,40 +77,26 @@ export const getComponentClassName = (component) => {
 		valign
 	} = component.props;
 
-	const classNames = [];
-	
-	if (nativeClassName) {
-		classNames.push(nativeClassName);
+	let cn = '';
+	if (className && typeof className == 'string') {
+		cn += ' ' + className;
 	}
-	if (className) {
-		classNames.push(className);
-	}
-	if (disabled) {
-		classNames.push('uiex-disabled');
-	}
-	if (active) {
-		classNames.push('uiex-active');
-	}
-	if (block) {
-		classNames.push('uiex-block');
-	}
-	if ((otherClasses instanceof Array && otherClasses.length > 0) || typeof otherClasses == 'string') {
-		classNames.push(otherClasses);
-	}	
-
-	if (color) {
-		classNames.push('uiex-colored uiex-color-' + color);
-	}
-	if (align) {
-		classNames.push('uiex-align-' + align);
-	}
-	if (valign) {
-		classNames.push('uiex-valign-' + valign);
-	}
-	if (float) {
-		classNames.push('uiex-float-' + float);
-	}
-	return mergeClassNames(classNames);
+	const add = function(c) {
+		if ((arguments.length > 1 ? arguments[1] : true) && c && typeof c == 'string') {
+			cn += ' uiex-' + c;
+		}
+	};	
+	add(component.getNativeClassName());
+	component.addClassNames(add);
+	add(disabled, 'disabled');
+	add(active, 'active');
+	add(block, 'block');
+	add(color, 'colored');
+	add(color, 'color-' + color);
+	add(align, 'align-' + align);
+	add(valign, 'valign-' + valign);
+	add(float, 'float-' + float);
+	return cn;
 }
 
 export const getProperStyleProperty = (value) => {

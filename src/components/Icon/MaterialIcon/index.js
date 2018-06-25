@@ -8,8 +8,8 @@ export class MaterialIcon extends UIEXComponent {
 	static propTypes = IconPropTypes;
 	static className = 'icon';
 
-	getClassNames() {
-		return 'uiex-mti';
+	addClassNames(add) {
+		add('mti');
 	}
 
 	renderInternal() {

@@ -8,8 +8,8 @@ export class LigatureSymbolsIcon extends UIEXComponent {
 	static propTypes = IconPropTypes;
 	static className = 'icon';
 
-	getClassNames() {
-		return 'uiex-lsf';
+	addClassNames(add) {
+		add('lsf');
 	}
 
 	renderInternal() {

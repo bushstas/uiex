@@ -167,7 +167,8 @@ export class UIEXComponent extends React.PureComponent {
 	getProps(props) {
 		const {title} = this.props;
 		const componentProps = {
-			ref: 'main'
+			ref: 'main',
+			className: getComponentClassName(this)
 		};
 		if (typeof title == 'string') {
 			componentProps.title = title;
@@ -175,10 +176,6 @@ export class UIEXComponent extends React.PureComponent {
 		const style = this.getMainStyle();
 		if (style) {
 			componentProps.style = style;
-		}
-		const className = getComponentClassName(this);
-		if (className) {
-			componentProps.className = className;
 		}
 		if (props instanceof Object) {
 			for (let k in props) {
@@ -195,8 +192,11 @@ export class UIEXComponent extends React.PureComponent {
 	}
 
 	render() {
+		if (this.props.hidden) {
+			return null;
+		}
 		this.initRendering();
-		return this.props.hidden ? null : this.renderInternal();
+		return this.renderInternal();
 	}
 
 	getNativeClassName() {
@@ -208,10 +208,6 @@ export class UIEXComponent extends React.PureComponent {
 	}
 
 	getCustomStyle() {
-		return null;
-	}
-
-	getClassNames() {
 		return null;
 	}
 
@@ -288,20 +284,15 @@ export class UIEXComponent extends React.PureComponent {
 	initRendering() {}
 	addChildProps() {}
 	getStyleNames() {}
+	addClassNames() {}
 }
 
 
 export class UIEXButtons extends UIEXComponent {
-	getClassNames() {
+	addClassNames(add) {
 		const {vertical, view} = this.props;
-		let className = '';
-		if (vertical) {
-			className += ' uiex-button-group-vertical';
-		}
-		if (view) {
-			className += ' uiex-button-group-' + view;
-		}
-		return className;
+		add('button-group-vertical', vertical);
+		add('button-group-' + view, view);
 	}
 
 	addCommonButtonsProps(child, props) {

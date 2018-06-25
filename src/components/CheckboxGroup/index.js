@@ -34,16 +34,10 @@ export class CheckboxGroup extends UIEXComponent {
 		this.hasChildGroups = 0;
 	}
 
-	getClassNames() {
-		let className = 'uiex-control';
-		const {noBorder} = this.props;
-		if (noBorder) {
-			className += ' uiex-without-border';
-		}
-		if (this.checkboxWidth) {
-			className += ' uiex-with-columns';
-		}
-		return className;
+	addClassNames(add) {
+		add('control');
+		add('without-border', this.props.noBorder);
+		add('with-columns', this.checkboxWidth);
 	}
 
 	initMaxHeight(maxHeight) {

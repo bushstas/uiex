@@ -8,9 +8,9 @@ export class IcomoonIcon extends UIEXComponent {
 	static propTypes = IconPropTypes;
 	static className = 'icon';
 	
-	getClassNames() {
-		const {name} = this.props;
-		return 'uiex-imn uiex-imn-' + name;
+	addClassNames(add) {
+		add('imn');
+		add('imn-' + this.props.name);
 	}
 
 	renderInternal() {

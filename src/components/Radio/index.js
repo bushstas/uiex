@@ -8,16 +8,10 @@ export class Radio extends UIEXComponent {
 	static propTypes = RadioPropTypes;
 	static isControl = true;
 
-	getClassNames() {
-		let {checked, multiline, value} = this.props;
-		let className = 'uiex-control';
-		if (multiline) {
-			className += ' uiex-multilined';
-		}
-		if (checked) {
-			className += ' uiex-checked';
-		}
-		return className;
+	addClassNames(add) {
+		add('control');
+		add('multilined', this.props.multiline);
+		add('checked', this.props.checked);
 	}
 
 	renderInternal() {

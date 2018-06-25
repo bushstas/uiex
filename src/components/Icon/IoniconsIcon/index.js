@@ -8,9 +8,9 @@ export class IoniconsIcon extends UIEXComponent {
 	static propTypes = IconPropTypes;
 	static className = 'icon';
 
-	getClassNames() {
-		const {name} = this.props;
-		return 'uiex-ion uiex-ion-' + name;
+	addClassNames(add) {
+		add('ion');
+		add('ion-' + this.props.name);
 	}
 
 	renderInternal() {

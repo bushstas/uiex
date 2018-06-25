@@ -17,7 +17,6 @@ export class PopupMenu extends Popup {
 	static onlyProperChildren = true;
 
 	static defaultProps = {
-		isInnerChild: true,
 		speed: 'fast',
 		animation: 'fade-fall'
 	}
@@ -79,15 +78,10 @@ export class PopupMenu extends Popup {
 		window.removeEventListener('keydown', this.handleKeyDown, false);
 	}
 
-	getClassNames() {
-		let classNames = 'uiex-scrollable';
-		if (this.state.isOpen) {
-			classNames += ' uiex-shown';
-		}
-		if (this.props.multiple) {
-			classNames += ' uiex-multiple';
-		}
-		return classNames;
+	addClassNames(add) {
+		add('scrollable');
+		add('shown', this.state.isOpen);
+		add('multiple', this.state.multiple);
 	}
 
 	initRendering() {
@@ -270,19 +264,11 @@ export class PopupMenuItem extends UIEXComponent {
 	static propTypes = PopupMenuItemPropTypes;
 	static className = 'popup-menu-item';
 
-	getClassNames() {
+	addClassNames(add) {
 		const {selected, checked, icon} = this.props;
-		let classNames = '';
-		if (selected) {
-			classNames += ' uiex-selected';
-		}
-		if (checked) {
-			classNames += ' uiex-checked';
-		}
-		if (icon) {
-			classNames += ' uiex-with-icon';
-		}
-		return classNames;
+		add('selected', selected);
+		add('checked', checked);
+		add('with-icon', icon);
 	}
 
 	getCustomProps() {

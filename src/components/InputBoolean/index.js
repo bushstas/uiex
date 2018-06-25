@@ -13,8 +13,8 @@ export class InputBoolean extends UIEXComponent {
 	static className = 'input-boolean';
 	static isControl = true;
 
-	getClassNames() {
-		return 'uiex-control';
+	addClassNames(add) {
+		add('control');
 	}
 
 	renderInternal() {

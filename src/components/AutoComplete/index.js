@@ -14,9 +14,9 @@ export class AutoComplete extends Select {
 	static onlyProperChildren = true;
 	static isControl = true;
 
-	getClassNames() {
-		let className = super.getClassNames();
-		return 'uiex-select ' + className;
+	addClassNames(add) {
+		super.addClassNames(add);
+		add('select');
 	}
 
 	renderInput() {

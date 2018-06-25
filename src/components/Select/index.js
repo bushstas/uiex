@@ -73,23 +73,13 @@ export class Select extends UIEXBoxContainer {
 		return '';
 	}
 
-	getClassNames() {
+	addClassNames(add) {
 		const {focused, hasOptions} = this.state;
 		const {disabled, value} = this.props;
-		let className = 'uiex-control';
-		if (focused) {
-			className += ' uiex-select-focused';
-		}
-		if (disabled) {
-			className += ' uiex-disabled';
-		}
-		if (!hasOptions) {
-			className += ' uiex-without-options';
-		}
-		if (this.isMultiple() && value instanceof Array && value.length > 1) {
-			className += ' uiex-multi-valued';
-		}
-		return className;
+		add('control');
+		add('select-focused', focused);
+		add('without-options', !hasOptions);
+		add('multi-valued', this.isMultiple() && value instanceof Array && value.length > 1);
 	}
 
 	getCustomProps() {
@@ -169,6 +159,7 @@ export class Select extends UIEXBoxContainer {
 				multiple={this.isMultiple()}
 				value={value}
 				isOpen={focused}
+				isInnerChild
 				onSelect={this.selectHandler}
 				onSelectByArrow={this.selectByArrowHandler}
 				onEnter={this.enterHandler}

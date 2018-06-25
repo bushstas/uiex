@@ -10,14 +10,10 @@ export class InputPhone extends Input {
 	static className = 'input';
 	static isControl = true;
 
-	getClassNames() {
-		const {code} = this.props;
-		let className = super.getClassNames();
-		className += ' uiex-phone-input';
-		if (code) {
-			className += ' uiex-with-code';
-		}
-		return className;
+	addClassNames(add) {
+		super.addClassNames(add);
+		add('phone-input');
+		add('with-code', this.props.code);
 	}
 
 	renderAdditionalContent() {

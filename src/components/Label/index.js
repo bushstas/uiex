@@ -8,13 +8,8 @@ import './style.scss';
 export class Label extends UIEXComponent {
 	static propTypes = LabelPropTypes;
 
-	getClassNames() {
-		let {removable} = this.props;
-		let className = '';
-		if (removable) {
-			className += ' uiex-removable';
-		}		
-		return className;
+	addClassNames(add) {
+		add('removable', this.props.removable);
 	}
 
 	renderInternal() {

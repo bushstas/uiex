@@ -10,21 +10,16 @@ const DEFAULT_SPEED = 'normal';
 export class Box extends UIEXComponent {
 	static propTypes = BoxPropTypes;
 
-	getClassNames() {
-		const {animation, speed, effect, buttonUnder} = this.props;
-		let className = '';
+	addClassNames(add) {
+		const {animation, speed, effect, buttonUnder} = this.props;		
 		if (animation) {
-			className = 'uiex-animated uiex-animation-' + animation;
-			if (effect) {
-				className += ' uiex-effect-' + effect;
-			}
+			add('animated');
+			add('animation-' + animation);
+			add('effect-' + effect, effect);
 		} else {
-			className = 'uiex-not-animated';
+			add('not-animated');
 		}
-		if (buttonUnder) {
-			className +=  ' uiex-box-button-under';
-		}
-		return className
+		add('box-button-under', buttonUnder);
 	}
 
 	componentDidMount() {

@@ -10,11 +10,9 @@ export class InputDate extends Input {
 	static className = 'input';
 	static isControl = true;
 
-	getClassNames() {
-		const {code} = this.props;
-		let className = super.getClassNames();
-		className += ' uiex-date-input';
-		return className;
+	addClassNames(add) {
+		super.addClassNames(add);
+		add('date-input');
 	}
 
 	getCustomInputProps() {

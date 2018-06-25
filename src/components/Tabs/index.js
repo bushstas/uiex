@@ -13,13 +13,8 @@ export class Tabs extends UIEXButtons {
 	static propTypes = TabsPropTypes;
 	static properChildren = 'Tab';
 
-	getClassNames() {
-		const {dynamic} = this.props;
-		let className = '';
-		if (dynamic) {
-			className += ' uiex-dynamic-tabs';
-		}
-		return className;
+	addClassNames(add) {		
+		add('dynamic-tabs', this.props.dynamic);
 	}
 
 	initRendering() {

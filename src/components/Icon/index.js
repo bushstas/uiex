@@ -5,7 +5,6 @@ import {FontAwesomeIcon} from './FontAwesomeIcon';
 import {LineAwesomeIcon} from './LineAwesomeIcon';
 import {FoundationIcon} from './FoundationIcon';
 import {LigatureSymbolsIcon} from './LigatureSymbolsIcon';
-import {OpenWebIcon} from './OpenWebIcon';
 import {GenericonsIcon} from './GenericonsIcon';
 import {GlyphiconsIcon} from './GlyphiconsIcon';
 import {IoniconsIcon} from './IoniconsIcon';

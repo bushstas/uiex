@@ -8,19 +8,11 @@ import './style.scss';
 export class Button extends UIEXComponent {
 	static propTypes = ButtonPropTypes;
 	
-	getClassNames() {
-		const {iconAtRight, icon, children, gradient} = this.props;
-		let className = '';
-		if (iconAtRight && children) {
-			className += ' uiex-icon-at-right';
-		}
-		if (icon && typeof icon == 'string' && !children) {
-			className += ' uiex-icon-button';	
-		}
-		if (gradient) {
-			className += ' uiex-gradient-button';	
-		}
-		return className;
+	addClassNames(add) {
+		const {iconAtRight, icon, children, gradient} = this.props;		
+		add('icon-at-right', iconAtRight && children);
+		add('icon-button', icon && typeof icon == 'string' && !children);
+		add('gradient-button', gradient);
 	}
 
 	renderInternal() {

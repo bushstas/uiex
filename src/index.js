@@ -61,39 +61,9 @@ export {
     Tabs
 }
 
-const map = {
-    UIEXCONSTS,
-    AutoComplete,
-    Box,
-    BoxSection,
-    Button,
-    ButtonGroup,
-    Checkbox,
-    CheckboxGroup,
-    Form,
-    FormControl,
-    FormControlGroup,
-    Icon,
-    Input,
-    InputBoolean,
-    InputDate,
-    InputNumber,
-    InputPhone,
-    MultiSelect,
-    Popup,
-    PopupMenu,
-    PopupMenuItem,
-    Radio,
-    RadioGroup,
-    SearchForm,
-    Section,
-    Select,
-    SelectOption,
-    Tab,
-    Tabs
-};
+const map = exports;
 
-export const setDefaultPropsFor = (component, props) => {
+export const setDefaultProps = (component, props) => {
     if (props instanceof Object) {
         if (typeof component == 'string') {
             if (typeof map[component] == 'function') {
@@ -116,23 +86,82 @@ export const setDefaultPropsFor = (component, props) => {
     }
 }
 
-export const setDefaultStyleFor = (component, style,  name = 'main') => {
+export const setDefaultStyle = (component, style) => {
+   addDefaultStyle(component, style, 'main', '');
+}
+
+export const setDefaultStyles = (component, styles) => {
+   if (styles instanceof Object) {
+        for (let k in styles) {
+            addDefaultStyle(component, styles[k], k, 's');
+        }
+    } else {
+        console.error('Error in setDefaultStyles: The second argument should be an object');
+    }
+}
+
+const addDefaultStyle = (component, style, name, s) => {
+    s = 'setDefaultStyle' + s;
     if (style instanceof Object) {
         if (typeof component == 'string') {
             if (typeof map[component] == 'function') {
-                if (typeof map[component].setDefaultStyle == 'function') {
-                    map[component].setDefaultStyle(style);
-                } else {
-                    map[component].defaultStyles = map[component].defaultStyles || {}; 
-                    map[component].defaultStyles[name] = style;
+                if (name != 'main') {
+                    const styleNames = map[component].styleNames;
+                    if (!(styleNames instanceof Array) || styleNames.indexOf(name) == -1) {
+                        console.error('Error in ' + s + ': Element "' + name + '" does not exist in the component "' + component + '"');
+                        return;
+                    }
                 }
+                map[component].defaultStyles = map[component].defaultStyles || {}; 
+                map[component].defaultStyles[name] = style;
             } else {
-                return console.error('Error in setDefaultStyle: Component "' + component + '" is not found');
+                console.error('Error in ' + s + ': Component "' + component + '" is not found');
             }
         } else {
-            return console.error('Error in setDefaultStyle: The first argument should be a string (the name of a component)');
+            console.error('Error in ' + s + ': The first argument should be a string (the name of a component)');
         }
     } else {
-        return console.error('Error in setDefaultStyle: The second argument should be an object');
+        console.error('Error in ' + s + ': The second argument should be an object');
+    }
+}
+
+export const addClassStyle = (component, className, style) => {
+    addClass(component, className, style, 'main');
+}
+
+export const addClassStyles = (component, className, styles) => {
+    if (styles instanceof Object) {
+        for (let k in styles) {
+            addClass(component, className, styles[k], k, 's');
+        }
+    } else {
+        console.error('Error in addClassStyles: The third argument should be an object');
+    }
+}
+
+const addClass = (component, className, style, name, s) => {
+    s = 'addClassStyle' + s;
+    if (style instanceof Object) {
+        if (typeof component == 'string') {
+            if (typeof map[component] == 'function') {
+                if (name != 'main') {
+                    const styleNames = map[component].styleNames;
+                    if (!(styleNames instanceof Array) || styleNames.indexOf(name) == -1) {
+                        console.error('Error in ' + s + ': Element "' + name + '" does not exist in the component "' + component + '"');
+                        return;
+                    }
+                }
+                map[component].classStyles = map[component].classStyles || {}; 
+                map[component].classStyles[className] = map[component].classStyles[className] || {};
+                map[component].classStyles[className][name] = style;
+                console.log(map[component].classStyles)
+            } else {
+                console.error('Error in ' + s + ': Component "' + component + '" is not found');
+            }
+        } else {
+            console.error('Error in ' + s + ': The first argument should be a string (the name of a component)');
+        }
+    } else {
+        console.error('Error in ' + s + ': The second argument should be an object');
     }
 }

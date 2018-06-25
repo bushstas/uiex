@@ -6,13 +6,10 @@ import {TabPropTypes} from './proptypes';
 export class Tab extends Button {
 	static propTypes = TabPropTypes;
 
-	getClassNames() {
-		let className = super.getClassNames() + ' uiex-tab';
-		const {afterActive} = this.props;
-		if (afterActive) {
-			className += ' uiex-after-active';
-		}
-		return className;
+	addClassNames(add) {
+		super.addClassNames(add);
+		add('button');
+		add('after-active', this.props.afterActive);
 	}
 
 	renderInternalChildren() {

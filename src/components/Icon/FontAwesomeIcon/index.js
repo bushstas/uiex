@@ -8,9 +8,9 @@ export class FontAwesomeIcon extends UIEXComponent {
 	static propTypes = IconPropTypes;
 	static className = 'icon';
 		
-	getClassNames() {
-		const {name} = this.props;
-		return 'uiex-fa uiex-fa-' + name;
+	addClassNames(add) {
+		add('fa');
+		add('fa-' + this.props.name);
 	}
 
 	renderInternal() {

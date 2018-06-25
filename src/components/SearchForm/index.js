@@ -30,28 +30,18 @@ export class SearchForm extends UIEXComponent {
 		}
 	}
 
-	getClassNames() {
+	addClassNames(add) {
 		const {buttonDisplay, width, focusedWidth, hiddenButton} = this.props;
 		const {focused} = this.state;
-		let className = '';
 		if (buttonDisplay && FORM_BUTTON_DISPLAY.indexOf(buttonDisplay) > -1) {
-			className += ' uiex-form-button-' + buttonDisplay;
+			add('form-button-' + buttonDisplay);
 		} else {
-			className += ' uiex-form-button-standart';
+			add('form-button-standart');
 		}
-		if (width) {
-			className += ' uiex-form-with-given-width';
-		}
-		if (focusedWidth) {
-			className += ' uiex-form-with-focused-width';
-		}
-		if (focused) {
-			className += ' uiex-form-focused';
-		}
-		if (hiddenButton) {
-			className += ' uiex-form-width-hidden-button';
-		}
-		return className;
+		add('form-with-given-width', width);
+		add('form-with-focused-width', focusedWidth);
+		add('form-focused', focused);
+		add('form-width-hidden-button', hiddenButton);
 	}
 
 	renderInternal() {

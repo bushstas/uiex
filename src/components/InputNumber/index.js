@@ -19,14 +19,11 @@ export class InputNumber extends Input {
 		}
 	}
 
-	getClassNames() {
+	addClassNames(add) {
 		const {measure} = this.props;
-		let className = super.getClassNames();
-		className += ' uiex-number-input';
-		if (measure && (typeof measure == 'string' || measure instanceof Array)) {
-			className += ' uiex-with-measure';
-		}
-		return className;
+		super.addClassNames(add);
+		add('number-input');
+		add('with-measure', measure && (typeof measure == 'string' || measure instanceof Array));
 	}
 
 	renderAdditionalContent() {

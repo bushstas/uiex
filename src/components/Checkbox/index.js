@@ -19,25 +19,18 @@ export class Checkbox extends UIEXComponent {
 		}
 	}
 
-	getClassNames() {
+	addClassNames(add) {
 		let {icon, multiline, value} = this.props;
 		const {checked} = this.state;
-		let className = 'uiex-control';
-		if (icon) {
-			className += ' uiex-with-icon';
-		}
-		if (multiline) {
-			className += ' uiex-multilined';
-		}
+		add('control');
+		add('with-icon', icon);
+		add('multilined', multiline);
 		if (checked) {
-			className += ' uiex-checked';
+			add('checked');
 		} else if (checked === null) {
-			className += ' uiex-undetermined';	
+			add('undetermined');
 		}
-		if (this.properChildrenCount > 0) {
-			className += ' uiex-with-child-groups';
-		}
-		return className;
+		add('with-child-groups', this.properChildrenCount > 0);
 	}
 
 	componentWillReceiveProps(nextProps) {

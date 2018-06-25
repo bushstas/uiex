@@ -18,13 +18,8 @@ export class BoxSection extends UIEXComponent {
 		}
 	}
 	
-	getClassNames() {
-		const {iconAtRight} = this.props;
-		let className = '';
-		if (iconAtRight) {
-			className += ' uiex-icon-at-right';
-		}
-		return className;
+	addClassNames(add) {
+		add('icon-at-right', this.props.iconAtRight);
 	}
 
 	componentWillReceiveProps(nextProps) {

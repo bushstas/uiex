@@ -7,6 +7,7 @@ import './style.scss';
 
 export class Section extends UIEXComponent {
 	static propTypes = SectionPropTypes;
+	static styleNames = ['caption', 'note', 'content'];
 
 	constructor(props) {
 		super(props);
@@ -65,16 +66,16 @@ export class Section extends UIEXComponent {
 		return (
 			<div {...this.getProps()}>
 				{(caption || note) &&
-					<div className="uiex-section-caption">
+					<div className="uiex-section-caption" style={this.getStyle('caption')}>
 						{caption}
 						{note && 
-							<div className="uiex-section-note">
+							<div className="uiex-section-note" style={this.getStyle('note')}>
 								{note}
 							</div>
 						}
 					</div>
 				}
-				<div className="uiex-section-content">
+				<div className="uiex-section-content" style={this.getStyle('content')}>
 					{children}
 				</div>
 			</div>

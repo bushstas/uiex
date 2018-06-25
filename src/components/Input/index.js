@@ -35,25 +35,14 @@ export class Input extends UIEXComponent {
 		this.fireChangeValidity(true);
 	}
 
-	getClassNames() {
+	addClassNames(add) {
 		const {textarea, readOnly, clearable, valid, invalid, value} = this.props;
-		let className = 'uiex-control';
-		if (textarea) {
-			className += ' uiex-textarea';
-		}
-		if (readOnly) {
-			className += ' uiex-readonly';
-		}
-		if (value && clearable) {
-			className += ' uiex-clearable';
-		}
-		if (valid) {
-			className += ' uiex-valid';
-		}
-		if (invalid) {
-			className += ' uiex-invalid';
-		}
-		return className;
+		add('control');
+		add('textarea', textarea);
+		add('readonly', readOnly);
+		add('clearable', value && clearable);
+		add('valid', valid);
+		add('invalid', invalid);
 	}
 
 	renderInternal() {

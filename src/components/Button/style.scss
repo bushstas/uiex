@@ -30,6 +30,13 @@
 		border-color: #c9ccd2;
 	}
 
+	.uiex-button-content {
+		display: block;
+		overflow: hidden;
+    	white-space: nowrap;
+    	text-overflow: ellipsis;
+	}
+
 	&.uiex-icon-button {
 		.uiex-icon {
 			margin-right: 0;

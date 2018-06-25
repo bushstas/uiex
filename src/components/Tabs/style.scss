@@ -1,18 +1,8 @@
 .uiex-tabs {
-	.uiex-tabs-content {
-		margin-top: 10px;
-		text-align: left;
-	}
 	&.uiex-dynamic-tabs {
 		.uiex-button:not(.uiex-add-tab-button) {
 			position: relative;
 			padding-right: 25px;
-		}
-		.uiex-tab-content {
-			display: block;
-			overflow: hidden;
-    		white-space: nowrap;
-    		text-overflow: ellipsis;
 		}
 		.uiex-add-tab-button {
 			padding: 0 10px;

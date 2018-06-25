@@ -59,7 +59,9 @@ export class Button extends UIEXComponent {
 				{icon && !iconAtRight &&
 					<Icon name={icon} fontSize={iconSize} type={iconType}/>
 				}
-				{this.renderInternalChildren()}
+				<div className="uiex-button-content">
+					{this.renderInternalChildren()}
+				</div>
 				{icon && iconAtRight &&
 					<Icon name={icon} fontSize={iconSize} type={iconType}/>
 				}

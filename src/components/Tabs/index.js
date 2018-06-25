@@ -245,7 +245,7 @@ export class Tabs extends UIEXButtons {
 class TabCloseButton extends React.Component {
 	render() {
 		return(
-			<span className="uiex-tab-content">
+			<span>
 				{this.props.caption} 
 				<span className="uiex-tab-close" onClick={this.handleClick}>
 					<Icon name="clear" fontSize="14"/>

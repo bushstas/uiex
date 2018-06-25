@@ -259,7 +259,7 @@ export class UIEXButtons extends UIEXComponent {
 		if (buttonColor && !child.props.color) {
 			props.color = buttonColor;
 		}
-		if (!props.width && buttonWidth && !child.props.width) {
+		if (buttonWidth && !child.props.width) {
 			props.width = buttonWidth;
 		}
 		if (buttonHeight && !child.props.height) {

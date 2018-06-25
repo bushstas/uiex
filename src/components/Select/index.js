@@ -5,45 +5,26 @@ import {Icon} from '../Icon';
 import {PopupMenu, PopupMenuItem} from '../PopupMenu';
 import {Box} from '../Box';
 import {SelectPropTypes} from './proptypes';
-import {PopupMenuItemPropTypes} from '../PopupMenu/proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
-const INITIAL_STATE = {
-	focused: false,
-	hasOptions: null
-};
-
-const PROPER_CHILD = 'SelectOption';
-
 export class Select extends UIEXBoxContainer {
 	static propTypes = SelectPropTypes;
+	static className = 'select';
+	static properChildren = 'SelectOption';
+	static onlyProperChildren = true;
 	static isControl = true;
-
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		Select.defaultProps = props;
-	}
 
 	constructor(props) {
 		super(props);
 		
-		this.state = INITIAL_STATE;
+		this.state = {
+			focused: false,
+			hasOptions: null
+		};
 		this.selectHandler = this.handleSelect.bind(this);
 		this.selectByArrowHandler = this.handleSelectByArrow.bind(this);
 		this.enterHandler = this.handleEnter.bind(this);
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'select';
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -109,18 +90,6 @@ export class Select extends UIEXBoxContainer {
 			className += ' uiex-multi-valued';
 		}
 		return className;
-	}
-
-	isProperChild(child) {
-		return typeof child == 'function' && child.name == PROPER_CHILD;
-	}
-
-	canHaveOnlyProperChildren() {
-		return true;
-	}
-
-	getExpectedChildren() {
-		return PROPER_CHILD;
 	}
 
 	getCustomProps() {
@@ -322,19 +291,7 @@ export class Select extends UIEXBoxContainer {
 }
 
 
-let OPTION_DEFAULT_STYLE;
 export class SelectOption extends PopupMenuItem {
-	static propTypes = PopupMenuItemPropTypes;
-
-	static setDefaultStyle(style) {
-		OPTION_DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		SelectOption.defaultProps = props;
-	}
-
-	getDefaultStyle() {
-		return OPTION_DEFAULT_STYLE;
-	}
+	static propTypes = PopupMenuItem.propTypes;
+	static className = PopupMenuItem.className;
 }

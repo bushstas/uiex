@@ -6,34 +6,18 @@ import {addStyleProperty, getNumberOrNull} from '../utils';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
-const EXPECTED_CHILD = 'Radio';
-
 export class RadioGroup extends UIEXComponent {
 	static propTypes = RadioGroupPropTypes;
+	static className = 'radio-group';
+	static properChildren = 'Radio';
+	static onlyProperChildren = true;
 	static isControl = true;
-
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		RadioGroup.defaultProps = props;
-	}
 
 	constructor(props) {
 		super(props);
 		this.initMaxHeight(props.maxHeight);
 		this.itemValues = [];
 		this.hasChildGroups = 0;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'radio-group';
 	}
 
 	getClassNames() {
@@ -65,18 +49,6 @@ export class RadioGroup extends UIEXComponent {
 		if (firstChecked && this.firstValue != null && value == null && typeof onChange == 'function') {
 			onChange(this.firstValue, name);
 		}
-	}
-
-	isProperChild(child) {
-		return child.name == EXPECTED_CHILD;
-	}
-
-	getExpectedChildren() {
-		return EXPECTED_CHILD;
-	}
-
-	canHaveOnlyProperChildren() {
-		return true;
 	}
 
 	initRendering() {

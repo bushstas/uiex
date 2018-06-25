@@ -5,27 +5,9 @@ import {ButtonPropTypes} from './proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
-
 export class Button extends UIEXComponent {
 	static propTypes = ButtonPropTypes;
 	
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		Button.defaultProps = props;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'button';
-	}
-
 	getClassNames() {
 		const {iconAtRight, icon, children, gradient} = this.props;
 		let className = '';

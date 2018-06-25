@@ -4,11 +4,12 @@ export const COLORS = ['black', 'gray', 'white', 'red', 'blue', 'green', 'yellow
 export const ALIGN = ['left', 'center', 'right'];
 export const VALIGN = ['top', 'center', 'bottom'];
 export const FLOAT = ['left', 'right'];
-export const ICON_TYPE = ['Material', 'FontAwesome', 'LineAwesome', 'Foundation', 'LigatureSymbols', 'OpenWeb', 'Genericons', 'Glyphicons', 'Ionicons', 'IcoMoon'];
+export const ICON_TYPE = ['Material', 'FontAwesome', 'LineAwesome', 'Foundation', 'LigatureSymbols', 'Genericons', 'Glyphicons', 'Ionicons', 'IcoMoon'];
 export const BUTTONS_VIEW = ['united', 'underlined', 'bordered', 'simple'];
 export const ANIM_EFFECTS = ['linear', 'ease', 'ease-in', 'ease-out', 'ease-in-out'];
 export const ANIM_SPEED = ['fast', 'normal', 'slow'];
 export const ANIM_TYPE = ['fade', 'roll', 'fall', 'fade-roll', 'fade-fall'];
+export const FORM_BUTTON_DISPLAY = ['united', 'under-left', 'under-center', 'under-right', 'under-stretch'];
 
 const OPTION_SHAPE = PropTypes.shape({
 	value: PropTypes.oneOfType([
@@ -86,5 +87,6 @@ export const PROPTYPE = {
 			])
 		),
 		PropTypes.object
-	])
+	]),
+	FORM_BUTTON_DISPLAY: PropTypes.oneOf(FORM_BUTTON_DISPLAY)
 }

@@ -8,28 +8,18 @@ import {PopupMenuPropTypes, PopupMenuItemPropTypes} from './proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
 const DEFAULT_MAX_HEIGHT = 350;
-const PROPER_CHILD = 'PopupMenuItem';
 
 export class PopupMenu extends Popup {
 	static propTypes = PopupMenuPropTypes;
+	static properChildren = ['PopupMenuItem', 'SelectOption'];
+	static className = 'popup-menu';
+	static onlyProperChildren = true;
+
 	static defaultProps = {
 		isInnerChild: true,
 		speed: 'fast',
 		animation: 'fade-fall'
-	}
-
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		PopupMenu.defaultProps = {
-			...PopupMenu.defaultProps,
-			...props,
-			isInnerChild: true
-		}
 	}
 
 	constructor(props) {
@@ -41,10 +31,6 @@ export class PopupMenu extends Popup {
 		if (props.isOpen) {
 			this.addKeydownHandler();
 		}
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -93,10 +79,6 @@ export class PopupMenu extends Popup {
 		window.removeEventListener('keydown', this.handleKeyDown, false);
 	}
 
-	getNativeClassName() {
-		return 'popup-menu';
-	}
-
 	getClassNames() {
 		let classNames = 'uiex-scrollable';
 		if (this.state.isOpen) {
@@ -106,18 +88,6 @@ export class PopupMenu extends Popup {
 			classNames += ' uiex-multiple';
 		}
 		return classNames;
-	}
-
-	isProperChild(child) {
-		return child.name == PROPER_CHILD || child.name == 'SelectOption';
-	}
-
-	canHaveOnlyProperChildren() {
-		return true;
-	}
-
-	getExpectedChildren() {
-		return PROPER_CHILD;
 	}
 
 	initRendering() {
@@ -298,10 +268,7 @@ export class PopupMenu extends Popup {
 
 export class PopupMenuItem extends UIEXComponent {
 	static propTypes = PopupMenuItemPropTypes;
-
-	getNativeClassName() {
-		return 'popup-menu-item';
-	}
+	static className = 'popup-menu-item';
 
 	getClassNames() {
 		const {selected, checked, icon} = this.props;

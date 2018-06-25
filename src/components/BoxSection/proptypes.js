@@ -4,5 +4,6 @@ import {PROPTYPE} from '../consts';
 
 export const BoxSectionPropTypes = {
 	...BoxPropTypes,
-	caption: PROPTYPE.REACT_NODES.isRequired
+	caption: PROPTYPE.REACT_NODES.isRequired,
+	note: PROPTYPE.REACT_NODES
 }

@@ -1,34 +1,17 @@
 import React from 'react';
 import {PROPTYPE} from '../consts';
 import {UIEXButtons} from '../UIEXComponent';
-import {Tab} from '../Tab';
 import {Button} from '../Button';
 import {Icon} from '../Icon';
 import {TabsPropTypes} from './proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
 const NEW_TAB_CAPTION = 'New tab';
 
 export class Tabs extends UIEXButtons {
-	static propTypes = TabsPropTypes
-
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		Tabs.defaultProps = props;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'tabs';
-	}
+	static propTypes = TabsPropTypes;
+	static properChildren = 'Tab';
 
 	getClassNames() {
 		const {dynamic} = this.props;
@@ -37,10 +20,6 @@ export class Tabs extends UIEXButtons {
 			className += ' uiex-dynamic-tabs';
 		}
 		return className;
-	}
-
-	isProperChild(child) {
-		return child == Tab;
 	}
 
 	initRendering() {
@@ -102,9 +81,7 @@ export class Tabs extends UIEXButtons {
 	renderContent() {
 		const {children} = this.props;
 		const activeTab = this.activeTab;
-		return children.map((child, idx) => 
-			React.isValidElement(child) && child.type == Tab && this.isTabActive(child, idx) ? child.props.children : null
-		);
+		return children.map((child, idx) => this.isProperChild(child.type) && this.isTabActive(child, idx) ? child.props.children : null);
 	}
 
 	isTabActive(child, idx, props = null) {

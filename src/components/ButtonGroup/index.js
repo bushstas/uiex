@@ -4,31 +4,11 @@ import {ButtonGroupPropTypes} from './proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
-
 export class ButtonGroup extends UIEXButtons {
 	static propTypes = ButtonGroupPropTypes;
+	static className = 'button-group';
+	static properChildren = 'Button';
 	
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		ButtonGroup.defaultProps = props;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'button-group';
-	}
-
-	isProperChild(child) {
-		return child.name == 'Button';
-	}
-
 	addChildProps(child, props) {
 		this.addCommonButtonsProps(child, props);
 		if (typeof child.props.onClick != 'function') {

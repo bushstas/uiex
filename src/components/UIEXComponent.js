@@ -9,15 +9,70 @@ import {
 } from './utils';
 
 export class UIEXComponent extends React.PureComponent {
+	constructor(props) {
+		super(props);
+		this.stylesChanged = {};
+		this.styles = {};
+	}
 
 	componentWillReceiveProps(nextProps) {
 		const {width, height, fontSize, style} = nextProps;
-		this.stylesChanged = (
+		this.stylesChanged.main = (
 			width != this.props.width ||
-			 height != this.props.height || 
-			 fontSize != this.props.fontSize || 
-			 style != this.props.style
+			height != this.props.height || 
+			fontSize != this.props.fontSize || 
+			style != this.props.style
 		);
+		const {styleNames} = this.constructor;
+		if (styleNames) {
+			if (typeof styleNames == 'string') {
+				this.initStyleChange(styleNames, nextProps);
+			} else if (styleNames instanceof Array) {
+				for (let i = 0; i < styleNames.length; i++) {
+					this.initStyleChange(styleNames[i], nextProps);
+				}
+			}
+		}
+	}
+
+	initStyleChange(name, props) {
+		const key = name + 'Style';
+		this.stylesChanged[name] = this.props[key] != props[key];
+	}
+
+	setStyleChanged(isChanged) {
+		this.stylesChanged.main = isChanged;
+	}
+
+	getStyle(name) {
+		if (this.styles[name] === undefined || this.stylesChanged[name]) {
+			const defaultStyle = this.getDefaultStyle(name);
+			const key = name + 'Style';
+			if (this.props[key] || defaultStyle) {
+				this.styles[name] = {
+					...defaultStyle,
+					...this.props[key]
+				};
+			} else {
+				this.styles[name] = null;
+			}
+		}
+		return this.styles[name];
+	}
+
+	getMainStyle() {
+		if (!this.styles.main || this.stylesChanged.main) {
+			let {width, height, fontSize, style: propStyle} = this.props;
+			let style = null;		
+			style = addObject(this.getDefaultStyle(), style);
+			style = addObject(this.getCustomStyle(), style);
+			style = addObject(propStyle, style);
+			style = addStyleProperty(width, 'width', style);
+			style = addStyleProperty(height, 'height', style);
+			style = addStyleProperty(fontSize, 'fontSize', style);
+			this.styles.main = style;
+		}
+		return this.styles.main;
 	}
 
 	componentDidMount() {
@@ -63,7 +118,7 @@ export class UIEXComponent extends React.PureComponent {
 				return this.doRenderChildren(child);
 			}
 			const isValidElement = React.isValidElement(child);
-			const isProperChild = isValidElement && typeof child.type == 'function' && this.isProperChild(child.type);
+			const isProperChild = this.isProperChild(child.type);
 			if (!isProperChild && this.canHaveOnlyProperChildren()) {
 				showImproperChildError(child, this);
 				return null;
@@ -109,20 +164,6 @@ export class UIEXComponent extends React.PureComponent {
 		return null;
 	}
 
-	getStyle() {
-		if (typeof this.style == 'undefined' || this.stylesChanged) {
-			let {width, height, fontSize, style} = this.props;
-			this.style = null;		
-			this.style = addObject(this.getDefaultStyle(), this.style);
-			this.style = addObject(this.getCustomStyle(), this.style);
-			this.style = addObject(style, this.style);
-			this.style = addStyleProperty(width, 'width', this.style);
-			this.style = addStyleProperty(height, 'height', this.style);
-			this.style = addStyleProperty(fontSize, 'fontSize', this.style);
-		}
-		return this.style;
-	}
-
 	getProps(props) {
 		const {title} = this.props;
 		const componentProps = {
@@ -131,7 +172,7 @@ export class UIEXComponent extends React.PureComponent {
 		if (typeof title == 'string') {
 			componentProps.title = title;
 		}
-		const style = this.getStyle();
+		const style = this.getMainStyle();
 		if (style) {
 			componentProps.style = style;
 		}
@@ -158,15 +199,15 @@ export class UIEXComponent extends React.PureComponent {
 		return this.props.hidden ? null : this.renderInternal();
 	}
 
+	getNativeClassName() {
+		return this.constructor.className || this.constructor.name.toLowerCase();
+	}
+
 	getCustomProps() {
 		return null;
 	}
 
 	getCustomStyle() {
-		return null;
-	}
-
-	getNativeClassName() {
 		return null;
 	}
 
@@ -182,16 +223,47 @@ export class UIEXComponent extends React.PureComponent {
 		)
 	}
 
-	getDefaultStyle() {
-		return null;
+	getDefaultStyle(name = 'main') {
+		if (this.constructor.defaultStyles instanceof Object) {
+			return this.constructor.defaultStyles[name];
+		}
 	}
 
-	isProperChild() {
+	isProperChild(child) {
+		if (typeof child == 'function') {
+			const {properChildren, properChildrenSign} = this.constructor;
+			if (properChildren) {
+				if (typeof properChildren == 'string') {
+					return child.name == properChildren;
+				} else if (properChildren instanceof Array) {
+					return properChildren.indexOf(child.name) > -1;
+				}
+			}
+			if (typeof properChildrenSign == 'string') {
+				return !!child[properChildrenSign];
+			}
+		}
 		return false;
+	}
+
+	getExpectedChildren() {
+		const {properChildren} = this.constructor;
+		if (properChildren) {
+			if (typeof properChildren == 'string') {
+				return properChildren;
+			} else if (properChildren instanceof Array) {
+				return properChildren.join(', ');
+			}
+		}
+		return '';
 	}
 
 	canHaveOnlyProperChildren() {
-		return false;
+		return this.constructor.onlyProperChildren;
+	}
+
+	getProperChildMaxCount() {
+		return this.constructor.properChildrenMaxCount;
 	}
 
 	isOwnChild(element) {
@@ -209,17 +281,13 @@ export class UIEXComponent extends React.PureComponent {
 		return false;
 	}
 
-	getExpectedChildren() {
-		return '...';
-	}
-
 	filterChild() {
 		return true;
 	}
 
 	initRendering() {}
 	addChildProps() {}
-	getProperChildMaxCount() {}
+	getStyleNames() {}
 }
 
 
@@ -295,16 +363,5 @@ export class UIEXBoxContainer extends UIEXComponent {
 			boxProps[k] = this.props[k];
 		}
 		return boxProps;
-	}
-}
-
-export class UIEXIcon extends UIEXComponent {
-	getProps() {
-		const {disabled} = this.props;
-		const props = super.getProps();
-		if (!disabled) {
-			props.onClick = this.props.onClick;
-		}
-		return props;
 	}
 }

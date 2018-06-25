@@ -1,4 +1,5 @@
 import React from 'react';
+import {UIEXComponent} from '../UIEXComponent';
 import {MaterialIcon} from './MaterialIcon';
 import {FontAwesomeIcon} from './FontAwesomeIcon';
 import {LineAwesomeIcon} from './LineAwesomeIcon';
@@ -12,25 +13,32 @@ import {IcomoonIcon} from './IcomoonIcon';
 
 import './style.scss';
 
-export class Icon extends React.PureComponent {
+export class Icon extends UIEXComponent {
+
+	constructor(props) {
+		super(props);
+		this.initStyle(props);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		super.componentWillReceiveProps(nextProps);
+		const {style} = this.props;
+		if (style != nextProps.style) {
+			this.initStyle(nextProps);
+		}
+	}
+
+	initStyle(props) {
+		if (this.constructor.defaultStyles instanceof Object) {
+			this.style = {
+				...this.constructor.defaultStyles.main,
+				...props.style
+			}
+		} else {
+			this.style = props.style;
+		}		
+	}
 	
-	static setDefaultStyle(style) {
-		MaterialIcon.setDefaultStyle(style);
-		FontAwesomeIcon.setDefaultStyle(style);
-		LineAwesomeIcon.setDefaultStyle(style);
-		FoundationIcon.setDefaultStyle(style);
-		LigatureSymbolsIcon.setDefaultStyle(style);
-		OpenWebIcon.setDefaultStyle(style);
-		GenericonsIcon.setDefaultStyle(style);
-		GlyphiconsIcon.setDefaultStyle(style);
-		IoniconsIcon.setDefaultStyle(style);
-		IcomoonIcon.setDefaultStyle(style);
-	}
-
-	static setDefaultProps(props) {
-		Icon.defaultProps = props;
-	}
-
 	render() {
 		let TypedIcon = MaterialIcon;
 		switch (this.props.type) {
@@ -50,10 +58,6 @@ export class Icon extends React.PureComponent {
 				TypedIcon = LigatureSymbolsIcon;
 			break;
 
-			case 'OpenWeb':
-				TypedIcon = OpenWebIcon;
-			break;
-
 			case 'Genericons':
 				TypedIcon = GenericonsIcon;
 			break;
@@ -70,9 +74,14 @@ export class Icon extends React.PureComponent {
 				TypedIcon = IcomoonIcon;
 			break;
 		}
-
+		const {disabled} = this.props;
+		const onClick = disabled ? null : this.props.onClick;
 		return (
-			<TypedIcon {...this.props}/>
+			<TypedIcon 
+				{...this.props} 
+				onClick={onClick} 
+				style={this.style}
+			/>
 		)
 	}
 }

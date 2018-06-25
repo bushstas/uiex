@@ -1,4 +1,6 @@
 .uiex-box-section {
+	position: relative;
+
 	.uiex-box-section-caption {
 		display: flex;
 		align-items: center;
@@ -21,6 +23,14 @@
 			background-color: #eee;
 		}
 	}
+	.uiex-box-section-note {
+		position: absolute;
+		right: 15px;
+		top: 11px;
+		font-size: 14px;
+		color: #777;
+		cursor: pointer;
+	}
 	& > .uiex-box {
 		& > .uiex-box-inner {
 			padding-top: 15px;
@@ -30,6 +40,9 @@
 		.uiex-box-section-caption {
 			flex-direction: row-reverse;
 			justify-content: space-between;
+		}
+		.uiex-box-section-note {
+			right: 60px;
 		}
 	}
 	&.uiex-disabled {

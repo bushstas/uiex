@@ -5,41 +5,14 @@ import {FormControlGroupPropTypes} from './proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
 const DEFAULT_COLUMNS = 10;
 const DEFAULT_SIDE_MARGIN = 12;
-const EXPECTED_CHILD = 'FormControl';
 
 export class FormControlGroup extends UIEXComponent {
 	static propTypes = FormControlGroupPropTypes;
-
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		FormControlGroup.defaultProps = props;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'form-control-group';
-	}
-
-	isProperChild(child) {
-		return child.name == EXPECTED_CHILD;
-	}
-
-	canHaveOnlyProperChildren() {
-		return true;
-	}
-
-	getExpectedChildren() {
-		return EXPECTED_CHILD;
-	}
+	static properChildren = 'FormControl';
+	static className = 'form-control-group';
+	static onlyProperChildren = true;
 
 	initRendering() {
 		this.totalControlSize = 0;

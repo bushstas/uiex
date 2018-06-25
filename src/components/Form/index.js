@@ -7,31 +7,11 @@ import {FormPropTypes} from './proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
 const DEFAULT_LINE_MARGIN = 15;
 
 export class Form extends UIEXComponent {
 	static propTypes = FormPropTypes;
-
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		Form.defaultProps = props;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'form';
-	}
-
-	isProperChild(child) {
-		return child.name == 'FormControl' || child.name == 'FormControlGroup';
-	}
+	static properChildren = ['FormControl', 'FormControlGroup'];
 
 	addChildProps(child, props) {
 		const {type: control} = child;

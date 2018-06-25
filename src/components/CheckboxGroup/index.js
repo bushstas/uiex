@@ -6,21 +6,14 @@ import {addStyleProperty, getNumberOrNull} from '../utils';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
-const EXPECTED_CHILD = 'Checkbox';
 const DEFAULT_CHECK_ALL = 'Check all';
 
 export class CheckboxGroup extends UIEXComponent {
 	static propTypes = CheckboxGroupPropTypes;
+	static properChildren = 'Checkbox';
+	static className = 'checkbox-group';
+	static onlyProperChildren = true;
 	static isControl = true;
-
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		CheckboxGroup.defaultProps = props;
-	}
 
 	static flatten(obj) {
 
@@ -39,14 +32,6 @@ export class CheckboxGroup extends UIEXComponent {
 		this.initMaxHeight(props.maxHeight);
 		this.itemValues = [];
 		this.hasChildGroups = 0;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'checkbox-group';
 	}
 
 	getClassNames() {
@@ -71,18 +56,6 @@ export class CheckboxGroup extends UIEXComponent {
 		if (maxHeight !== this.props.maxHeight) {
 			this.initMaxHeight(maxHeight);
 		}
-	}
-
-	isProperChild(child) {
-		return child.name == EXPECTED_CHILD;
-	}
-
-	getExpectedChildren() {
-		return EXPECTED_CHILD;
-	}
-
-	canHaveOnlyProperChildren() {
-		return true;
 	}
 
 	initRendering() {

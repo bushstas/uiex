@@ -6,28 +6,12 @@ import {InputBooleanPropTypes} from './proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
 const DEFAULT_CAPTION = 'Yes/No';
 
 export class InputBoolean extends UIEXComponent {
 	static propTypes = InputBooleanPropTypes;
+	static className = 'input-boolean';
 	static isControl = true;
-
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		InputBoolean.defaultProps = props;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'input-boolean';
-	}
 
 	getClassNames() {
 		return 'uiex-control';

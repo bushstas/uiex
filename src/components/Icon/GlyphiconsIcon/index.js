@@ -1,26 +1,13 @@
 import React from 'react';
-import {UIEXIcon} from '../../UIEXComponent';
+import {UIEXComponent} from '../../UIEXComponent';
 import {IconPropTypes} from '../proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
-
-export class GlyphiconsIcon extends UIEXIcon {
+export class GlyphiconsIcon extends UIEXComponent {
 	static propTypes = IconPropTypes;
+	static className = 'icon';	
 	
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-	
-	getNativeClassName() {
-		return 'icon';
-	}
-
 	getClassNames() {
 		const {name} = this.props;
 		return 'uiex-gly uiex-gly-' + name;

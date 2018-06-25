@@ -9,26 +9,8 @@ let DEFAULT_STYLE;
 
 export class FormControl extends UIEXComponent {
 	static propTypes = FormControlPropTypes;
-
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		FormControl.defaultProps = props;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'form-control';
-	}
-
-	isProperChild(child) {
-		return child.isControl;
-	}
+	static className = 'form-control';
+	static properChildrenSign = 'isControl';
 
 	addChildProps(child, props) {
 		const {type: control} = child;		

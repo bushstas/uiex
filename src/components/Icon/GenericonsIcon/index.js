@@ -1,26 +1,13 @@
 import React from 'react';
-import {UIEXIcon} from '../../UIEXComponent';
+import {UIEXComponent} from '../../UIEXComponent';
 import {IconPropTypes} from '../proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
-
-export class GenericonsIcon extends UIEXIcon {
+export class GenericonsIcon extends UIEXComponent {
 	static propTypes = IconPropTypes;
+	static className = 'icon';
 	
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-	
-	getNativeClassName() {
-		return 'icon';
-	}
-
 	getClassNames() {
 		const {name} = this.props;
 		return 'uiex-gnr uiex-gnr-' + name;

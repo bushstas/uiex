@@ -6,10 +6,9 @@ import {BoxSectionPropTypes} from './proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
-
 export class BoxSection extends UIEXComponent {
 	static propTypes = BoxSectionPropTypes;
+	static className = 'box-section';
 
 	constructor(props) {
 		super(props);
@@ -19,22 +18,6 @@ export class BoxSection extends UIEXComponent {
 		}
 	}
 	
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		BoxSection.defaultProps = props;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'box-section';
-	}
-
 	getClassNames() {
 		const {iconAtRight} = this.props;
 		let className = '';
@@ -52,7 +35,7 @@ export class BoxSection extends UIEXComponent {
 	}
 
 	renderInternal() {
-		const {caption, children, iconAtRight, ...boxProps} = this.props;
+		const {caption, children, iconAtRight, className, note, ...boxProps} = this.props;
 		const {isOpen} = this.state;
 		
 		return (
@@ -63,6 +46,11 @@ export class BoxSection extends UIEXComponent {
 						{caption}
 					</span>
 				</div>
+				{note && 
+					<div className="uiex-box-section-note" onClick={this.handleClick}>
+						{note}
+					</div>
+				}
 				<Box {...boxProps} isOpen={isOpen}>
 					{children}
 				</Box>

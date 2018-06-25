@@ -5,27 +5,10 @@ import {BoxPropTypes} from './proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
 const DEFAULT_SPEED = 'normal';
 
 export class Box extends UIEXComponent {
 	static propTypes = BoxPropTypes;
-	
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		Box.defaultProps = props;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'box';
-	}
 
 	getClassNames() {
 		const {animation, speed, effect, buttonUnder} = this.props;
@@ -75,7 +58,6 @@ export class Box extends UIEXComponent {
 		const {outer} = this.refs;
 		outer.style.visibility = 'visible';
 		outer.style.opacity = '1';
-		outer.style.height = this.getHeight();
 		outer.style.paddingTop = '';
 		outer.style.paddingBottom = '';
 		outer.style.marginTop = '';
@@ -154,11 +136,13 @@ export class Box extends UIEXComponent {
 			case 'fade-fall':
 			case 'fade-roll':
 				this.showStyles();
+				this.setHeight();
 				setTimeout(this.showOverflowStyles, delay);
 				setTimeout(this.resetHeight, delay);
 			break;
 
 			default:
+				this.setHeight();
 				this.showAllStyles();
 		}
 	}
@@ -257,7 +241,7 @@ export class Box extends UIEXComponent {
 	}
 
 	renderButton() {
-		const {isOpen, disabled} = this.props;
+		const {isOpen, disabled, onDisabledClick} = this.props;
 		return (
 			<Button 
 				className="uiex-box-button"
@@ -266,6 +250,7 @@ export class Box extends UIEXComponent {
 				icon={!isOpen ? 'expand_more' : 'expand_less'}
 				iconSize={30}
 				disabled={disabled}
+				onDisabledClick={onDisabledClick}
 			>
 				{this.getButtonTitle()}
 			</Button>

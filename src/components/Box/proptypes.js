@@ -19,5 +19,6 @@ export const BoxPropTypes = {
 	button: PropTypes.string,
 	buttonUnder: PropTypes.bool,
 	noHideAnimation: PropTypes.bool,
-	onToggle: PropTypes.func
+	onToggle: PropTypes.func,
+	onDisabledClick: PropTypes.func
 }

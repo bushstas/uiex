@@ -8,6 +8,7 @@ import './style.scss';
 
 export class InputNumber extends Input {
 	static propTypes = InputNumberPropTypes;
+	static className = 'input';
 	static isControl = true;
 
 	componentWillReceiveProps(nextProps) {

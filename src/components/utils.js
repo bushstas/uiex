@@ -23,6 +23,17 @@ export const getNumberOrNull = (n) => {
 	return null;
 }
 
+export const getNumberInPxOrPercent = (n) => {
+	if (typeof n == 'string' || typeof n == 'number') {
+		const i = getNumberOrNull(n);
+		if (!i) {
+			return n;
+		}
+		return i + 'px';
+	}
+	return '';
+}
+
 export const regexEscape = (str) => {
 	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }

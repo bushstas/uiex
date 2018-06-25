@@ -2,23 +2,9 @@ import React from 'react';
 import {UIEXBoxContainer} from '../UIEXComponent';
 import {PopupPropTypes} from './proptypes';
 
-let DEFAULT_STYLE;
-
 export class Popup extends UIEXBoxContainer {
 	static propTypes = PopupPropTypes;
 	
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		Popup.defaultProps = props;
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
 	constructor(props) {
 		super(props);
 		if (props.isOpen) {
@@ -48,10 +34,6 @@ export class Popup extends UIEXBoxContainer {
 
 	removeBodyClickHandler() {
 		document.body.removeEventListener('click', this.handleBodyClick, false);
-	}
-
-	getNativeClassName() {
-		return 'popup';
 	}
 
 	getCustomProps() {

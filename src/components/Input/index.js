@@ -6,19 +6,9 @@ import {InputPropTypes} from './proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
-
 export class Input extends UIEXComponent {
 	static propTypes = InputPropTypes;
 	static isControl = true;
-
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		Input.defaultProps = props;
-	}
 
 	constructor(props) {
 		super(props);
@@ -43,14 +33,6 @@ export class Input extends UIEXComponent {
 
 	componentWillUnmount() {
 		this.fireChangeValidity(true);
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'input';
 	}
 
 	getClassNames() {

@@ -5,53 +5,18 @@ import {CheckboxPropTypes} from './proptypes';
 
 import './style.scss';
 
-let DEFAULT_STYLE;
-let DEFAULT_CONTROL_STYLE;
-let CONTROL_STYLE_CHANGED = true;
-let DEFAULT_LABEL_STYLE;
-let LABEL_STYLE_CHANGED = true;
-let DEFAULT_MARKER_STYLE;
-let MARKER_STYLE_CHANGED = true;
-
-const PROPER_CHILD = 'CheckboxGroup';
-
 export class Checkbox extends UIEXComponent {
 	static propTypes = CheckboxPropTypes;
+	static styleNames = ['control', 'marker', 'label'];
+	static properChildren = 'CheckboxGroup';
+	static properChildrenMaxCount = 1;
 	static isControl = true;
-
-	static setDefaultStyle(style) {
-		DEFAULT_STYLE = style;
-	}
-
-	static setDefaultProps(props) {
-		Checkbox.defaultProps = props;
-	}
-
-	static setDefaultControlStyle(style) {
-		DEFAULT_CONTROL_STYLE = style;
-	}
-
-	static setDefaultLabelStyle(style) {
-		DEFAULT_LABEL_STYLE = style;
-	}
-
-	static setDefaultMarkerStyle(style) {
-		DEFAULT_MARKER_STYLE = style;
-	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			checked: props.checked
 		}
-	}
-
-	getDefaultStyle() {
-		return DEFAULT_STYLE;
-	}
-
-	getNativeClassName() {
-		return 'checkbox';
 	}
 
 	getClassNames() {
@@ -77,59 +42,10 @@ export class Checkbox extends UIEXComponent {
 
 	componentWillReceiveProps(nextProps) {
 		super.componentWillReceiveProps(nextProps);
-		const {controlStyle, labelStyle, markerStyle, checked} = this.props;
-		CONTROL_STYLE_CHANGED = nextProps.controlStyle != controlStyle;
-		LABEL_STYLE_CHANGED = nextProps.labelStyle != labelStyle;
-		MARKER_STYLE_CHANGED = nextProps.markerStyle != markerStyle;
-
+		const {checked} = this.props;
 		if (checked !== nextProps.checked) {
 			this.setState({checked: nextProps.checked});
 		}
-	}
-
-	getControlStyle() {
-		if (CONTROL_STYLE_CHANGED || !this.controlStyle) {
-			const {controlStyle} = this.props;
-			this.controlStyle = {
-				...DEFAULT_CONTROL_STYLE,
-				...controlStyle
-			};
-		}
-		return this.controlStyle;
-	}
-
-	getLabelStyle() {
-		if (LABEL_STYLE_CHANGED || !this.labelStyle) {
-			const {labelStyle} = this.props;
-			this.labelStyle	= {
-				...DEFAULT_LABEL_STYLE,
-				...labelStyle
-			};
-		}
-		return this.labelStyle;
-	}
-
-	getMarkerStyle() {
-		if (MARKER_STYLE_CHANGED || !this.markerStyle) {
-			const {markerStyle} = this.props;
-			this.markerStyle	= {
-				...DEFAULT_MARKER_STYLE,
-				...markerStyle
-			};
-		}
-		return this.markerStyle;
-	}
-
-	isProperChild(child) {
-		return child.name == PROPER_CHILD;
-	}
-
-	getProperChildMaxCount() {
-		return 1;
-	}
-
-	getExpectedChildren() {
-		return PROPER_CHILD;
 	}
 
 	addChildProps(child, props) {
@@ -173,11 +89,11 @@ export class Checkbox extends UIEXComponent {
 				<span 
 					className="uiex-checkbox-control"
 					onClick={this.handleClick}
-					style={this.getControlStyle()}
+					style={this.getStyle('control')}
 				>
 					<span 
 						className="uiex-checkbox-marker"
-						style={this.getMarkerStyle()}
+						style={this.getStyle('marker')}
 					>
 						{icon &&
 							<Icon name={icon} type={iconType}/>
@@ -187,7 +103,7 @@ export class Checkbox extends UIEXComponent {
 				{label &&
 					<div 
 						className="uiex-checkbox-label uiex-checkbox-content"
-						style={this.getLabelStyle()}
+						style={this.getStyle('label')}
 					>
 						<span onClick={this.handleClick}>
 							{label}

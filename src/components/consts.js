@@ -10,6 +10,7 @@ export const ANIM_EFFECTS = ['linear', 'ease', 'ease-in', 'ease-out', 'ease-in-o
 export const ANIM_SPEED = ['fast', 'normal', 'slow'];
 export const ANIM_TYPE = ['fade', 'roll', 'fall', 'fade-roll', 'fade-fall'];
 export const FORM_BUTTON_DISPLAY = ['united', 'under-left', 'under-center', 'under-right', 'under-stretch'];
+export const SIDES = ['right', 'left', 'top', 'bottom'];
 
 const OPTION_SHAPE = PropTypes.shape({
 	value: PropTypes.oneOfType([
@@ -88,5 +89,6 @@ export const PROPTYPE = {
 		),
 		PropTypes.object
 	]),
-	FORM_BUTTON_DISPLAY: PropTypes.oneOf(FORM_BUTTON_DISPLAY)
+	FORM_BUTTON_DISPLAY: PropTypes.oneOf(FORM_BUTTON_DISPLAY),
+	SIDES: PropTypes.oneOf(SIDES)
 }

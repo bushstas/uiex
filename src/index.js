@@ -24,6 +24,7 @@ import {RadioGroup} from './components/RadioGroup';
 import {SearchForm} from './components/SearchForm';
 import {Section} from './components/Section';
 import {Select, SelectOption} from './components/Select';
+import {SidePanel} from './components/SidePanel';
 import {Tab} from './components/Tab';
 import {Tabs} from './components/Tabs';
 import * as UIEXCONSTS from './components/consts';
@@ -61,6 +62,7 @@ export {
     Section,
     Select,
     SelectOption,
+    SidePanel,
     Tab,
     Tabs
 }
@@ -158,7 +160,6 @@ const addClass = (component, className, style, name, s) => {
                 map[component].classStyles = map[component].classStyles || {}; 
                 map[component].classStyles[className] = map[component].classStyles[className] || {};
                 map[component].classStyles[className][name] = style;
-                console.log(map[component].classStyles)
             } else {
                 console.error('Error in ' + s + ': Component "' + component + '" is not found');
             }

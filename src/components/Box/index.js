@@ -36,7 +36,7 @@ export class Box extends UIEXComponent {
 		}
 	}
 
-	changeStyles(isOpen) {		
+	changeStyles(isOpen) {
 		if (isOpen) {
 			this.showAllStyles();
 		} else {
@@ -86,7 +86,7 @@ export class Box extends UIEXComponent {
 	}
 
 	setHeight = () => {
-		this.refs.outer.style.height = this.getHeight();	
+		this.refs.outer.style.height = this.getHeight();
 	}
 
 	isWithFading() {

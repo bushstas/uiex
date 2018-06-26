@@ -5,7 +5,12 @@ import {PROPTYPE} from '../consts';
 export const LabelGroupPropTypes = {
 	...UIEXComponentPropTypes,
 	labelColor: PROPTYPE.COLORS,
-	labelMaxWidth: PROPTYPE.STRNUM,
+	labelWidth: PROPTYPE.STRNUM,
+	labelHeight: PROPTYPE.STRNUM,
+	labelStyle: PropTypes.object,
+	removable: PropTypes.bool,
+	gradient: PropTypes.bool,
+	onClickLabel: PropTypes.func,
 	onRemoveLabel: PropTypes.func,
 	onDisabledClick: PropTypes.func
 }

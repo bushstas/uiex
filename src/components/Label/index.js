@@ -10,6 +10,7 @@ export class Label extends UIEXComponent {
 
 	addClassNames(add) {
 		add('removable', this.props.removable);
+		add('with-gradient', this.props.gradient);
 	}
 
 	getCustomProps() {
@@ -35,10 +36,13 @@ export class Label extends UIEXComponent {
 	}
 
 	handleClick = (e) => {
-		const {onClick, value, disabled} = this.props;
+		const {onClick, value, disabled, onDisabledClick} = this.props;
 		if (!disabled && typeof onClick == 'function') {
 			e.stopPropagation();
 			onClick(value);
+		} else if (disabled && typeof onDisabledClick == 'function') {
+			e.stopPropagation();
+			onDisabledClick(value);
 		}
 	}
 

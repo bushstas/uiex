@@ -44,12 +44,12 @@ export class LabelGroup extends UIEXComponent {
 			} else {
 				props.style = labelStyle;
 			}
+		}		
+		if (typeof child.props.onClick != 'function') {
+			props.onClick = this.props.onClickLabel;
 		}
 		if (typeof child.props.onDisabledClick != 'function') {
 			props.onDisabledClick = this.props.onDisabledClick;
-		}
-		if (typeof child.props.onClick != 'function') {
-			props.onClick = this.props.onClick;
 		}
 		if (removable || child.props.removable) {
 			props.onRemove = this.props.onRemoveLabel;

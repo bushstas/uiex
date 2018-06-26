@@ -154,7 +154,6 @@ const addClass = (component, className, style, name, s) => {
                 map[component].classStyles = map[component].classStyles || {}; 
                 map[component].classStyles[className] = map[component].classStyles[className] || {};
                 map[component].classStyles[className][name] = style;
-                console.log(map[component].classStyles)
             } else {
                 console.error('Error in ' + s + ': Component "' + component + '" is not found');
             }

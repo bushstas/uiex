@@ -88,14 +88,14 @@ export const getComponentClassName = (component) => {
 	};	
 	add(component.getNativeClassName());
 	component.addClassNames(add);
-	add(disabled, 'disabled');
-	add(active, 'active');
-	add(block, 'block');
-	add(color, 'colored');
-	add(color, 'color-' + color);
-	add(align, 'align-' + align);
-	add(valign, 'valign-' + valign);
-	add(float, 'float-' + float);
+	add('disabled', disabled);
+	add('active', active);
+	add('block', block);
+	add('colored', color);
+	add('color-' + color, color);
+	add('align-' + align, align);
+	add('valign-' + valign, valign);
+	add('float-' + float, float);
 	return cn;
 }
 

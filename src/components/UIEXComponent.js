@@ -48,9 +48,15 @@ export class UIEXComponent extends React.PureComponent {
 		if (this.styles[name] === undefined || this.stylesChanged[name]) {
 			const defaultStyle = this.getDefaultStyle(name);
 			const key = name + 'Style';
-			if (this.props[key] || defaultStyle) {
+			const {styleClass} = this.props;
+			let classStyles;
+			if (styleClass) {
+				classStyles = this.getClassStyle(styleClass, name);
+			}
+			if (this.props[key] || defaultStyle || classStyles) {				
 				this.styles[name] = {
 					...defaultStyle,
+					...classStyles,
 					...this.props[key]
 				};
 			} else {
@@ -62,9 +68,12 @@ export class UIEXComponent extends React.PureComponent {
 
 	getMainStyle() {
 		if (!this.styles.main || this.stylesChanged.main) {
-			let {width, height, fontSize, style: propStyle} = this.props;
-			let style = null;		
+			let {width, height, fontSize, style: propStyle, styleClass} = this.props;
+			let style = null;			
 			style = addObject(this.getDefaultStyle(), style);
+			if (styleClass) {
+				style = addObject(this.getClassStyle(styleClass), style);
+			}
 			style = addObject(this.getCustomStyle(), style);
 			style = addObject(propStyle, style);
 			style = addStyleProperty(width, 'width', style);
@@ -73,6 +82,18 @@ export class UIEXComponent extends React.PureComponent {
 			this.styles.main = style;
 		}
 		return this.styles.main;
+	}
+
+	getClassStyle(styleClass, name = 'main') {
+		if (
+			!(this.constructor.classStyles instanceof Object) ||
+			!(this.constructor.classStyles[styleClass] instanceof Object)
+		) {
+			return console.error('Style class "' + styleClass + '" passed as a property "styleClass" to component "' + this.constructor.name + '" for element "' + name + '"" was not added');
+		}
+		if (this.constructor.classStyles[styleClass][name] instanceof Object) {
+			return this.constructor.classStyles[styleClass][name];
+		}
 	}
 
 	componentDidMount() {

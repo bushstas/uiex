@@ -4,7 +4,6 @@ import {PROPTYPE} from './consts';
 export const UIEXComponentPropTypes = {
     title: PropTypes.string,
     className: PropTypes.string,
-    styleClass: PropTypes.string,
     width: PROPTYPE.STRNUM,
     height: PROPTYPE.STRNUM,
     style: PropTypes.object,

@@ -8,6 +8,7 @@ export class LabelGroup extends UIEXComponent {
 	static propTypes = LabelGroupPropTypes;
 	static className = 'label-group';
 	static properChildren = 'Label';
+	static onlyProperChildren = true;
 	
 	addChildProps(child, props) {
 		const {
@@ -15,11 +16,15 @@ export class LabelGroup extends UIEXComponent {
 			labelWidth,
 			labelHeight,
 			labelStyle,			
-			gradient
+			gradient,
+			removable
 		} = this.props;
 
 		if (gradient && typeof child.props.gradient == 'undefined') {
 			props.gradient = true;
+		}
+		if (removable && typeof child.props.removable == 'undefined') {
+			props.removable = true;
 		}
 		if (labelColor && !child.props.color) {
 			props.color = labelColor;
@@ -43,12 +48,18 @@ export class LabelGroup extends UIEXComponent {
 		if (typeof child.props.onDisabledClick != 'function') {
 			props.onDisabledClick = this.props.onDisabledClick;
 		}
+		if (typeof child.props.onClick != 'function') {
+			props.onClick = this.props.onClick;
+		}
+		if (removable || child.props.removable) {
+			props.onRemove = this.props.onRemoveLabel;
+		}
 	}
 
 	renderInternal() {
 		return (
 			<div {...this.getProps()}>
-				<div className="uiex-button-group-inner">
+				<div className="uiex-label-group-inner">
 					{this.renderChildren()}
 				</div>
 			</div>

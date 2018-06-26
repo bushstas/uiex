@@ -1,5 +1,16 @@
 import React from 'react';
 
+export const removeClass = (element, cn) => {
+	if (element instanceof Element) {
+		let {className} = element;
+		if (typeof className == 'string') {
+			const regexp = new RegExp(regexEscape(cn));
+			className = className.replace(regexp, '');
+			element.className = className;
+		}
+	}
+}
+
 export const getNumber = (n, d = 0) => {
 	if (typeof n == 'string' && n == ~~n) {
 		n = ~~n;
@@ -74,7 +85,8 @@ export const getComponentClassName = (component) => {
 		float,
 		color,
 		align,
-		valign
+		valign,
+		onClick
 	} = component.props;
 
 	let cn = '';
@@ -91,8 +103,13 @@ export const getComponentClassName = (component) => {
 	add('disabled', disabled);
 	add('active', active);
 	add('block', block);
-	add('colored', color);
-	add('color-' + color, color);
+	if (color) {
+		add('colored');
+		if (onClick) {
+			add('color-hover');
+		}
+		add('color-' + color);
+	}
 	add('align-' + align, align);
 	add('valign-' + valign, valign);
 	add('float-' + float, float);

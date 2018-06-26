@@ -12,7 +12,7 @@ export class Button extends UIEXComponent {
 		const {iconAtRight, icon, children, gradient} = this.props;		
 		add('icon-at-right', iconAtRight && children);
 		add('icon-button', icon && typeof icon == 'string' && !children);
-		add('gradient-button', gradient);
+		add('with-gradient', gradient);
 	}
 
 	renderInternal() {

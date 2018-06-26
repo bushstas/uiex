@@ -12,15 +12,20 @@ export class Label extends UIEXComponent {
 		add('removable', this.props.removable);
 	}
 
+	getCustomProps() {
+		return {
+			onClick: this.handleClick
+		}
+	}
+
 	renderInternal() {
 		let {children, removable} = this.props;
-
 		return (
 			<div {...this.getProps()}>				
 				<span className="uiex-label-content">
 					{children} 
 					{removable &&
-						<span className="uiex-label-close" onClick={this.handleClick}>
+						<span className="uiex-label-close" onClick={this.handleRemove}>
 							<Icon name="clear" fontSize="14"/>
 						</span>
 					}
@@ -30,10 +35,18 @@ export class Label extends UIEXComponent {
 	}
 
 	handleClick = (e) => {
-		e.stopPropagation();
 		const {onClick, value, disabled} = this.props;
 		if (!disabled && typeof onClick == 'function') {
+			e.stopPropagation();
 			onClick(value);
+		}
+	}
+
+	handleRemove = (e) => {
+		e.stopPropagation();
+		const {onRemove, value, disabled} = this.props;
+		if (!disabled && typeof onRemove == 'function') {
+			onRemove(value);
 		}
 	}
 }

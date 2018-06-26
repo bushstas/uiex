@@ -1,32 +1,30 @@
-.uiex-label {
-    display: inline-block;
-    position: relative;
-    vertical-align: top;
-    margin-right: 6px;
-    border-radius: 5px;
-    padding: 5px 12px 7px 12px;
-    font-size: 14px;
-    
-    &.uiex-removable {
-    	padding-right: 30px;
-    }
-    
-    .uiex-label-content {
-    	display: block;
-		overflow: hidden;
-    	white-space: nowrap;
-    	text-overflow: ellipsis;
-    }
-    .uiex-label-close {
+.uiex-label-group {
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+
+	.uiex-label-group-inner {
 		display: block;
-		box-sizing: border-box;
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 22px;
-		bottom: 0;
-		padding-top: 2px;
-		padding-left: 4px;
-		z-index: 2;
+		width: 100%;
+	}
+
+	.uiex-label {
+		&:first-child {
+			margin-left: 0;
+		}
+
+		&.uiex-float-right {
+			margin-right: 0 !important;
+			margin-left: 6px;
+		}
+		&.uiex-block {
+			margin-right: 0 !important;
+			margin-left: 0 !important;
+			margin-bottom: 4px;
+			
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
 	}
 }

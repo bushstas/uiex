@@ -4,6 +4,7 @@ import {Icon} from '../Icon';
 import {Popup} from '../Popup';
 import {Box} from '../Box';
 import {SelectOption} from '../Select';
+import {removeClass} from '../utils';
 import {PopupMenuPropTypes, PopupMenuItemPropTypes} from './proptypes';
 
 import './style.scss';
@@ -28,22 +29,30 @@ export class PopupMenu extends Popup {
 			currentSelected: -1
 		}
 		if (props.isOpen) {
+			this.checkPosition();
 			this.addKeydownHandler();
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		super.componentWillReceiveProps(nextProps);
-		if (nextProps.isOpen) {
-			this.setState({isOpen: true});
-		}
 		if (this.props.isOpen !== nextProps.isOpen) {
 			if (nextProps.isOpen) {
+				this.checkPosition();
 				this.addKeydownHandler();
+				this.setState({isOpen: true});
 			} else {
 				this.removeKeydownHandler();
 			}
 		}
+	}
+
+	checkPosition() {
+		const {box, main} = this.refs;
+		const boxHeight = box.getIntHeight();
+		const {top} = main.getBoundingClientRect();
+		const {innerHeight} = window;
+		this.atTop = top + boxHeight > innerHeight + 5;
 	}
 
 	componentDidUpdate() {
@@ -81,7 +90,8 @@ export class PopupMenu extends Popup {
 	addClassNames(add) {
 		add('scrollable');
 		add('shown', this.state.isOpen);
-		add('multiple', this.state.multiple);
+		add('multiple', this.props.multiple);
+		add('options-on-top', this.atTop);
 	}
 
 	initRendering() {
@@ -145,6 +155,7 @@ export class PopupMenu extends Popup {
 
 	handleBoxHide = () => {
 		this.setState({isOpen: false});
+		setTimeout(() => removeClass(this.refs.main, 'uiex-options-on-top'), 200);
 	}
 
 	handleEnter() {

@@ -14,6 +14,8 @@ import {InputBoolean} from './components/InputBoolean';
 import {InputDate} from './components/InputDate';
 import {InputNumber} from './components/InputNumber';
 import {InputPhone} from './components/InputPhone';
+import {Label} from './components/Label';
+import {LabelGroup} from './components/LabelGroup';
 import {MultiSelect} from './components/MultiSelect';
 import {Popup} from './components/Popup';
 import {PopupMenu, PopupMenuItem} from './components/PopupMenu';
@@ -47,6 +49,8 @@ export {
     InputDate,
     InputNumber,
     InputPhone,
+    Label,
+    LabelGroup,
     MultiSelect,
     Popup,
     PopupMenu,
@@ -154,6 +158,7 @@ const addClass = (component, className, style, name, s) => {
                 map[component].classStyles = map[component].classStyles || {}; 
                 map[component].classStyles[className] = map[component].classStyles[className] || {};
                 map[component].classStyles[className][name] = style;
+                console.log(map[component].classStyles)
             } else {
                 console.error('Error in ' + s + ': Component "' + component + '" is not found');
             }

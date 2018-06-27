@@ -1,13 +1,4 @@
-.uiex-search-form {
-	min-width: 200px;
-	display: inline-block;
-
-	.uiex-search-form-caption {
-		margin-bottom: 7px;
-	    color: #777;
-	    font-size: 14px;
-	    display: inline-block;
-	}
+.uiex-search-form {	
 	.uiex-search-form-controls {
 		&:after {
 			content: '';
@@ -19,9 +10,6 @@
 		.uiex-icon {
 			font-size: 22px;
 		}
-	}
-	&.uiex-form-with-given-width {
-		min-width: 0;
 	}
 	&.uiex-form-with-focused-width {
 		transition: width 0.2s ease-in-out;
@@ -96,14 +84,6 @@
 		.uiex-search-form-submit {
 			display: flex;
 			width: 100% !important;
-		}
-	}
-
-	.uiex-search-form-content {
-		margin-top: 7px;
-		&.uiex-content-before {
-			margin-top: 0;
-			margin-bottom: 7px;
 		}
 	}
 }

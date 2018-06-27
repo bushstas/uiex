@@ -281,6 +281,10 @@ export class UIEXComponent extends React.PureComponent {
 		return true;
 	}
 
+	getClassName(cn) {
+		return 'uiex-' + this.getNativeClassName() + '-' + cn;
+	}
+
 	initRendering() {}
 	addChildProps() {}
 	getStyleNames() {}
@@ -355,4 +359,52 @@ export class UIEXBoxContainer extends UIEXComponent {
 		}
 		return boxProps;
 	}
+}
+
+
+export class UIEXForm extends UIEXComponent {
+	addClassNames(add) {
+		const {width, noBorder} = this.props;
+		add('simple-form');
+		add('form-with-given-width', width);
+		add('without-border', noBorder);
+	}
+
+	renderInternal() {		
+		const className = this.getNativeClassName();
+		const {caption, contentBefore, children, captionInside} = this.props;
+		return (
+			<div {...this.getProps()}>
+				{caption && !captionInside && 
+					<div className={this.getClassName('caption')}>
+						{caption}
+					</div>
+				}
+				<div className={this.getClassName('inner')}>
+					{caption && captionInside && 
+						<div className={this.getClassName('caption')}>
+							{caption}
+						</div>
+					}
+					{contentBefore && 
+						<div className={this.getClassName('content') + ' uiex-content-before'}>
+							{contentBefore}
+						</div>
+					}
+					{this.renderContent()}
+					{children && 
+						<div className={this.getClassName('content')}>
+							{children}
+						</div>
+					}
+				</div>
+			</div>
+		)
+	}
+
+	getClassName(cn) {
+		return super.getClassName(cn) + ' uiex-simple-form-' + cn;
+	}
+
+	renderContent() {}
 }

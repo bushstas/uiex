@@ -1,9 +1,18 @@
 import PropTypes from 'prop-types';
-import {UIEXComponentPropTypes} from '../UIEXComponentPropTypes';
+import {UIEXFormPropTypes} from '../UIEXComponentPropTypes';
 import {PROPTYPE} from '../consts';
 
 export const RateFormPropTypes = {
-	...UIEXComponentPropTypes,
+	...UIEXFormPropTypes,
 	scale: PROPTYPE.STRNUM,
-	onRate: PropTypes.func
+	iconType: PROPTYPE.ICON_TYPES,
+	icon: PropTypes.string,
+	activeIcon: PropTypes.string,
+	normalColor: PropTypes.string,
+	activeColor: PropTypes.string,
+	hoverColor: PropTypes.string,	
+	submit: PROPTYPE.STRBOOL,
+	reset: PROPTYPE.STRBOOL,
+	resettable: PropTypes.bool,	
+	onReset: PropTypes.func
 }

@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import {ButtonsPropsTypes} from '../UIEXComponentPropTypes';
+import {ButtonsPropTypes} from '../UIEXComponentPropTypes';
 import {PROPTYPE} from '../consts';
 
 export const TabsPropTypes = {
-	...ButtonsPropsTypes,
+	...ButtonsPropTypes,
 	activeTab: PROPTYPE.STRNUM,
 	activeColor: PROPTYPE.COLORS,
 	buttonColor: PROPTYPE.COLORS,

@@ -1,7 +1,21 @@
-.uiex-rate-form {	
-	white-space: nowrap;
+.uiex-rate-form {
+	
+	.uiex-rate-form-stars {
+		white-space: nowrap;
+	}
+
 	.uiex-icon {
 		margin-right: 5px;
-		font-size: 22px;
-	}    
+		font-size: 32px;
+		cursor: pointer;
+		color: #555;
+		transition: color 0.3s;
+
+		&.uiex-active {
+			color: #000;
+		}
+		&.uiex-hovered {
+			color: #ceb600;
+		}
+	}
 }

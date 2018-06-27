@@ -76,6 +76,21 @@ export const showProperChildMaxCountError  = (child, parent) => {
 	console.error('Component ' + parent.constructor.name + ' can have only ' + maxCount + ' child of type ' + expectedChildren);
 }
 
+export const getClassNameBuilder = (cn = '', cn2 = '') => {
+	if (cn2 && typeof cn2 == 'string') {
+		cn += ' ' + cn2;
+	}
+	const add = function(c) {
+		if ((arguments.length > 1 ? arguments[1] : true) && c && typeof c == 'string') {
+			cn += ' uiex-' + c;
+		}
+	};
+	const get = () => {
+		return cn;
+	};
+	return {add, get};
+}
+
 export const getComponentClassName = (component) => {	
 	const {
 		className,
@@ -89,16 +104,7 @@ export const getComponentClassName = (component) => {
 		onClick
 	} = component.props;
 
-	let cn = '';
-	if (className && typeof className == 'string') {
-		cn += ' ' + className;
-	}
-	const add = function(c) {
-		if ((arguments.length > 1 ? arguments[1] : true) && c && typeof c == 'string') {
-			cn += ' uiex-' + c;
-		}
-	};	
-	add(component.getNativeClassName());
+	const {add, get} = getClassNameBuilder('uiex-' + component.getNativeClassName(), className);
 	component.addClassNames(add);
 	add('disabled', disabled);
 	add('active', active);
@@ -113,7 +119,7 @@ export const getComponentClassName = (component) => {
 	add('align-' + align, align);
 	add('valign-' + valign, valign);
 	add('float-' + float, float);
-	return cn;
+	return get();
 }
 
 export const getProperStyleProperty = (value) => {

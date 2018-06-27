@@ -189,3 +189,37 @@
 		color: #000;
 	}
 }
+
+.uiex-simple-form {
+	display: inline-block;
+	min-width: 200px;
+
+	&.uiex-form-with-given-width {
+		min-width: 0;
+	}
+
+	&:not(.uiex-without-border) {
+		.uiex-simple-form-inner {
+			padding: 15px 20px;
+			border: 1px solid #c7c7c7;
+		}
+	}
+
+	.uiex-simple-form-caption {
+		margin-bottom: 7px;
+	    color: #777;
+	    font-size: 14px;
+	    display: inline-block;
+	}
+
+	.uiex-simple-form-content {
+		&:empty {
+			display: none;
+		}
+		margin-top: 10px;
+		&.uiex-content-before {
+			margin-top: 0;
+			margin-bottom: 12px;
+		}
+	}
+}

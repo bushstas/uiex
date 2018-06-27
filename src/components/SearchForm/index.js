@@ -1,5 +1,5 @@
 import React from 'react';
-import {UIEXComponent} from '../UIEXComponent';
+import {UIEXForm} from '../UIEXComponent';
 import {Input} from '../Input';
 import {Button} from '../Button';
 import {SearchFormPropTypes} from './proptypes';
@@ -10,7 +10,7 @@ import './style.scss';
 
 const DEFAULT_ICON = 'search';
 
-export class SearchForm extends UIEXComponent {
+export class SearchForm extends UIEXForm {
 	static propTypes = SearchFormPropTypes;
 	static className = 'search-form';
 
@@ -31,24 +31,21 @@ export class SearchForm extends UIEXComponent {
 	}
 
 	addClassNames(add) {
-		const {buttonDisplay, width, focusedWidth, hiddenButton} = this.props;
+		super.addClassNames(add);
+		const {buttonDisplay, focusedWidth, hiddenButton} = this.props;
 		const {focused} = this.state;
 		if (buttonDisplay && FORM_BUTTON_DISPLAY.indexOf(buttonDisplay) > -1) {
 			add('form-button-' + buttonDisplay);
 		} else {
 			add('form-button-standart');
-		}
-		add('form-with-given-width', width);
+		}		
 		add('form-with-focused-width', focusedWidth);
 		add('form-focused', focused);
 		add('form-width-hidden-button', hiddenButton);
 	}
 
-	renderInternal() {
-		let {
-			children,
-			caption,
-			contentBefore,
+	renderContent() {
+		let {			
 			buttonColor,
 			buttonWidth,
 			buttonHeight,
@@ -67,49 +64,32 @@ export class SearchForm extends UIEXComponent {
 		}
 
 		return (
-			<div {...this.getProps()}>
-				{caption &&
-					<div className="uiex-search-form-caption">
-						{caption}
-					</div>
-				}
-				{contentBefore && 
-					<div className="uiex-search-form-content uiex-content-before">
-						{contentBefore}
-					</div>
-				}
-				<div className="uiex-search-form-controls">
-					<Input
-						value={this.state.value}
-						className="uiex-search-form-input"
-						placeholder={placeholder}
+			<div className={this.getClassName('controls')}>
+				<Input
+					value={this.state.value}
+					className={this.getClassName('input')}
+					placeholder={placeholder}
+					disabled={disabled}
+					onChange={this.handleChange}
+					onEnter={this.handleSubmit}
+					onFocus={this.handleFocus}
+					onBlur={this.handleBlur}
+					onDisabledClick={onDisabledClick}
+				/>
+				{(!hiddenButton || this.state.focused) &&
+					<Button 
+						icon={icon}
+						iconType={iconType}
+						className={this.getClassName('submit')}
+						width={buttonWidth}
+						height={buttonHeight}
+						color={buttonColor}
 						disabled={disabled}
-						onChange={this.handleChange}
-						onEnter={this.handleSubmit}
-						onFocus={this.handleFocus}
-						onBlur={this.handleBlur}
+						onClick={this.handleSubmit}
 						onDisabledClick={onDisabledClick}
-					/>
-					{(!hiddenButton || this.state.focused) &&
-						<Button 
-							icon={icon}
-							iconType={iconType}
-							className="uiex-search-form-submit"
-							width={buttonWidth}
-							height={buttonHeight}
-							color={buttonColor}
-							disabled={disabled}
-							onClick={this.handleSubmit}
-							onDisabledClick={onDisabledClick}
-						>
-							{buttonTitle}
-						</Button>
-					}
-				</div>
-				{children &&  
-					<div className="uiex-search-form-content">
-						{children}
-					</div>
+					>
+						{buttonTitle}
+					</Button>
 				}
 			</div>
 		)

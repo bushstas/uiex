@@ -3,6 +3,7 @@ import {PROPTYPE} from '../consts';
 import {UIEXButtons} from '../UIEXComponent';
 import {Button} from '../Button';
 import {Icon} from '../Icon';
+import {getClassNameBuilder} from '../utils';
 import {TabsPropTypes} from './proptypes';
 
 import './style.scss';
@@ -106,7 +107,9 @@ export class Tabs extends UIEXButtons {
 	}
 
 	getButtonGroupClassName() {
-		return 'uiex-tabs-menu uiex-button-group' + super.getClassNames();
+		const {add, get} = getClassNameBuilder('uiex-tabs-menu uiex-button-group');
+		super.addClassNames(add);
+		return get();
 	}
 
 	renderInternal() {

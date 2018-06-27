@@ -16,7 +16,7 @@ export const UIEXComponentPropTypes = {
     vertical: PropTypes.bool
 }
 
-export const ButtonsPropsTypes = {
+export const ButtonsPropTypes = {
     ...UIEXComponentPropTypes,
     buttonColor: PROPTYPE.COLORS,
     buttonWidth: PROPTYPE.STRNUM,
@@ -26,4 +26,15 @@ export const ButtonsPropsTypes = {
     iconType: PROPTYPE.ICON_TYPES,
     iconAtRight: PropTypes.bool,
     view: PROPTYPE.BUTTONS_VIEWS
+}
+
+export const UIEXFormPropTypes = {
+    ...UIEXComponentPropTypes,
+    value: PROPTYPE.STRNUM,
+    caption: PROPTYPE.REACT_NODES,
+    captionInside: PropTypes.bool,
+    contentBefore: PROPTYPE.REACT_NODES,
+    noBorder: PropTypes.bool,
+    onSubmit: PropTypes.func,
+    onChange: PropTypes.func
 }

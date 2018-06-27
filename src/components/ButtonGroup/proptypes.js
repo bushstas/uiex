@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import {ButtonsPropsTypes} from '../UIEXComponentPropTypes';
+import {ButtonsPropTypes} from '../UIEXComponentPropTypes';
 
 export const ButtonGroupPropTypes = {
-	...ButtonsPropsTypes,
+	...ButtonsPropTypes,
 	onClick: PropTypes.func
 }

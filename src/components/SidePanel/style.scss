@@ -6,7 +6,7 @@
 	width: 0;
 	overflow: hidden;
 	transition-property: width, height, opacity;
-	z-index: 999;
+	z-index: 900;
 
     .uiex-side-panel {
     	position: absolute;
@@ -14,9 +14,10 @@
     	top: 0;
     	bottom: 0;
     	width: 300px;
-    	background-color: #fff;
+    	background-color: #f1f1f1;
     	border-left: 1px solid #777;
     	box-sizing: border-box;
+    	box-shadow: 0 0 30px #a1a1a1;
     }
 
     &.uiex-side-left {

@@ -21,6 +21,7 @@ import {Popup} from './components/Popup';
 import {PopupMenu, PopupMenuItem} from './components/PopupMenu';
 import {Radio} from './components/Radio';
 import {RadioGroup} from './components/RadioGroup';
+import {RateForm} from './components/RateForm';
 import {SearchForm} from './components/SearchForm';
 import {Section} from './components/Section';
 import {Select, SelectOption} from './components/Select';
@@ -58,6 +59,7 @@ export {
     PopupMenuItem,
     Radio,
     RadioGroup,
+    RateForm,
     SearchForm,
     Section,
     Select,

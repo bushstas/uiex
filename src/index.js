@@ -5,12 +5,14 @@ import {Button} from './components/Button';
 import {ButtonGroup} from './components/ButtonGroup';
 import {Checkbox} from './components/Checkbox';
 import {CheckboxGroup} from './components/CheckboxGroup';
+import {ColorPicker} from './components/ColorPicker';
 import {Form} from './components/Form';
 import {FormControl} from './components/FormControl';
 import {FormControlGroup} from './components/FormControlGroup';
 import {Icon} from './components/Icon';
 import {Input} from './components/Input';
 import {InputBoolean} from './components/InputBoolean';
+import {InputColor} from './components/InputColor';
 import {InputDate} from './components/InputDate';
 import {InputNumber} from './components/InputNumber';
 import {InputPhone} from './components/InputPhone';
@@ -42,12 +44,14 @@ export {
     ButtonGroup,
     Checkbox,
     CheckboxGroup,
+    ColorPicker,
     Form,
     FormControl,
     FormControlGroup,
     Icon,
     Input,
     InputBoolean,
+    InputColor,
     InputDate,
     InputNumber,
     InputPhone,

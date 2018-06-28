@@ -13,6 +13,8 @@ export class Input extends UIEXComponent {
 	constructor(props) {
 		super(props);
 		this.handleKeyUp = this.keyUpHandler.bind(this);
+		this.handleFocus = this.focusHandler.bind(this);
+		this.handleBlur = this.blurHandler.bind(this);
 		this.isValid = null;
 	}
 
@@ -37,10 +39,11 @@ export class Input extends UIEXComponent {
 
 	addClassNames(add) {
 		const {textarea, readOnly, clearable, valid, invalid, value} = this.props;
+		const properValue = this.getValue(value);
 		add('control');
 		add('textarea', textarea);
 		add('readonly', readOnly);
-		add('clearable', value && clearable);
+		add('clearable', properValue && clearable);
 		add('valid', valid);
 		add('invalid', invalid);
 	}
@@ -170,7 +173,7 @@ export class Input extends UIEXComponent {
 		}
 	}
 
-	handleFocus = () => {
+	focusHandler() {
 		const {onFocus, name, focusStyle, disabled, readOnly, value} = this.props;
 		this.valueBeforeFocus = value;
 		if (!disabled && !readOnly) {
@@ -186,7 +189,7 @@ export class Input extends UIEXComponent {
 		}
 	}
 
-	handleBlur = () => {
+	blurHandler() {
 		const {onBlur, name, focusStyle, disabled, readOnly} = this.props;
 		if (!disabled && !readOnly) {
 			if (focusStyle instanceof Object) {

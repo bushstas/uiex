@@ -19,6 +19,9 @@
 		}
 	}
 	&.uiex-clearable {
+		.uiex-input-clear {
+			display: block;
+		}
 		input,
 		textarea {
 			padding-right: 35px;
@@ -47,6 +50,7 @@
 		}
 	}
 	.uiex-input-clear {
+		display: none;
 		position: absolute;
 		right: 8px;
 		top: 50%;

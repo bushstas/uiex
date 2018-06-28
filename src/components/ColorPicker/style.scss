@@ -1,0 +1,97 @@
+.uiex-color-picker {
+	display: inline-block;
+	box-shadow: 0px 0px 4px #c1c1c1;	
+	border: 1px solid #bbb;
+	border-radius: 2px;
+	
+	&.uiex-without-input {
+		.uiex-color-picker-selector {
+			height: 220px;
+		}
+		.uiex-color-picker-close,
+		.uiex-color-picker-input {
+			display: none !important;
+		}
+	}
+
+	.uiex-color-picker-selector {
+		width: 250px;
+		height: 271px;
+		background-color: #FFFFFF;
+		padding: 10px;
+		position: relative;
+		box-sizing: border-box;
+	}
+	.uiex-color-picker-close {
+		position: absolute;
+		width: 18px;
+		height: 18px;
+		left: 222px;
+		top: 222px;
+		background-image: url(./images/close.png);
+		cursor: pointer
+	}
+	.uiex-color-picker-satval {
+		width: 200px;
+		height: 200px;
+		left: 10px;
+		top: 10px;
+		position: absolute;
+		cursor: pointer;
+		&:after {
+			content: '';
+			position: absolute;
+			z-index: 2;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+		}
+	}
+	.uiex-color-picker-satvalimg {
+		width: 200px;
+		height: 200px;
+		background-image: url(./images/sv.png);
+	}
+	.uiex-color-picker-crosshairs {
+		width: 21px;
+		height: 21px;
+		background-image: url(./images/crosshairs.png);
+		position: absolute;
+		z-index: 1;
+	}
+	.uiex-color-picker-hue {
+		width: 25px;
+		height: 200px;
+		left: 215px;
+		top: 10px;
+		position: absolute;
+		cursor: pointer;
+		&:after {
+			content: '';
+			position: absolute;
+			z-index: 2;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+		}
+	}
+	.uiex-color-picker-huepos {
+		width: 25px;
+		height: 11px;
+		background-image: url(./images/position.png);
+		position: absolute;
+	}
+	.uiex-color-picker-hueimg {
+		width: 25px;
+		height: 200px;
+		background-image: url(./images/h.png);
+	}
+	.uiex-color-picker-input {
+		position: absolute;
+		left: 10px;
+		top: 218px;
+		width: 200px;
+	}
+}

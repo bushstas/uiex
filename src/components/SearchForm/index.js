@@ -3,7 +3,6 @@ import {UIEXForm} from '../UIEXComponent';
 import {Input} from '../Input';
 import {Button} from '../Button';
 import {SearchFormPropTypes} from './proptypes';
-import {FORM_BUTTON_DISPLAY} from '../consts';
 import {getNumberInPxOrPercent} from '../utils';
 
 import './style.scss';
@@ -32,13 +31,8 @@ export class SearchForm extends UIEXForm {
 
 	addClassNames(add) {
 		super.addClassNames(add);
-		const {buttonDisplay, focusedWidth, hiddenButton} = this.props;
+		const {focusedWidth, hiddenButton} = this.props;
 		const {focused} = this.state;
-		if (buttonDisplay && FORM_BUTTON_DISPLAY.indexOf(buttonDisplay) > -1) {
-			add('form-button-' + buttonDisplay);
-		} else {
-			add('form-button-standart');
-		}		
 		add('form-with-focused-width', focusedWidth);
 		add('form-focused', focused);
 		add('form-width-hidden-button', hiddenButton);

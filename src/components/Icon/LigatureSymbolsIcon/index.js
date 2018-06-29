@@ -1,10 +1,10 @@
 import React from 'react';
-import {UIEXComponent} from '../../UIEXComponent';
+import {UIEXIcon} from '../../UIEXComponent';
 import {IconPropTypes} from '../proptypes';
 
 import './style.scss';
 
-export class LigatureSymbolsIcon extends UIEXComponent {
+export class LigatureSymbolsIcon extends UIEXIcon {
 	static propTypes = IconPropTypes;
 	static className = 'icon';
 

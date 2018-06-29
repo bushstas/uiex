@@ -1,0 +1,108 @@
+.uiex-modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+
+    &.uiex-shown {
+    	display: flex;
+    	.uiex-modal-container {
+    		transition: margin-top 0.2s, opacity 0.2s ease-out;
+    	}
+    }
+
+    &.uiex-expanded {
+    	 align-items: stretch;
+    	.uiex-modal-container {
+    		display: flex;
+    		flex-direction: column;
+    		flex-grow: 1;
+    		border-radius: 0;
+    		border: 0;
+    		.uiex-modal-body {
+    			height: auto;
+    			max-height: none;
+    			flex-grow: 1;
+    		}
+    	}
+    }
+    &.uiex-draggable {
+    	.uiex-modal-header {
+    		user-select: none;
+    		cursor: grab;
+    		cursor: -webkit-grab;
+    		cursor: -moz-grab;
+
+    		&:active {
+				cursor: grabbing;
+    			cursor: -webkit-grabbing;
+    			cursor: -moz-grabbing;    			
+    		}
+    	}
+    }
+    .uiex-modal-mask {
+	 	position: absolute;
+	    left: 0;
+	    top: 0;
+	    right: 0;
+	    bottom: 0;
+	    z-index: 1;
+	    background-color: #000;
+	    opacity: 0.6;
+	    transition: opacity 0.2s ease-out;
+    }
+
+    .uiex-modal-container {
+    	display: block;
+    	position: relative;
+    	z-index: 2;
+    	min-width: 300px;
+    	background-color: #fff;
+    	border-radius: 3px;
+    	box-shadow: 0 0 10px #444;
+    }
+
+    .uiex-modal-header {
+    	font-size: 17px;
+    	font-weight: bold;
+    	line-height: 20px;
+    	height: 40px;
+    	background-color: #d7d7d7;
+    	color: #555;
+    	padding: 0 10px 0 15px;
+    	display: flex;
+    	align-items: center;
+    	justify-content: space-between;
+    	border-radius: 3px 3px 0 0;
+
+    	.uiex-modal-header-buttons {
+    		font-size: 20px;
+    		.uiex-icon {
+    			color: #333;
+    			opacity: 0.7;
+    			margin-left: 5px;
+    			cursor: pointer;
+    			&:hover {
+    				opacity: 1;
+    			}
+    		}
+    	}
+    }
+    .uiex-modal-body {
+    	padding: 20px;
+    	overflow: auto;
+    }
+    .uiex-modal-footer {
+    	height: 40px;
+    	border-top: 1px solid #ccc;
+    	padding: 0 20px;
+    	display: flex;
+    	align-items: center;
+    	
+    }
+}

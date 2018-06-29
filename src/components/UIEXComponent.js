@@ -7,6 +7,7 @@ import {
 	addStyleProperty,
 	addObject
 } from './utils';
+import {FORM_BUTTON_DISPLAY} from './consts';
 
 export class UIEXComponent extends React.PureComponent {
 	constructor(props) {
@@ -350,6 +351,15 @@ export class UIEXButtons extends UIEXComponent {
 	}
 }
 
+export class UIEXIcon extends UIEXComponent {
+	getCustomProps() {
+		let {disabled, onClick} = this.props;
+		return {
+			onClick: disabled ? null : onClick
+		}
+	}
+}
+
 export class UIEXBoxContainer extends UIEXComponent {
 	getBoxProps() {
 		const keys = Object.keys(BoxCommonPropTypes);
@@ -364,7 +374,12 @@ export class UIEXBoxContainer extends UIEXComponent {
 
 export class UIEXForm extends UIEXComponent {
 	addClassNames(add) {
-		const {width, noBorder} = this.props;
+		const {width, noBorder, buttonDisplay} = this.props;
+		if (buttonDisplay && FORM_BUTTON_DISPLAY.indexOf(buttonDisplay) > -1) {
+			add('form-button-' + buttonDisplay);
+		} else {
+			add('form-button-standart');
+		}		
 		add('simple-form');
 		add('form-with-given-width', width);
 		add('without-border', noBorder);

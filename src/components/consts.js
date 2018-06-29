@@ -11,6 +11,7 @@ export const ANIM_SPEED = ['fast', 'normal', 'slow'];
 export const ANIM_TYPE = ['fade', 'roll', 'fall', 'fade-roll', 'fade-fall'];
 export const FORM_BUTTON_DISPLAY = ['united', 'under-left', 'under-center', 'under-right', 'under-stretch'];
 export const SIDES = ['right', 'left', 'top', 'bottom'];
+export const MODAL_ANIMATION = ['fade', 'fade-fall'];
 
 const OPTION_SHAPE = PropTypes.shape({
 	value: PropTypes.oneOfType([
@@ -19,7 +20,10 @@ const OPTION_SHAPE = PropTypes.shape({
 	]).isRequired,
 	title: PropTypes.string.isRequired,
 	icon: PropTypes.string,
-	iconType: PropTypes.oneOf(ICON_TYPE)
+	iconType: PropTypes.oneOf(ICON_TYPE),
+	single: PropTypes.bool,
+	withTopDelimiter: PropTypes.bool,
+	withBottomDelimiter: PropTypes.bool
 });
 
 export const PROPTYPE = {
@@ -90,5 +94,6 @@ export const PROPTYPE = {
 		PropTypes.object
 	]),
 	FORM_BUTTON_DISPLAY: PropTypes.oneOf(FORM_BUTTON_DISPLAY),
-	SIDES: PropTypes.oneOf(SIDES)
+	SIDES: PropTypes.oneOf(SIDES),
+	MODAL_ANIMATION: PropTypes.oneOf(MODAL_ANIMATION)
 }

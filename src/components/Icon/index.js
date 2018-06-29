@@ -73,14 +73,8 @@ export class Icon extends UIEXComponent {
 				TypedIcon = IcomoonIcon;
 			break;
 		}
-		const {disabled} = this.props;
-		const onClick = disabled ? null : this.props.onClick;
 		return (
-			<TypedIcon 
-				{...this.props} 
-				onClick={onClick} 
-				style={this.style}
-			/>
+			<TypedIcon {...this.props} style={this.style}/>
 		)
 	}
 }

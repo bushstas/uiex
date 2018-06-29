@@ -1,10 +1,10 @@
 import React from 'react';
-import {UIEXComponent} from '../../UIEXComponent';
+import {UIEXIcon} from '../../UIEXComponent';
 import {IconPropTypes} from '../proptypes';
 
 import './style.scss';
 
-export class LineAwesomeIcon extends UIEXComponent {
+export class LineAwesomeIcon extends UIEXIcon {
 	static propTypes = IconPropTypes;
 	static className = 'icon';
 

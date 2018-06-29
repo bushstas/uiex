@@ -1,6 +1,8 @@
 import React from 'react';
 import {UIEXForm} from '../UIEXComponent';
 import {Icon} from '../Icon';
+import {Button} from '../Button';
+import {ButtonGroup} from '../ButtonGroup';
 import {getNumberOrNull} from '../utils';
 import {RateFormPropTypes} from './proptypes';
 
@@ -50,6 +52,8 @@ export class RateForm extends UIEXForm {
 
 	addClassNames(add) {
 		super.addClassNames(add);
+		const {submit, reset} = this.props;
+		add('with-buttons', submit || reset);
 	}
 
 	initScale = (props = this.props) => {
@@ -123,20 +127,80 @@ export class RateForm extends UIEXForm {
 	}
 
 	renderContent() {
+		const {
+			submit,
+			reset,
+			buttonDisplay,
+			buttonColor,
+			buttonWidth,
+			buttonHeight,
+			disabled,
+			onDisabledClick
+		} = this.props;
 		return (
 			<div className="uiex-rate-form-stars">
 				{this.stars}
+				{(submit || reset) && 
+					<ButtonGroup view={buttonDisplay == 'united' ? 'united' : null}>
+						{submit && 
+							<Button 
+								color={buttonColor}
+								disabled={disabled}
+								width={buttonWidth}
+								height={buttonHeight}
+								onClick={this.handleSubmitClick}
+								onDisabledClick={onDisabledClick}
+							>
+								{submit}
+							</Button>
+						}
+						{reset && 
+							<Button 
+								color={buttonColor}
+								disabled={disabled}
+								width={buttonWidth}
+								height={buttonHeight}
+								onClick={this.handleResetClick}
+								onDisabledClick={onDisabledClick}
+							>
+								{reset}
+							</Button>
+						}
+					</ButtonGroup>
+				}
 			</div>
 		)
 	}
 
+	handleSubmitClick = () => {
+		const {onSubmit} = this.props;
+		if (typeof onSubmit == 'function') {
+			onSubmit();
+		}
+	}
+
+	handleResetClick = () => {
+		this.stars = null;
+		this.setState({active: -1});
+		const {onReset} = this.props;
+		if (typeof onReset == 'function') {
+			onReset();
+		}	
+	}
+
 	handleClick = (active, e) => {
-		const {resettable, onChange, onReset} = this.props;
+		const {resettable, onChange, onReset, disabled, onDisabledClick} = this.props;
+		if (disabled) {
+			if (typeof onDisabledClick == 'function') {
+				onDisabledClick();
+			}
+			return;
+		}
 		if (resettable && active == this.state.active) {
 			active = -1;
 			if (typeof onReset == 'function') {
 				onReset();
-			}	
+			}
 		}
 		e.stopPropagation();
 		if (active != this.state.active) {
@@ -149,12 +213,16 @@ export class RateForm extends UIEXForm {
 	}
 
 	handleMouseOver = (hovered) => {
-		this.stars = null;
-		this.setState({hovered});
+		if (!this.props.disabled) {
+			this.stars = null;
+			this.setState({hovered});
+		}
 	}
 
 	handleMouseOut = (index) => {
-		this.stars = null;
-		this.setState({hovered: null});
+		if (!this.props.disabled) {
+			this.stars = null;
+			this.setState({hovered: null});
+		}
 	}
 }

@@ -68,7 +68,9 @@
 	}
 
 	&.uiex-form-button-under-left {
-		
+		.uiex-search-form-controls {
+			text-align: left;
+		}
 	}
 	&.uiex-form-button-under-right {
 		.uiex-search-form-controls {

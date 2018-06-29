@@ -17,8 +17,7 @@
 	}
 	.uiex-select-arrow-icon {
 		position: absolute;
-		top: 50%;
-		margin-top: -14px;
+		top: 7px;
 		right: 3px;
 		font-size: 28px;
 		color: #555;
@@ -27,6 +26,14 @@
 	}
 	&.uiex-disabled {
 		cursor: not-allowed;
+		.uiex-input {
+			input {
+				cursor: not-allowed !important;
+			}
+		}
+		.uiex-select-arrow-icon {
+			cursor: not-allowed !important;
+		}
 	}
 	.uiex-quantity-label {
 		display: block;

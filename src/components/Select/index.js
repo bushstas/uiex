@@ -175,7 +175,7 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	renderOption = (item, idx) => {
-		let value, title, icon, iconType;
+		let value, title, icon, iconType, withTopDelimiter, withBottomDelimiter;
 		if (typeof item == 'string' || typeof item == 'number') {
 			value = item;
 			title = item;
@@ -184,6 +184,8 @@ export class Select extends UIEXBoxContainer {
 			title = item.title;
 			icon = item.icon;
 			iconType = item.iconType;
+			withTopDelimiter = item.withTopDelimiter;
+			withBottomDelimiter = item.withBottomDelimiter;
 		}
 		if (this.filterOption(value)) {
 			return (
@@ -193,6 +195,8 @@ export class Select extends UIEXBoxContainer {
 					value={value} 
 					icon={icon}
 					iconType={iconType}
+					withTopDelimiter={withTopDelimiter}
+					withBottomDelimiter={withBottomDelimiter}
 				>
 					{title}
 				</SelectOption>

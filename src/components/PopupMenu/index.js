@@ -48,11 +48,11 @@ export class PopupMenu extends Popup {
 	}
 
 	checkPosition() {
-		const {box, main} = this.refs;
-		const boxHeight = box.getIntHeight();
+		const {main} = this.refs;
 		const {top} = main.getBoundingClientRect();
+		const height = DEFAULT_MAX_HEIGHT;
 		const {innerHeight} = window;
-		this.atTop = top + boxHeight > innerHeight + 5;
+		this.atTop = top + height > innerHeight + 5;
 	}
 
 	componentDidUpdate() {
@@ -276,10 +276,12 @@ export class PopupMenuItem extends UIEXComponent {
 	static className = 'popup-menu-item';
 
 	addClassNames(add) {
-		const {selected, checked, icon} = this.props;
+		const {selected, checked, icon, withTopDelimiter, withBottomDelimiter} = this.props;
 		add('selected', selected);
 		add('checked', checked);
 		add('with-icon', icon);
+		add('with-top-delimiter', withTopDelimiter);
+		add('with-bottom-delimiter', withBottomDelimiter);
 	}
 
 	getCustomProps() {

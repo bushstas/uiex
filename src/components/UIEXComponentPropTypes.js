@@ -34,6 +34,10 @@ export const UIEXFormPropTypes = {
     caption: PROPTYPE.REACT_NODES,
     captionInside: PropTypes.bool,
     contentBefore: PROPTYPE.REACT_NODES,
+    buttonDisplay: PROPTYPE.FORM_BUTTON_DISPLAY,
+    buttonColor: PROPTYPE.COLORS,
+    buttonWidth: PROPTYPE.STRNUM,
+    buttonHeight: PROPTYPE.STRNUM,
     noBorder: PropTypes.bool,
     onSubmit: PropTypes.func,
     onChange: PropTypes.func

@@ -13,7 +13,7 @@ export class FormControl extends UIEXComponent {
 	static properChildrenSign = 'isControl';
 
 	addChildProps(child, props) {
-		const {type: control} = child;		
+		const {type: control} = child;
 		switch (control.name) {
 			case 'Checkbox':
 				if (typeof child.props.onChange != 'function') {
@@ -25,7 +25,7 @@ export class FormControl extends UIEXComponent {
 				if (typeof child.props.onChange != 'function') {
 					props.onChange = this.handleChange;
 				}
-		}		
+		}
 	}
 
 	getCustomStyle() {

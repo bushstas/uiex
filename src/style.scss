@@ -204,6 +204,11 @@
 			border: 1px solid #c7c7c7;
 		}
 	}
+	&.uiex-without-border {
+		.uiex-simple-form-caption {
+			margin-bottom: 12px;	
+		}
+	}
 
 	.uiex-simple-form-caption {
 		margin-bottom: 7px;

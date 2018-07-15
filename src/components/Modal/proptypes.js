@@ -11,18 +11,3 @@ export const ModalPropTypes = {
 	withoutMask: PropTypes.bool,
 	animation: PROPTYPE.MODAL_ANIMATION	
 }
-
-export const ModalHeaderPropTypes = {
-	...UIEXComponentPropTypes,
-	
-}
-
-export const ModalBodyPropTypes = {
-	...UIEXComponentPropTypes,
-	
-}
-
-export const ModalFooterPropTypes = {
-	...UIEXComponentPropTypes,
-	
-}

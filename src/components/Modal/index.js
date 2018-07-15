@@ -2,7 +2,7 @@ import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
 import {Draggable} from '../Draggable';
-import {ModalPropTypes, ModalHeaderPropTypes, ModalBodyPropTypes, ModalFooterPropTypes} from './proptypes';
+import {ModalPropTypes} from './proptypes';
 
 import './style.scss';
 
@@ -11,8 +11,7 @@ const DRAG_TARGET_CLASS_NAME = 'uiex-modal-drag-target';
 
 export class Modal extends UIEXComponent {
 	static propTypes = ModalPropTypes;
-	static properChildren = ['ModalHeader', 'ModalBody', 'ModalFooter'];
-	static onlyProperChildren = true;
+	static styleNames = ['body', 'header', 'footer', 'mask', 'controls'];
 
 	constructor(props) {
 		super(props);
@@ -26,6 +25,11 @@ export class Modal extends UIEXComponent {
 		if (this.props.isOpen) {
 			this.animateShowing();
 		}
+		window.addEventListener('resize', this.handleResize, false);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.handleResize, false);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -46,28 +50,28 @@ export class Modal extends UIEXComponent {
 	animateShowing() {
 		const {container, mask} = this.refs;
 		const {animation} = this.props;
-		if (animation == 'fade' || animation == 'fade-fall') {
-			container.style.opacity = '0';
-			if (mask) {
-				mask.style.opacity = '0';
-			}
-			if (animation == 'fade-fall') {
-				container.style.marginTop = '-100px';
-			}
-			setTimeout(() => {
-				this.setState({isOpen: true}, () => {
-					setTimeout(() => {
-						container.style.marginTop = '0px';
-						container.style.opacity = '1';
-						if (mask) {
-							mask.style.opacity = '0.6';
-						}
-					}, 100);
-				});
-			}, mask ? 200 : 10);
-		} else {
-			this.setState({isOpen: true});
+		
+		container.style.opacity = '0';
+		if (mask) {
+			mask.style.opacity = '0';
 		}
+		if (animation == 'fade-fall') {
+			container.style.marginTop = '-50px';
+		}
+		setTimeout(() => {
+			this.setState({isOpen: true}, () => {
+				if (!this.positionInit) {
+					this.initPosition();
+				}
+				setTimeout(() => {
+					container.style.marginTop = '0px';
+					container.style.opacity = '1';
+					if (mask) {
+						mask.style.opacity = '0.6';
+					}
+				}, 100);
+			});
+		}, mask && animation ? 200 : 0);		
 	}
 
 	animateHiding(isAction = false) {
@@ -79,7 +83,7 @@ export class Modal extends UIEXComponent {
 				mask.style.opacity = '0';
 			}
 			if (animation == 'fade-fall') {
-				container.style.marginTop = '-100px';
+				container.style.marginTop = '-50px';
 			}				
 			setTimeout(() => {
 				this.setState({isOpen: false}, () => {
@@ -96,65 +100,79 @@ export class Modal extends UIEXComponent {
 		}
 	}
 
-	addClassNames(add) {
-		add('expandable', this.props.expandable);
-		add('shown', this.state.isOpen);
-		add('expanded', this.state.expanded);
-		add('draggable', this.props.draggable);
+	initPosition() {
+		this.positionInit = true;
+		this.initSize();
+		const {container} = this.refs;
+		const {width, height} = container.getBoundingClientRect();
+		const left = (window.innerWidth - width) / 2;
+		const top = (window.innerHeight - height) / 2;
+		container.style.left = left + 'px';
+		container.style.top = top + 'px';
 	}
 
-	addChildProps(child, props) {
-		const {type} = child;
-		switch (type.name) {
-			case 'ModalHeader': {
-				const {expandable, closable} = this.props;
-				props.expandable = expandable;
-				props.closable = closable;
-				props.onClose = this.handleClose;
-				props.onExpand = this.handleExpand;
-				props.expanded = this.state.expanded;
-
-				let {className} = child.props;
-				if (!className || typeof className != 'string') {
-					className = DRAG_AREA_CLASS_NAME;
-				} else {
-					className = className + ' ' + DRAG_AREA_CLASS_NAME;
-				}
-				props.className = className;
-				break;
+	initSize() {
+		const {expanded} = this.state;
+		let {height} = this.props;
+		if (!expanded && typeof height == 'string' && (/%$/).test(height)) {
+			height = ~~height.replace(/%$/, '');
+			if (height) {
+				height = window.innerHeight * height / 100;
+				this.refs.container.style.height = height + 'px';
 			}
-
-			case 'ModalBody':
-			
-			break;
-			
-
-			case 'ModalFooter':
-				
-			break;			
 		}
 	}
 
+	addClassNames(add) {
+		const {expandable, draggable, animation} = this.props;
+		add('expandable', expandable);
+		add('shown', this.state.isOpen);
+		add('expanded', this.state.expanded);
+		add('draggable', draggable);
+		add('animation-' + animation, animation);
+	}
+
 	renderInternal() {
-		const {withoutMask, draggable} = this.props;
+		const {
+			withoutMask, 
+			draggable, 
+			expandable, 
+			closable = true, 
+		} = this.props;
+
 		const {expanded, isOpen} = this.state;
 		const content = (
-			<div {...this.getProps()}>
+			<div {...this.getProps(null, false)}>
 				{!withoutMask && 
 					<div 
 						className={this.getClassName('mask')}
 						onClick={this.handleMaskClick}
+						style={this.getStyle('mask')}
 						ref="mask"
 					/>
 				}
-				<div className={this.getClassName('container') + ' ' + DRAG_TARGET_CLASS_NAME} ref="container">
-					{this.renderChildren()}
+				<div 
+					className={this.getClassName('container') + ' ' + DRAG_TARGET_CLASS_NAME} 
+					style={this.getMainStyle()} 
+					ref="container">
+					{(expandable || closable) && 
+						<div className={this.getClassName('controls')} style={this.getStyle('controls')}>
+							{expandable && <Icon name={expanded ? 'crop_7_5' : 'crop_3_2'} onClick={this.handleExpand}/>}
+							{closable && <Icon name="close" onClick={this.handleClose}/>}
+						</div>
+					}
+					{this.renderHeader()}
+					<div className={this.getClassName('body')} style={this.getStyle('body')}>
+						{this.renderChildren()}
+					</div>
+					{this.renderFooter()}
 				</div>
 			</div>
 		)
 		if (draggable && !expanded) {
 			return (
 				<Draggable 
+					ref="drag"
 					dragAreaClassName={DRAG_AREA_CLASS_NAME}
 					dragTargetClassName={DRAG_TARGET_CLASS_NAME}
 				>
@@ -163,6 +181,31 @@ export class Modal extends UIEXComponent {
 			)
 		}
 		return content;
+	}
+
+	renderHeader() {
+		const {header, draggable} = this.props;
+		if (header) {
+			return (
+				<div 
+					className={this.getClassName('header') + (draggable ? ' ' + DRAG_AREA_CLASS_NAME : '')} 
+					style={this.getStyle('header')}
+					onDoubleClick={this.handleHeaderDoubleClick}>
+					{header}
+				</div>
+			)
+		}
+	}
+
+	renderFooter() {
+		const {footer} = this.props;
+		if (footer) {
+			return (
+				<div className={this.getClassName('footer')} style={this.getStyle('footer')}>
+					{footer}
+				</div>
+			)
+		}
 	}
 
 	handleMaskClick = () => {
@@ -176,38 +219,32 @@ export class Modal extends UIEXComponent {
 		this.animateHiding(true);
 	}
 
-	handleExpand = (e) => {
-		this.setState({expanded: !this.state.expanded});
+	handleExpand = () => {
+		const expanded = !this.state.expanded;
+		this.setState({expanded}, () => {
+			if (!expanded) {
+				this.initPosition();
+			}
+		});
 	}
-}
 
-export class ModalHeader extends UIEXComponent {
-	static propTypes = ModalHeaderPropTypes;
-	static className = 'modal-header';
-
-	renderInternal() {
-		const {expandable, closable = true, onClose, onExpand, expanded} = this.props;
-		return (
-			<div {...this.getProps()}>
-				{this.props.children}
-				{(expandable || closable) && 
-					<div className={this.getClassName('buttons')}>
-						{expandable && <Icon name={expanded ? 'crop_7_5' : 'crop_3_2'} onClick={onExpand}/>}
-						{closable && <Icon name="close" onClick={onClose}/>}
-					</div>
-				}
-			</div>
-		)
+	handleHeaderDoubleClick = () => {
+		const {expandable} = this.props;
+		if (expandable) {
+			this.handleExpand();
+		}
 	}
-}
 
-export class ModalBody extends UIEXComponent {
-	static propTypes = ModalBodyPropTypes;
-	static className = 'modal-body';
-
-}
-
-export class ModalFooter extends UIEXComponent {
-	static propTypes = ModalFooterPropTypes;
-	static className = 'modal-footer';
+	handleResize = () => {
+		const {expanded} = this.state;
+		if (!expanded) {
+			const {drag} = this.refs;
+			const isDragged = drag ? drag.isDragged() : false;
+			if (!isDragged) {
+				this.initPosition();
+			} else {
+				this.initSize();
+			}
+		}
+	}
 }

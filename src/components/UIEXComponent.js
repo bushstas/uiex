@@ -165,7 +165,7 @@ export class UIEXComponent extends React.PureComponent {
 		return null;
 	}
 
-	getProps(props) {
+	getProps(props, withStyle = true) {
 		const {title} = this.props;
 		const componentProps = {
 			ref: 'main',
@@ -174,9 +174,11 @@ export class UIEXComponent extends React.PureComponent {
 		if (typeof title == 'string') {
 			componentProps.title = title;
 		}
-		const style = this.getMainStyle();
-		if (style) {
-			componentProps.style = style;
+		if (withStyle) {
+			const style = this.getMainStyle();
+			if (style) {
+				componentProps.style = style;
+			}
 		}
 		if (props instanceof Object) {
 			for (let k in props) {

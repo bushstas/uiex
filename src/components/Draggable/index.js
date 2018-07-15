@@ -69,6 +69,7 @@ export class Draggable extends React.PureComponent {
 
 	handleMouseMove = (e) => {
 		if (this.dragging) {
+			this.dragged = true;
 			let {clientX, clientY} = e;
 			const sx = clientX - this.x;
 			const sy = clientY - this.y;
@@ -84,5 +85,9 @@ export class Draggable extends React.PureComponent {
 
 	handleMouseUp = () => {
 		this.dragging = false;
+	}
+
+	isDragged() {
+		return this.dragged;
 	}
 }

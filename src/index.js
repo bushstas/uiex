@@ -18,7 +18,7 @@ import {InputNumber} from './components/InputNumber';
 import {InputPhone} from './components/InputPhone';
 import {Label} from './components/Label';
 import {LabelGroup} from './components/LabelGroup';
-import {Modal, ModalHeader, ModalBody, ModalFooter} from './components/Modal';
+import {Modal} from './components/Modal';
 import {MultiSelect} from './components/MultiSelect';
 import {Popup} from './components/Popup';
 import {PopupMenu, PopupMenuItem} from './components/PopupMenu';
@@ -59,9 +59,6 @@ export {
     Label,
     LabelGroup,
     Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
     MultiSelect,
     Popup,
     PopupMenu,

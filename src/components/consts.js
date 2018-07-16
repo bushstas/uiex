@@ -11,7 +11,7 @@ export const ANIM_SPEED = ['fast', 'normal', 'slow'];
 export const ANIM_TYPE = ['fade', 'roll', 'fall', 'fade-roll', 'fade-fall'];
 export const FORM_BUTTON_DISPLAY = ['united', 'under-left', 'under-center', 'under-right', 'under-stretch'];
 export const SIDES = ['right', 'left', 'top', 'bottom'];
-export const MODAL_ANIMATION = ['fade', 'fade-fall'];
+export const MODAL_ANIMATION = ['fade', 'fade-fall', 'fade-float', 'fade-scale'];
 
 const OPTION_SHAPE = PropTypes.shape({
 	value: PropTypes.oneOfType([

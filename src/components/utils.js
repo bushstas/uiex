@@ -11,6 +11,24 @@ export const removeClass = (element, cn) => {
 	}
 }
 
+export const addClass = (element, cn) => {
+	if (element instanceof Element) {
+		const classes = (element.className || '').split(' ');
+		if (classes.indexOf(cn) == -1) {
+			classes.push(cn);
+			element.className = classes.join(' ');
+		}
+	}
+}
+
+export const toggleClass = (element, cn, isAdd) => {
+	if (isAdd) {
+		addClass(element, cn);
+	} else {
+		removeClass(element, cn);
+	}
+}
+
 export const getNumber = (n, d = 0) => {
 	if (typeof n == 'string' && n == ~~n) {
 		n = ~~n;

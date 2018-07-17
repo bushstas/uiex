@@ -63,7 +63,9 @@ export class UIEXComponent extends React.PureComponent {
 
 	getMainStyle() {
 		if (!this.styles.main || this.stylesChanged.main) {
-			let {width, height, fontSize, style: propStyle} = this.props;
+			const {fontSize, style: propStyle} = this.props;
+			const width = this.getWidthProp();
+			const height = this.getHeightProp();
 			let style = null;		
 			style = addObject(this.getDefaultStyle(), style);
 			style = addObject(this.getCustomStyle(), style);
@@ -74,6 +76,14 @@ export class UIEXComponent extends React.PureComponent {
 			this.styles.main = style;
 		}
 		return this.styles.main;
+	}
+
+	getWidthProp() {
+		return this.props.width;
+	}
+
+	getHeightProp() {
+		return this.props.height;
 	}
 
 	componentDidMount() {

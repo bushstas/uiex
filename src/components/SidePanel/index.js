@@ -1,8 +1,13 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
+import {Popup} from '../Popup';
+import {getTransitionDuration, getNumber, inPercent, getSizeInPercentageOfWindow} from '../utils';
 import {SidePanelPropTypes} from './proptypes';
 
 import './style.scss';
+
+const DEFAULT_SPEED = 'normal';
+const DEFAULT_SIZE = 300;
 
 export class SidePanel extends UIEXComponent {
 	static propTypes = SidePanelPropTypes;
@@ -17,6 +22,8 @@ export class SidePanel extends UIEXComponent {
 		if (nextProps.isOpen != this.props.isOpen) {
 			if (!nextProps.isOpen) {
 				this.setSize();
+			} else {
+				clearTimeout(this.timeout);
 			}
 			this.animate(nextProps.isOpen);
 		}
@@ -37,25 +44,28 @@ export class SidePanel extends UIEXComponent {
 	}
 
 	showStyles = () => {
-		const {outer} = this.refs;
+		const outer = this.getOuterContainer();
 		outer.style.visibility = 'visible';
 		outer.style.opacity = '1';
 	}
 
 	hideStyles = () => {
-		const {outer} = this.refs;
+		const outer = this.getOuterContainer();
 		outer.style.visibility = 'hidden';
 		outer.style.overflow = 'hidden';
 		outer.style.opacity = '0';
-		outer.style[this.getSizeAttr()] = '0';
+		outer.style.width = '0';
+		outer.style.height = '0';
 	}
 
 	showOverflowStyles = () => {
-		this.refs.outer.style.overflow = 'visible';
+		const outer = this.getOuterContainer();
+		outer.style.overflow = 'visible';
 	}
 
 	setSize = () => {
-		this.refs.outer.style[this.getSizeAttr()] = this.getSize();
+		const outer = this.getOuterContainer();
+		outer.style[this.getSizeAttr()] = this.getSize();
 	}
 
 	getSize() {
@@ -74,12 +84,13 @@ export class SidePanel extends UIEXComponent {
 		return 'width';
 	}
 
-	animate(isOpen) {
+	animate(isOpen) {		
 		this.animating = true;
-		let {animation, onHide, noHideAnimation} = this.props;
+		let {animation, noHideAnimation} = this.props;
+		const outer = this.getOuterContainer();
 		const callback = () => {
-			if (!isOpen && typeof onHide == 'function') {
-				onHide();
+			if (!isOpen) {
+				this.fireClose();
 			}
 			this.animating = false;
 		};
@@ -87,10 +98,11 @@ export class SidePanel extends UIEXComponent {
 			animation = false;
 		}
 		if (animation) {
-			this.refs.outer.style.transitionDuration = this.getSpeed() / 10 + 's';
+			outer.style.transitionDuration = this.getSpeed() / 10 + 's';
 			const delay = this.getDelay();
 			setTimeout(callback, delay);
 		} else {
+			outer.style.transitionDuration = '';
 			callback();
 		}
 		if (isOpen) {
@@ -100,10 +112,18 @@ export class SidePanel extends UIEXComponent {
 		}
 	}
 
+	fireClose = () => {
+		const {onClose} = this.props;
+		if (typeof onClose == 'function') {
+			onClose();
+		}
+	}
+
 	processShowAnimation() {
-		const {outer} = this.refs;
+		const outer = this.getOuterContainer();
 		const delay = this.getDelay();
 		switch (this.props.animation) {
+			case 'roll':
 			case 'fade-roll':
 				this.showStyles();
 				this.setSize();
@@ -117,7 +137,7 @@ export class SidePanel extends UIEXComponent {
 	}
 
 	processHideAnimation() {
-		const {outer} = this.refs;
+		const outer = this.getOuterContainer();
 		const delay = this.getDelay();
 		switch (this.props.animation) {
 			case 'fade':
@@ -144,26 +164,73 @@ export class SidePanel extends UIEXComponent {
 	}
 
 	getSpeed() {
-		return 3;
+		let {speed, side, width, height, animation} = this.props;
+		if (typeof speed != 'string') {
+			speed = DEFAULT_SPEED;
+		}
+		let size = DEFAULT_SIZE;
+		if (!side || side == 'left' || side == 'right') {
+			if (inPercent(width)) {
+				width = getSizeInPercentageOfWindow(width, 'width');
+			}
+			size = getNumber(width);
+		} else {
+			if (inPercent(height)) {
+				height = getSizeInPercentageOfWindow(height, 'height');
+			}
+			size = getNumber(height);
+		}
+		return getTransitionDuration(speed, size, animation);
 	}
 
 	getDelay() {
 		return this.getSpeed() * 100;
 	}
 
+	getWidthProp() {
+		const {width} = this.props;
+		if (inPercent(width)) {
+			return getSizeInPercentageOfWindow(width, 'width');
+		}
+		return width;
+	}
+
+	getHeightProp() {
+		const {height} = this.props;
+		if (inPercent(height)) {
+			return getSizeInPercentageOfWindow(height, 'height');
+		}
+		return height;
+	}
 
 	renderInternal() {
-		let {children, side} = this.props;
+		let {children, side, isOpen, animation} = this.props;
 		let className = 'uiex-side-panel-outer'
 		if (side) {
 			className += ' uiex-side-' +  side;
 		}
+		if (animation) {
+			className += ' uiex-animation-' +  animation;
+		}
 		return (
-			<div className={className} ref="outer">
+			<Popup 
+				ref="popup"
+				className={className}
+				isOpen={isOpen}
+				onCollapse={this.handlePopupCollapse}
+			>
 				<div {...this.getProps()} ref="inner">
 					{children}
 				</div>
-			</div>
+			</Popup>
 		)
+	}
+
+	handlePopupCollapse = () => {
+		this.timeout = setTimeout(() => this.fireClose(), 10);
+	}
+
+	getOuterContainer() {
+		return this.refs.popup.refs.main;
 	}
 }

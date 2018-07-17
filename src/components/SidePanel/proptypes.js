@@ -6,6 +6,5 @@ export const SidePanelPropTypes = {
 	...UIEXComponentPropTypes,
 	side: PROPTYPE.SIDES,	
 	isOpen: PropTypes.bool,
-	onShow: PropTypes.func,
-	onHide: PropTypes.func
+	onClose: PropTypes.func
 }

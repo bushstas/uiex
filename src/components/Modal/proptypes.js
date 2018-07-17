@@ -4,6 +4,9 @@ import {PROPTYPE} from '../consts';
 
 export const ModalPropTypes = {
 	...UIEXComponentPropTypes,
+	header: PROPTYPE.REACT_NODES,
+	footer: PROPTYPE.REACT_NODES,
+	outerContent: PROPTYPE.REACT_NODES,
 	isOpen: PropTypes.bool,
 	draggable: PropTypes.bool,
 	dragWithinScreen: PropTypes.bool,

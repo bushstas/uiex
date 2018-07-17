@@ -52,6 +52,13 @@ export class Modal extends UIEXComponent {
 		const container = this.getContainer();
 		const {mask} = this.refs;
 		const {animation} = this.props;
+
+		container.style.opacity = '';
+		if (mask) {
+			mask.style.opacity = '';
+		}
+		container.style.marginTop = '';
+		container.style.transform = '';
 		
 		if (animation) {
 			container.style.opacity = '0';
@@ -63,8 +70,8 @@ export class Modal extends UIEXComponent {
 			} else if (animation == 'fade-float') {
 				container.style.marginTop = '50px';
 			} else if (animation == 'fade-scale') {
-					container.style.transform = 'scale(0.5)';
-				}
+				container.style.transform = 'scale(0.5)';
+			}
 			setTimeout(() => {
 				this.setState({isOpen: true}, () => {
 					if (!this.positionInited) {
@@ -184,7 +191,8 @@ export class Modal extends UIEXComponent {
 			expandable, 
 			unclosable,
 			onDragEnd,
-			dragWithinScreen
+			dragWithinScreen,
+			outerContent
 		} = this.props;
 
 		const {expanded, isOpen} = this.state;		
@@ -197,6 +205,11 @@ export class Modal extends UIEXComponent {
 						style={this.getStyle('mask')}
 						ref="mask"
 					/>
+				}
+				{outerContent && 
+					<div className={this.getClassName('outer-content')}>
+						{outerContent}
+					</div>
 				}
 				<Draggable 
 					ref="drag"

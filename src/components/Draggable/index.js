@@ -29,12 +29,16 @@ export class Draggable extends React.PureComponent {
 			}
 		}
 		if (dragWithinScreen != nextProps.dragWithinScreen) {
-			if (nextProps.dragWithinScreen) {
-				this.handleResize();
-				window.addEventListener('resize', this.handleResize, false);
+			if (this.dragTarget instanceof Element) {
+				if (nextProps.dragWithinScreen) {
+					this.handleResize();
+					window.addEventListener('resize', this.handleResize, false);
+				} else {
+					this.resetDragLimits();
+					window.removeEventListener('resize', this.handleResize, false);
+				}
 			} else {
-				this.resetDragLimits();
-				window.removeEventListener('resize', this.handleResize, false);
+				this.initDragLimits();
 			}
 		}
 	}

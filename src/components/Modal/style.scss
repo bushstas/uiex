@@ -67,6 +67,14 @@
 	    background-color: #000;
 	    opacity: 0.6;
     }
+    .uiex-modal-outer-content {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+    }
     &.uiex-opacity-0 {
         .uiex-modal-mask {
             opacity: 0;
@@ -125,7 +133,7 @@
 
     .uiex-modal-container {
     	position: absolute;
-    	z-index: 2;
+    	z-index: 3;
     	min-width: 300px;
     	background-color: #fff;
     	border-radius: 3px;

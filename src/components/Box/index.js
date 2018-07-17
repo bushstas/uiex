@@ -1,6 +1,7 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Button} from '../Button';
+import {getTransitionDuration} from '../utils';
 import {BoxPropTypes} from './proptypes';
 
 import './style.scss';
@@ -180,25 +181,12 @@ export class Box extends UIEXComponent {
 	}
 
 	getSpeed() {
-		let {speed} = this.props;
+		let {speed, animation} = this.props;
 		if (typeof speed != 'string') {
 			speed = DEFAULT_SPEED;
 		}
 		const height = this.getIntHeight();
-		let size = Math.min(10, Math.round(height / 150)) - 1;
-		size = Math.max(size, 0);
-		switch (speed) {
-			case 'fast':
-				return [1, 1, 2, 2, 3, 3, 4, 4, 5, 5][size];
-			break;
-			
-			case 'slow':
-				return [6, 6, 7, 7, 8, 8, 9, 9, 10, 10][size];
-			break;
-
-			default:
-				return [3, 3, 4, 4, 5, 5, 6, 6, 7, 7][size];
-		}
+		return getTransitionDuration(speed, height, animation);
 	}
 
 	getDelay() {

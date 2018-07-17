@@ -172,3 +172,41 @@ export const addObject = (obj1, obj2) => {
 	}
 	return obj2;
 }
+
+export const getTransitionDuration = (speed, size, animation) => {
+	if (animation == 'fade') {
+		size = 0;
+	} else {
+		if (!size) {
+			size = 100;
+		}
+		size = Math.min(10, Math.round(size / 150)) - 1;
+		size = Math.max(size, 0);
+	}
+	switch (speed) {
+		case 'fast':
+			return [1, 1, 2, 2, 3, 3, 4, 4, 5, 5][size];
+		break;
+		
+		case 'slow':
+			return [6, 6, 7, 7, 8, 8, 9, 9, 10, 10][size];
+		break;
+
+		default:
+			return [3, 3, 4, 4, 5, 5, 6, 6, 7, 7][size];
+	}
+}
+
+export const inPercent = (value) => {
+	return typeof value == 'string' && (/%$/).test(value);
+}
+
+export const getSizeInPercentageOfWindow = (value, attr) => {
+	if (typeof value == 'string') {
+		value = ~~value.replace(/%$/, '');
+	}
+	if (typeof value == 'number') {
+		return Math.round((attr == 'width' ? window.innerWidth : window.innerHeight) * value / 100);
+	}
+	return 0;
+}

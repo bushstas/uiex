@@ -1,0 +1,10 @@
+.uiex-form-control-group {
+	position: relative;
+
+	.uiex-form-control {
+		display: inline-block;
+	}
+	&.uiex-nowrap {
+		white-space: nowrap;
+	}
+}

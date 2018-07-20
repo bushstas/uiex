@@ -6,8 +6,6 @@ import {InputRegexpPropTypes} from './proptypes';
 import '../style.scss';
 import './style.scss';
 
-const BACKSLASH = '___BSL___';
-
 export class InputRegexp extends Input {
 	static propTypes = InputRegexpPropTypes;
 	static className = 'input';
@@ -21,17 +19,24 @@ export class InputRegexp extends Input {
 	getValue() {
 		let value = super.getValue();
 		if (value instanceof RegExp) {
-			value = value.toString()
-					 .replace(/^\/|\/$/g, '')
-					 .replace(/\\\\/g, BACKSLASH)
-					 .replace(/\\/g, '')
-					 .replace(new RegExp(BACKSLASH, 'g'), '\\');
+			value = value.toString().replace(/^\/|\/$/g, '');
 		}
 		return value;
 	}
 
-	filterValue(value, props) {		
+	filterValue(value, props) {
 		const {stringified} = props;
-		return stringified || !value ? value : new RegExp(regexEscape(value));
+		if (!stringified && value) {
+			let v;
+			try {
+				v = new RegExp(value);
+				this.fireChangeValidity(true, v);
+			} catch(e) {
+				this.fireChangeValidity(false, value);
+				return value;
+			}
+			return v;
+		}
+		return value;
 	}
 }

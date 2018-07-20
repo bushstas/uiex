@@ -35,7 +35,7 @@ export class FormControlGroup extends UIEXComponent {
 	}
 
 	addChildProps(child, props, idx) {		
-		let {columns, sideMargin, controlSize, bottomMargin} = this.props;
+		let {columns, sideMargin, controlSize, bottomMargin, nowrap} = this.props;
 		columns = getNumber(columns, DEFAULT_COLUMNS);				
 		let {size, shift} = child.props;
 		if (typeof size == 'undefined') {
@@ -51,7 +51,7 @@ export class FormControlGroup extends UIEXComponent {
 			props.width = (size * 100 / columns).toFixed(4) + '%';
 			this.totalControlSize += size;
 		}
-		const isFirst = this.totalControlSize > columns;
+		const isFirst = !nowrap && this.totalControlSize > columns;
 		if (isFirst) {
 			this.isNextRow = true;
 			this.totalControlSize = size;
@@ -68,7 +68,7 @@ export class FormControlGroup extends UIEXComponent {
 			if (idx > 0 && !isFirst) {
 				props.leftPadding = halfOfSideMargin;
 			}
-			if (!isLast) {
+			if (!isLast || nowrap) {
 				props.rightPadding = halfOfSideMargin;
 			}
 		}

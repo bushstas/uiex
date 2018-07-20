@@ -17,7 +17,7 @@ export const InputPropTypes = {
 	clearButtonStyle: PropTypes.object,
 	customFilter: PropTypes.func,
 	pattern: PropTypes.oneOfType([
-		PropTypes.object, PropTypes.func
+		PROPTYPE.STRREGEXP, PropTypes.func
 	]),
 	required: PropTypes.bool,
 	minLength: PROPTYPE.STRNUM,

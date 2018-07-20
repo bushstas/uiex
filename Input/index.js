@@ -1,7 +1,7 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
-import {getNumber} from '../utils';
+import {getNumber, regexEscape} from '../utils';
 import {InputPropTypes} from './proptypes';
 
 import '../style.scss';
@@ -32,10 +32,6 @@ export class Input extends UIEXComponent {
 		if (nextProps.value != value) {
 			this.checkValidity(nextProps.value);
 		}
-	}
-
-	componentWillUnmount() {
-		this.fireChangeValidity(true);
 	}
 
 	addClassNames(add) {
@@ -97,8 +93,8 @@ export class Input extends UIEXComponent {
 	}
 
 	renderClearButton() {
-		const {value, clearable} = this.props;
-		if (value && clearable) {
+		const {value, clearable, readOnly} = this.props;
+		if (value && clearable && !readOnly) {
 			return (
 				<div 
 					className="uiex-input-clear"
@@ -111,6 +107,7 @@ export class Input extends UIEXComponent {
 	}
 
 	handleMouseDown = (e) => {
+		e.stopPropagation();
 		const {disabled, readOnly, onDisabledClick, name} = this.props;
 		if (disabled || readOnly) {
 			e.preventDefault();
@@ -138,6 +135,9 @@ export class Input extends UIEXComponent {
 	checkValidity(value) {
 		let {pattern, required, minLength} = this.props;
 		let isValid = true;
+		if (pattern && typeof pattern == 'string') {
+			pattern = new RegExp(regexEscape(pattern));
+		}
 		if (value && pattern instanceof RegExp || typeof pattern == 'function') {
 			if (pattern instanceof RegExp) {
 				isValid = pattern.test(value);
@@ -161,16 +161,16 @@ export class Input extends UIEXComponent {
 		if (isValid === false && this.isValid == null) {
 			return;
 		}
-		if (isValid !== this.isValid) {
-			this.fireChangeValidity(isValid, value);
-		}
+		this.fireChangeValidity(isValid, value);		
 	}
 
 	fireChangeValidity(isValid, value = undefined) {
-		const {name, onChangeValidity} = this.props;
-		this.isValid = isValid;
-		if (typeof onChangeValidity == 'function') {
-			onChangeValidity(isValid, value, name);
+		if (isValid !== this.isValid) {
+			const {name, onChangeValidity} = this.props;
+			this.isValid = isValid;
+			if (typeof onChangeValidity == 'function') {
+				onChangeValidity(isValid, value, name);
+			}
 		}
 	}
 

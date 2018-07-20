@@ -48,13 +48,13 @@ export class InputColor extends Input {
 	}
 
 	filterValue(value) {		
-		return value ? '#' + value.replace(/[^a-z\d]/gi, '') : '';
+		return value ? '#' + value.replace(/[^abcdef\d]/gi, '') : '';
 	}
 
 	getValue() {
 		const {value} = this.props;
 		if (value && typeof value == 'string') {
-			return value.replace(/^#+/, '');
+			return value.replace(/^#+/, '').toUpperCase();
 		}
 		return '';
 	}

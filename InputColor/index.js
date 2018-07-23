@@ -61,14 +61,14 @@ export class InputColor extends Input {
 
 	renderAdditionalContent() {
 		const {focused} = this.state;
-		const {value} = this.props;
+		const {value, withoutPicker} = this.props;
 		return (
 			<div className={this.getClassName('left-side')}>
 				<div className={this.getClassName('color')} style={this.colorStyle} onClick={this.handleColorClick}/>
 				<div className={this.getClassName('hash')}>
 					#
 				</div>
-				{focused && 
+				{!withoutPicker && focused && 
 					<ColorPicker 
 						value={value}
 						withoutInput

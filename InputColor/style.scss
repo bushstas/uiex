@@ -49,12 +49,12 @@
 			line-height: 42px;
 			font-size: 18px;
 			color: #888;
-			user-select: none;		
+			user-select: none;
 		}
 
 	}
 	& > input {
-		padding-left: 60px;
+		padding-left: 60px !important;
 	}
 	.uiex-color-picker {
 		position: absolute;

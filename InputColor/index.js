@@ -47,8 +47,9 @@ export class InputColor extends Input {
 		return {maxLength: 6}
 	}
 
-	filterValue(value) {		
-		return value ? '#' + value.replace(/[^abcdef\d]/gi, '') : '';
+	filterValue(value) {
+		const {withoutHash} = this.props;
+		return value ? (withoutHash ? '' : '#') + value.replace(/[^abcdef\d]/gi, '') : '';
 	}
 
 	getValue() {
@@ -80,9 +81,9 @@ export class InputColor extends Input {
 	}
 
 	handlePickerChange = (value) => {
-		const {disabled, onChange, name} = this.props;
+		const {disabled, onChange, name, withoutHash} = this.props;
 		if (!disabled && typeof onChange == 'function') {
-			onChange('#' + value, name);
+			onChange((withoutHash ? '' : '#') + value, name);
 		}
 	}
 

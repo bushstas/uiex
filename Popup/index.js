@@ -31,11 +31,11 @@ export class Popup extends UIEXBoxContainer {
 	}
 
 	addBodyClickHandler() {
-		document.body.addEventListener('click', this.handleBodyClick, false);
+		document.body.addEventListener('mousedown', this.handleBodyClick, false);
 	}
 
 	removeBodyClickHandler() {
-		document.body.removeEventListener('click', this.handleBodyClick, false);
+		document.body.removeEventListener('mousedown', this.handleBodyClick, false);
 	}
 
 	getCustomProps() {

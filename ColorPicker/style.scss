@@ -108,34 +108,59 @@
 		position: absolute;
 		box-shadow: 0 0 2px #333;
 		margin-left: -4px;
+		
+		&:before {
+			content: '';
+			position: absolute;
+			left: -1px;
+			right: -1px;
+			top: -1px;
+			bottom: -1px;
+			border-radius: 2px;
+			border: 1px solid #000;
+			opacity: 0.2;
+		}
 	}
 	.uiex-color-picker-input {			
 		width: 100%;
 		margin-top: 10px;
 		&.uiex-input {
 			input {
-				padding: 8px 12px;
+				padding: 5px 12px;
+				padding-left: 52px !important;
 			}
 		}
-		.uiex-color-input-hash {
-			line-height: 38px !important;
+		.uiex-color-input-left-side {
+			width: 30px !important;
+		}
+		.uiex-color-input-color {
+			cursor: default !important;
+			border-radius: 0 !important;
+			position: absolute !important;
+			width: auto !important;
+			height: auto !important;
+			left: 0;
+			right: -1px;
+			top: 0;
+			bottom: 0;
+			&:after {
+				border-radius: 0 !important;
+			}
 		}
 	}
 	.uiex-color-picker-controls {
 		margin-top: 10px;
 		display: flex;
-		align-items: center;
-		.uiex-color-picker-letter {
-			flex-grow: 1;
-			text-align: center;
-		}
+		align-items: center;		
 	}
 	.uiex-color-picker-rgb-input {
-		width: 56px;
-		min-width: 0;
-
 		input {
-			padding: 8px 12px;
+			padding: 5px 8px;
+			text-align: center;
+		}
+		margin-right: 4px;
+		&:last-child {
+			margin-right: 0;
 		}
 	}
 }

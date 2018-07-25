@@ -6,5 +6,6 @@ export const ColorPickerPropTypes = {
 	...UIEXComponentPropTypes,
 	value: PropTypes.string,
 	withoutInput: PropTypes.bool,
-	onChange: PropTypes.func
+	onChange: PropTypes.func,
+	onChangeHue: PropTypes.func
 }

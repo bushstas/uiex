@@ -10,12 +10,8 @@
 		justify-content: center;
 		border-right: 1px solid #aaa;
 
-		
 		.uiex-color-input-color {
-			position: absolute;
-			left: 8px;
-			top: 50%;
-			margin-top: -11px;
+			position: relative;
 			width: 22px;
 			height: 22px;
 			box-sizing: border-box;
@@ -38,20 +34,22 @@
 				}
 			}
 		}
-
 		.uiex-color-input-hash {
 			position: absolute;
 			left: 100%;
 			margin-left: 10px;
 			top: 0;
 			bottom: 0;
-			width: 20px;
-			line-height: 42px;
+			display: flex;
+			align-items: center;
 			font-size: 18px;
 			color: #888;
 			user-select: none;
 		}
-
+		.uiex-icon {
+			font-size: 24px;
+			color: #ddd;
+		}
 	}
 	& > input {
 		padding-left: 60px !important;

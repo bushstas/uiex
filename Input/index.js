@@ -16,6 +16,7 @@ export class Input extends UIEXComponent {
 		this.handleKeyUp = this.keyUpHandler.bind(this);
 		this.handleFocus = this.focusHandler.bind(this);
 		this.handleBlur = this.blurHandler.bind(this);
+		this.handleClick = this.clickHandler.bind(this);
 		this.isValid = null;
 	}
 
@@ -78,6 +79,7 @@ export class Input extends UIEXComponent {
 				onFocus={this.handleFocus}
 				onBlur={this.handleBlur}
 				onKeyUp={this.handleKeyUp}
+				onClick={this.handleClick}
 				{...customInputProps}
 			/>
 		)	
@@ -202,6 +204,13 @@ export class Input extends UIEXComponent {
 			if (typeof onBlur == 'function') {
 				onBlur(this.refs.input.value, name);
 			}
+		}
+	}
+
+	clickHandler() {
+		const {onClick, disabled, name} = this.props;
+		if (!disabled && typeof onClick == 'function') {
+			onClick(name);
 		}
 	}
 

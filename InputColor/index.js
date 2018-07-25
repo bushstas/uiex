@@ -1,11 +1,15 @@
 import React from 'react';
 import {Input} from '../Input';
 import {ColorPicker} from '../ColorPicker';
+import {Popup} from '../Popup';
+import {Icon} from '../Icon';
 import {getNumberOrNull} from '../utils';
 import {InputColorPropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
+
+const VALID_COLOR_REGEXP = /^([A-Fa-f0-9]{6}|[A-Fa-f0-9]{4}|[A-Fa-f0-9]{3})$/;
 
 export class InputColor extends Input {
 	static propTypes = InputColorPropTypes;
@@ -29,13 +33,17 @@ export class InputColor extends Input {
 	}
 
 	initColor(color) {
-		if (color && typeof color == 'string') {
-			this.colorStyle = {
-				backgroundColor: '#' + color.replace(/^#+/, '')
+		let style = null;
+		if (typeof color == 'string') {
+			color = color.replace(/^#+/, '');
+			this.isValidColor = VALID_COLOR_REGEXP.test(color);
+			if (this.isValidColor) {
+				style = {
+					backgroundColor: '#' + color.replace(/^#+/, '')
+				}
 			}
-		} else {
-			this.colorStyle = null;
 		}
+		this.colorStyle = style;
 	}
 
 	addClassNames(add) {
@@ -65,41 +73,56 @@ export class InputColor extends Input {
 		const {value, withoutPicker} = this.props;
 		return (
 			<div className={this.getClassName('left-side')}>
-				<div className={this.getClassName('color')} style={this.colorStyle} onClick={this.handleColorClick}/>
+				{this.isValidColor ?
+					<div className={this.getClassName('color')} style={this.colorStyle} onClick={this.handleColorClick}/> :
+					<Icon name="block" onClick={this.handleColorClick}/>
+				}
 				<div className={this.getClassName('hash')}>
 					#
 				</div>
 				{!withoutPicker && focused && 
-					<ColorPicker 
-						value={value}
-						withoutInput
-						onChange={this.handlePickerChange}
-					/>
+					<Popup
+						isOpen={true}
+						onCollapse={this.handlePopupCollapse}
+					>
+						<ColorPicker 
+							value={value}
+							hue={this.hue}
+							withoutInput
+							onChange={this.handlePickerChange}
+							onChangeHue={this.handlePickerHueChange}
+						/>
+					</Popup>
 				}
 			</div>
 		)		
 	}
 
-	handlePickerChange = (value) => {
+	handlePickerChange = (value, colorData) => {
 		const {disabled, onChange, name, withoutHash} = this.props;
 		if (!disabled && typeof onChange == 'function') {
+			this.hue = colorData.hsl instanceof Object ? colorData.hsl.h : null;
 			onChange((withoutHash ? '' : '#') + value, name);
 		}
+	}
+
+	handlePickerHueChange = (hue) => {
+		this.hue = hue;
 	}
 
 	handleColorClick = () => {
 		if (!this.props.disabled) {
 			this.refs.input.focus();
+			this.refs.input.click();
 		}
 	}
 
-	focusHandler() {
-		super.focusHandler();
+	clickHandler() {
+		super.clickHandler();
 		this.setState({focused: true});
 	}
 
-	blurHandler() {
-		super.blurHandler();
+	handlePopupCollapse = () => {
 		this.setState({focused: false});
 	}
 }

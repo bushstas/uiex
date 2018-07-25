@@ -3,44 +3,59 @@ import {UIEXComponent} from '../UIEXComponent';
 import {InputColor} from '../InputColor';
 import {InputNumber} from '../InputNumber';
 import {ColorPickerPropTypes} from './proptypes';
-import {getColor} from '../utils';
+import {getColor} from '../color';
 
 import '../style.scss';
 import './style.scss';
+
+const DEFAULT_COLOR = 'FFFFFF';
 
 export class ColorPicker extends UIEXComponent {
 	static propTypes = ColorPickerPropTypes;
 	static className = 'color-picker';
 
 	static defaultProps = {
-		value: '000000'
+		value: DEFAULT_COLOR
 	}
 
 	constructor(props) {
 		super(props);
-		this.hue = 0;
-		this.state = {
-			value: props.value
-		}
+		this.initColor(props.value, props.hue);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		super.componentWillReceiveProps(nextProps);
 		if (this.props.value != nextProps.value) {
-			this.initColor(nextProps.value);
-			if (this.state.value != nextProps.value) {
-				this.update();
-				this.setState({value: nextProps.value});
+			if (this.state.hex != nextProps.value) {
+				this.initColor(nextProps.value);				
 			}
 		}
 	}
 
-	componentWillMount() {
-		this.initColor(this.props.value);
-	}
-
 	componentDidMount() {
 		this.update();
+	}
+
+	initColor(hex, hue = null) {
+		const state = this.getStateFromColor(getColor(hex));
+		if (!this.state) {
+			state.value = state.hex;
+			if (typeof hue == 'number') {
+				state.hue = hue;
+			}
+			this.state = state;
+		} else {
+			this.setState(state, this.update);
+		}
+	}
+
+	update = () => {
+		const {satval, pointer, huePos} = this.refs;
+		const {hue, s, v} = this.state;
+		satval.style.backgroundColor = 'hsl(' + hue + ', 100%, 50%)';
+		pointer.style.left = s * 100 + '%';
+		pointer.style.top = -(v * 100) + 100 + '%';
+		huePos.style.left = hue * 100 / 360 + '%';
 	}
 
 	handleMouseDownOnSatval = (e) => {
@@ -74,20 +89,15 @@ export class ColorPicker extends UIEXComponent {
 		} else if (top > height) {
 		  top = height;
 		}
-		
 		const hsv = {
-			h: this.hue,
+			h: this.state.hue,
 			s: left * 100 / width,
 			v: -(top * 100 / height) + 100
 		};
 		pointer.style.left = hsv.s + '%';
 		pointer.style.top = -hsv.v + 100 + '%';
 		
-		const color = getColor(hsv);
-		const value = color.toHex();
-		this.setState({value}, () => {
-			this.fireChange(color);
-		});
+		this.fireChange(getColor(hsv));
 	}
 
 	handleMouseDownOnHue = (e) => {
@@ -103,13 +113,13 @@ export class ColorPicker extends UIEXComponent {
 
 	handleChangeHue = (e) => {
 		e.preventDefault();
-		const {hue, huePos, satval} = this.refs;
+		const {hueDiv, huePos, satval} = this.refs;
 		const {pageXOffset, pageYOffset} = window;
-		const width = hue.clientWidth;
-		const height = hue.clientHeight;
+		const width = hueDiv.clientWidth;
+		const height = hueDiv.clientHeight;
 		const x = typeof e.pageX === 'number' ? e.pageX : e.touches[0].pageX;
 		const y = typeof e.pageY === 'number' ? e.pageY : e.touches[0].pageY;
-		let {left, top} = hue.getBoundingClientRect();
+		let {left, top} = hueDiv.getBoundingClientRect();
 		left = x - (left + pageXOffset);
 		top = y - (top + pageYOffset);
 
@@ -124,37 +134,16 @@ export class ColorPicker extends UIEXComponent {
 			h = 360 * percent / 100;
 		}
 
-		if (this.hsl.h !== h) {
+		const {hue, sat: s, l, a} = this.state;
+		if (hue !== h) {
 			huePos.style.left = h * 100 / 360 + '%';
-			this.hue = h;
 			satval.style.backgroundColor = 'hsl(' + h + ', 100%, 50%)';
-			const hsl = {
-				h,
-				s: this.hsl.s,
-				l: this.hsl.l,
-				a: this.hsl.a
-			};
-			const color = getColor(hsl);
-     		const value = color.toHex();			
-			this.setState({value}, () => {
-				this.fireChange(color);
-			});
-		}		
-	}
-
-	initColor(value) {
-		const color = getColor(value);
-		this.hsl = color.toHsl();
-		this.hsv = color.toHsv();
-		this.rgb = color.toRgb();		
-	}
-
-	update() {
-		const {satval, pointer, huePos} = this.refs;		
-		satval.style.backgroundColor = 'hsl(' + this.hsl.h + ', 100%, 50%)';
-		pointer.style.left = this.hsv.s * 100 + '%';
-		pointer.style.top = -(this.hsv.v * 100) + 100 + '%';
-		huePos.style.left = this.hsl.h * 100 / 360 + '%';
+			this.fireChange(getColor({h, s, l, a}));
+			const {onChangeHue} = this.props;
+			if (typeof onChangeHue == 'function') {
+				onChangeHue(h);
+			}
+		}
 	}
 
 	getProperValue(value) {
@@ -177,6 +166,7 @@ export class ColorPicker extends UIEXComponent {
 	}
 
 	renderInternal() {
+		const {value, r, g, b} = this.state;
 		return (
 			<div {...this.getProps()}>
 				<div className={this.getClassName('selector')}>
@@ -185,37 +175,28 @@ export class ColorPicker extends UIEXComponent {
 						<div className={this.getClassName('black')}/>
 						<div ref="pointer" className={this.getClassName('pointer')}/>
 					</div>
-					<div ref="hue" className={this.getClassName('hue')} onMouseDown={this.handleMouseDownOnHue}>
+					<div ref="hueDiv" className={this.getClassName('hue')} onMouseDown={this.handleMouseDownOnHue}>
 						<div ref="huePos" className={this.getClassName('huepos')}/>
 					</div>
 					<div className={this.getClassName('controls')}>
-						<span className={this.getClassName('letter')}>
-							R
-						</span>
 						<InputNumber
-							value={this.rgb.r}
+							value={r}
 							maxLength="3"
 							maxValue="255"
 							positive
 							className={this.getClassName('rgb-input')}
 							onChange={this.handleRInputChange}
 						/>
-						<span className={this.getClassName('letter')}>
-							G
-						</span>
 						<InputNumber
-							value={this.rgb.g}
+							value={g}
 							maxLength="3"
 							maxValue="255"
 							positive
 							className={this.getClassName('rgb-input')}
 							onChange={this.handleGInputChange}
 						/>
-						<span className={this.getClassName('letter')}>
-							B
-						</span>
 						<InputNumber
-							value={this.rgb.b}
+							value={b}
 							maxLength="3"
 							maxValue="255"
 							positive
@@ -224,7 +205,7 @@ export class ColorPicker extends UIEXComponent {
 						/>
 					</div>
 					<InputColor
-						value={this.state.value}
+						value={value}
 						className={this.getClassName('input')}						
 						onChange={this.handleInputChange}
 						withoutPicker
@@ -236,44 +217,109 @@ export class ColorPicker extends UIEXComponent {
 	}
 
 	handleInputChange = (value) => {
-		this.setState({value}, () => {			
-			const color = getColor(value);
-			const hsl = color.toHsl();
-			this.hue = hsl.h;
-			this.fireChange(color);
-		});
+		this.fireChange(getColor(value), this.update);
 	}
 
 	handleRInputChange = (r) => {
-		this.rgb.r = r;
-		this.handleRGBChange();
+		this.handleRGBChange('r', r);
 	}
 
 	handleGInputChange = (g) => {
-		this.rgb.g = g;
-		this.handleRGBChange();
+		this.handleRGBChange('g', g);
 	}
 
 	handleBInputChange = (b) => {
-		this.rgb.b = b;
-		this.handleRGBChange();
+		this.handleRGBChange('b', b);
 	}
 
-	handleRGBChange() {
-		const color = getColor(this.rgb);
-		const hsl = color.toHsl();
-		this.hue = hsl.h;
-		this.fireChange(color);
+	handleRGBChange(key, value) {
+		let {r, g, b} = this.state;
+		if (key == 'r') {
+			r = value;
+		} else if (key == 'g') {
+			g = value;
+		} else {
+			b = value;
+		}
+		this.fireChange(getColor({r, g, b}), this.update);
 	}
 
 	preventDefault = (e) => {
 		e.preventDefault();
 	}
 
-	fireChange = (color) => {
-		const {onChange} = this.props;
-		if (typeof onChange == 'function') {
-			onChange(color.toHex(), color);
+	getStateFromColor(color) {
+		let hex = color.toHex();
+		let value = color.getValue();
+		let isValid = color.isValid();
+		let state;
+		const isInitialInvalid = !isValid && !this.state;
+		if (isInitialInvalid) {
+			hex = DEFAULT_COLOR;
+			value = DEFAULT_COLOR;
+			color = getColor(hex);
+			isValid = true;
+		}
+		if (isValid) {
+			const {h: hue, s: sat, l, a} = color.toHsl();
+			const {r, g, b} = color.toRgb();
+			const {h, s, v} = color.toHsv();			
+			state = {hex, r, g, b, hue, sat, l, a, h, s, v, isValid};
+			if (hue === 0 && this.state) {
+				delete state.hue;
+				delete state.h;
+			}
+		} else {			
+			state = {};
+		}
+		if (typeof value == 'string') {
+			state.value = value;
+			if (!isValid || isInitialInvalid) {
+				state.hex = value;
+			}
+		} else {
+			state.value = hex;
+		}
+		if (value instanceof Object && value.l !== undefined) {
+			state.hue = value.h;
+			state.h = value.h;
+		}
+		return state;
+	}
+
+	fireChange = (color, callback) => {
+		const state = this.getStateFromColor(color);
+		const originalValue = color.getValue();
+		const {hex, r, g, b, h = 0, s, v, hue = 0, sat, l, value, isValid} = state;
+		if (this.props.value.toUpperCase() != value.toUpperCase()) {
+			let data;
+			if (isValid) {
+				data = {
+					hex,
+					hash: '#' + hex,
+					rgb: {r, g, b},
+					hsv: {h, s, v},
+					hsl: {h: hue, s: sat, l},
+					strRgb: 'rgb(' + r + ', ' + g + ', ' + b + ')',
+					strHsl: 'hsl(' + Math.round(hue) + ', ' + Math.round(sat * 100) + '%, ' + Math.round(l * 100) + '%)'
+				}
+			} else {
+				data = {
+					hex,
+					hash: '#' + hex
+				}
+			}
+			this.setState(state, () => {
+				const {onChange} = this.props;
+				if (typeof onChange == 'function') {
+					onChange(hex, data);
+				}
+				if (typeof callback == 'function') {
+					callback();
+				}
+			});
+		} else if (originalValue instanceof Object && originalValue.l !== undefined) {
+			this.setState({h: originalValue.h, hue: originalValue.h});
 		}
 	}
 }

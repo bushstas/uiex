@@ -430,7 +430,6 @@ var names = UIEXColor.names = {
     yellow: "ff0",
     yellowgreen: "9acd32"
 };
-
 var hexNames = UIEXColor.hexNames = flip(names);
 
 function flip(o) {

@@ -6,8 +6,8 @@ export const FormPropTypes = {
 	...UIEXComponentPropTypes,
 	caption: PROPTYPE.REACT_NODES,
 	columns: PROPTYPE.STRNUM,
-	controlSize: PROPTYPE.STRNUM,
-	lineMargin: PROPTYPE.STRNUM,
+	cellSize: PROPTYPE.STRNUM,
+	rowMargin: PROPTYPE.STRNUM,
 	submit: PropTypes.string,
 	clear: PropTypes.string,
 	onChange: PropTypes.func

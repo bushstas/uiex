@@ -24,16 +24,16 @@ export class Form extends UIEXComponent {
 			break;
 
 			case 'FormControlGroup':
-				let {lineMargin = DEFAULT_LINE_MARGIN, columns, controlSize} = this.props;
-				lineMargin = getNumber(lineMargin);
-				if (lineMargin) {
-					props.bottomMargin = lineMargin;
+				let {rowMargin = DEFAULT_LINE_MARGIN, columns, cellSize} = this.props;
+				rowMargin = getNumber(rowMargin);
+				if (rowMargin) {
+					props.bottomMargin = rowMargin;
 				}
 				if (columns && !child.props.columns) {
 					props.columns = columns;
 				}
-				if (controlSize && !child.props.controlSize) {
-					props.controlSize = controlSize;
+				if (cellSize && !child.props.cellSize) {
+					props.cellSize = cellSize;
 				}
 				if (typeof child.props.onChange != 'function') {
 					props.onChange = this.handleChange;

@@ -1,14 +1,12 @@
 import React from 'react';
-import {UIEXComponent} from '../UIEXComponent';
+import {Cell} from '../CellGroup';
 import {getNumber} from '../utils';
 import {FormControlPropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
 
-let DEFAULT_STYLE;
-
-export class FormControl extends UIEXComponent {
+export class FormControl extends Cell {
 	static propTypes = FormControlPropTypes;
 	static className = 'form-control';
 	static properChildrenSign = 'isControl';
@@ -27,27 +25,6 @@ export class FormControl extends UIEXComponent {
 					props.onChange = this.handleChange;
 				}
 		}
-	}
-
-	getCustomStyle() {
-		let {leftPadding: l, rightPadding: r, leftMargin: m, topMargin: t} = this.props;
-		let style;
-		if (l) {
-			style = {paddingLeft: l};
-		}
-		if (r) {
-			style = style || {};
-			style.paddingRight = r;
-		}
-		if (m) {
-			style = style || {};
-			style.marginLeft = m;
-		}
-		if (t) {
-			style = style || {};
-			style.marginTop = t;
-		}
-		return style;
 	}
 
 	renderInternal() {

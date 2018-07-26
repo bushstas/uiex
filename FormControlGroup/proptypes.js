@@ -5,8 +5,8 @@ import {PROPTYPE} from '../consts';
 export const FormControlGroupPropTypes = {
 	...UIEXComponentPropTypes,
 	columns: PROPTYPE.STRNUM,
-	controlSize: PROPTYPE.STRNUM,
-	sideMargin: PROPTYPE.STRNUM,
+	cellSize: PROPTYPE.STRNUM,
+	cellMargin: PROPTYPE.STRNUM,
 	nowrap: PropTypes.bool,
 	onChange: PropTypes.func
 }

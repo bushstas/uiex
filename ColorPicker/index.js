@@ -2,6 +2,7 @@ import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {InputColor} from '../InputColor';
 import {InputNumber} from '../InputNumber';
+import {Colors} from '../Colors';
 import {ColorPickerPropTypes} from './proptypes';
 import {getColor} from '../color';
 
@@ -25,10 +26,8 @@ export class ColorPicker extends UIEXComponent {
 
 	componentWillReceiveProps(nextProps) {
 		super.componentWillReceiveProps(nextProps);
-		if (this.props.value != nextProps.value) {
-			if (this.state.hex != nextProps.value) {
-				this.initColor(nextProps.value);				
-			}
+		if (this.state.hex != nextProps.value) {
+			this.initColor(nextProps.value);
 		}
 	}
 
@@ -166,6 +165,7 @@ export class ColorPicker extends UIEXComponent {
 	}
 
 	renderInternal() {
+		const {presetColors} = this.props;
 		const {value, r, g, b} = this.state;
 		return (
 			<div {...this.getProps()}>
@@ -212,6 +212,12 @@ export class ColorPicker extends UIEXComponent {
 						withoutHash
 					/>
 				</div>
+				{presetColors instanceof Array && presetColors.length > 0 && 
+					<Colors 
+						colors={presetColors}
+						onSelect={this.handleSelectPresetColor}
+					/>
+				}
 			</div>
 		)
 	}
@@ -246,6 +252,10 @@ export class ColorPicker extends UIEXComponent {
 
 	preventDefault = (e) => {
 		e.preventDefault();
+	}
+
+	handleSelectPresetColor = (value) => {
+		this.handleInputChange(value);
 	}
 
 	getStateFromColor(color) {

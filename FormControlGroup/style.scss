@@ -1,8 +1,14 @@
 .uiex-form-control-group {
 	position: relative;
+	line-height: 0px;
+	font-size: 0;
+	letter-spacing: -1px;
 
 	.uiex-form-control {
 		display: inline-block;
+		letter-spacing: 0;
+		line-height: 18px;
+		font-size: 14px;		
 	}
 	&.uiex-nowrap {
 		white-space: nowrap;

@@ -1,5 +1,15 @@
 import React from 'react';
 
+export const addToClassName = (classNameToAdd, className = undefined) => {
+	if (classNameToAdd && typeof classNameToAdd == 'string') {
+		if (!className || typeof className != 'string') {
+			return classNameToAdd;
+		}
+		className += ' ' + classNameToAdd;
+	}
+	return className;
+}
+
 export const removeClass = (element, cn) => {
 	if (element instanceof Element) {
 		let {className} = element;
@@ -119,14 +129,16 @@ export const getComponentClassName = (component) => {
 		color,
 		align,
 		valign,
+		hidden,
 		onClick
 	} = component.props;
 
-	const {add, get} = getClassNameBuilder('uiex-' + component.getNativeClassName(), className);
+	const {add, get} = getClassNameBuilder(component.getNativeClassName(), className);
 	component.addClassNames(add);
 	add('disabled', disabled);
 	add('active', active);
 	add('block', block);
+	add('hidden', hidden);
 	if (color) {
 		add('colored');
 		if (onClick) {
@@ -134,8 +146,10 @@ export const getComponentClassName = (component) => {
 		}
 		add('color-' + color);
 	}
-	add('align-' + align, align);
-	add('valign-' + valign, valign);
+	if (component.isAlignable()) {
+		add('align-' + align, align);
+		add('valign-' + valign, valign);
+	}
 	add('float-' + float, float);
 	return get();
 }

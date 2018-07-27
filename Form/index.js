@@ -27,7 +27,7 @@ export class Form extends UIEXComponent {
 				let {rowMargin = DEFAULT_LINE_MARGIN, columns, cellSize} = this.props;
 				rowMargin = getNumber(rowMargin);
 				if (rowMargin) {
-					props.bottomMargin = rowMargin;
+					props.rowMargin = rowMargin;
 				}
 				if (columns && !child.props.columns) {
 					props.columns = columns;

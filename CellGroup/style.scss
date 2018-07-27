@@ -1,11 +1,12 @@
 .uiex-cell-group {
 	position: relative;
+}
+
+.uiex-cell-group-row {
 	line-height: 0px;
 	font-size: 0;
 	letter-spacing: -1px;
-	&.uiex-nowrap {
-		white-space: nowrap;
-	}
+	white-space: nowrap;
 }
 
 .uiex-cell {
@@ -16,6 +17,15 @@
 	letter-spacing: 0;
 	font-size: 14px;
 	line-height: 18px;
+	white-space: normal;
+
+	&.uiex-first-cell-in-row {
+		padding-left: 0 !important;
+	}
+	&.uiex-last-cell-in-row {
+		padding-right: 0 !important;
+	}
+
 	& > * {
 		width: 100% !important;
 		min-width: 0 !important;

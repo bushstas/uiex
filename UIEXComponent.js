@@ -135,8 +135,11 @@ export class UIEXComponent extends React.PureComponent {
 				return null;
 			}
 			if (isValidElement) {
+				if (child.props.hidden) {
+					return null;
+				}
 				const props = {
-					key: idx
+					key: child.key || idx
 				};
 				if (isProperChild) {
 					if (!this.filterChild(child)) {
@@ -205,15 +208,17 @@ export class UIEXComponent extends React.PureComponent {
 	}
 
 	render() {
-		if (this.props.hidden) {
-			return null;
-		}
 		this.initRendering();
 		return this.renderInternal();
 	}
 
 	getNativeClassName() {
-		return this.constructor.className || this.constructor.name.toLowerCase();
+		let {className, additionalClassName, name} = this.constructor;
+		className = 'uiex-' + (className || name.toLowerCase());
+		if (additionalClassName) {
+			className += ' uiex-' + additionalClassName;
+		}
+		return className;
 	}
 
 	getCustomProps() {
@@ -295,7 +300,11 @@ export class UIEXComponent extends React.PureComponent {
 	}
 
 	getClassName(cn) {
-		return 'uiex-' + this.getNativeClassName() + '-' + cn;
+		return this.getNativeClassName() + '-' + cn;
+	}
+
+	isAlignable() {
+		return true;
 	}
 
 	initRendering() {}

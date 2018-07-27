@@ -8,13 +8,22 @@ export const CellGroupPropTypes = {
 	cellMargin: PROPTYPE.STRNUM,
 	cellSize: PROPTYPE.STRNUM,
 	rowMargin: PROPTYPE.STRNUM,
-	sidePadding: PROPTYPE.STRNUM,
 	sideShrink: PropTypes.bool,
-	nowrap: PropTypes.bool
+	cellAlign: PROPTYPE.ALIGN
 }
 
 export const CellPropTypes = {
 	...UIEXComponentPropTypes,
 	size: PROPTYPE.STRNUM,
-	shift: PROPTYPE.STRNUM
+	shift: PROPTYPE.STRNUM,
+	maxSize: PROPTYPE.STRNUM,
+	firstInRow: PropTypes.bool,
+	lastInRow: PropTypes.bool,
+	floatRight: PropTypes.bool,
+	stretched: PropTypes.bool,
+	fullWidth: PropTypes.bool
+}
+
+export const CellGroupRowPropTypes = {
+	...UIEXComponentPropTypes
 }

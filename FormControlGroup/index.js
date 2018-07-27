@@ -10,6 +10,7 @@ export class FormControlGroup extends CellGroup {
 	static propTypes = FormControlGroupPropTypes;
 	static properChildren = 'FormControl';
 	static className = 'form-control-group';
+	static additionalClassName = 'cell-group';
 	static onlyProperChildren = true;
 	static defaultColumns = 10;
 	static defaultCellMargin = 12;
@@ -17,7 +18,12 @@ export class FormControlGroup extends CellGroup {
 
 	addChildProps(child, props, idx) {
 		super.addChildProps(child, props, idx);
-		const {onChange} = child.props;
+		const {onChange, className} = child.props;
+		if (!className || typeof className != 'string') {
+			props.className = 'uiex-cell';
+		} else {
+			props.className = className + ' uiex-cell';
+		}
 		if (typeof onChange != 'function') {
 			props.onChange = this.props.onChange;
 		}

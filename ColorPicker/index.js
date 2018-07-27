@@ -50,11 +50,13 @@ export class ColorPicker extends UIEXComponent {
 
 	update = () => {
 		const {satval, pointer, huePos} = this.refs;
-		const {hue, s, v} = this.state;
-		satval.style.backgroundColor = 'hsl(' + hue + ', 100%, 50%)';
-		pointer.style.left = s * 100 + '%';
-		pointer.style.top = -(v * 100) + 100 + '%';
-		huePos.style.left = hue * 100 / 360 + '%';
+		if (satval instanceof Element) {
+			const {hue, s, v} = this.state;
+			satval.style.backgroundColor = 'hsl(' + hue + ', 100%, 50%)';
+			pointer.style.left = s * 100 + '%';
+			pointer.style.top = -(v * 100) + 100 + '%';
+			huePos.style.left = hue * 100 / 360 + '%';
+		}
 	}
 
 	handleMouseDownOnSatval = (e) => {
@@ -331,5 +333,9 @@ export class ColorPicker extends UIEXComponent {
 		} else if (originalValue instanceof Object && originalValue.l !== undefined) {
 			this.setState({h: originalValue.h, hue: originalValue.h});
 		}
+	}
+
+	isAlignable() {
+		return false;
 	}
 }

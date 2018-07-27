@@ -13,7 +13,9 @@
 .bggreen {
 	background-color: #53bb44;
 }
-
+*.uiex-hidden {
+	display: none !important;
+}
 *.uiex-block {
 	display: block !important;
 }

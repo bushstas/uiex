@@ -1,5 +1,33 @@
 .uiex-cell-group {
 	position: relative;
+
+	&:not(.uiex-side-shrinked) {
+		&.uiex-align-right {
+			.uiex-cell-group-row {
+				&.uiex-complete-row {
+					.uiex-cell {
+						&.uiex-first-cell-in-row {
+							padding-left: 0 !important;
+						}
+					}
+				}
+				&.uiex-incomplete-row {
+					.uiex-cell {
+						&:last-child {
+							padding-right: 0 !important;
+						}
+					}
+				}
+			}
+		}
+		&:not(.uiex-align-right) {
+			.uiex-cell {
+				&.uiex-first-cell-in-row {
+					padding-left: 0 !important;
+				}
+			}
+		}
+	}	
 }
 
 .uiex-cell-group-row {
@@ -10,25 +38,25 @@
 }
 
 .uiex-cell {
+	pointer-events: auto;
 	vertical-align: top;
-	box-sizing: border-box;
+	box-sizing: border-box !important;
 	position: relative;
 	display: inline-block;
 	letter-spacing: 0;
 	font-size: 14px;
 	line-height: 18px;
 	white-space: normal;
+	min-width: unset !important;
+	max-width: unset !important;
+	height: 100%;
 
-	&.uiex-first-cell-in-row {
-		padding-left: 0 !important;
-	}
 	&.uiex-last-cell-in-row {
 		padding-right: 0 !important;
 	}
 
-	& > * {
-		width: 100% !important;
-		min-width: 0 !important;
-		max-width: none !important;
+	.uiex-cell-content {
+		box-sizing: border-box !important;
+		height: 100% !important;
 	}
 }

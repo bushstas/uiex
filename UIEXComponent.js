@@ -61,7 +61,7 @@ export class UIEXComponent extends React.PureComponent {
 		return this.styles[name];
 	}
 
-	getMainStyle() {
+	getMainStyle(withoutPropStyle = false) {
 		if (!this.styles.main || this.stylesChanged.main) {
 			const {fontSize, style: propStyle} = this.props;
 			const width = this.getWidthProp();
@@ -69,7 +69,9 @@ export class UIEXComponent extends React.PureComponent {
 			let style = null;		
 			style = addObject(this.getDefaultStyle(), style);
 			style = addObject(this.getCustomStyle(), style);
-			style = addObject(propStyle, style);
+			if (!withoutPropStyle) {
+				style = addObject(propStyle, style);
+			}
 			style = addStyleProperty(width, 'width', style);
 			style = addStyleProperty(height, 'height', style);
 			style = addStyleProperty(fontSize, 'fontSize', style);
@@ -110,7 +112,9 @@ export class UIEXComponent extends React.PureComponent {
 	renderChildren() {
 		this.properChildrenCount = 0;
 		this.currentProperChildIdx = -1;
-		return this.doRenderChildren(this.props.children);
+		return this.prepareChildren(
+			this.doRenderChildren(this.props.children)
+		);
 	}
 	
 	doRenderChildren(children) {
@@ -305,6 +309,10 @@ export class UIEXComponent extends React.PureComponent {
 
 	isAlignable() {
 		return true;
+	}
+
+	prepareChildren(children) {
+		return children;
 	}
 
 	initRendering() {}

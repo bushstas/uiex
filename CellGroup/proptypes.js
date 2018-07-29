@@ -9,7 +9,8 @@ export const CellGroupPropTypes = {
 	cellSize: PROPTYPE.STRNUM,
 	rowMargin: PROPTYPE.STRNUM,
 	sideShrink: PropTypes.bool,
-	cellAlign: PROPTYPE.ALIGN
+	cellAlign: PROPTYPE.ALIGN,
+	cellHeight: PROPTYPE.STRNUM
 }
 
 export const CellPropTypes = {

@@ -18,6 +18,17 @@ export const removeClass = (element, cn) => {
 			className = className.replace(regexp, '');
 			element.className = className;
 		}
+	} else if (typeof element == 'string') {
+		const classNames = element.split(' ');
+		const idx = classNames.indexOf(cn);
+		if (idx > -1) {
+			classNames.splice(idx, 1);
+			if (classNames.length == 0) {
+				return;
+			}
+			return classNames.join(' ');
+		}
+		return element;
 	}
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
-import {getNumber, addToClassName} from '../utils';
+import {getNumber, addToClassName, removeClass} from '../utils';
 import {CellGroupPropTypes, CellGroupRowPropTypes, CellPropTypes} from './proptypes';
 
 import '../style.scss';
@@ -12,7 +12,7 @@ export class CellGroup extends UIEXComponent {
 	static propTypes = CellGroupPropTypes;
 	static properChildren = 'Cell';
 	static onlyProperChildren = true;
-	static defaultColumns = 5;
+	static defaultColumns = 3;
 	static defaultCellMargin = 0;
 	static defaultCellSize = 1;
 
@@ -21,9 +21,18 @@ export class CellGroup extends UIEXComponent {
 		this.initRowMarginStyle(props.rowMargin);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		super.componentWillReceiveProps(nextProps);
+		const {rowMargin} = this.props;
+		if (rowMargin != nextProps.rowMargin) {
+			this.initRowMarginStyle(nextProps.rowMargin);
+		}
+	}
+
 	addClassNames(add) {
-		const {cellAlign} = this.props;
+		const {cellAlign, sideShrink} = this.props;
 		add('align-' + cellAlign, cellAlign);
+		add('side-shrinked', sideShrink);
 	}
 
 	initRowMarginStyle(rowMargin) {
@@ -32,12 +41,16 @@ export class CellGroup extends UIEXComponent {
 			this.rowStyle = {
 				marginTop: rowMargin
 			};
+		} else {
+			this.rowStyle = null;
 		}
 	}
 
 	initRendering() {
 		this.totalCellSize = 0;
+		this.previosTotalSize = null;
 		this.children = [];
+		this.rowSizes = [];
 		this.currentRowIndex = -1;
 	}
 
@@ -48,6 +61,9 @@ export class CellGroup extends UIEXComponent {
 					const child = this.renderChild(children[i], i);
 					if (React.isValidElement(child) && !(child instanceof Array)) {
 						if (this.isNewRow) {
+							if (this.previosTotalSize) {
+								this.rowSizes.push(this.previosTotalSize)
+							}
 							this.currentRowIndex++;
 							this.children.push([]);
 						}
@@ -61,30 +77,40 @@ export class CellGroup extends UIEXComponent {
 				}
 			}
 		}
-		if (this.children.length == 0) {
+	}
+
+	prepareChildren() {
+		const columns = getNumber(this.props.columns, this.constructor.defaultColumns);
+		const rows = this.children.length;
+		if (rows == 0) {
 			return null;
 		}
-		const {cellAlign} = this.props;
+		if (this.rowSizes.length != rows) {
+			this.rowSizes.push(this.totalCellSize);
+		}
 		return this.children.map((row, idx) => {
-			if (cellAlign == 'right') {
-				console.log(row[0])
-			}
 			return (
 				<CellGroupRow
+					className={this.rowSizes[idx] == columns ? 'uiex-complete-row' : 'uiex-incomplete-row'}
 					key={idx} 
 					style={idx > 0 ? this.rowStyle : null}
+					height={100 / rows + '%'}
 				>
 					{row}
 				</CellGroupRow>
 			)
 		});
+		return null;
 	}
 	
 	addChildProps(child, props, idx) {
 		this.isNewRow = false;
-		let {columns, cellMargin, cellSize, rowMargin, sideShrink, cellAlign} = this.props;
+		let {columns, cellMargin, cellSize, rowMargin, sideShrink, cellAlign, cellHeight} = this.props;
 		sideShrink = sideShrink || cellAlign == 'center';
 		columns = getNumber(columns, this.constructor.defaultColumns);
+		if (!columns) {
+			columns = 1;
+		}
 		let {size, shift, firstInRow, lastInRow, stretched, maxSize, fullWidth, className} = child.props;
 		let isLast;
 		if (size === undefined) {
@@ -104,6 +130,7 @@ export class CellGroup extends UIEXComponent {
 			}
 		}
 		shift = getNumber(shift);
+		const previosTotalSize = this.totalCellSize;
 		if (size) {
 			props.width = (size * 100 / columns).toFixed(4) + '%';
 			this.totalCellSize += size;
@@ -111,6 +138,7 @@ export class CellGroup extends UIEXComponent {
 		const isFirst = firstInRow || idx == 0 || this.totalCellSize > columns;
 		if (isFirst) {
 			this.isNewRow = true;
+			this.previosTotalSize = previosTotalSize;
 			this.totalCellSize = size;
 		}
 		if (shift) {
@@ -121,13 +149,22 @@ export class CellGroup extends UIEXComponent {
 				}
 			}
 			this.totalCellSize += shift;
-		}		
+		}
 		if (cellMargin === undefined) {
 			cellMargin = getNumber(cellMargin, this.constructor.defaultCellMargin);
 		} else {
 			cellMargin = getNumber(cellMargin);
 		}
-		const halfOfcellMargin = cellMargin / 2;
+		let halfOfcellMargin = cellMargin / 2;
+		let addToCellMargin = 0;
+		let addToSideCellMargin = 0;
+		if (!sideShrink && cellMargin) {
+			const extra = cellMargin;
+			const cells = columns - 1;
+			const add = extra / cells / 2;
+			addToSideCellMargin = add;
+			addToCellMargin = (add / 2).toFixed(1);
+		}
 		if (!isLast) {
 			isLast = this.totalCellSize === columns;
 		}
@@ -140,8 +177,9 @@ export class CellGroup extends UIEXComponent {
 			}
 		}
 		if (cellMargin) {
-			props.leftPadding = halfOfcellMargin;
-			props.rightPadding = halfOfcellMargin;
+			const toAdd = halfOfcellMargin// + (isFirst || isLast ? addToSideCellMargin : -addToCellMargin);
+			props.leftPadding = toAdd;
+			props.rightPadding = toAdd;
 		}
 		if (shift) {
 			props.leftMargin = shift * 100 / columns + '%';
@@ -155,6 +193,10 @@ export class CellGroup extends UIEXComponent {
 				props.className = addToClassName('uiex-last-cell-in-row', props.className);				
 			}
 		}
+		cellHeight = getNumber(cellHeight);
+		if (cellHeight && !child.props.height) {
+			props.height = cellHeight;
+		}
 	}
 
 	isAlignable() {
@@ -164,6 +206,14 @@ export class CellGroup extends UIEXComponent {
 
 export class Cell extends UIEXComponent {
 	static propTypes = CellPropTypes;
+
+	componentWillReceiveProps(nextProps) {
+		super.componentWillReceiveProps(nextProps);
+		const {leftPadding: l, rightPadding: r, leftMargin: m} = this.props;
+		if (l != nextProps.leftPadding || r != nextProps.rightPadding || m != nextProps.leftMargin) {
+			this.setStyleChanged(true);
+		}
+	}
 
 	getCustomStyle() {
 		let {leftPadding: l, rightPadding: r, leftMargin: m} = this.props;
@@ -181,9 +231,27 @@ export class Cell extends UIEXComponent {
 		}
 		return style;
 	}
+
+	getMainStyle() {
+		return super.getMainStyle(true);
+	}
+
+	renderInternal() {
+		return (
+			<div {...this.getProps()}>
+				<CellContent style={this.props.style}>
+					{this.renderChildren()}
+				</CellContent>
+			</div>
+		)
+	}
 }
 
 class CellGroupRow extends UIEXComponent {
 	static propTypes = CellGroupRowPropTypes;
 	static className = 'cell-group-row';
+}
+
+class CellContent extends UIEXComponent {
+	static className = 'cell-content';
 }

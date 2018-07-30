@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 export const COLORS = ['black', 'gray', 'white', 'red', 'blue', 'green', 'yellow', 'orange'];
 export const ALIGN = ['left', 'center', 'right'];
+export const CELL_ALIGN = ['left', 'center', 'right', 'justify'];
 export const VALIGN = ['top', 'center', 'bottom'];
 export const FLOAT = ['left', 'right'];
 export const ICON_TYPE = ['Material', 'FontAwesome', 'LineAwesome', 'Foundation', 'LigatureSymbols', 'Genericons', 'Glyphicons', 'Ionicons', 'IcoMoon'];
@@ -68,6 +69,7 @@ export const PROPTYPE = {
 	),
 	COLORS: PropTypes.oneOf(COLORS),
 	ALIGN: PropTypes.oneOf(ALIGN),
+	CELL_ALIGN: PropTypes.oneOf(CELL_ALIGN),
 	VALIGN: PropTypes.oneOf(VALIGN),
 	FLOAT: PropTypes.oneOf(FLOAT),
 	ICON_TYPES: PropTypes.oneOf(ICON_TYPE),

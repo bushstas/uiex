@@ -174,7 +174,9 @@ export class InputNumber extends Input {
 		}
 	}
 
-	handleWheel = ({deltaY}) => {
+	handleWheel = (e) => {
+		e.preventDefault();
+		const {deltaY} = e;
 		const {negative} = this.props;
 		let add = deltaY > 0 ? -1 : 1;
 		if (negative) {

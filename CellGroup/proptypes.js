@@ -7,9 +7,10 @@ export const CellGroupPropTypes = {
 	columns: PROPTYPE.STRNUM,
 	cellMargin: PROPTYPE.STRNUM,
 	cellSize: PROPTYPE.STRNUM,
+	maxCellSize: PROPTYPE.STRNUM,
 	rowMargin: PROPTYPE.STRNUM,
 	sideShrink: PropTypes.bool,
-	cellAlign: PROPTYPE.ALIGN,
+	cellAlign: PROPTYPE.CELL_ALIGN,
 	cellHeight: PROPTYPE.STRNUM
 }
 
@@ -20,9 +21,10 @@ export const CellPropTypes = {
 	maxSize: PROPTYPE.STRNUM,
 	firstInRow: PropTypes.bool,
 	lastInRow: PropTypes.bool,
-	floatRight: PropTypes.bool,
+	floatSide: PropTypes.bool,
 	stretched: PropTypes.bool,
-	fullWidth: PropTypes.bool
+	fullWidth: PropTypes.bool,
+	onClick: PropTypes.func
 }
 
 export const CellGroupRowPropTypes = {

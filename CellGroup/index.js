@@ -21,6 +21,14 @@ export class CellGroup extends UIEXComponent {
 		this.initRowMarginStyle(props.rowMargin);
 	}
 
+	componentDidMount() {
+		window.addEventListener('resize', this.handleWindowResize, false);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.handleWindowResize, false);
+	}
+
 	componentWillReceiveProps(nextProps) {
 		super.componentWillReceiveProps(nextProps);
 		const {rowMargin} = this.props;
@@ -47,11 +55,17 @@ export class CellGroup extends UIEXComponent {
 	}
 
 	initRendering() {
+		const {props, constructor: {defaultColumns, defaultCellSize}} = this;
+		const {cellSize, maxCellSize, columns} = props;
+		this.windowSize = this.getWindowSize();
 		this.totalCellSize = 0;
 		this.previosTotalSize = null;
 		this.children = [];
 		this.rowSizes = [];
 		this.currentRowIndex = -1;
+		this.columns = this.getSize(props, 'columns', columns) || defaultColumns;
+		this.cellSize = this.getSize(props, 'cellSize', cellSize) || defaultCellSize;
+		this.maxCellSize = this.getSize(props, 'maxCellSize', maxCellSize);		
 	}
 
 	doRenderChildren(children) {
@@ -59,6 +73,7 @@ export class CellGroup extends UIEXComponent {
 			if (children instanceof Array) {
 				for (let i = 0; i < children.length; i++) {
 					const child = this.renderChild(children[i], i);
+					this.nextChild = children[i + 1];
 					if (React.isValidElement(child) && !(child instanceof Array)) {
 						if (this.isNewRow) {
 							if (this.previosTotalSize) {
@@ -80,7 +95,6 @@ export class CellGroup extends UIEXComponent {
 	}
 
 	prepareChildren() {
-		const columns = getNumber(this.props.columns, this.constructor.defaultColumns);
 		const rows = this.children.length;
 		if (rows == 0) {
 			return null;
@@ -91,7 +105,7 @@ export class CellGroup extends UIEXComponent {
 		return this.children.map((row, idx) => {
 			return (
 				<CellGroupRow
-					className={this.rowSizes[idx] == columns ? 'uiex-complete-row' : 'uiex-incomplete-row'}
+					className={this.rowSizes[idx] == this.columns ? 'uiex-complete-row' : 'uiex-incomplete-row'}
 					key={idx} 
 					style={idx > 0 ? this.rowStyle : null}
 					height={100 / rows + '%'}
@@ -104,70 +118,20 @@ export class CellGroup extends UIEXComponent {
 	}
 	
 	addChildProps(child, props, idx) {
-		this.isNewRow = false;
-		let {columns, cellMargin, cellSize, rowMargin, sideShrink, cellAlign, cellHeight} = this.props;
-		sideShrink = sideShrink || cellAlign == 'center';
-		columns = getNumber(columns, this.constructor.defaultColumns);
-		if (!columns) {
-			columns = 1;
-		}
-		let {size, shift, firstInRow, lastInRow, stretched, maxSize, fullWidth, className} = child.props;
-		let isLast;
-		if (size === undefined) {
-			size = cellSize || this.constructor.defaultCellSize;
-		}
-		size = getNumber(size);
-		if (fullWidth) {
-			size = columns;
-		} else if (stretched) {
-			size = columns - this.totalCellSize;
-			if (size <= 0) {
-				size = columns;
-			}
-			maxSize = getNumber(maxSize);
-			if (maxSize) {
-				size = Math.min(maxSize, size);
-			}
-		}
-		shift = getNumber(shift);
-		const previosTotalSize = this.totalCellSize;
-		if (size) {
-			props.width = (size * 100 / columns).toFixed(4) + '%';
-			this.totalCellSize += size;
-		}
-		const isFirst = firstInRow || idx == 0 || this.totalCellSize > columns;
-		if (isFirst) {
-			this.isNewRow = true;
-			this.previosTotalSize = previosTotalSize;
-			this.totalCellSize = size;
-		}
-		if (shift) {
-			if (this.totalCellSize + shift > columns) {
-				isLast = true;
-				if (isFirst) {
-					shift = columns - size;
-				}
-			}
-			this.totalCellSize += shift;
-		}
+		let {cellMargin, sideShrink, cellHeight} = this.props;		
+		const {isNewRow, totalCellSize, previosTotalSize, width, shift, isFirst, isLast} = this.getChildSize(child, idx, true);
+		props.width = width;
+		this.totalCellSize = totalCellSize;
+		this.previosTotalSize = previosTotalSize;
+		this.isNewRow = isNewRow;
+
 		if (cellMargin === undefined) {
 			cellMargin = getNumber(cellMargin, this.constructor.defaultCellMargin);
 		} else {
 			cellMargin = getNumber(cellMargin);
 		}
+		
 		let halfOfcellMargin = cellMargin / 2;
-		let addToCellMargin = 0;
-		let addToSideCellMargin = 0;
-		if (!sideShrink && cellMargin) {
-			const extra = cellMargin;
-			const cells = columns - 1;
-			const add = extra / cells / 2;
-			addToSideCellMargin = add;
-			addToCellMargin = (add / 2).toFixed(1);
-		}
-		if (!isLast) {
-			isLast = this.totalCellSize === columns;
-		}
 		if (sideShrink) {
 			if (isFirst) {
 				props.leftPadding = halfOfcellMargin;
@@ -177,13 +141,14 @@ export class CellGroup extends UIEXComponent {
 			}
 		}
 		if (cellMargin) {
-			const toAdd = halfOfcellMargin// + (isFirst || isLast ? addToSideCellMargin : -addToCellMargin);
-			props.leftPadding = toAdd;
-			props.rightPadding = toAdd;
+			props.leftPadding = halfOfcellMargin;
+			props.rightPadding = halfOfcellMargin;
 		}
 		if (shift) {
-			props.leftMargin = shift * 100 / columns + '%';
+			props.leftMargin = shift * 100 / this.columns + '%';
 		}
+
+		let {className} = child.props;
 		props.className = addToClassName(className);
 		if (!sideShrink) {
 			if (isFirst && !shift) {
@@ -197,10 +162,153 @@ export class CellGroup extends UIEXComponent {
 		if (cellHeight && !child.props.height) {
 			props.height = cellHeight;
 		}
+		props.cellKey = child.key;
+	}
+
+	getChildSize(child, idx, isReal = false) {
+		let isNewRow = false;
+		let {totalCellSize, columns, cellSize} = this;
+		let {shift, firstInRow, stretched, fullWidth, floatSide, lastInRow} = child.props;
+		const {cellAlign} = this.props;
+
+		// if (isReal && !stretched && cellAlign == 'justify') {
+		// 	if (this.nextChild) {
+		// 		const {isNewRow: isNew} = this.getChildSize(this.nextChild, 1);
+		// 		stretched = isNew;
+		// 	}
+		// }
+		
+		let size = this.getSize(child.props, 'size', child.props.size) || cellSize;
+		let maxSize = this.getSize(child.props, 'maxSize', child.props.maxSize);
+		maxSize = maxSize || this.maxCellSize;
+		let isLast;
+		if (maxSize) {
+			size = Math.min(maxSize, size);
+		}
+		if (size > columns) {
+			size = columns;
+		}
+		if (fullWidth) {
+			if (maxSize) {
+				size = Math.min(maxSize, columns);
+			} else {
+				size = columns;
+			}
+		} else if (stretched) {
+			size = columns - totalCellSize;
+			if (size <= 0) {
+				size = columns;
+			}
+			maxSize = getNumber(maxSize);
+			if (maxSize) {
+				size = Math.min(maxSize, size);
+			}
+		}
+		if (floatSide) {
+			shift = 9999;
+		} else {
+			shift = getNumber(shift);
+		}
+		const previosTotalSize = totalCellSize;
+		const width = (size * 100 / columns).toFixed(4) + '%';
+		totalCellSize += size;
+
+		const isFirst = firstInRow || idx == 0 || totalCellSize > columns;
+		if (isFirst) {
+			isNewRow = true;
+			totalCellSize = size;
+		}
+		if (shift) {
+			if (totalCellSize + shift > columns) {
+				isLast = true;
+				if (isFirst) {
+					shift = columns - size;
+				} else {
+					shift = columns - previosTotalSize - size;
+				}
+			}
+			totalCellSize += shift;
+		}
+		if (!isLast) {
+			isLast = totalCellSize === columns;
+		}
+		if (lastInRow) {
+			totalCellSize = columns;
+		}
+		return {
+			isNewRow,
+			totalCellSize,
+			previosTotalSize,
+			width,
+			size,
+			shift,
+			isFirst,
+			isLast
+		}
 	}
 
 	isAlignable() {
 		return false;
+	}
+
+	getWindowSize() {
+		const {innerWidth: w} = window;
+		let ws;
+		if (w <= 800) {
+			ws = 0;
+		} else if (w <= 1000) {
+			ws = 1;
+		} else if (w <= 1300) {
+			ws = 2;
+		} else if (w <= 1500) {
+			ws = 3;
+		} else if (w <= 2000) {
+			ws = 4;
+		} else if (w <= 2500) {
+			ws = 5;
+		} else if (w > 2500) {
+			ws = 6;
+		}
+		return ws;
+	}
+
+	getSize(props, key, defaultSize) {
+		const {innerWidth: w} = window;
+		const ws = this.windowSize;
+		let value;
+		if (ws == 0) {
+			key = key + 'Tiny';
+			value = props[key];
+		} else if (ws == 1) {
+			key = key + 'Small';
+			value = props[key];
+		} else if (ws == 2) {
+			key = key + 'Middle';
+			value = props[key];
+		} else if (ws == 3) {
+			key = key + 'Larger';
+			value = props[key];
+		} else if (ws == 4) {
+			key = key + 'Large';
+			value = props[key];
+		} else if (ws == 5) {
+			key = key + 'Huge';
+			value = props[key];
+		} else if (ws == 6) {
+			key = key + 'Gigantic';
+			value = props[key];
+		}
+		value = getNumber(value);
+		return value || getNumber(defaultSize);
+	}
+
+	handleWindowResize = () => {
+		clearTimeout(this.timeout);
+		this.timeout = setTimeout(() => {
+			if (this.windowSize != this.getWindowSize()) {
+				this.forceUpdate();
+			}
+		}, 40);
 	}
 }
 
@@ -232,6 +340,12 @@ export class Cell extends UIEXComponent {
 		return style;
 	}
 
+	getCustomProps() {
+		return {
+			onClick: this.handleClick
+		}
+	}
+
 	getMainStyle() {
 		return super.getMainStyle(true);
 	}
@@ -244,6 +358,13 @@ export class Cell extends UIEXComponent {
 				</CellContent>
 			</div>
 		)
+	}
+
+	handleClick = () => {
+		const {onClick, cellKey} = this.props;
+		if (typeof onClick == 'function') {
+			onClick(cellKey);
+		}
 	}
 }
 

@@ -248,6 +248,9 @@ export class UIEXComponent extends React.PureComponent {
 	}
 
 	isProperChild(child) {
+		if (child instanceof Object && typeof child.type == 'function') {
+			child = child.type;
+		}
 		if (typeof child == 'function') {
 			const {properChildren, properChildrenSign} = this.constructor;
 			if (properChildren) {

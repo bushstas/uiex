@@ -17,8 +17,7 @@ export class Colors extends UIEXComponent {
 					columns="8"
 					cellMargin="5"
 					rowMargin="5"
-					cellAlign="right"
-					sideShrink={false}
+					sideShrink
 				>
 					<Cell key={'21321ss'}>
 						<Color 
@@ -28,7 +27,7 @@ export class Colors extends UIEXComponent {
 					</Cell>
 					{colors instanceof Array && colors.map((value, idx) => {
 						return (
-							<Cell key={value} size={2.5}>
+							<Cell key={value}>
 								<Color 
 									value={value}
 									onSelect={this.handleSelect}

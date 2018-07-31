@@ -38,9 +38,10 @@ export class CellGroup extends UIEXComponent {
 	}
 
 	addClassNames(add) {
-		const {cellAlign, sideShrink} = this.props;
+		const {cellAlign, sideShrink, cellAutoHeight} = this.props;
 		add('align-' + cellAlign, cellAlign);
 		add('side-shrinked', sideShrink);
+		add('cell-auto-height', cellAutoHeight);
 	}
 
 	initRowMarginStyle(rowMargin) {
@@ -72,8 +73,8 @@ export class CellGroup extends UIEXComponent {
 		if (children) {
 			if (children instanceof Array) {
 				for (let i = 0; i < children.length; i++) {
-					const child = this.renderChild(children[i], i);
 					this.nextChild = children[i + 1];
+					const child = this.renderChild(children[i], i);
 					if (React.isValidElement(child) && !(child instanceof Array)) {
 						if (this.isNewRow) {
 							if (this.previosTotalSize) {
@@ -118,8 +119,9 @@ export class CellGroup extends UIEXComponent {
 	}
 	
 	addChildProps(child, props, idx) {
-		let {cellMargin, sideShrink, cellHeight} = this.props;		
-		const {isNewRow, totalCellSize, previosTotalSize, width, shift, isFirst, isLast} = this.getChildSize(child, idx, true);
+		let {cellMargin, sideShrink, cellHeight, cellAlign, cellMinHeight, height} = this.props;
+		sideShrink = sideShrink || cellAlign == 'center';
+		const {isNewRow, totalCellSize, previosTotalSize, width, shift, isFirst, isLast} = this.getChildSize(child, idx, this.totalCellSize, true);
 		props.width = width;
 		this.totalCellSize = totalCellSize;
 		this.previosTotalSize = previosTotalSize;
@@ -158,26 +160,25 @@ export class CellGroup extends UIEXComponent {
 				props.className = addToClassName('uiex-last-cell-in-row', props.className);				
 			}
 		}
-		cellHeight = getNumber(cellHeight);
-		if (cellHeight && !child.props.height) {
-			props.height = cellHeight;
+		if (!getNumber(height)) {
+			cellHeight = getNumber(cellHeight);
+			if (cellHeight && !child.props.height) {
+				props.height = cellHeight;
+			}
+			if (cellMinHeight) {
+				props.minHeight = cellMinHeight;
+			}
 		}
 		props.cellKey = child.key;
 	}
 
-	getChildSize(child, idx, isReal = false) {
+	getChildSize(child, idx, totalCellSize, isReal = false) {
 		let isNewRow = false;
-		let {totalCellSize, columns, cellSize} = this;
+		let {columns, cellSize} = this;
 		let {shift, firstInRow, stretched, fullWidth, floatSide, lastInRow} = child.props;
 		const {cellAlign} = this.props;
 
-		// if (isReal && !stretched && cellAlign == 'justify') {
-		// 	if (this.nextChild) {
-		// 		const {isNewRow: isNew} = this.getChildSize(this.nextChild, 1);
-		// 		stretched = isNew;
-		// 	}
-		// }
-		
+
 		let size = this.getSize(child.props, 'size', child.props.size) || cellSize;
 		let maxSize = this.getSize(child.props, 'maxSize', child.props.maxSize);
 		maxSize = maxSize || this.maxCellSize;
@@ -187,6 +188,11 @@ export class CellGroup extends UIEXComponent {
 		}
 		if (size > columns) {
 			size = columns;
+		}
+		if (floatSide) {
+			shift = 9999;
+		} else {
+			shift = getNumber(shift);
 		}
 		if (fullWidth) {
 			if (maxSize) {
@@ -199,18 +205,13 @@ export class CellGroup extends UIEXComponent {
 			if (size <= 0) {
 				size = columns;
 			}
-			maxSize = getNumber(maxSize);
 			if (maxSize) {
 				size = Math.min(maxSize, size);
 			}
 		}
-		if (floatSide) {
-			shift = 9999;
-		} else {
-			shift = getNumber(shift);
-		}
+		
 		const previosTotalSize = totalCellSize;
-		const width = (size * 100 / columns).toFixed(4) + '%';
+		let width = (size * 100 / columns).toFixed(4) + '%';
 		totalCellSize += size;
 
 		const isFirst = firstInRow || idx == 0 || totalCellSize > columns;
@@ -234,6 +235,25 @@ export class CellGroup extends UIEXComponent {
 		}
 		if (lastInRow) {
 			totalCellSize = columns;
+		}
+		const stretch = () => {
+			totalCellSize = columns;
+			size = columns - previosTotalSize;
+			if (size <= 0) {
+				size = columns;
+			}
+			width = (size * 100 / columns).toFixed(4) + '%';
+			isLast = true;
+		}
+		if (isReal && !stretched && !fullWidth && !floatSide && cellAlign == 'justify') {
+			if (this.nextChild) {
+				const nextChildProps = this.getChildSize(this.nextChild, 1, totalCellSize);
+				if (nextChildProps.isNewRow) {
+					stretch();
+				}
+			} else {
+				stretch();
+			}
 		}
 		return {
 			isNewRow,
@@ -317,14 +337,18 @@ export class Cell extends UIEXComponent {
 
 	componentWillReceiveProps(nextProps) {
 		super.componentWillReceiveProps(nextProps);
-		const {leftPadding: l, rightPadding: r, leftMargin: m} = this.props;
-		if (l != nextProps.leftPadding || r != nextProps.rightPadding || m != nextProps.leftMargin) {
+		const {leftPadding: l, rightPadding: r, leftMargin: m, minHeight: mh} = this.props;
+		if (l != nextProps.leftPadding || r != nextProps.rightPadding || m != nextProps.leftMargin || mh != nextProps.minHeight) {
 			this.setStyleChanged(true);
 		}
 	}
 
+	addClassNames(add) {
+		add('align-self-' + this.props.alignSelf, this.props.alignSelf);
+	}
+
 	getCustomStyle() {
-		let {leftPadding: l, rightPadding: r, leftMargin: m} = this.props;
+		let {leftPadding: l, rightPadding: r, leftMargin: m, minHeight: mh} = this.props;
 		let style;
 		if (l) {
 			style = {paddingLeft: l};
@@ -336,6 +360,13 @@ export class Cell extends UIEXComponent {
 		if (m) {
 			style = style || {};
 			style.marginLeft = m;
+		}
+		if (mh) {
+			mh = getNumber(mh);
+			if (mh) {
+				style = style || {};
+				style.minHeight = mh;
+			}
 		}
 		return style;
 	}
@@ -351,9 +382,13 @@ export class Cell extends UIEXComponent {
 	}
 
 	renderInternal() {
+		const {style, minHeight} = this.props;
 		return (
 			<div {...this.getProps()}>
-				<CellContent style={this.props.style}>
+				<CellContent 
+					style={style}
+					minHeight={minHeight}
+				>
 					{this.renderChildren()}
 				</CellContent>
 			</div>
@@ -375,4 +410,33 @@ class CellGroupRow extends UIEXComponent {
 
 class CellContent extends UIEXComponent {
 	static className = 'cell-content';
+
+	componentWillReceiveProps(nextProps) {
+		super.componentWillReceiveProps(nextProps);
+		const {minHeight: mh} = this.props;
+		if (mh != nextProps.minHeight) {
+			this.setStyleChanged(true);
+		}
+	}
+
+	getCustomStyle() {
+		let {minHeight: mh} = this.props;
+		
+		if (mh) {
+			mh = getNumber(mh);
+			if (mh) {
+				return {minHeight: mh};
+			}
+		}
+	}
+
+	renderInternal() {
+		return (
+			<div {...this.getProps()}>
+				<div className="uiex-cell-content-inner uiex-scrollable">
+					{this.renderChildren()}
+				</div>
+			</div>
+		)
+	}
 }

@@ -11,7 +11,9 @@ export const CellGroupPropTypes = {
 	rowMargin: PROPTYPE.STRNUM,
 	sideShrink: PropTypes.bool,
 	cellAlign: PROPTYPE.CELL_ALIGN,
-	cellHeight: PROPTYPE.STRNUM
+	cellHeight: PROPTYPE.STRNUM,
+	cellMinHeight: PROPTYPE.STRNUM,
+	cellAutoHeight: PropTypes.bool
 }
 
 export const CellPropTypes = {
@@ -19,6 +21,7 @@ export const CellPropTypes = {
 	size: PROPTYPE.STRNUM,
 	shift: PROPTYPE.STRNUM,
 	maxSize: PROPTYPE.STRNUM,
+	alignSelf: PROPTYPE.ALIGN_SELF,
 	firstInRow: PropTypes.bool,
 	lastInRow: PropTypes.bool,
 	floatSide: PropTypes.bool,

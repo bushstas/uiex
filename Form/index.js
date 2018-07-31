@@ -25,12 +25,34 @@ export class Form extends UIEXComponent {
 
 			case 'FormControlGroup':
 				let {rowMargin = DEFAULT_LINE_MARGIN, columns, cellSize} = this.props;
+				const {columnsTiny, columnsSmall, columnsMiddle, columnsLarger, columnsLarge, columnsHuge, columnsGigantic} = this.props;
 				rowMargin = getNumber(rowMargin);
 				if (rowMargin) {
 					props.rowMargin = rowMargin;
 				}
 				if (columns && !child.props.columns) {
 					props.columns = columns;
+				}
+				if (columnsTiny && !child.props.columnsTiny) {
+					props.columnsTiny = columnsTiny;
+				}
+				if (columnsSmall && !child.props.columnsSmall) {
+					props.columnsSmall = columnsSmall;
+				}
+				if (columnsMiddle && !child.props.columnsMiddle) {
+					props.columnsMiddle = columnsMiddle;
+				}
+				if (columnsLarger && !child.props.columnsLarger) {
+					props.columnsLarger = columnsLarger;
+				}
+				if (columnsLarge && !child.props.columnsLarge) {
+					props.columnsLarge = columnsLarge;
+				}
+				if (columnsHuge && !child.props.columnsHuge) {
+					props.columnsHuge = columnsHuge;
+				}
+				if (columnsGigantic && !child.props.columnsGigantic) {
+					props.columnsGigantic = columnsGigantic;
 				}
 				if (cellSize && !child.props.cellSize) {
 					props.cellSize = cellSize;

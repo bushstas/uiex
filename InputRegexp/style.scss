@@ -1,18 +1,24 @@
 .uiex-input.uiex-regexp-input {
 	&:before {
 		content: '/';
+		display: flex;
+		align-items: center;
 		position: absolute;
-		top: 7px;
+		top: 0;
+		bottom: 3px;
 		left: 8px;
-		color: #999;
+		color: #aaa;
 		font-size: 18px;
 	}
 	&:after {
 		content: '/';
+		display: flex;
+		align-items: center;
 		position: absolute;
-		top: 7px;
+		top: 0;
+		bottom: 3px;
 		right: 8px;
-		color: #999;
+		color: #aaa;
 		font-size: 18px;
 	}
 	input {
@@ -25,6 +31,12 @@
 		}
 		&:after {
 			right: 32px;
+		}
+	}
+	&.uiex-focused {
+		&:before,
+		&:after {
+			color: #333;
 		}
 	}
 }

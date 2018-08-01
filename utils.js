@@ -50,6 +50,20 @@ export const toggleClass = (element, cn, isAdd) => {
 	}
 }
 
+export const isValidNumericStyle = (v) => {
+	if (typeof v == 'number') {
+		return true;
+	}
+	if (typeof v == 'string' && (/^\d/).test(v.chartAt(0))) {
+		return true;
+	}
+	return false;
+}
+
+export const isValidAndNotEmptyNumericStyle = (v) => {
+	return !!v && v !== '0' && v !== '0px' && v !== '0%' && isValidNumericStyle(v);
+}
+
 export const getNumber = (n, d = 0) => {
 	if (typeof n == 'string' && n == ~~n) {
 		n = ~~n;

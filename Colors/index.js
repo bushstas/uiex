@@ -1,30 +1,29 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {CellGroup, Cell} from '../CellGroup';
+import {getNumber} from '../utils';
 import {ColorsPropTypes, ColorPropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
 
+const DEFAULT_COLUMNS = 8;
+
 export class Colors extends UIEXComponent {
 	static propTypes = ColorsPropTypes;
 
 	renderInternal() {
-		let {colors} = this.props;		
+		const {colors, colorHeight} = this.props;
+		const columns = this.getColumns();
 		return (
 			<div {...this.getProps()}>
 				<CellGroup 
-					columns="8"
+					columns={columns}
 					cellMargin="5"
 					rowMargin="5"
+					cellHeight={colorHeight}
 					sideShrink
 				>
-					<Cell key={'21321ss'}>
-						<Color 
-							value={'000'}
-							onSelect={this.handleSelect}
-						/>
-					</Cell>
 					{colors instanceof Array && colors.map((value, idx) => {
 						return (
 							<Cell key={value}>
@@ -35,15 +34,13 @@ export class Colors extends UIEXComponent {
 							</Cell>
 						)
 					})}
-					<Cell key={'21321s2'}>
-						<Color 
-							value={'FFF'}
-							onSelect={this.handleSelect}
-						/>
-					</Cell>
 				</CellGroup>
 			</div>
 		)
+	}
+
+	getColumns() {
+		return getNumber(this.props.columns, DEFAULT_COLUMNS);
 	}
 
 	handleSelect = (value) => {

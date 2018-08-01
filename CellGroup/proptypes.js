@@ -27,6 +27,7 @@ export const CellPropTypes = {
 	floatSide: PropTypes.bool,
 	stretched: PropTypes.bool,
 	fullWidth: PropTypes.bool,
+	minHeight: PROPTYPE.STRNUM,
 	onClick: PropTypes.func
 }
 

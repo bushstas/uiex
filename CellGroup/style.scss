@@ -54,9 +54,11 @@
 	display: flex;
 	align-items: stretch;
 	flex-wrap: nowrap;
+	box-sizing: border-box;
 }
 
 .uiex-cell {
+	min-height: 20px;
 	pointer-events: auto;
 	vertical-align: top;
 	box-sizing: border-box !important;

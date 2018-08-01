@@ -1,6 +1,16 @@
 .uiex-colors {
+    min-width: 100px;
+    &.uiex-disabled {
+        filter: grayscale(100%);
+        opacity: 0.7;
+        .uiex-color {
+            cursor: not-allowed;
+        }
+    }
     .uiex-color {
     	cursor: pointer;
+        height: 100%;
+        min-height: 20px;
 
     	&:hover {
     		.uiex-color-bg {
@@ -12,7 +22,7 @@
 
     	.uiex-color-bg {
     		position: relative;
-    		height: 20px;
+    		height: 100%;
     		border-radius: 2px;
     		&:after {
     			content: '';

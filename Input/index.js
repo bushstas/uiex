@@ -18,6 +18,9 @@ export class Input extends UIEXComponent {
 		this.handleBlur = this.blurHandler.bind(this);
 		this.handleClick = this.clickHandler.bind(this);
 		this.isValid = null;
+		this.state = {
+			focused: false
+		}
 	}
 
 	componentDidMount() {
@@ -44,6 +47,7 @@ export class Input extends UIEXComponent {
 		add('clearable', properValue && clearable);
 		add('valid', valid);
 		add('invalid', invalid);
+		add('focused', this.state.focused);
 	}
 
 	renderInternal() {
@@ -95,8 +99,8 @@ export class Input extends UIEXComponent {
 	}
 
 	renderClearButton() {
-		const {value, clearable, readOnly} = this.props;
-		if (value && clearable && !readOnly) {
+		const {value, clearable, readOnly, defaultValue} = this.props;
+		if (value && clearable && !readOnly && (!defaultValue || (defaultValue && value != defaultValue))) {
 			return (
 				<div 
 					className="uiex-input-clear"
@@ -189,6 +193,7 @@ export class Input extends UIEXComponent {
 			if (typeof onFocus == 'function') {
 				onFocus(this.refs.input.value, name);
 			}
+			this.setState({focused: true});
 		}
 	}
 
@@ -204,6 +209,7 @@ export class Input extends UIEXComponent {
 			if (typeof onBlur == 'function') {
 				onBlur(this.refs.input.value, name);
 			}
+			this.setState({focused: false});
 		}
 	}
 

@@ -110,6 +110,7 @@ export class SearchForm extends UIEXForm {
 		this.setState({focused: true});
 		const {focusedWidth, onFocus} = this.props;
 		if (focusedWidth) {
+			clearTimeout(this.timeout);
 			this.refs.main.style.width = getNumberInPxOrPercent(focusedWidth);
 		}
 		if (typeof onFocus == 'function') {
@@ -121,8 +122,10 @@ export class SearchForm extends UIEXForm {
 		setTimeout(() => this.setState({focused: false}), 100);
 		const {focusedWidth, width, onBlur} = this.props;
 		if (focusedWidth) {
-			this.refs.main.style.width = getNumberInPxOrPercent(width);	
-		}
+			this.timeout = setTimeout(() => {			
+				this.refs.main.style.width = getNumberInPxOrPercent(width);	
+			}, 200);
+		}		
 		if (typeof onBlur == 'function') {
 			onBlur();
 		}

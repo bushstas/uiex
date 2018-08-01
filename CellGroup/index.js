@@ -1,7 +1,7 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
-import {getNumber, addToClassName, removeClass} from '../utils';
+import {getNumber, addToClassName, removeClass, isValidAndNotEmptyNumericStyle} from '../utils';
 import {CellGroupPropTypes, CellGroupRowPropTypes, CellPropTypes} from './proptypes';
 
 import '../style.scss';
@@ -18,7 +18,7 @@ export class CellGroup extends UIEXComponent {
 
 	constructor(props) {
 		super(props);
-		this.initRowMarginStyle(props.rowMargin);
+		this.initRowMarginStyle(props.rowMargin, props.height);
 	}
 
 	componentDidMount() {
@@ -31,9 +31,9 @@ export class CellGroup extends UIEXComponent {
 
 	componentWillReceiveProps(nextProps) {
 		super.componentWillReceiveProps(nextProps);
-		const {rowMargin} = this.props;
-		if (rowMargin != nextProps.rowMargin) {
-			this.initRowMarginStyle(nextProps.rowMargin);
+		const {rowMargin, height} = this.props;
+		if (rowMargin != nextProps.rowMargin || height != nextProps.height) {
+			this.initRowMarginStyle(nextProps.rowMargin, nextProps.height);
 		}
 	}
 
@@ -44,12 +44,18 @@ export class CellGroup extends UIEXComponent {
 		add('cell-auto-height', cellAutoHeight);
 	}
 
-	initRowMarginStyle(rowMargin) {
+	initRowMarginStyle(rowMargin, height) {
 		rowMargin = getNumber(rowMargin);
 		if (rowMargin) {
-			this.rowStyle = {
-				marginTop: rowMargin
-			};
+			if (isValidAndNotEmptyNumericStyle(height)) {
+				this.rowStyle = {
+					paddingTop: rowMargin
+				};
+			} else {
+				this.rowStyle = {
+					marginTop: rowMargin
+				};
+			}
 		} else {
 			this.rowStyle = null;
 		}
@@ -160,7 +166,7 @@ export class CellGroup extends UIEXComponent {
 				props.className = addToClassName('uiex-last-cell-in-row', props.className);				
 			}
 		}
-		if (!getNumber(height)) {
+		if (!isValidAndNotEmptyNumericStyle(height)) {
 			cellHeight = getNumber(cellHeight);
 			if (cellHeight && !child.props.height) {
 				props.height = cellHeight;
@@ -168,6 +174,9 @@ export class CellGroup extends UIEXComponent {
 			if (cellMinHeight) {
 				props.minHeight = cellMinHeight;
 			}
+		} else {
+			props.height = null;
+			props.minHeight = null;
 		}
 		props.cellKey = child.key;
 	}
@@ -201,9 +210,9 @@ export class CellGroup extends UIEXComponent {
 				size = columns;
 			}
 		} else if (stretched) {
-			size = columns - totalCellSize;
+			size = firstInRow ? columns : columns - totalCellSize - shift;
 			if (size <= 0) {
-				size = columns;
+				size = shift ? 1 : columns;
 			}
 			if (maxSize) {
 				size = Math.min(maxSize, size);

@@ -17,7 +17,7 @@
 *.uiex-hidden {
 	display: none !important;
 }
-*.uiex-block {
+*.uiex-block:not(.uiex-hidden) {
 	display: block !important;
 }
 *.uiex-float-left {

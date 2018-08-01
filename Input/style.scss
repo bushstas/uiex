@@ -20,7 +20,7 @@
 	}
 	&.uiex-clearable {
 		.uiex-input-clear {
-			display: block;
+			display: flex;
 		}
 		input,
 		textarea {
@@ -62,7 +62,8 @@
 		background-color: #888;
 		border-radius: 50%;
 		cursor: pointer;
-		text-align: center;
+		align-items: center;
+    	justify-content: center;
 
 		&:hover {
 			background-color: #555;

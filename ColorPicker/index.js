@@ -123,7 +123,6 @@ export class ColorPicker extends UIEXComponent {
 		let {left, top} = hueDiv.getBoundingClientRect();
 		left = x - (left + pageXOffset);
 		top = y - (top + pageYOffset);
-
 		
 		let h;
 		if (left < 0) {
@@ -258,6 +257,10 @@ export class ColorPicker extends UIEXComponent {
 
 	handleSelectPresetColor = (value) => {
 		this.handleInputChange(value);
+		const {onSelectPreset} = this.props;
+		if (typeof onSelectPreset == 'function') {
+			onSelectPreset(value);
+		}
 	}
 
 	getStateFromColor(color) {

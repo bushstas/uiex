@@ -1,7 +1,6 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
-import {Icon} from '../Icon';
-import {getNumber, addToClassName, removeClass, isValidAndNotEmptyNumericStyle} from '../utils';
+import {getNumber, addToClassName, isValidAndNotEmptyNumericStyle} from '../utils';
 import {CellGroupPropTypes, CellGroupRowPropTypes, CellPropTypes} from './proptypes';
 
 import '../style.scss';

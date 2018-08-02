@@ -1,0 +1,16 @@
+.uiex-array-input {
+	display: inline-block;
+	min-width: 200px;	
+	box-sizing: border-box;
+	padding: 10px 12px;
+	font-size: 14px;
+	border-radius: 2px;
+	background-color: #fff;
+	border: 1px solid #aaa;
+	box-shadow: inset -3px -3px 7px #f1f1f1;
+	color: #555;
+
+	&.uiex-disabled {
+		opacity: 0.6;
+	}
+}

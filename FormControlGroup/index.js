@@ -1,6 +1,6 @@
 import React from 'react';
 import {CellGroup} from '../CellGroup';
-import {getNumber} from '../utils';
+import {addToClassName} from '../utils';
 import {FormControlGroupPropTypes} from './proptypes';
 
 import '../style.scss';
@@ -19,11 +19,8 @@ export class FormControlGroup extends CellGroup {
 	addChildProps(child, props, idx) {
 		super.addChildProps(child, props, idx);
 		const {onChange, className} = child.props;
-		if (!className || typeof className != 'string') {
-			props.className = 'uiex-cell';
-		} else {
-			props.className = className + ' uiex-cell';
-		}
+		props.className = addToClassName(className, props.className);
+		props.className = addToClassName('uiex-cell', props.className);
 		if (typeof onChange != 'function') {
 			props.onChange = this.props.onChange;
 		}

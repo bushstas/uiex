@@ -8,5 +8,6 @@ export const ColorPickerPropTypes = {
 	withoutInput: PropTypes.bool,
 	presetColors: PropTypes.arrayOf(PropTypes.string),
 	onChange: PropTypes.func,
-	onChangeHue: PropTypes.func
+	onChangeHue: PropTypes.func,
+	onSelectPreset: PropTypes.func
 }

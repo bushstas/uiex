@@ -76,7 +76,7 @@ export class Select extends UIEXBoxContainer {
 
 	addClassNames(add) {
 		const {focused, hasOptions} = this.state;
-		const {disabled, value} = this.props;
+		const {value} = this.props;
 		add('control');
 		add('select-focused', focused);
 		add('without-options', !hasOptions);
@@ -125,9 +125,10 @@ export class Select extends UIEXBoxContainer {
 	renderQuantityLabel() {
 		if (this.isMultiple() && this.props.value instanceof Array && this.props.value.length > 1) {
 			const quantity = this.props.value.length - 1;
+			const all = this.props.value.length === this.optionsTotalCount - (this.hasEmptyOption() ? 1 : 0);
 			return (
 				<span className="uiex-quantity-label">
-					+{quantity}
+					{all ? 'all' : '+' + quantity}
 				</span>
 			)
 		}
@@ -135,7 +136,7 @@ export class Select extends UIEXBoxContainer {
 
 	renderOptions() {
 		const {focused} = this.state;
-		const {options, children, value, name, empty, iconType} = this.props;
+		const {options, value, name, empty, iconType} = this.props;
 		let items = [];
 		if (options instanceof Array && options.length > 0) {
 			items = options.map(this.renderOption);
@@ -248,7 +249,8 @@ export class Select extends UIEXBoxContainer {
 
 	handlePopupMenuMount = (popupMenu) => {
 		const {hasOptions} = this.state;
-		const nextHasOptions = popupMenu.properChildrenCount > 0;
+		this.optionsTotalCount = popupMenu.properChildrenCount;
+		const nextHasOptions = this.optionsTotalCount > 0;
 		if (hasOptions !== nextHasOptions) {
 			this.setState({hasOptions: nextHasOptions});
 		}

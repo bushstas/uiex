@@ -234,7 +234,9 @@ export class Input extends UIEXComponent {
 		switch (key) {
 			case 'Enter':
 				if (!textarea) {
-					this.blur();
+					if (value) {
+						this.blur();
+					}
 					if (typeof onEnter == 'function') {
 						onEnter(value, name);
 					}
@@ -248,6 +250,10 @@ export class Input extends UIEXComponent {
 				}
 			break;
 		}
+	}
+
+	focus() {
+		this.refs.input.focus();
 	}
 
 	blur() {

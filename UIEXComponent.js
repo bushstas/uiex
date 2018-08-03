@@ -306,8 +306,8 @@ export class UIEXComponent extends React.PureComponent {
 		return true;
 	}
 
-	getClassName(cn) {
-		return this.getNativeClassName() + '-' + cn;
+	getClassName(cn, add = null) {
+		return this.getNativeClassName() + '-' + cn + (add && typeof add == 'string' ? ' ' + add : '');
 	}
 
 	isAlignable() {

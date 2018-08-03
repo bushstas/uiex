@@ -15,7 +15,9 @@ export const SIDES = ['right', 'left', 'top', 'bottom'];
 export const ANIM_TYPE = ['fade', 'roll', 'fall', 'fade-roll', 'fade-fall'];
 export const PANEL_ANIMATION = ['fade', 'roll', 'fade-roll'];
 export const MODAL_ANIMATION = ['fade', 'fade-fall', 'fade-float', 'fade-scale'];
-export const ARRAY_INPUT_TYPES = ['string', 'number', 'boolean', 'array', 'object', 'regexp', 'color'];
+export const ARRAY_INPUT_TYPES = ['null', 'string', 'number', 'boolean', 'array', 'object', 'function', 'regexp', 'color'];
+
+const ARRAY_INPUT_TYPE = PropTypes.oneOf(ARRAY_INPUT_TYPES);
 
 const OPTION_SHAPE = PropTypes.shape({
 	value: PropTypes.oneOfType([
@@ -107,6 +109,9 @@ export const PROPTYPE = {
 	SIDES: PropTypes.oneOf(SIDES),
 	PANEL_ANIMATION: PropTypes.oneOf(PANEL_ANIMATION),
 	MODAL_ANIMATION: PropTypes.oneOf(MODAL_ANIMATION),
-	ARRAY_INPUT_TYPE: PropTypes.oneOf(ARRAY_INPUT_TYPES),
-	ARRAY_INPUT_TYPES: PropTypes.arrayOf(ARRAY_INPUT_TYPES)
+	ARRAY_INPUT_TYPE,
+	ARRAY_INPUT_TYPES: PropTypes.oneOfType([
+		ARRAY_INPUT_TYPE,
+		PropTypes.arrayOf(ARRAY_INPUT_TYPE)
+	])
 }

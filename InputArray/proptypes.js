@@ -3,7 +3,16 @@ import {InputPropTypes} from '../Input/proptypes';
 import {PROPTYPE} from '../consts';
 
 export const InputArrayPropTypes = {
-	...InputPropTypes,
+	value: PropTypes.any,
+	withoutInput: PropTypes.bool,
+	inputUnder: PropTypes.bool,
+	rightClickRemove: PropTypes.bool,
+	doubleClickEdit: PropTypes.bool,
+	uniqueItems: PropTypes.bool,
+	autoDefine: PropTypes.bool,
+	colorTypes: PropTypes.bool,
 	onlyType: PROPTYPE.ARRAY_INPUT_TYPE,
-	allowedTypes: PROPTYPE.ARRAY_INPUT_TYPES
+	allowedTypes: PROPTYPE.ARRAY_INPUT_TYPES,
+	exceptTypes: PROPTYPE.ARRAY_INPUT_TYPES,
+	maxItems: PROPTYPE.STRNUM
 }

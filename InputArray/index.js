@@ -1,12 +1,15 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Input} from '../Input';
+import {Icon} from '../Icon';
 import {isValidAndNotEmptyNumericStyle, getNumber} from '../utils';
 import {ARRAY_INPUT_TYPES} from '../consts';
 import {InputArrayPropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
+
+const DEFAULT_PLACEHOLDER = 'Input new value and press Enter';
 
 export class InputArray extends UIEXComponent {
 	static propTypes = InputArrayPropTypes;
@@ -36,14 +39,18 @@ export class InputArray extends UIEXComponent {
 		if (prevLength != value.length) {
 			setTimeout(() => this.fireChange(value, 10));
 		}
+		if (this.state.selectedIndex && !nextProps.withControls) {
+			this.setState({selectedIndex: -1});
+		}
 	}
 
 	addClassNames(add) {
-		const {inputUnder, withoutInput, colorTypes, height} = this.props;
+		const {withControls, inputUnder, withoutInput, colorTypes, height} = this.props;
 		const value = this.getValue();
 		const count = value.length;
 		const maxItems = getNumber(this.props.maxItems);
 		this.maximumReached = maxItems && maxItems <= count;
+		add('with-controls', withControls);
 		add('input-under', inputUnder);
 		add('without-input', withoutInput || this.maximumReached);
 		add('empty', !count);
@@ -52,7 +59,7 @@ export class InputArray extends UIEXComponent {
 	}
 
 	renderInternal() {
-		const {inputUnder} = this.props;
+		const {inputUnder, withControls} = this.props;
 		return (
 			<div {...this.getProps()}>
 				<div className={this.getClassName('content')}>
@@ -61,6 +68,7 @@ export class InputArray extends UIEXComponent {
 						{this.renderItems()}
 					</div>
 					{inputUnder && this.renderInput()}
+					{withControls && this.renderControls()}
 				</div>
 			</div>
 		)
@@ -73,13 +81,43 @@ export class InputArray extends UIEXComponent {
 				<Input 
 					ref="input"
 					value={this.state.inputValue} 
-					placeholder="Input new value and press Enter"
+					placeholder={this.getPlaceholder()}
 					onChange={this.handleInputChange}
 					onEnter={this.handleInputEnter}
 				/>
 			)
 		}
 		return null;
+	}
+
+	getPlaceholder() {
+		let {placeholder} = this.props;
+		if (!placeholder || typeof placeholder != 'string') {
+			placeholder = DEFAULT_PLACEHOLDER;
+		}
+		return placeholder;
+	}
+
+	renderControls() {
+		const {selectedIndex} = this.state;
+		const isSelected = typeof selectedIndex == 'number' && selectedIndex > -1;
+		return (
+			<div className={this.getClassName('controls')}>
+				<div onClick={this.handleAddItem}>
+					<Icon name="add"/>
+				</div>
+				{isSelected && 
+					<div onClick={this.handleEditItem}>
+						<Icon name="edit"/>
+					</div>
+				}
+				{isSelected && 
+					<div onClick={this.handleRemoveItem}>
+						<Icon name="close"/>
+					</div>
+				}
+			</div>
+		)
 	}
 
 	renderItems() {
@@ -106,7 +144,12 @@ export class InputArray extends UIEXComponent {
 					stringValue = 'Object';
 				}
 				break;
-			}			
+			}
+			case 'symbol': {
+				stringValue = 'Symbol';
+				break;
+			}
+			case 'number':
 			case 'boolean': {
 				stringValue = item.toString();
 				break;
@@ -142,7 +185,7 @@ export class InputArray extends UIEXComponent {
 	getTypeOfItem(item) {
 		switch (typeof item) {
 			case 'object': {
-				if (item === null) {
+			if (item === null) {
 					return 'null';
 				} else if (item instanceof Array) {
 					return 'array';
@@ -171,22 +214,45 @@ export class InputArray extends UIEXComponent {
 	}
 
 	handleSelectItem = (selectedIndex) => {
-		const value = this.getValue();
-		const selectedValue = value[selectedIndex];
-		this.setState({
-			selectedIndex,
-			selectedValue
+		const {withControls, disabled} = this.props;
+		if (withControls && !disabled) {
+			if (selectedIndex === this.state.selectedIndex) {
+				this.setState({
+					selectedIndex: -1,
+					selectedValue: null
+				});
+			} else {
+				const value = this.getValue();
+				const selectedValue = value[selectedIndex];
+				this.setState({
+					selectedIndex,
+					selectedValue
+				});
+			}
+		}
+	}
+
+	handleRemoveItem = () => {
+		const {selectedIndex} = this.state;
+		this.setState({selectedIndex: -1}, () => {
+			this.handleItemRightClick(null, selectedIndex);
 		});
 	}
 
 	handleItemRightClick = (e, index) => {
-		const {rightClickRemove} = this.props;
-		if (rightClickRemove) {
-			e.preventDefault();
-			e.stopPropagation();
+		const {rightClickRemove, onRemoveItem} = this.props;
+		if (rightClickRemove || !e) {
+			if (e) {
+				e.preventDefault();
+				e.stopPropagation();
+			}
 			const value = this.getValue();
+			const removedValue = value[index];
 			value.splice(index, 1);
 			this.fireChange(value);
+			if (typeof onRemoveItem == 'function') {
+				onRemoveItem(removedValue, index, value);
+			}
 		}
 	}
 
@@ -199,6 +265,16 @@ export class InputArray extends UIEXComponent {
 
 	handleInputChange = (value) => {
 		this.setState({inputValue: value});
+		let {onInputText, inputTextEventTimeout} = this.props;
+		if (typeof onInputText == 'function') {
+			if (typeof inputTextEventTimeout != 'number') {
+				inputTextEventTimeout = 0;
+			}
+			clearTimeout(this.timeout);
+			this.timeout = setTimeout(() => {
+				onInputText(value);
+			}, inputTextEventTimeout);
+		}		
 	}
 
 	handleInputEnter = () => {
@@ -206,62 +282,87 @@ export class InputArray extends UIEXComponent {
 		if (!inputValue) {
 			return;
 		}
+		const addedItemArr = [];
 		const value = this.filterByType(this.getValue());
-		const {uniqueItems, autoDefine, onlyType} = this.props;
+		const prevCount = value.length; 
+		const {uniqueItems, autoDefine, onlyType, delimiter, addToBeginning} = this.props;
 		let {maxItems} = this.props;
 		maxItems = getNumber(maxItems);
-		inputValue = inputValue.trim();
-		if (onlyType == 'boolean') {
-			inputValue = (!!inputValue && inputValue !== '0' && inputValue !== 'false' && inputValue !== 'null' && inputValue !== 'undefined').toString();
-		} else if (onlyType == 'null') {
-			inputValue = 'null';
-		} else if (onlyType == 'number') {
-			inputValue = inputValue.replace(/[^\d]/g, '');
-		} else if (onlyType == 'regexp' && inputValue[0] != '/') {
-			inputValue = '/' + inputValue + '/';
-		}	
-		
-		if (autoDefine && onlyType != 'string') {
-			switch (inputValue) {
-				case 'null': {
-					inputValue = null;
-					break;
-				}
-				case 'undefined': {
-					inputValue = undefined;
-					break;
-				}
-				case 'false': {
-					inputValue = false;
-					break;
-				}
-				case 'true': {
-					inputValue = true;
-					break;
-				}
-				default: {
-					if (/^\d+$/.test(inputValue) && inputValue.length < 10) {							
-						inputValue = ~~inputValue;
-					} else {
-						const firstSign = inputValue.charAt(0);
-						const lastSign = inputValue.charAt(inputValue.length - 1);
-						if ((firstSign == '[' && lastSign == ']') || (firstSign == '{' && lastSign == '}')) {
-							try {
-								const objValue = JSON.parse(inputValue);
-								if (typeof objValue == 'object') {
-									inputValue = objValue;
-								}
-							} catch (e) {}
-						} else if (firstSign == '/') {
-							if (lastSign == '/') {
-								inputValue = this.getRegexpFromValue(inputValue);
-							} else {
-								let parts = inputValue.split('/');
-								if (parts.length > 2) {
-									const lastPart = parts[parts.length - 1];
-									if ((/^[a-z]+$/).test(lastPart.trim())) {
-										parts.splice(parts.length - 1, 1);
-										inputValue = this.getRegexpFromValue(parts.join('/'), lastPart);
+		let inputValues = inputValue.trim();
+		const firstSign = inputValues.charAt(0);
+		const lastSign = inputValues.charAt(inputValues.length - 1);
+		if (delimiter && typeof delimiter == 'string' && firstSign != '[' && firstSign != '{') {
+			try {
+				const splitRegexp = new RegExp(delimiter);
+				inputValues = inputValues.split(splitRegexp);
+			} catch (e) {}
+		}
+		if (!(inputValues instanceof Array)) {
+			inputValues = [inputValues];
+		}
+		for (let i = 0; i < inputValues.length; i++) {
+			let inputValue = inputValues[i].trim();
+			if (!inputValue) {
+				continue;
+			}
+			if (onlyType == 'boolean') {
+				inputValue = (!!inputValue && inputValue !== '0' && inputValue !== 'false' && inputValue !== 'null' && inputValue !== 'undefined').toString();
+			} else if (onlyType == 'null') {
+				inputValue = 'null';
+			} else if (onlyType == 'number') {
+				inputValue = inputValue.replace(/[^\d]/g, '');
+			} else if (onlyType == 'regexp' && inputValue[0] != '/') {
+				inputValue = '/' + inputValue + '/';
+			}	
+			
+			if (autoDefine && onlyType != 'string') {
+				switch (inputValue) {
+					case 'Infinity': {
+						inputValue = Infinity;
+						break;
+					}
+					case 'NaN': {
+						inputValue = NaN;
+						break;
+					}
+					case 'null': {
+						inputValue = null;
+						break;
+					}
+					case 'undefined': {
+						inputValue = undefined;
+						break;
+					}
+					case 'false': {
+						inputValue = false;
+						break;
+					}
+					case 'true': {
+						inputValue = true;
+						break;
+					}
+					default: {
+						if (/^\d+$/.test(inputValue) && inputValue.length < 10) {							
+							inputValue = ~~inputValue;
+						} else {
+							if ((firstSign == '[' && lastSign == ']') || (firstSign == '{' && lastSign == '}')) {
+								try {
+									const objValue = JSON.parse(inputValue);
+									if (typeof objValue == 'object') {
+										inputValue = objValue;
+									}
+								} catch (e) {}
+							} else if (firstSign == '/') {
+								if (lastSign == '/') {
+									inputValue = this.getRegexpFromValue(inputValue);
+								} else {
+									let parts = inputValue.split('/');
+									if (parts.length > 2) {
+										const lastPart = parts[parts.length - 1];
+										if ((/^[a-z]+$/).test(lastPart.trim())) {
+											parts.splice(parts.length - 1, 1);
+											inputValue = this.getRegexpFromValue(parts.join('/'), lastPart);
+										}
 									}
 								}
 							}
@@ -269,17 +370,28 @@ export class InputArray extends UIEXComponent {
 					}
 				}
 			}
+			if ((!uniqueItems || (uniqueItems && value.indexOf(inputValue) == -1)) && (!maxItems || (value.length < maxItems))) {
+				if (!addToBeginning) {
+					value.push(inputValue);
+				} else {
+					value.unshift(inputValue);
+				}
+				addedItemArr.push(inputValue);
+			}
 		}
-		if ((!uniqueItems || (uniqueItems && value.indexOf(inputValue) == -1)) && (!maxItems || (value.length < maxItems))) {
-			value.push(inputValue);
+		if (prevCount != value.length) {
 			this.fireChange(value);
+			const {onAddItem} = this.props;
+			if (typeof onAddItem == 'function') {
+				onAddItem(addedItemArr, value);
+			}
 		}
 		this.setState({inputValue: ''}, () => this.refs.input && this.refs.input.focus());
 	}
 
 	fireChange(value) {
 		const {onChange} = this.props;
-		if (typeof onChange == 'function') {			
+		if (typeof onChange == 'function') {
 			onChange([...value]);
 		}
 	}
@@ -361,8 +473,11 @@ class InputArrayItem extends React.PureComponent {
 	}
 
 	handleClick = (e) => {
+		const {index, onSelect} = this.props;
 		e.stopPropagation();
-		this.props.onSelect(this.props.index);
+		if (typeof onSelect == 'function') {
+			onSelect(index);
+		}
 	}
 
 	handleContextMenu = (e) => {

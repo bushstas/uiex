@@ -14,5 +14,14 @@ export const InputArrayPropTypes = {
 	onlyType: PROPTYPE.ARRAY_INPUT_TYPE,
 	allowedTypes: PROPTYPE.ARRAY_INPUT_TYPES,
 	exceptTypes: PROPTYPE.ARRAY_INPUT_TYPES,
-	maxItems: PROPTYPE.STRNUM
+	maxItems: PROPTYPE.STRNUM,
+	delimiter: PropTypes.string,
+	withControls: PropTypes.bool,
+	placeholder: PropTypes.string,
+	inputTextEventTimeout: PROPTYPE.STRNUM,
+	addToBeginning: PropTypes.bool,
+	onChange: PropTypes.func,
+	onAddItem: PropTypes.func,
+	onRemoveItem: PropTypes.func,
+	onInputText: PropTypes.func
 }

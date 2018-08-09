@@ -20,6 +20,7 @@ export const InputArrayPropTypes = {
 	placeholder: PropTypes.string,
 	inputTextEventTimeout: PROPTYPE.STRNUM,
 	addToBeginning: PropTypes.bool,
+	autoCompleteOptions: PROPTYPE.OPTIONS,
 	onChange: PropTypes.func,
 	onAddItem: PropTypes.func,
 	onRemoveItem: PropTypes.func,

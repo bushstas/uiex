@@ -11,19 +11,39 @@
 	&.uiex-multi-valued {
 		.uiex-input {
 			input {
-		    	padding-right: 58px !important;
-		    }
+				padding-right: 58px !important;
+			}
+		}
+		&.uiex-without-icon {
+			.uiex-input {
+				input {
+					padding-right: 40px !important;
+				}
+			}
 		}
 	}
 	.uiex-select-arrow-icon {
 		position: absolute;
-		top: 7px;
-		right: 3px;
-		font-size: 28px;
-		color: #555;
-		transform: rotate(0deg);
-		transition: transform 0.1s;
+		top: 0;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		right: 3px;		
+		
+		.uiex-icon {
+			font-size: 28px;
+			color: #555;
+			transform: rotate(0deg);
+			transition: transform 0.1s;
+		}
 	}
+	&.uiex-without-icon {
+		.uiex-input {
+			input {
+				padding-right: 12px !important;
+			}
+		}
+	} 
 	&.uiex-disabled {
 		cursor: not-allowed;
 		.uiex-input {
@@ -32,7 +52,9 @@
 			}
 		}
 		.uiex-select-arrow-icon {
-			cursor: not-allowed !important;
+			.uiex-icon {
+				cursor: not-allowed !important;
+			}
 		}
 	}
 	.uiex-quantity-label {
@@ -55,9 +77,11 @@
 	}
 
 	&.uiex-select-focused {
-		.uiex-select-arrow-icon:not(.uiex-disabled) {
-			color: #000;
-			transform: rotate(180deg);
+		.uiex-select-arrow-icon {
+			.uiex-icon:not(.uiex-disabled) {
+				color: #000;
+				transform: rotate(180deg);
+			}
 		}
 		.uiex-input {
 			input {

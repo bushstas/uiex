@@ -16,7 +16,7 @@
 	}
 	&.uiex-empty:not(.uiex-with-height) {
 		.uiex-array-input-content {
-			& > .uiex-input {
+			.uiex-input {
 				border: 0 !important;
 				margin: 0 !important;
 				padding: 0 !important;
@@ -64,6 +64,18 @@
 			}
 		}
 	}
+	.uiex-array-input-input-control {
+		border-bottom: 1px solid #e1e1e1;
+		margin-bottom: 7px;
+		padding-bottom: 7px;
+		.uiex-auto-complete {
+			width: 100% !important;
+			& > .uiex-popup-menu {
+				margin-top: 7px !important;
+				border: 1px solid #aaa !important;
+			}
+		}
+	}
 	
 	.uiex-array-input-content {
 		box-sizing: border-box;
@@ -71,10 +83,7 @@
 		padding: 7px 9px;
 		position: relative;
 		
-		& > .uiex-input {
-			border-bottom: 1px solid #e1e1e1;
-			margin-bottom: 7px;
-			padding-bottom: 7px;
+		.uiex-input {
 			display: block !important;
 			& > input {
 				border: 0;
@@ -121,15 +130,13 @@
 		}
 	}
 	&.uiex-input-under {
-		.uiex-array-input-content {
-			& > .uiex-input {
-				border-bottom: 0;
-				border-top: 1px solid #e1e1e1;
-				margin-top: 7px;
-				padding-top: 7px;
-				margin-bottom: 0;
-				padding-bottom: 0;
-			}
+		.uiex-array-input-input-control {
+			border-bottom: 0;
+			border-top: 1px solid #e1e1e1;
+			margin-top: 7px;
+			padding-top: 7px;
+			margin-bottom: 0;
+			padding-bottom: 0;
 		}
 	}
 	&.uiex-with-controls {

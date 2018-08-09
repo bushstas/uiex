@@ -197,8 +197,8 @@ export class Input extends UIEXComponent {
 		}
 	}
 
-	blurHandler() {
-		const {onBlur, name, focusStyle, disabled, readOnly} = this.props;
+	blurHandler(value, name) {
+		const {onBlur, focusStyle, disabled, readOnly} = this.props;
 		if (!disabled && !readOnly) {
 			if (focusStyle instanceof Object) {
 				const {input} = this.refs;
@@ -207,7 +207,7 @@ export class Input extends UIEXComponent {
 				}
 			}
 			if (typeof onBlur == 'function') {
-				onBlur(this.refs.input.value, name);
+				onBlur(value, name);
 			}
 			this.setState({focused: false});
 		}

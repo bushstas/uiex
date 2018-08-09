@@ -1,6 +1,7 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
 import {Input} from '../Input';
+import {AutoComplete} from '../AutoComplete';
 import {Icon} from '../Icon';
 import {isValidAndNotEmptyNumericStyle, getNumber} from '../utils';
 import {ARRAY_INPUT_TYPES} from '../consts';
@@ -75,16 +76,22 @@ export class InputArray extends UIEXComponent {
 	}
 
 	renderInput() {
-		const {withoutInput} = this.props;
+		const {withoutInput, autoCompleteOptions} = this.props;
 		if (!withoutInput && !this.maximumReached) {
 			return (
-				<Input 
-					ref="input"
-					value={this.state.inputValue} 
-					placeholder={this.getPlaceholder()}
-					onChange={this.handleInputChange}
-					onEnter={this.handleInputEnter}
-				/>
+				<div className={this.getClassName('input-control')}>
+					<AutoComplete 
+						ref="input"
+						value={this.state.inputValue}
+						options={autoCompleteOptions}
+						placeholder={this.getPlaceholder()}
+						withoutIcon
+						onChange={this.handleInputChange}
+						onInput={this.handleInputTextChange}
+						onEnter={this.handleInputEnter}
+						onPick={this.handleInputSelect}
+					/>
+				</div>
 			)
 		}
 		return null;
@@ -103,7 +110,7 @@ export class InputArray extends UIEXComponent {
 		const isSelected = typeof selectedIndex == 'number' && selectedIndex > -1;
 		return (
 			<div className={this.getClassName('controls')}>
-				<div onClick={this.handleAddItem}>
+				<div onClick={this.handleAddButtonClick}>
 					<Icon name="add"/>
 				</div>
 				{isSelected && 
@@ -265,6 +272,9 @@ export class InputArray extends UIEXComponent {
 
 	handleInputChange = (value) => {
 		this.setState({inputValue: value});
+	}
+
+	handleInputTextChange = (value) => {
 		let {onInputText, inputTextEventTimeout} = this.props;
 		if (typeof onInputText == 'function') {
 			if (typeof inputTextEventTimeout != 'number') {
@@ -274,11 +284,27 @@ export class InputArray extends UIEXComponent {
 			this.timeout = setTimeout(() => {
 				onInputText(value);
 			}, inputTextEventTimeout);
-		}		
+		}
 	}
 
 	handleInputEnter = () => {
-		let {inputValue} = this.state;
+		this.handleAddItem(this.state.inputValue);
+		this.setState({inputValue: ''}, () => this.refs.input && this.refs.input.focus());
+	}
+
+	handleInputSelect = (value) => {
+		this.handleAddItem(value);
+		this.setState({inputValue: ''});
+	}
+
+	handleAddItem(inputValue) {
+		if (typeof inputValue != 'string') {
+			try {
+				inputValue = inputValue.toString();
+			} catch (e) {
+				inputValue = '';
+			}
+		}
 		if (!inputValue) {
 			return;
 		}
@@ -386,7 +412,6 @@ export class InputArray extends UIEXComponent {
 				onAddItem(addedItemArr, value);
 			}
 		}
-		this.setState({inputValue: ''}, () => this.refs.input && this.refs.input.focus());
 	}
 
 	fireChange(value) {

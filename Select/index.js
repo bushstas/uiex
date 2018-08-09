@@ -26,6 +26,7 @@ export class Select extends UIEXBoxContainer {
 		this.selectHandler = this.handleSelect.bind(this);
 		this.selectByArrowHandler = this.handleSelectByArrow.bind(this);
 		this.enterHandler = this.handleEnter.bind(this);
+		this.clickHandler = this.handleClick.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -85,8 +86,12 @@ export class Select extends UIEXBoxContainer {
 
 	getCustomProps() {
 		return {
-			onClick: this.handleClick
+			onClick: this.clickHandler
 		}
+	}
+
+	initRendering() {
+		this.optionsTotalCount = 0;
 	}
 
 	renderInternal() {
@@ -114,11 +119,12 @@ export class Select extends UIEXBoxContainer {
 
 	renderArrowIcon() {
 		return (
-			<Icon 
-				name="arrow_drop_down"
-				disabled={this.props.disabled || !this.state.hasOptions}
-				className="uiex-select-arrow-icon"
-			/>
+			<div className="uiex-select-arrow-icon">
+				<Icon 
+					name="arrow_drop_down"
+					disabled={this.props.disabled || !this.state.hasOptions}
+				/>
+			</div>
 		)	
 	}
 
@@ -206,16 +212,16 @@ export class Select extends UIEXBoxContainer {
 		}
 	}
 
-	handleClick = (e) => {
+	handleClick(e) {
 		e.stopPropagation();
 		const {value, name, onFocus, onBlur, disabled, onDisabledClick} = this.props;
 		const focused = this.isFocused();
 		this.valueBeforeFocus = value;
 		if (!disabled) {
 			this.setState({focused});
-			if (!focused && typeof onFocus == 'function') {
+			if (focused && typeof onFocus == 'function') {
 				onFocus(value, name);
-			} else if (focused && typeof onBlur == 'function') {
+			} else if (!focused && typeof onBlur == 'function') {
 				onBlur(value, name);
 			}
 		} else if (typeof onDisabledClick == 'function') {
@@ -285,6 +291,10 @@ export class Select extends UIEXBoxContainer {
 
 	filterOption = () => {
 		return true;
+	}
+
+	isPassive() {
+		return false;
 	}
 }
 

@@ -3,7 +3,6 @@ import {UIEXBoxContainer} from '../UIEXComponent';
 import {Input} from '../Input';
 import {Icon} from '../Icon';
 import {PopupMenu, PopupMenuItem} from '../PopupMenu';
-import {Box} from '../Box';
 import {SelectPropTypes} from './proptypes';
 
 import '../style.scss';
@@ -20,8 +19,7 @@ export class Select extends UIEXBoxContainer {
 		super(props);
 		
 		this.state = {
-			focused: false,
-			hasOptions: null
+			focused: false
 		};
 		this.selectHandler = this.handleSelect.bind(this);
 		this.selectByArrowHandler = this.handleSelectByArrow.bind(this);
@@ -76,11 +74,11 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	addClassNames(add) {
-		const {focused, hasOptions} = this.state;
+		const {focused} = this.state;
 		const {value} = this.props;
 		add('control');
 		add('select-focused', focused);
-		add('without-options', !hasOptions);
+		add('without-options', !this.hasOptions);
 		add('multi-valued', this.isMultiple() && value instanceof Array && value.length > 1);
 	}
 
@@ -90,15 +88,12 @@ export class Select extends UIEXBoxContainer {
 		}
 	}
 
-	initRendering() {
-		this.optionsTotalCount = 0;
-	}
-
 	renderInternal() {
+		const options = this.renderOptions();
 		return (
 			<div {...this.getProps()}>
 				{this.renderInput()}
-				{this.renderOptions()}
+				{options}
 				{this.renderArrowIcon()}
 				{this.renderQuantityLabel()}
 			</div>
@@ -122,7 +117,7 @@ export class Select extends UIEXBoxContainer {
 			<div className="uiex-select-arrow-icon">
 				<Icon 
 					name="arrow_drop_down"
-					disabled={this.props.disabled || !this.state.hasOptions}
+					disabled={this.props.disabled || !this.hasOptions}
 				/>
 			</div>
 		)	
@@ -131,7 +126,7 @@ export class Select extends UIEXBoxContainer {
 	renderQuantityLabel() {
 		if (this.isMultiple() && this.props.value instanceof Array && this.props.value.length > 1) {
 			const quantity = this.props.value.length - 1;
-			const all = this.props.value.length === this.optionsTotalCount - (this.hasEmptyOption() ? 1 : 0);
+			const all = this.props.value.length === this.optionsTotalCount;
 			return (
 				<span className="uiex-quantity-label">
 					{all ? 'all' : '+' + quantity}
@@ -142,21 +137,36 @@ export class Select extends UIEXBoxContainer {
 
 	renderOptions() {
 		const {focused} = this.state;
-		const {options, value, name, empty, iconType} = this.props;
+		const OptionComponent = this.getOptionComponent();
+		const {options, value, name, empty, iconType, optionsShown} = this.props;
 		let items = [];
 		if (options instanceof Array && options.length > 0) {
-			items = options.map(this.renderOption);
+			for (let i = 0; i < options.length; i++) {
+				const opt = this.renderOption(options[i]);
+				if (opt) {
+					items.push(opt);
+				}
+			}
 		}
-		items = items.concat(this.renderChildren());
+		const reactChildren = this.renderChildren();
+		if (reactChildren) {
+			if (reactChildren instanceof Array) {
+				items = items.concat(reactChildren);
+			} else {
+				items.push(reactChildren);
+			}
+		}
+		this.optionsTotalCount = items.length;
+		this.hasOptions = this.optionsTotalCount > 0;
 		if (this.hasEmptyOption()) {
 			items.unshift(
-				<SelectOption 
+				<OptionComponent 
 					key=""
 					className="uiex-empty-option"
 					value={null} 
 				>
 					{empty === true ? '.....' : empty}
-				</SelectOption>
+				</OptionComponent>
 			);
 		}
 		return (
@@ -166,15 +176,13 @@ export class Select extends UIEXBoxContainer {
 				iconType={iconType}
 				multiple={this.isMultiple()}
 				value={value}
-				isOpen={focused}
+				isOpen={optionsShown || focused}
 				isInnerChild
 				onSelect={this.selectHandler}
 				onSelectByArrow={this.selectByArrowHandler}
 				onEnter={this.enterHandler}
 				onEscape={this.handleEscape}
 				onCollapse={this.handlePopupCollapse}
-				onMount={this.handlePopupMenuMount}
-				onUpdate={this.handlePopupMenuMount}
 				{...this.getBoxProps()}
 			>
 				{items}
@@ -182,7 +190,12 @@ export class Select extends UIEXBoxContainer {
 		)
 	}
 
-	renderOption = (item, idx) => {
+	getOptionComponent() {
+		return SelectOption;
+	}
+
+	renderOption = (item) => {
+		const OptionComponent = this.getOptionComponent();
 		let value, title, icon, iconType, withTopDelimiter, withBottomDelimiter;
 		if (typeof item == 'string' || typeof item == 'number') {
 			value = item;
@@ -197,7 +210,7 @@ export class Select extends UIEXBoxContainer {
 		}
 		if (this.filterOption(value)) {
 			return (
-				<SelectOption 
+				<OptionComponent 
 					key={value}
 					className="uiex-select-option"
 					value={value} 
@@ -207,7 +220,7 @@ export class Select extends UIEXBoxContainer {
 					withBottomDelimiter={withBottomDelimiter}
 				>
 					{title}
-				</SelectOption>
+				</OptionComponent>
 			)
 		}
 	}
@@ -251,15 +264,6 @@ export class Select extends UIEXBoxContainer {
 
 	handleSelectByArrow(value) {		
 		this.fireChange(value);
-	}
-
-	handlePopupMenuMount = (popupMenu) => {
-		const {hasOptions} = this.state;
-		this.optionsTotalCount = popupMenu.properChildrenCount;
-		const nextHasOptions = this.optionsTotalCount > 0;
-		if (hasOptions !== nextHasOptions) {
-			this.setState({hasOptions: nextHasOptions});
-		}
 	}
 
 	fireChange(value) {

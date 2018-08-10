@@ -5,7 +5,8 @@ import {
 	showProperChildMaxCountError,
 	getComponentClassName,
 	addStyleProperty,
-	addObject
+	addObject,
+	mapChildren
 } from './utils';
 import {FORM_BUTTON_DISPLAY} from './consts';
 
@@ -120,7 +121,7 @@ export class UIEXComponent extends React.PureComponent {
 	doRenderChildren(children) {
 		if (children) {
 			if (children instanceof Array) {
-				return children.map(this.renderChild);
+				return mapChildren(children, this.renderChild);
 			}
 			return this.renderChild(children);
 		}

@@ -16,5 +16,6 @@ export const ModalPropTypes = {
 	withoutMask: PropTypes.bool,
 	noMaskClose: PropTypes.bool,
 	maskOpacity: PROPTYPE.STRNUM,
-	animation: PROPTYPE.MODAL_ANIMATION	
+	animation: PROPTYPE.MODAL_ANIMATION,
+	onClose: PropTypes.func
 }

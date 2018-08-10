@@ -86,6 +86,7 @@ export class InputArray extends UIEXComponent {
 						options={autoCompleteOptions}
 						placeholder={this.getPlaceholder()}
 						withoutIcon
+						passive
 						onChange={this.handleInputChange}
 						onInput={this.handleInputTextChange}
 						onEnter={this.handleInputEnter}

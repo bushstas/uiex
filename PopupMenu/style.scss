@@ -11,6 +11,7 @@
 	border-radius: 2px;
 	z-index: 100;
 	visibility: hidden;
+	height: 0;
 
 	&.uiex-options-on-top {
 		top: auto;
@@ -20,6 +21,7 @@
 	}
 	&.uiex-shown {
 		visibility: visible;
+		height: auto;
 	}
 	&.uiex-multiple {
 		.uiex-popup-menu-item {

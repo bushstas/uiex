@@ -3,6 +3,7 @@ import {Select} from '../Select';
 import {Input} from '../Input';
 import {Icon} from '../Icon';
 import {regexEscape} from '../utils';
+import {PopupMenuItem} from '../PopupMenu';
 import {AutoCompletePropTypes} from './proptypes';
 
 import '../style.scss';
@@ -11,7 +12,7 @@ import './style.scss';
 export class AutoComplete extends Select {
 	static propTypes = AutoCompletePropTypes;
 	static className = 'auto-complete';
-	static properChildren = 'SelectOption';
+	static properChildren = 'AutoCompleteOption';
 	static onlyProperChildren = true;
 	static isControl = true;
 
@@ -30,7 +31,10 @@ export class AutoComplete extends Select {
 			stateChanged = true;
 		}
 		if (value != nextProps.value) {
-			this.inputedValue = nextProps.value;
+			if (nextProps.value !== this.selectedValue) {
+				this.selectedValue = null;
+				this.inputedValue = nextProps.value;
+			}
 			if (!nextProps.dynamic && nextProps.passive) {
 				if (!nextProps.value) {
 					state.focused = false;
@@ -81,7 +85,7 @@ export class AutoComplete extends Select {
 				<div className="uiex-select-arrow-icon">
 					<Icon 
 						name="more_vert"
-						disabled={this.props.disabled || !this.state.hasOptions}
+						disabled={this.props.disabled || !this.hasOptions}
 						onClick={this.handleIconClick}
 					/>
 				</div>
@@ -110,14 +114,13 @@ export class AutoComplete extends Select {
 
 	handleBlur = () => {
 		const {value, name, onBlur} = this.props;		
-		this.setState({focused: false});
 		if (typeof onBlur == 'function') {
 			onBlur(value, name);
 		}
 	}
 
 	handleInputValueChange = (value) => {
-		this.inputedValue = value;
+		this.selectedValue = null;
 		const {name, onChange, onInput} = this.props;
 		if (typeof onChange == 'function') {
 			onChange(value, name);
@@ -128,6 +131,7 @@ export class AutoComplete extends Select {
 	}
 
 	handleSelect(value) {
+		this.selectedValue = value;
 		this.inputedValue = '';
 		super.handleSelect(value);
 		const {onPick} = this.props;
@@ -136,12 +140,13 @@ export class AutoComplete extends Select {
 		}
 	}
 
-	handleEnter(value) {
+	handleEnter() {
 		this.inputedValue = '';
 		super.handleEnter();
 	}
 
 	handleSelectByArrow(value) {
+		this.selectedValue = value;
 		super.handleSelectByArrow(value);
 		this.fireSelect(value);
 	}
@@ -188,6 +193,10 @@ export class AutoComplete extends Select {
 		return regexp.test(optionValue);
 	}
 
+	getOptionComponent() {
+		return AutoCompleteOption;
+	}
+
 	hasEmptyOption() {
 		return false;
 	}
@@ -219,4 +228,9 @@ export class AutoComplete extends Select {
 	}
 
 	checkValueChange() {}
+}
+
+export class AutoCompleteOption extends PopupMenuItem {
+	static propTypes = PopupMenuItem.propTypes;
+	static className = PopupMenuItem.className;
 }

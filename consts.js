@@ -17,6 +17,9 @@ export const PANEL_ANIMATION = ['fade', 'roll', 'fade-roll'];
 export const MODAL_ANIMATION = ['fade', 'fade-fall', 'fade-float', 'fade-scale'];
 export const ARRAY_INPUT_TYPES = ['null', 'string', 'number', 'boolean', 'array', 'object', 'function', 'regexp', 'color'];
 
+export const SELECT_OPTIONS_OBJECT = [{title: 'Yellow', value: 'yellow'}];
+export const SELECT_OPTIONS_ARRAY = ['yellow', 'green', 'pink', 'purple', 'brown', 'gray', 'white', 'red', 'black', 'blue', 'orange'];
+
 const ARRAY_INPUT_TYPE = PropTypes.oneOf(ARRAY_INPUT_TYPES);
 
 const OPTION_SHAPE = PropTypes.shape({

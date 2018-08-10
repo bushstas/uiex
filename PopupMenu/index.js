@@ -14,7 +14,7 @@ const DEFAULT_MAX_HEIGHT = 350;
 
 export class PopupMenu extends Popup {
 	static propTypes = PopupMenuPropTypes;
-	static properChildren = ['PopupMenuItem', 'SelectOption'];
+	static properChildren = ['PopupMenuItem', 'SelectOption', 'AutoCompleteOption'];
 	static className = 'popup-menu';
 	static onlyProperChildren = true;
 
@@ -50,10 +50,11 @@ export class PopupMenu extends Popup {
 
 	checkPosition() {
 		const {main} = this.refs;
-		const {top} = main.getBoundingClientRect();
-		const height = DEFAULT_MAX_HEIGHT;
+		main.style.height = 'auto';
+		const {top, height} = main.getBoundingClientRect();
 		const {innerHeight} = window;
 		this.atTop = top + height > innerHeight + 5;
+		main.style.height = '';
 	}
 
 	componentDidUpdate() {

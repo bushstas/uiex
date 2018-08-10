@@ -1,5 +1,21 @@
 import React from 'react';
 
+export const mapChildren = (children, renderChild) => {
+	const ch = [];
+	for (let i = 0; i < children.length; i++) {
+		const child = renderChild(children[i], i, children);
+		if (child instanceof Array) {
+			let child2 = mapChildren(child, renderChild);
+			if (child2) {
+				ch.push(child2);	
+			}
+		} else if (child) {
+			ch.push(child);	
+		}
+	}
+	return ch.length == 0 ? null : ch;
+}
+
 export const addToClassName = (classNameToAdd, className = undefined) => {
 	if (classNameToAdd && typeof classNameToAdd == 'string') {
 		if (!className || typeof className != 'string') {

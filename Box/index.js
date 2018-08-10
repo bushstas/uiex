@@ -115,12 +115,13 @@ export class Box extends UIEXComponent {
 			const delay = this.getDelay();
 			setTimeout(callback, delay);
 		} else {
+			this.refs.outer.style.transitionDuration = '';
 			callback();
 		}
 		if (isOpen) {
 			this.processShowAnimation();
 		} else {
-			this.processHideAnimation();
+			this.processHideAnimation(animation);
 		}
 	}
 
@@ -144,10 +145,10 @@ export class Box extends UIEXComponent {
 		}
 	}
 
-	processHideAnimation() {
+	processHideAnimation(animation) {
 		const {outer} = this.refs;
 		const delay = this.getDelay();
-		switch (this.props.animation) {
+		switch (animation) {
 			case 'fade':
 				outer.style.opacity = '0';
 				setTimeout(this.hideStyles, delay);
@@ -171,6 +172,10 @@ export class Box extends UIEXComponent {
 			default:
 				this.hideStyles();
 		}
+	}
+
+	getHeightProp() {
+		return null;
 	}
 
 	getIntHeight() {

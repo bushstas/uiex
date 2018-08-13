@@ -10,13 +10,15 @@ export class Radio extends UIEXComponent {
 	static isControl = true;
 
 	addClassNames(add) {
+		const {children, multiline, checked, label} = this.props;
 		add('control');
-		add('multilined', this.props.multiline);
-		add('checked', this.props.checked);
+		add('multilined', multiline);
+		add('checked', checked);
+		add('without-content', !children && !label);
 	}
 
 	renderInternal() {
-		let {children, label} = this.props;
+		let {label} = this.props;
 
 		const content = this.renderChildren();
 		let additionalContent;

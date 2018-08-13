@@ -1,5 +1,6 @@
 .uiex-radio {	
-    padding-left: 28px;
+	padding-left: 28px;
+	line-height: 0;
  
 	.uiex-radio-control {
 		position: absolute;
@@ -13,6 +14,16 @@
 		border: 1px solid #aaa;
 		cursor: pointer;
 		box-sizing: border-box;
+	}
+
+	&.uiex-without-content {
+		padding-left: 0;
+		min-width: 0 !important;
+
+		.uiex-radio-control {
+			position: relative;
+			display: inline-block;
+		}
 	}
 
 	.uiex-radio-marker {

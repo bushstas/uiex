@@ -3,6 +3,8 @@ import {UIEXComponent} from '../UIEXComponent';
 import {Input} from '../Input';
 import {Icon} from '../Icon';
 import {Modal} from '../Modal';
+import {JsonPreview} from '../JsonPreview';
+import {Radio} from '../Radio';
 import {SelectObjectPropTypes} from './proptypes';
 
 import '../style.scss';
@@ -24,6 +26,11 @@ export class SelectObject extends UIEXComponent {
 		};
 	}
 
+	addClassNames(add) {
+		add('control');
+		add('without-options', !this.hasOptions());
+	}
+
 	getCustomProps() {
 		return {
 			onClick: this.handleClick
@@ -41,25 +48,32 @@ export class SelectObject extends UIEXComponent {
 	}
 
 	getTitle() {
-		const {selectedItem} = this.state;
-		if (!selectedItem && selectedItem !== 0 && selectedItem !== false) {
+		let {value} = this.props;
+		if (!value && value !== 0 && value !== false) {
 			return '';
 		}
-		if (typeof selectedItem == 'string' || typeof selectedItem == 'number') {
-			return selectedItem;
+		if (typeof value == 'string' || typeof value == 'number') {
+			return value;
 		}
-		if (typeof selectedItem == 'boolean' || selectedItem instanceof RegExp) {
-			return selectedItem.toString();
+		if (typeof value == 'boolean' || value instanceof RegExp) {
+			return value.toString();
 		}
-		if (selectedItem instanceof Array) {
-			return 'Array (' + selectedItem.length + ')';
+		if (value instanceof Promise) {
+			return 'Promise';
 		}
-		if (selectedItem instanceof Object) {
-			return 'Object (' + Object.keys(selectedItem).length + ')';
+		if (value instanceof Array) {
+			return 'Array (' + value.length + ')';
 		}
-		if (selectedItem instanceof Function) {
+		if (value instanceof Function) {
 			return 'Function';
 		}
+		if (value instanceof RegExp) {
+			return value.toString();
+		}
+		if (value instanceof Object) {
+			return 'Object (' + Object.keys(value).length + ')';
+		}
+		
 	}
 
 	renderInput() {
@@ -79,7 +93,7 @@ export class SelectObject extends UIEXComponent {
 			<div className="uiex-select-arrow-icon">
 				<Icon 
 					name="arrow_drop_down"
-					disabled={this.props.disabled || !this.hasOptions}
+					disabled={this.props.disabled || !this.hasOptions()}
 				/>
 			</div>
 		)	
@@ -88,6 +102,7 @@ export class SelectObject extends UIEXComponent {
 	renderModal() {
 		return (
 			<Modal 
+				width="800"
 				header="Choose a value"
 				isOpen={this.state.focused}
 				onClose={this.handleModalClose}
@@ -97,36 +112,32 @@ export class SelectObject extends UIEXComponent {
 		)
 	}
 
-	renderOptions() {
-		const {focused} = this.state;
-		const {options, value, name, empty, iconType, optionsShown} = this.props;
-		let items = [];
-		if (options instanceof Array && options.length > 0) {
+	renderOptions() {		
+		const {options, value} = this.props;
+		const items = [];
+		if (options instanceof Array) {
 			for (let i = 0; i < options.length; i++) {
-				const opt = this.renderOption(options[i], i);
-				if (opt) {
-					items.push(opt);
+				let active;
+				if (options[i] instanceof Object && options[i].jsonPreviewInfo) {
+					active = options[i].value == value;
+				} else {
+					active = options[i] == value;
 				}
+				items.push(
+					<div key={i} className={this.getClassName('item', active ? 'uiex-active' : '')}>
+						<Radio 
+							checked={active} 
+							value={i} 
+							onChange={this.handleRadioClick}
+						/>
+						<JsonPreview 
+							ref={'preview' + i}
+							data={options[i]} 
+							onClick={this.handleItemClick}
+						/>
+					</div>
+				);
 			}
-		}
-		const reactChildren = this.renderChildren();
-		if (reactChildren) {
-			if (reactChildren instanceof Array) {
-				items = items.concat(reactChildren);
-			} else {
-				items.push(reactChildren);
-			}
-		}
-		this.optionsTotalCount = items.length;
-		this.hasOptions = this.optionsTotalCount > 0;
-		if (empty) {
-			items.unshift(
-				<SelectObjectOption 
-					key=""
-					className="uiex-empty-option"
-					value={null} 
-				/>
-			);
 		}
 		return items;
 	}
@@ -155,6 +166,23 @@ export class SelectObject extends UIEXComponent {
 
 	handleModalClose = () => {
 		this.setState({focused: false});
+	}
+
+	handleItemClick = (data) => {
+		const {onChange, name} = this.props;
+		if (typeof onChange == 'function') {
+			onChange(data, name);
+		}
+		this.setState({focused: false});
+	}
+
+	handleRadioClick = (name, value) => {
+		this.refs['preview' + value].refs.main.click();
+	}
+
+	hasOptions() {
+		const {options} = this.props;
+		return options instanceof Array & options.length > 0;
 	}
 }
 

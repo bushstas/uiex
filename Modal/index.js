@@ -198,7 +198,7 @@ export class Modal extends UIEXComponent {
 
 		const {expanded, isOpen} = this.state;		
 		return (
-			<div {...this.getProps(null, false)}>
+			<div {...this.getProps(null, false)} onClick={this.handleClick}>
 				{!withoutMask && 
 					<div 
 						className={this.getClassName('mask')}
@@ -258,6 +258,10 @@ export class Modal extends UIEXComponent {
 				</div>
 			)
 		}
+	}
+
+	handleClick = (e) => {
+		e.stopPropagation();
 	}
 
 	handleMaskClick = () => {

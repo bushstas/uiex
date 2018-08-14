@@ -2,7 +2,10 @@
 	color: #555;
 	
 	pre {
-		tab-size: 2;
+        margin: 0;
+        font-size: 15px;
+        tab-size: 2;
+        -moz-tab-size: 2;
 	}
 
 	.uiex-json-preview-comma {

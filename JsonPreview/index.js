@@ -94,8 +94,8 @@ export class JsonPreview extends UIEXComponent {
 		this.renderLine(']' + (isComma ? ',' : ''));
 	}
 
-	renderObject(obj, isComma = false) {
-		this.renderLine('{');
+	renderObject(obj, isComma = false, isValue = false) {
+		this.renderLine('{', false, isValue);
 		this.addTab();
 		const keys = Object.keys(obj);
 		const lastKey = keys[keys.length - 1];
@@ -103,7 +103,7 @@ export class JsonPreview extends UIEXComponent {
 			const key = this.getKey(k);
 			const isComma = k != lastKey;
 			this.renderLineStart(key + ': ');
-			const item = this.getItem(obj[k], isComma);
+			const item = this.getItem(obj[k], isComma, true);
 			if (item) {
 				this.renderLineEnd(item, isComma);
 			}
@@ -112,7 +112,7 @@ export class JsonPreview extends UIEXComponent {
 		this.renderLine('}' + (isComma ? ',' : ''));
 	}
 
-	getItem(item, isComma) {
+	getItem(item, isComma, isValue = false) {
 		switch (typeof item) {
 			case 'symbol':
 				return this.wrapWithTag(item.toString(), 'symbol');
@@ -148,13 +148,13 @@ export class JsonPreview extends UIEXComponent {
 				if (item instanceof Promise) {
 					return this.wrapWithTag('Promise', 'promise');
 				}
-				return this.renderObject(item, isComma);
+				return this.renderObject(item, isComma, isValue);
 			
 		}
 	}
 
-	renderLine(line, addComma = false) {
-		this.content += this.getTab() + line + this.getComma(addComma) + "\n";
+	renderLine(line, addComma = false, isWithoutTab = false) {
+		this.content += (!isWithoutTab ? this.getTab(): '') + line + this.getComma(addComma) + "\n";
 	}
 
 	renderLineStart(start) {

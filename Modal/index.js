@@ -228,7 +228,7 @@ export class Modal extends UIEXComponent {
 						</div>
 					}
 					{this.renderHeader()}
-					<div className={this.getClassName('body')} style={this.getStyle('body')}>
+					<div className={this.getClassName('body', 'uiex-scrollable')} style={this.getStyle('body')}>
 						{this.renderChildren()}
 					</div>
 					{this.renderFooter()}

@@ -98,10 +98,11 @@ export class PopupMenu extends Popup {
 
 	initRendering() {
 		this.itemValues = [];
+		this.children = [];
 		this.selectedIdx = -1;
 	}
 
-	addChildProps(child, props, idx, isLast) {
+	addChildProps(child, props, idx) {
 		let {value: currentValue = '', multiple} = this.props;
 		const {currentSelected} = this.state;
 		const {onSelect, value, iconType} = child.props;
@@ -136,7 +137,9 @@ export class PopupMenu extends Popup {
 		if (typeof onSelect != 'function') {
 			props.onSelect = this.handleSelectByClick;
 		}
+		props.index = idx;
 		this.itemValues.push(value);
+		this.children.push(child);
 	}
 
 	renderInternal() {
@@ -181,8 +184,8 @@ export class PopupMenu extends Popup {
 		}
 	}
 
-	handleSelect = (value) => {
-		const {onSelect, value: currentValue, multiple} = this.props;
+	handleSelect = (value, idx, option) => {
+		const {onSelect, onSelectOption, value: currentValue, multiple} = this.props;
 		if (multiple && currentValue && value) {
 			if (!(currentValue instanceof Array)) {
 				if (currentValue === value) {
@@ -203,23 +206,44 @@ export class PopupMenu extends Popup {
 		if (typeof onSelect == 'function') {
 			onSelect(value);
 		}
+		if (typeof onSelectOption == 'function') {
+			onSelectOption(idx, option);
+		}
 		this.fireChange(value);
 	}
 
-	handleSelectByClick = (value) => {
+	handleSelectByClick = (value, idx, option) => {
 		const currentSelected = this.itemValues.indexOf(value);
 		if (this.state.currentSelected > -1) {
 			this.setState({currentSelected});
 		}
-		this.handleSelect(value);
+		this.handleSelect(value, idx, option);
 	}
 
-	handleSelectByArrow(value) {
-		const {onSelectByArrow} = this.props;
+	handleSelectByArrow(value, idx) {
+		const {onSelectByArrow, onSelectOption} = this.props;
 		if (typeof onSelectByArrow == 'function') {
 			onSelectByArrow(value);
 		}
 		this.fireChange(value);
+		
+		const child = this.children[idx];
+		if (child && typeof onSelectOption == 'function') {
+			const {props} = child;
+			let {value, children, icon, iconType, withTopDelimiter, withBottomDelimiter} = props;
+			if (!iconType) {
+				iconType = this.props.iconType;
+			}
+			const option = {
+				value,
+				title: children,
+				icon,
+				iconType,
+				withTopDelimiter,
+				withBottomDelimiter
+			}
+			onSelectOption(idx, option);
+		}
 	}
 
 	fireChange(value) {
@@ -264,7 +288,7 @@ export class PopupMenu extends Popup {
 					}
 				}
 				if (!multiple) {
-					return this.handleSelectByArrow(this.itemValues[idx]);
+					return this.handleSelectByArrow(this.itemValues[idx], idx);
 				} else {
 					this.setState({currentSelected: idx});
 				}
@@ -304,9 +328,17 @@ export class PopupMenuItem extends UIEXComponent {
 
 	handleClick = (e) => {
 		e.stopPropagation();
-		const {value, onSelect} = this.props;
+		const {value, onSelect, children, icon, iconType, withTopDelimiter, withBottomDelimiter, index} = this.props;
 		if (typeof onSelect == 'function') {
-			onSelect(value);
+			const option = {
+				value,
+				title: children,
+				icon,
+				iconType,
+				withTopDelimiter,
+				withBottomDelimiter
+			}
+			onSelect(value, index, option);
 		}
 	}
 }

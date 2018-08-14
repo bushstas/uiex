@@ -1,28 +1,4 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-
-const jsonPreviewInfoPromise = (
-	<pre>
-		new Promise((resolve, reject) => {"{\n\t"}const options = ['loaded', 'with', 'promise'];
-		{"\n\t"}setTimeout(() => {"{\n\t\t"}resolve(options);{"\n\t}"}, 5000);
-		{"\n})"}
-	</pre>
-);
-
-const jsonPreviewPromise = new Promise((resolve) => {
-	const options = ['loaded', 'with', 'promise'];
-	setTimeout(() => resolve(options), 5000);
-});
-
-const jsonPreviewInfoFunction = (
-	<pre>
-		() => {"{\n\t"}return ['formed', 'with', 'function'];{"\n}"}
-	</pre>
-);
-
-const jsonPreviewFunction = () => {
-	return ['formed', 'with', 'function'];
-};
 
 export const COLORS = ['black', 'gray', 'white', 'red', 'blue', 'green', 'yellow', 'orange'];
 export const ALIGN = ['left', 'center', 'right'];
@@ -40,12 +16,6 @@ export const ANIM_TYPE = ['fade', 'roll', 'fall', 'fade-roll', 'fade-fall'];
 export const PANEL_ANIMATION = ['fade', 'roll', 'fade-roll'];
 export const MODAL_ANIMATION = ['fade', 'fade-fall', 'fade-float', 'fade-scale'];
 export const ARRAY_INPUT_TYPES = ['null', 'string', 'number', 'boolean', 'array', 'object', 'function', 'regexp', 'color'];
-
-export const SELECT_OPTIONS_OBJECT = {green: 'Green color', brown: 'Brown color', yellow: 'Yellow color', blue: 'Blue color', red: 'Red color', black: 'Black color', white: 'White color'};
-export const SELECT_OPTIONS_OBJECTS_ARRAY = [{title: 'Yellow', value: 'yellow'}, {title: 'Green', value: 'green'}, {title: 'Pink', value: 'pink'}, {title: 'Purple', value: 'purple'}, {title: 'Brown', value: 'brown'}];
-export const SELECT_OPTIONS_ARRAY = ['black', 'blue', 'orange', 'red'];
-export const SELECT_OPTIONS_PROMISE = {jsonPreviewInfo: jsonPreviewInfoPromise, value: jsonPreviewPromise};
-export const SELECT_OPTIONS_FUNCTION = {jsonPreviewInfo: jsonPreviewInfoFunction, value: jsonPreviewFunction};
 
 const ARRAY_INPUT_TYPE = PropTypes.oneOf(ARRAY_INPUT_TYPES);
 

@@ -18,10 +18,10 @@ export class AutoComplete extends Select {
 
 	componentWillReceiveProps(nextProps) {
 		super.componentWillReceiveProps(nextProps);
-		const {focused, value} = this.props;
+		const {value, focused} = this.props;
 		const state = {};
 		let stateChanged = false;
-		if (focused != nextProps.focused) { 
+		if (focused != nextProps.focused && !nextProps.disabled) { 
 			if (nextProps.focused) {
 				this.focus();
 			} else {
@@ -64,11 +64,12 @@ export class AutoComplete extends Select {
 
 	renderInput() {
 		const {value, placeholder, disabled} = this.props;
+		const {placeholder: statePlaceholder} = this.state
 		return (
 			<Input 
 				ref="input"
 				value={value}
-				placeholder={placeholder}
+				placeholder={statePlaceholder || placeholder}
 				disabled={disabled}
 				onChange={this.handleInputValueChange}
 				onFocus={this.handleFocus}

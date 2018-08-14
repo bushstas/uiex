@@ -8,7 +8,8 @@ import {SelectPropTypes} from './proptypes';
 import '../style.scss';
 import './style.scss';
 
-const PENDING_ERROR = ['Pending error'];
+const PENDING_ERROR = [{title: 'Pending error', value: null}];
+const PENDING_PLACEHOLDER = 'Pending...';
 
 export class Select extends UIEXBoxContainer {
 	static propTypes = SelectPropTypes;
@@ -25,6 +26,7 @@ export class Select extends UIEXBoxContainer {
 		}
 		this.state = {
 			focused: false,
+			placeholder: null,
 			options
 		};
 		this.selectHandler = this.handleSelect.bind(this);
@@ -54,46 +56,29 @@ export class Select extends UIEXBoxContainer {
 		}
 	}
 
-	getTitle() {
+	componentWillMount() {
 		const {options} = this.state;
-		let {value, children} = this.props;
-		let i = 0;
+		if (options instanceof Promise) {
+			this.setState({placeholder: this.getPendingPlaceholder()});
+		}
+	}
+
+	getTitle() {
+		let {value} = this.props;
 		if (value) {
 			if (value instanceof Array) {
 				value = value[0];
 			}
-			if (options instanceof Array) {
-				for (let item of options) {
-					if (item instanceof Object) {
-						if (item.value == value) {
-							return item.title;
-						}
-					} else if (item == value) {
-						return value;
-					}
-					i++;
-				}
-			}
-			if (children) {
-				if (!(children instanceof Array)) {
-					children = [children];
-				}
-				for (let child of children) {
-					if (this.isProperChild(child) && child.props.value == value) {
-						return typeof child.props.children == 'string' ? child.props.children : '';
-					}
-					i++;
-				}
-			}
+			return this.values[value] || '';
 		}
 		return '';
 	}
 
 	addClassNames(add) {
-		const {focused} = this.state;
+		const {focused, disabled} = this.state;
 		const {value} = this.props;
 		add('control');
-		add('select-focused', focused);
+		add('select-focused', focused && !disabled);
 		add('without-options', !this.hasOptions);
 		add('multi-valued', this.isMultiple() && value instanceof Array && value.length > 1);
 	}
@@ -102,6 +87,10 @@ export class Select extends UIEXBoxContainer {
 		return {
 			onClick: this.clickHandler
 		}
+	}
+
+	initRendering() {
+		this.values = {};
 	}
 
 	renderInternal() {
@@ -118,10 +107,11 @@ export class Select extends UIEXBoxContainer {
 
 	renderInput() {
 		const {placeholder, disabled} = this.props;
+		const {placeholder: statePlaceholder} = this.state
 		return (
 			<Input 
 				value={this.getTitle()}
-				placeholder={placeholder}
+				placeholder={statePlaceholder || placeholder}
 				disabled={disabled}
 				readOnly
 			/>
@@ -141,14 +131,27 @@ export class Select extends UIEXBoxContainer {
 
 	renderQuantityLabel() {
 		if (this.isMultiple() && this.props.value instanceof Array && this.props.value.length > 1) {
-			const quantity = this.props.value.length - 1;
-			const all = this.props.value.length === this.optionsTotalCount;
-			return (
-				<span className="uiex-quantity-label">
-					{all ? 'all' : '+' + quantity}
-				</span>
-			)
+			const selectedCount = this.getSelectedCount();
+			if (selectedCount) {
+				const all = selectedCount === this.optionsTotalCount;
+				return (
+					<span className="uiex-quantity-label">
+						{all ? 'all' : '+' + selectedCount}
+					</span>
+				)
+			}
 		}
+	}
+
+	getSelectedCount() {
+		const {value} = this.props;
+		let count = 0;
+		for (let i = 0; i < value.length; i++) {
+			if (this.values[value[i]] !== undefined) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	renderOptions() {
@@ -157,29 +160,28 @@ export class Select extends UIEXBoxContainer {
 		const {value, name, empty, iconType, optionsShown} = this.props;
 		let pending = false;
 		let items = [];
-		if (options) {
+		if (options && options instanceof Object) {
 			if (options instanceof Promise) {
 				options.then(
 					this.handlePromiseResolve,
 					this.handlePromiseReject
 				);
-				const opt = this.renderOption('Pending...');
+				const pendingPlaceholder = this.getPendingPlaceholder();
+				const opt = this.renderOption({title: pendingPlaceholder, value: null});
 				items.push(opt);
 				pending = true;
-			} else if (options instanceof Object) {
-				if (options instanceof Array) {
-					for (let i = 0; i < options.length; i++) {
-						const opt = this.renderOption(options[i]);
-						if (opt) {
-							items.push(opt);
-						}
+			} else if (options instanceof Array) {
+				for (let i = 0; i < options.length; i++) {
+					const opt = this.renderOption(options[i]);
+					if (opt) {
+						items.push(opt);
 					}
-				} else {
-					for (let k in options) {
-						const opt = this.renderOption({value: k, title: options[k]});
-						if (opt) {
-							items.push(opt);
-						}
+				}
+			} else {
+				for (let k in options) {
+					const opt = this.renderOption({value: k, title: options[k]});
+					if (opt) {
+						items.push(opt);
 					}
 				}
 			}
@@ -215,6 +217,7 @@ export class Select extends UIEXBoxContainer {
 				isOpen={optionsShown || focused}
 				isInnerChild
 				onSelect={this.selectHandler}
+				onSelectOption={this.handleSelectOption}
 				onSelectByArrow={this.selectByArrowHandler}
 				onEnter={this.enterHandler}
 				onEscape={this.handleEscape}
@@ -228,6 +231,14 @@ export class Select extends UIEXBoxContainer {
 
 	getOptionComponent() {
 		return SelectOption;
+	}
+
+	getPendingPlaceholder() {
+		const {pendingPlaceholder} = this.props;
+		if (pendingPlaceholder && typeof pendingPlaceholder == 'string') {
+			return pendingPlaceholder;
+		}
+		return PENDING_PLACEHOLDER;
 	}
 
 	renderOption = (item) => {
@@ -244,6 +255,7 @@ export class Select extends UIEXBoxContainer {
 			withTopDelimiter = item.withTopDelimiter;
 			withBottomDelimiter = item.withBottomDelimiter;
 		}
+		this.values[value] = title;
 		if (this.filterOption(value)) {
 			return (
 				<OptionComponent 
@@ -262,11 +274,23 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	handlePromiseResolve = (options) => {
-		this.setState({options});
+		if (!this.isUnmounted) {
+			this.setState({options, placeholder: null});
+			const {onPromiseResolve} = this.props;
+			if (typeof onPromiseResolve == 'function') {
+				onPromiseResolve(options);
+			}
+		}
 	}
 
-	handlePromiseReject = () => {
-		this.setState({options: PENDING_ERROR});
+	handlePromiseReject = (error) => {
+		if (!this.isUnmounted) {
+			this.setState({options: PENDING_ERROR, placeholder: null});
+			const {onPromiseReject} = this.props;
+			if (typeof onPromiseReject == 'function') {
+				onPromiseReject(error);
+			}
+		}
 	}
 
 	handleClick(e) {
@@ -306,11 +330,31 @@ export class Select extends UIEXBoxContainer {
 		this.fireChange(value);
 	}
 
-	handleSelectByArrow(value) {		
+	handleSelectByArrow(value) {
 		this.fireChange(value);
+		const {name, onSelect} = this.props;
+		if (typeof onSelect == 'function') {
+			onSelect(value, name);
+		}
+	}
+
+	handleSelectOption = (index, option) => {
+		const {name, onSelectOption} = this.props;
+		if (typeof onSelectOption == 'function') {
+			onSelectOption(index, option, name);
+		}
 	}
 
 	fireChange(value) {
+		if (value instanceof Array && this.isMultiple()) {
+			const values = [];
+			for (let i = 0; i < value.length; i++) {
+				if (this.values[value[i]] !== undefined) {
+					values.push(value[i]);
+				}
+			}
+			value = values;
+		}
 		const {onChange, name} = this.props;
 		if (typeof onChange == 'function') {
 			onChange(value, name);

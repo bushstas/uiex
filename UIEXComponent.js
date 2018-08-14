@@ -108,6 +108,7 @@ export class UIEXComponent extends React.PureComponent {
 		if (typeof onUnmount == 'function') {
 			onUnmount(this);
 		}
+		this.isUnmounted = true;
 	}
 
 	renderChildren() {

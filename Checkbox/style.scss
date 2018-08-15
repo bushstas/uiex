@@ -28,7 +28,7 @@
 		display: none;
 	}
 
-	&:not(.uiex-disabled):hover {
+	&:not(.uiex-read-only):not(.uiex-disabled):hover {
 		& > .uiex-checkbox-control {
 			border-color: #777;
 			& > .uiex-checkbox-marker {

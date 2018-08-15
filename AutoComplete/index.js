@@ -63,7 +63,7 @@ export class AutoComplete extends Select {
 	}
 
 	renderInput() {
-		const {value, placeholder, disabled} = this.props;
+		const {value, placeholder, disabled, readOnly} = this.props;
 		const {placeholder: statePlaceholder} = this.state
 		return (
 			<Input 
@@ -71,6 +71,7 @@ export class AutoComplete extends Select {
 				value={value}
 				placeholder={statePlaceholder || placeholder}
 				disabled={disabled}
+				readOnly={readOnly}
 				onChange={this.handleInputValueChange}
 				onFocus={this.handleFocus}
 				onBlur={this.handleBlur}
@@ -132,6 +133,10 @@ export class AutoComplete extends Select {
 	}
 
 	handleSelect(value) {
+		const {disabled, readOnly} = this.props;
+		if (disabled || readOnly) {
+			return;
+		}
 		this.selectedValue = value;
 		this.inputedValue = '';
 		super.handleSelect(value);
@@ -160,9 +165,11 @@ export class AutoComplete extends Select {
 	}
 
 	handleIconClick = (e) => {
-		e.stopPropagation();
-		this.setState({focused: !this.state.focused});
-		this.focus();
+		if (!this.props.readOnly) {
+			e.stopPropagation();
+			this.setState({focused: !this.state.focused});
+			this.focus();
+		}
 	}
 
 	handleInputEnter = (value, name) => {

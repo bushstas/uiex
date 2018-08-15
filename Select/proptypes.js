@@ -13,6 +13,7 @@ export const SelectPropTypes = {
 	empty: PROPTYPE.STRBOOL,
 	optionsShown: PropTypes.bool,
 	multiple: PropTypes.bool,
+	readOnly: PropTypes.bool,
 	iconType: PROPTYPE.ICON_TYPES,
 	onChange: PropTypes.func,
 	onSelect: PropTypes.func,

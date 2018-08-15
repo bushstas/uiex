@@ -43,6 +43,13 @@
 	.uiex-box {
 		margin-bottom: 0;
 	}
+	&.uiex-disabled {
+		border-color: #bbb !important;
+		.uiex-popup-menu-item {
+			background-color: #f1f1f1 !important;
+			color: #c1c1c1 !important;
+		}
+	}
 }
 .uiex-popup-menu-item {
 	padding: 0 12px;

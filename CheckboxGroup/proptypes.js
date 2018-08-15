@@ -13,6 +13,7 @@ export const CheckboxGroupPropTypes = {
 	checkAll: PROPTYPE.STRBOOL,
 	columns: PROPTYPE.STRNUM,
 	noBorder: PropTypes.bool,
+	radioMode: PropTypes.bool,
 	onChange: PropTypes.func,
 	onDisabledClick: PropTypes.func
 }

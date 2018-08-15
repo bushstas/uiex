@@ -63,6 +63,11 @@ export class Select extends UIEXBoxContainer {
 		}
 	}
 
+	componentWillUnmount() {
+		this.pendingPromise = null;
+		super.componentWillUnmount();
+	}
+
 	getTitle() {
 		let {value} = this.props;
 		if (value) {
@@ -157,11 +162,12 @@ export class Select extends UIEXBoxContainer {
 	renderOptions() {
 		const {focused, options} = this.state;
 		const OptionComponent = this.getOptionComponent();
-		const {value, name, empty, iconType, optionsShown} = this.props;
+		const {value, name, empty, iconType, optionsShown, disabled} = this.props;
 		let pending = false;
 		let items = [];
 		if (options && options instanceof Object) {
 			if (options instanceof Promise) {
+				this.pendingPromise = options;
 				options.then(
 					this.handlePromiseResolve,
 					this.handlePromiseReject
@@ -216,6 +222,7 @@ export class Select extends UIEXBoxContainer {
 				value={value}
 				isOpen={optionsShown || focused}
 				isInnerChild
+				disabled={disabled}
 				onSelect={this.selectHandler}
 				onSelectOption={this.handleSelectOption}
 				onSelectByArrow={this.selectByArrowHandler}
@@ -243,7 +250,7 @@ export class Select extends UIEXBoxContainer {
 
 	renderOption = (item) => {
 		const OptionComponent = this.getOptionComponent();
-		let value, title, icon, iconType, withTopDelimiter, withBottomDelimiter;
+		let value, title, icon, iconType, withTopDelimiter, withBottomDelimiter, single;
 		if (typeof item == 'string' || typeof item == 'number') {
 			value = item;
 			title = item;
@@ -254,6 +261,7 @@ export class Select extends UIEXBoxContainer {
 			iconType = item.iconType;
 			withTopDelimiter = item.withTopDelimiter;
 			withBottomDelimiter = item.withBottomDelimiter;
+			single = item.single;
 		}
 		this.values[value] = title;
 		if (this.filterOption(value)) {
@@ -266,6 +274,7 @@ export class Select extends UIEXBoxContainer {
 					iconType={iconType}
 					withTopDelimiter={withTopDelimiter}
 					withBottomDelimiter={withBottomDelimiter}
+					single={single}
 				>
 					{title}
 				</OptionComponent>
@@ -274,7 +283,7 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	handlePromiseResolve = (options) => {
-		if (!this.isUnmounted) {
+		if (!this.isUnmounted && this.pendingPromise == this.props.options) {
 			this.setState({options, placeholder: null});
 			const {onPromiseResolve} = this.props;
 			if (typeof onPromiseResolve == 'function') {
@@ -284,7 +293,7 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	handlePromiseReject = (error) => {
-		if (!this.isUnmounted) {
+		if (!this.isUnmounted && this.pendingPromise == this.props.options) {
 			this.setState({options: PENDING_ERROR, placeholder: null});
 			const {onPromiseReject} = this.props;
 			if (typeof onPromiseReject == 'function') {
@@ -295,7 +304,10 @@ export class Select extends UIEXBoxContainer {
 
 	handleClick(e) {
 		e.stopPropagation();
-		const {value, name, onFocus, onBlur, disabled, onDisabledClick} = this.props;
+		const {value, name, onFocus, onBlur, disabled, onDisabledClick, readOnly} = this.props;
+		if (readOnly) {
+			return;
+		}
 		const focused = this.isFocused();
 		this.valueBeforeFocus = value;
 		if (!disabled) {
@@ -324,6 +336,10 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	handleSelect(value) {
+		const {disabled, readOnly} = this.props;
+		if (disabled || readOnly) {
+			return;
+		}
 		if (!this.isMultiple()) {
 			this.hidePopup();
 		}
@@ -331,6 +347,10 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	handleSelectByArrow(value) {
+		const {disabled, readOnly} = this.props;
+		if (disabled || readOnly) {
+			return;
+		}
 		this.fireChange(value);
 		const {name, onSelect} = this.props;
 		if (typeof onSelect == 'function') {
@@ -339,7 +359,10 @@ export class Select extends UIEXBoxContainer {
 	}
 
 	handleSelectOption = (index, option) => {
-		const {name, onSelectOption} = this.props;
+		const {name, onSelectOption, disabled, readOnly} = this.props;
+		if (disabled || readOnly) {
+			return;
+		}		
 		if (typeof onSelectOption == 'function') {
 			onSelectOption(index, option, name);
 		}

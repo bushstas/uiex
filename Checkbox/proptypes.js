@@ -11,6 +11,7 @@ export const CheckboxPropTypes = {
 	icon: PROPTYPE.STRBOOL,
 	iconType: PROPTYPE.ICON_TYPES,
 	multiline: PropTypes.bool,
+	readOnly: PropTypes.bool,
 	controlStyle: PropTypes.object,
 	markerStyle: PropTypes.object,
 	labelStyle: PropTypes.object,

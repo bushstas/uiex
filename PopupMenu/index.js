@@ -50,6 +50,9 @@ export class PopupMenu extends Popup {
 
 	checkPosition() {
 		const {main} = this.refs;
+		if (!main) {
+			return;
+		}
 		main.style.height = 'auto';
 		const {top, height} = main.getBoundingClientRect();
 		const {innerHeight} = window;
@@ -100,12 +103,13 @@ export class PopupMenu extends Popup {
 		this.itemValues = [];
 		this.children = [];
 		this.selectedIdx = -1;
+		this.singles = [];
 	}
 
 	addChildProps(child, props, idx) {
 		let {value: currentValue = '', multiple} = this.props;
 		const {currentSelected} = this.state;
-		const {onSelect, value, iconType} = child.props;
+		const {onSelect, value, iconType, single} = child.props;
 		if (multiple) {
 			props.checked = false;
 			if (currentValue instanceof Array) {
@@ -126,6 +130,9 @@ export class PopupMenu extends Popup {
 				props.ref = 'selected';
 				this.selectedIdx = idx;
 			}
+		}
+		if (single) {
+			this.singles.push(value);
 		}
 		if (props.checked) {
 			props.icon = 'check';
@@ -186,14 +193,15 @@ export class PopupMenu extends Popup {
 
 	handleSelect = (value, idx, option) => {
 		const {onSelect, onSelectOption, value: currentValue, multiple} = this.props;
+		const {single} = option;
 		if (multiple && currentValue && value) {
 			if (!(currentValue instanceof Array)) {
 				if (currentValue === value) {
 					value = '';
-				} else {
-					value = [currentValue, value];
+				} else if (!single) {
+					value = this.removeSingles([currentValue, value]);
 				}
-			} else {
+			} else if (!single) {
 				const index = currentValue.indexOf(value);
 				if (index > -1) {
 					currentValue.splice(index, 1);
@@ -201,6 +209,7 @@ export class PopupMenu extends Popup {
 				} else {
 					value = [...currentValue, value];
 				}
+				value = this.removeSingles(value);
 			}
 		}
 		if (typeof onSelect == 'function') {
@@ -212,6 +221,22 @@ export class PopupMenu extends Popup {
 		this.fireChange(value);
 	}
 
+	removeSingles(arr) {
+		if (this.singles.length == 0) {
+			return arr;
+		}
+		const values = [];
+		for (let i = 0; i < arr.length; i++) {
+			if (this.singles.indexOf(arr[i]) == -1) {
+				values.push(arr[i]);
+			}
+		}
+		if (values.length == 1) {
+			return values[0];
+		}
+		return values;
+	}
+
 	handleSelectByClick = (value, idx, option) => {
 		const currentSelected = this.itemValues.indexOf(value);
 		if (this.state.currentSelected > -1) {
@@ -221,6 +246,7 @@ export class PopupMenu extends Popup {
 	}
 
 	handleSelectByArrow(value, idx) {
+		console.log(value)
 		const {onSelectByArrow, onSelectOption} = this.props;
 		if (typeof onSelectByArrow == 'function') {
 			onSelectByArrow(value);
@@ -230,7 +256,7 @@ export class PopupMenu extends Popup {
 		const child = this.children[idx];
 		if (child && typeof onSelectOption == 'function') {
 			const {props} = child;
-			let {value, children, icon, iconType, withTopDelimiter, withBottomDelimiter} = props;
+			let {value, children, icon, iconType, withTopDelimiter, withBottomDelimiter, single} = props;
 			if (!iconType) {
 				iconType = this.props.iconType;
 			}
@@ -240,7 +266,8 @@ export class PopupMenu extends Popup {
 				icon,
 				iconType,
 				withTopDelimiter,
-				withBottomDelimiter
+				withBottomDelimiter,
+				single
 			}
 			onSelectOption(idx, option);
 		}
@@ -328,7 +355,7 @@ export class PopupMenuItem extends UIEXComponent {
 
 	handleClick = (e) => {
 		e.stopPropagation();
-		const {value, onSelect, children, icon, iconType, withTopDelimiter, withBottomDelimiter, index} = this.props;
+		const {value, onSelect, children, icon, iconType, withTopDelimiter, withBottomDelimiter, index, single} = this.props;
 		if (typeof onSelect == 'function') {
 			const option = {
 				value,
@@ -336,7 +363,8 @@ export class PopupMenuItem extends UIEXComponent {
 				icon,
 				iconType,
 				withTopDelimiter,
-				withBottomDelimiter
+				withBottomDelimiter,
+				single
 			}
 			onSelect(value, index, option);
 		}

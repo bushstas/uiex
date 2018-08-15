@@ -420,7 +420,6 @@ export class UIEXForm extends UIEXComponent {
 	}
 
 	renderInternal() {		
-		const className = this.getNativeClassName();
 		const {caption, contentBefore, children, captionInside} = this.props;
 		return (
 			<div {...this.getProps()}>

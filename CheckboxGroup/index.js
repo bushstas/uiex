@@ -184,10 +184,10 @@ export class CheckboxGroup extends UIEXComponent {
 		return mapped ? {} : [];
 	}
 
-	renderOption = (item, idx) => {
+	renderOption = (item) => {
 		const {icon, iconType, disabled, onDisabledClick, multiline} = this.props;
 		const currentValue = this.getValue();
-		let value, title, children;
+		let value, title, children, readOnly = false;
 		if (typeof item == 'string' || typeof item == 'number') {
 			value = item;
 			title = item;
@@ -195,6 +195,7 @@ export class CheckboxGroup extends UIEXComponent {
 			value = item.value;
 			title = item.title;
 			children = item.children;
+			readOnly = item.readOnly;
 		}
 		const name = value;
 		if (this.filterOption(value)) {
@@ -210,6 +211,7 @@ export class CheckboxGroup extends UIEXComponent {
 					checked={checked}
 					icon={icon}
 					iconType={iconType}
+					readOnly={readOnly}
 					width={this.checkboxWidth}
 					disabled={disabled}
 					multiline={multiline}
@@ -252,7 +254,10 @@ export class CheckboxGroup extends UIEXComponent {
 	}
 
 	handleChange = (checked, checkboxName, checkboxValue) => {
-		let {name, onChange, mapped} = this.props;
+		let {name, onChange, mapped, radioMode} = this.props;
+		if (radioMode && !this.hasChildGroups && typeof onChange == 'function') {
+			return onChange(checkboxValue, name);
+		}
 		let value = this.getValue();
 		if (this.hasChildGroups || (value && !(value instanceof Array))) {
 			mapped = true;

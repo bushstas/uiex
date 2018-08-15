@@ -21,11 +21,12 @@ export class Checkbox extends UIEXComponent {
 	}
 
 	addClassNames(add) {
-		let {icon, multiline, value} = this.props;
+		let {icon, multiline, readOnly} = this.props;
 		const {checked} = this.state;
 		add('control');
 		add('with-icon', icon);
 		add('multilined', multiline);
+		add('read-only', readOnly);
 		if (checked) {
 			add('checked');
 		} else if (checked === null) {
@@ -118,9 +119,12 @@ export class Checkbox extends UIEXComponent {
 		const {
 			value,
 			name,
-			onChange
+			onChange,
+			readOnly
 		} = this.props;
-
+		if (readOnly) {
+			return;
+		}
 		const {checked} = this.state;
 
 		if (typeof onChange == 'function') {

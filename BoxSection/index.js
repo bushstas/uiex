@@ -33,9 +33,9 @@ export class BoxSection extends UIEXComponent {
 	renderInternal() {
 		const {caption, children, iconAtRight, className, note, ...boxProps} = this.props;
 		const {isOpen} = this.state;
-		
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<div className="uiex-box-section-caption" onClick={this.handleClick}>
 					<Icon name={isOpen ? 'expand_less' : 'expand_more'}/>
 					<span>
@@ -50,7 +50,7 @@ export class BoxSection extends UIEXComponent {
 				<Box {...boxProps} isOpen={isOpen}>
 					{children}
 				</Box>
-			</div>
+			</TagName>
 		)
 	}
 

@@ -196,9 +196,10 @@ export class Modal extends UIEXComponent {
 			outerContent
 		} = this.props;
 
-		const {expanded, isOpen} = this.state;		
+		const {expanded, isOpen} = this.state;
+		const TagName = this.getTagName();	
 		return (
-			<div {...this.getProps(null, false)} onClick={this.handleClick}>
+			<TagName {...this.getProps(null, false)} onClick={this.handleClick}>
 				{!withoutMask && 
 					<div 
 						className={this.getClassName('mask')}
@@ -233,7 +234,7 @@ export class Modal extends UIEXComponent {
 					</div>
 					{this.renderFooter()}
 				</Draggable>
-			</div>
+			</TagName>
 		)
 	}
 

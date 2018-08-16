@@ -265,3 +265,15 @@ export const getSizeInPercentageOfWindow = (value, attr) => {
 	}
 	return 0;
 }
+
+export const propsChanged = (p1, p2, list) => {
+	if (list instanceof Array) {
+		for (let i = 0; i < list.length; i++) {
+			const k = list[i];
+			if (p1[k] != p2[k]) {
+				return true;
+			}
+		}
+	}
+	return false;
+}

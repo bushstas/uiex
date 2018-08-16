@@ -93,13 +93,14 @@ export class CheckboxGroup extends UIEXComponent {
 
 	renderInternal() {
 		this.renderContent();
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				{this.renderTopFunctional()}
 				<div className="uiex-checkbox-group-controls uiex-scrollable" style={this.contentStyle}>
 					{this.options}
 				</div>
-			</div>
+			</TagName>
 		)
 	}
 

@@ -15,7 +15,7 @@ export const SIDES = ['right', 'left', 'top', 'bottom'];
 export const ANIM_TYPE = ['fade', 'roll', 'fall', 'fade-roll', 'fade-fall'];
 export const PANEL_ANIMATION = ['fade', 'roll', 'fade-roll'];
 export const MODAL_ANIMATION = ['fade', 'fade-fall', 'fade-float', 'fade-scale'];
-export const ARRAY_INPUT_TYPES = ['null', 'string', 'number', 'boolean', 'array', 'object', 'function', 'regexp', 'color'];
+export const ARRAY_INPUT_TYPES = ['null', 'string', 'number', 'boolean', 'array', 'object', 'function', 'regexp'];
 
 const ARRAY_INPUT_TYPE = PropTypes.oneOf(ARRAY_INPUT_TYPES);
 

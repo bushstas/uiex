@@ -58,12 +58,13 @@ export class LabelGroup extends UIEXComponent {
 	}
 
 	renderInternal() {
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<div className="uiex-label-group-inner">
 					{this.renderChildren()}
 				</div>
-			</div>
+			</TagName>
 		)
 	}
 }

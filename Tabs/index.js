@@ -115,8 +115,10 @@ export class Tabs extends UIEXButtons {
 
 	renderInternal() {
 		const {simple, dynamic} = this.props;
+		const TagName = this.getTagName();
+
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<div className={this.getButtonGroupClassName()}>
 					<div className="uiex-button-group-inner">
 						{this.renderChildren()}
@@ -128,7 +130,7 @@ export class Tabs extends UIEXButtons {
 						{this.renderContent()}
 					</div>
 				}
-			</div>
+			</TagName>
 		)
 	}
 

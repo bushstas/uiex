@@ -38,12 +38,13 @@ export class SelectObject extends UIEXComponent {
 	}
 
 	renderInternal() {
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				{this.renderInput()}
 				{this.renderArrowIcon()}
 				{this.renderModal()}
-			</div>
+			</TagName>
 		)
 	}
 

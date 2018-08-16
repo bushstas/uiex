@@ -63,9 +63,10 @@ export class Section extends UIEXComponent {
 
 	renderInternal() {
 		const {children, caption, note} = this.props;
+		const TagName = this.getTagName();
 
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				{(caption || note) &&
 					<div className="uiex-section-caption" style={this.getStyle('caption')}>
 						{caption}
@@ -79,7 +80,7 @@ export class Section extends UIEXComponent {
 				<div className="uiex-section-content" style={this.getStyle('content')}>
 					{children}
 				</div>
-			</div>
+			</TagName>
 		)
 	}
 }

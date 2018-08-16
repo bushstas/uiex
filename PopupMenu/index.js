@@ -246,7 +246,6 @@ export class PopupMenu extends Popup {
 	}
 
 	handleSelectByArrow(value, idx) {
-		console.log(value)
 		const {onSelectByArrow, onSelectOption} = this.props;
 		if (typeof onSelectByArrow == 'function') {
 			onSelectByArrow(value);
@@ -345,11 +344,12 @@ export class PopupMenuItem extends UIEXComponent {
 
 	renderInternal() {
 		const {children, icon, iconType} = this.props;
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				{icon && <Icon name={icon} type={iconType}/>}
 				{children}
-			</div>
+			</TagName>
 		)
 	}
 

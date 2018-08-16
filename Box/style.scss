@@ -2,6 +2,8 @@
 	position: relative;
 	overflow: hidden;
 	margin-bottom: 15px;
+	display: block;
+	
 	&.uiex-not-animated {
 		height: auto !important;
 	}

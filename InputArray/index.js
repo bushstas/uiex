@@ -5,12 +5,11 @@ import {AutoComplete} from '../AutoComplete';
 import {Icon} from '../Icon';
 import {isValidAndNotEmptyNumericStyle, getNumber} from '../utils';
 import {ARRAY_INPUT_TYPES} from '../consts';
+import {INPUT_ARRAY_PLACEHOLDER} from '../texts';
 import {InputArrayPropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
-
-const DEFAULT_PLACEHOLDER = 'Input new value and press Enter';
 
 export class InputArray extends UIEXComponent {
 	static propTypes = InputArrayPropTypes;
@@ -61,8 +60,9 @@ export class InputArray extends UIEXComponent {
 
 	renderInternal() {
 		const {inputUnder, withControls} = this.props;
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<div className={this.getClassName('content')}>
 					{!inputUnder && this.renderInput()}
 					<div className={this.getClassName('items', 'uiex-scrollable')}>
@@ -71,7 +71,7 @@ export class InputArray extends UIEXComponent {
 					{inputUnder && this.renderInput()}
 					{withControls && this.renderControls()}
 				</div>
-			</div>
+			</TagName>
 		)
 	}
 
@@ -101,7 +101,7 @@ export class InputArray extends UIEXComponent {
 	getPlaceholder() {
 		let {placeholder} = this.props;
 		if (!placeholder || typeof placeholder != 'string') {
-			placeholder = DEFAULT_PLACEHOLDER;
+			placeholder = INPUT_ARRAY_PLACEHOLDER;
 		}
 		return placeholder;
 	}
@@ -337,10 +337,16 @@ export class InputArray extends UIEXComponent {
 			} else if (onlyType == 'null') {
 				inputValue = 'null';
 			} else if (onlyType == 'number') {
-				inputValue = inputValue.replace(/[^\d]/g, '');
+				const n = this.tryToGetNumber(inputValue);
+				if (typeof n == 'number') {
+					inputValue = n;
+				} else {
+					inputValue = (inputValue.charAt(0) == '-' ? '-' : '') + inputValue.replace(/[^\d]/g, '');
+				}
 			} else if (onlyType == 'regexp' && inputValue[0] != '/') {
 				inputValue = '/' + inputValue + '/';
-			}	
+			}
+			console.log(inputValue)
 			
 			if (autoDefine && onlyType != 'string') {
 				switch (inputValue) {
@@ -369,8 +375,9 @@ export class InputArray extends UIEXComponent {
 						break;
 					}
 					default: {
-						if (/^\d+$/.test(inputValue) && inputValue.length < 10) {							
-							inputValue = ~~inputValue;
+						const numberValue = this.tryToGetNumber(inputValue);
+						if (typeof numberValue == 'number') {
+							inputValue = numberValue;
 						} else {
 							if ((firstSign == '[' && lastSign == ']') || (firstSign == '{' && lastSign == '}')) {
 								try {
@@ -412,6 +419,42 @@ export class InputArray extends UIEXComponent {
 			if (typeof onAddItem == 'function') {
 				onAddItem(addedItemArr, value);
 			}
+		}
+	}
+
+	tryToGetNumber(str) {
+		if (typeof str == 'number') {
+			return str;
+		}
+		if (typeof str != 'string') {
+			return;
+		}
+		const isNumber = (n) => {
+			if (/^\-{0,1}\d+$/.test(n)) {
+				const maxLength = n.charAt(0) != '-' ? 10 : 11;
+				if (n.length < maxLength) {
+					return true;
+				}
+			}
+			return false;
+		};
+		const parts = str.split('.');
+		if (parts[1] !== undefined) {
+			if (parts[0] === '') {
+				parts[0] = '0';
+			}
+			if (parts[1] === '') {
+				parts[1] = '0';
+			}
+			if (isNumber(parts[0]) && isNumber(parts[1])) {
+				const dec = Math.pow(10, parts[1].length);				
+				parts[0] = ~~parts[0];
+				parts[1] = ~~parts[1];
+				const multiplier = parts[0] >= 0 ? 1 : -1;
+				return parts[0] + parts[1] / dec * multiplier;
+			}
+		} else if (isNumber(str)) {
+			return ~~str;
 		}
 	}
 

@@ -21,12 +21,13 @@ export class ButtonGroup extends UIEXButtons {
 	}
 
 	renderInternal() {
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<div className="uiex-button-group-inner">
 					{this.renderChildren()}
 				</div>
-			</div>
+			</TagName>
 		)
 	}
 }

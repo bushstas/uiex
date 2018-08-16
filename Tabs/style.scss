@@ -1,4 +1,6 @@
 .uiex-tabs {
+	display: block;
+	
 	&.uiex-dynamic-tabs {
 		.uiex-button:not(.uiex-add-tab-button) {
 			position: relative;

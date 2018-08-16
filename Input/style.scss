@@ -1,4 +1,6 @@
 .uiex-input {
+	display: inline-block;
+	
 	&.uiex-textarea {
 		height: 80px;
 	}
@@ -30,17 +32,18 @@
 	&.uiex-valid {
 		input,
 		textarea {
-			border-color: #2cc100 !important;
-			box-shadow: inset -3px -3px 5px #e2f1de;
+			border-color: #78bb00 !important;
+    		box-shadow: inset -3px -3px 5px #ddead6;
 			&:focus {
-				border-color: #208c00 !important;
-				box-shadow: inset 3px 3px 5px #d2e8cb;
+				border-color: #60a000 !important;
+    			box-shadow: inset 3px 3px 5px #d8e8cb;
 			}
 		}
 	}
 	&.uiex-invalid {
 		input,
 		textarea {
+			color: #b70909 !important;
 			border-color: #ff8387 !important;
 			box-shadow: inset -3px -3px 5px #ffddde;
 			&:focus {

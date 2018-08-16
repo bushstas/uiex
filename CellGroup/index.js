@@ -391,15 +391,16 @@ export class Cell extends UIEXComponent {
 
 	renderInternal() {
 		const {style, minHeight} = this.props;
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<CellContent 
 					style={style}
 					minHeight={minHeight}
 				>
 					{this.renderChildren()}
 				</CellContent>
-			</div>
+			</TagName>
 		)
 	}
 

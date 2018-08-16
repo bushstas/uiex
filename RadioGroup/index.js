@@ -67,12 +67,13 @@ export class RadioGroup extends UIEXComponent {
 
 	renderInternal() {
 		this.renderContent();
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<div className="uiex-radio-group-controls uiex-scrollable" style={this.contentStyle}>
 					{this.options}
 				</div>
-			</div>
+			</TagName>
 		)
 	}
 

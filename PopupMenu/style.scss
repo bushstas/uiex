@@ -12,6 +12,7 @@
 	z-index: 100;
 	visibility: hidden;
 	height: 0;
+	display: block;
 
 	&.uiex-options-on-top {
 		top: auto;

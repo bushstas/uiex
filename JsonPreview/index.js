@@ -38,11 +38,12 @@ export class JsonPreview extends UIEXComponent {
 	renderInternal() {
 		const {data} = this.props;
 		this.renderData(data);
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<pre dangerouslySetInnerHTML={{__html: this.content}}/>
 				{this.renderInfo()}
-			</div>
+			</TagName>
 		)
 	}
 

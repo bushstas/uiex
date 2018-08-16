@@ -100,13 +100,14 @@ export class Select extends UIEXBoxContainer {
 
 	renderInternal() {
 		const options = this.renderOptions();
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				{this.renderInput()}
 				{options}
 				{this.renderArrowIcon()}
 				{this.renderQuantityLabel()}
-			</div>
+			</TagName>
 		)
 	}
 

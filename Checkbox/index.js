@@ -79,8 +79,9 @@ export class Checkbox extends UIEXComponent {
 		} else {
 			additionalContent = content;
 		}
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<span 
 					className="uiex-checkbox-control"
 					onClick={this.handleClick}
@@ -110,7 +111,7 @@ export class Checkbox extends UIEXComponent {
 						{additionalContent}
 					</div>
 				}
-			</div>
+			</TagName>
 		)
 	}
 

@@ -168,8 +168,9 @@ export class ColorPicker extends UIEXComponent {
 	renderInternal() {
 		const {presetColors} = this.props;
 		const {value, r, g, b} = this.state;
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<div className={this.getClassName('selector')}>
 					<div ref="satval" className={this.getClassName('satval')} onMouseDown={this.handleMouseDownOnSatval}>
 						<div className={this.getClassName('white')}/>
@@ -219,7 +220,7 @@ export class ColorPicker extends UIEXComponent {
 						onSelect={this.handleSelectPresetColor}
 					/>
 				}
-			</div>
+			</TagName>
 		)
 	}
 

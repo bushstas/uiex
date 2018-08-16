@@ -24,6 +24,7 @@ export class Input extends UIEXComponent {
 	}
 
 	componentDidMount() {
+		super.componentDidMount();
 		const {value} = this.props;
 		if (value) {
 			this.checkValidity(value);
@@ -34,7 +35,7 @@ export class Input extends UIEXComponent {
 		super.componentWillReceiveProps(nextProps);
 		const {value} = this.props;
 		if (nextProps.value != value) {
-			this.checkValidity(nextProps.value);
+			this.checkValidity(nextProps.value, nextProps);
 		}
 	}
 
@@ -51,12 +52,13 @@ export class Input extends UIEXComponent {
 	}
 
 	renderInternal() {
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				{this.renderInput()}
 				{this.renderClearButton()}
 				{this.renderAdditionalContent()}
-			</div>
+			</TagName>
 		)
 	}
 
@@ -138,8 +140,8 @@ export class Input extends UIEXComponent {
 		}
 	}
 
-	checkValidity(value) {
-		let {pattern, required, minLength} = this.props;
+	checkValidity(value, props = this.props) {
+		let {pattern, required, minLength} = props;
 		let isValid = true;
 		if (pattern && typeof pattern == 'string') {
 			pattern = new RegExp(regexEscape(pattern));
@@ -167,7 +169,7 @@ export class Input extends UIEXComponent {
 		if (isValid === false && this.isValid == null) {
 			return;
 		}
-		this.fireChangeValidity(isValid, value);		
+		this.fireChangeValidity(isValid, value);
 	}
 
 	fireChangeValidity(isValid, value = undefined) {

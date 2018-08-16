@@ -66,9 +66,9 @@ export class Form extends UIEXComponent {
 
 	renderInternal() {
 		const {caption} = this.props;
-		
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				{caption &&
 					<div className="uiex-form-caption">
 						{caption}
@@ -76,7 +76,7 @@ export class Form extends UIEXComponent {
 				}
 				{this.renderChildren()}
 				{this.renderButtons()}
-			</div>
+			</TagName>
 		)
 	}
 

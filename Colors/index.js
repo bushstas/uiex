@@ -15,8 +15,9 @@ export class Colors extends UIEXComponent {
 	renderInternal() {
 		const {colors, colorHeight} = this.props;
 		const columns = this.getColumns();
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<CellGroup 
 					columns={columns}
 					cellMargin="5"
@@ -35,7 +36,7 @@ export class Colors extends UIEXComponent {
 						)
 					})}
 				</CellGroup>
-			</div>
+			</TagName>
 		)
 	}
 

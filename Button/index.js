@@ -26,7 +26,7 @@ export class Button extends UIEXComponent {
 			iconType
 		} = this.props;
 
-		const TagName = typeof href == 'string' ? 'a' : 'div';
+		const TagName = typeof href == 'string' ? 'a' : this.getTagName();
 		const props = typeof href == 'string' ? {href, target} : null;		
 
 		return (

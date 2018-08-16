@@ -205,7 +205,7 @@ export class SidePanel extends UIEXComponent {
 	}
 
 	renderInternal() {
-		let {children, side, isOpen, animation, effect, unclosable} = this.props;
+		let {children, side, isOpen, animation, effect, unclosable, tagName} = this.props;
 		let className = 'uiex-side-panel-outer'
 		if (side) {
 			className += ' uiex-side-' +  side;
@@ -220,6 +220,7 @@ export class SidePanel extends UIEXComponent {
 		return (
 			<Popup 
 				ref="popup"
+				tagName={tagName}
 				className={className}
 				isOpen={isOpen && !unclosable}
 				onCollapse={this.handlePopupCollapse}

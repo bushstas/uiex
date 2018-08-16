@@ -22,8 +22,9 @@ export class Label extends UIEXComponent {
 
 	renderInternal() {
 		let {children, removable} = this.props;
+		const TagName = this.getTagName(); 
 		return (
-			<div {...this.getProps()}>				
+			<TagName {...this.getProps()}>				
 				<span className="uiex-label-content">
 					{children} 
 					{removable &&
@@ -32,7 +33,7 @@ export class Label extends UIEXComponent {
 						</span>
 					}
 				</span>				
-			</div>
+			</TagName>
 		)
 	}
 

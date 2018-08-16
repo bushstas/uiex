@@ -205,15 +205,15 @@ export class Box extends UIEXComponent {
 			buttonUnder,
 			isOpen
 		} = this.props;
-
+		const TagName = this.getTagName();
 		const withButton = button && typeof button == 'string';
 		if (withButton) {
 			return (
-				<div className="uiex-box-container">
+				<TagName className="uiex-box-container">
 					{withButton && !buttonUnder && this.renderButton()}
 					{this.renderBox()}
 					{withButton && buttonUnder && this.renderButton()}
-				</div>
+				</TagName>
 			)
 		}
 		return this.renderBox();

@@ -1,10 +1,12 @@
 import React from 'react';
 import {Input} from '../Input';
-import {getNumberOrNull} from '../utils';
+import {getNumberOrNull, propsChanged} from '../utils';
 import {InputDatePropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
+
+const PROPS_LIST = ['yearFirst', 'past', 'future', 'withTime', 'delimiter', 'minYear', 'maxYear', 'periodFrom', 'periodTo'];
 
 export class InputDate extends Input {
 	static propTypes = InputDatePropTypes;
@@ -14,6 +16,18 @@ export class InputDate extends Input {
 	addClassNames(add) {
 		super.addClassNames(add);
 		add('date-input');
+	}
+
+	componentDidUpdate(prevProps) {
+		let {onChange, name, value} = this.props;
+		if (value && propsChanged(prevProps, this.props, PROPS_LIST)) {
+			if (typeof onChange == 'function') {
+				const newValue = this.filterValue(value, this.props);
+				if (newValue != value) {
+					onChange(newValue, name);
+				}
+			}
+		}
 	}
 
 	getCustomInputProps() {
@@ -30,7 +44,7 @@ export class InputDate extends Input {
 	}
 
 	filterValue(value, props) {
-		let {delimiter, withTime, yearFirst, minYear, maxYear, past, future} = props;
+		let {delimiter, withTime, yearFirst} = props;
 		if (!delimiter || typeof delimiter != 'string') {
 			delimiter = '.';
 		}
@@ -66,7 +80,10 @@ export class InputDate extends Input {
 	}
 
 	getProperDateValue(value) {
-		const {withTime, yearFirst} = this.props; 
+		const {yearFirst} = this.props;
+		if (typeof value != 'string') {
+			value = '';
+		}
 		value = value.replace(/[^\d]/g, '');
 		let year = '', month = '', day = '', hour = '', minute = '';
 		for (let i = 0; i < value.length; i++) {
@@ -262,5 +279,15 @@ export class InputDate extends Input {
 			v = '0' + v;
 		}
 		return v;
+	}
+
+	checkValidity(value, props = this.props) {
+		const {withTime} = props;
+		const length = withTime ? 16 : 10;
+		const isValid = value.length == length;
+		if (isValid === false && this.isValid == null) {
+			return;
+		}
+		this.fireChangeValidity(isValid, value);
 	}
 }

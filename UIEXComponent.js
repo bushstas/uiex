@@ -236,11 +236,20 @@ export class UIEXComponent extends React.PureComponent {
 	}
 
 	renderInternal() {
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				{this.renderChildren()}
-			</div>
+			</TagName>
 		)
+	}
+
+	getTagName() {
+		let {tagName} = this.props; 
+		if (!tagName || typeof tagName != 'string') {
+			tagName = 'div';
+		}
+		return tagName;
 	}
 
 	getDefaultStyle(name = 'main') {

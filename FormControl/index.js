@@ -1,6 +1,5 @@
 import React from 'react';
 import {Cell} from '../CellGroup';
-import {getNumber} from '../utils';
 import {FormControlPropTypes} from './proptypes';
 
 import '../style.scss';
@@ -28,10 +27,10 @@ export class FormControl extends Cell {
 	}
 
 	renderInternal() {
-		const {children, caption} = this.props;
-		
+		const {caption} = this.props;
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				{caption &&
 					<div className="uiex-form-control-caption">
 						{caption}
@@ -40,7 +39,7 @@ export class FormControl extends Cell {
 				<div className="uiex-form-control-content">
 					{this.renderChildren()}
 				</div>
-			</div>
+			</TagName>
 		)
 	}
 

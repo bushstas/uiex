@@ -27,8 +27,9 @@ export class Radio extends UIEXComponent {
 		} else {
 			additionalContent = content;
 		}
+		const TagName = this.getTagName();
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				<span 
 					className="uiex-radio-control"
 					onClick={this.handleClick}
@@ -51,7 +52,7 @@ export class Radio extends UIEXComponent {
 						{additionalContent}
 					</div>
 				}
-			</div>
+			</TagName>
 		)
 	}
 

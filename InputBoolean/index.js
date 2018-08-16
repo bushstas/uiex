@@ -19,11 +19,12 @@ export class InputBoolean extends UIEXComponent {
 	}
 
 	renderInternal() {
+		const TagName = this.getTagName(); 
 		return (
-			<div {...this.getProps()}>
+			<TagName {...this.getProps()}>
 				{this.renderInput()}
 				{this.renderCheckbox()}
-			</div>
+			</TagName>
 		)
 	}
 

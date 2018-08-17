@@ -81,8 +81,8 @@ export const isValidAndNotEmptyNumericStyle = (v) => {
 }
 
 export const getNumber = (n, d = 0) => {
-	if (typeof n == 'string' && n == ~~n) {
-		n = ~~n;
+	if (typeof n == 'string' && n == Number(n)) {
+		n = Number(n);
 	}
 	if (typeof n == 'number') {
 		return n;
@@ -94,8 +94,8 @@ export const getNumber = (n, d = 0) => {
 }
 
 export const getNumberOrNull = (n) => {
-	if (typeof n == 'string' && n == ~~n) {
-		n = ~~n;
+	if (n !== '' && typeof n == 'string' && n == Number(n)) {
+		n = Number(n);
 	}
 	if (typeof n == 'number') {
 		return n;
@@ -201,7 +201,7 @@ export const getProperStyleProperty = (value) => {
 			value += 'px';
 		}
 		if (typeof value == 'string') {
-			if (value == ~~value) {
+			if (value == Number(value)) {
 				value += 'px';
 			}
 			return value;
@@ -258,7 +258,7 @@ export const inPercent = (value) => {
 
 export const getSizeInPercentageOfWindow = (value, attr) => {
 	if (typeof value == 'string') {
-		value = ~~value.replace(/%$/, '');
+		value = Number(value.replace(/%$/, ''));
 	}
 	if (typeof value == 'number') {
 		return Math.round((attr == 'width' ? window.innerWidth : window.innerHeight) * value / 100);
@@ -276,4 +276,15 @@ export const propsChanged = (p1, p2, list) => {
 		}
 	}
 	return false;
+}
+
+export const replace = (regexp, to, str) => {
+	if (typeof str != 'string') {
+		try {
+			str = str.toString();
+		} catch (e) {
+			str = '';
+		}
+	}
+	return str.replace(regexp, to);
 }

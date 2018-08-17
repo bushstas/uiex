@@ -86,13 +86,7 @@ export const PROPTYPE = {
 	ANIM_EFFECTS: PropTypes.oneOf(ANIM_EFFECTS),
 	ANIM_SPEED: PropTypes.oneOf(ANIM_SPEED),
 	ANIM_TYPE: PropTypes.oneOf(ANIM_TYPE),
-	INPUT_MEASURES: PropTypes.arrayOf(PropTypes.shape({
-		id: PropTypes.oneOfType([
-			PropTypes.string,
-			PropTypes.number
-		]),
-		name: PropTypes.string
-	})),
+	INPUT_MEASURES: PropTypes.arrayOf(PropTypes.string),
 	OPTIONS: PropTypes.oneOfType([
 		PropTypes.object,
 		PropTypes.func,

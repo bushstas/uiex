@@ -1,22 +1,27 @@
 import React from 'react';
 import {Input} from '../Input';
-import {Icon} from '../Icon';
-import {getNumberOrNull} from '../utils';
+import {getNumberOrNull, propsChanged, replace} from '../utils';
 import {InputNumberPropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
+
+const PROPS_LIST = ['positive', 'negative', 'decimal', 'toFixed', 'minValue', 'maxValue'];
 
 export class InputNumber extends Input {
 	static propTypes = InputNumberPropTypes;
 	static className = 'input';
 	static isControl = true;
 
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {minValue, maxValue} = this.props;
-		if (minValue != nextProps.minValue || maxValue != nextProps.maxValue) {
-			this.fireChange(nextProps);
+	componentDidUpdate(prevProps) {
+		let {onChange, name, value} = this.props;
+		if (value && propsChanged(prevProps, this.props, PROPS_LIST)) {
+			if (typeof onChange == 'function') {
+				const newValue = this.filterValue(value, this.props);
+				if (newValue != value) {
+					onChange(newValue, name);
+				}
+			}
 		}
 	}
 
@@ -24,7 +29,7 @@ export class InputNumber extends Input {
 		const {measure} = this.props;
 		super.addClassNames(add);
 		add('number-input');
-		add('with-measure', measure && (typeof measure == 'string' || measure instanceof Array));
+		add('with-measure', measure && typeof measure == 'string');
 	}
 
 	renderAdditionalContent() {
@@ -45,29 +50,17 @@ export class InputNumber extends Input {
 	}
 
 	getMeasure() {
-		this.currentMeasureIndex = null;
 		const {measure, measures, disabled} = this.props;
 		if (!measure) {
 			return;
 		}
-		const isArrayMeasures = measures instanceof Array;
-		if (!measures || !isArrayMeasures) {
+		if (!measures || !(measures instanceof Array)) {
 			return [measure, false];
 		}
-		if (isArrayMeasures) {
-			for (let i = 0; i < measures.length; i++) {
-				const m = measures[i];
-				if (m instanceof Object && m.id == measure) {
-					this.currentMeasureIndex = i;
-					return [m.name, !disabled];
-				}
-			}
-		}
-		return [measure, false];
+		return [measure, !disabled];
 	}
 
 	getValue() {
-		const {decimal} = this.props;
 		let value = super.getValue();
 		if (value === '-0') {
 			value = '-';
@@ -79,6 +72,9 @@ export class InputNumber extends Input {
 		value = super.filterValue(value, props);
 		if (value) {
 			let {maxValue, minValue, positive, negative, decimal, toFixed} = props;
+			if (negative && positive) {
+				positive = false;
+			}
 			if (typeof maxValue == 'string') {
 				maxValue = getNumberOrNull(maxValue);
 			}
@@ -95,10 +91,13 @@ export class InputNumber extends Input {
 			if (decimal && value == '.') {
 				value = '0' + value;
 			}
-			value = value.replace(/,/, '.');
+			value = replace(/,/, '.', value);
 			const parts = value.split('.');
 			value = parts[0];
-			value = ~~(value.replace(/[^\d]/g, ''));
+			value = replace(/[^\d]/g, '', value);
+			if (value !== '') {
+				value = Number(value);
+			}
 			if ((isNegative || negative) && value) {
 				value *= -1;
 			}
@@ -116,7 +115,7 @@ export class InputNumber extends Input {
 			}
 			if (decimal && typeof parts[1] == 'string') {
 				if (parts[1]) {
-					parts[1] = parts[1].replace(/[^\d]/g, '');
+					parts[1] = replace(/[^\d]/g, '', parts[1]);
 				}
 				if (typeof toFixed == 'number' && parts[1].length > toFixed) {
 					parts[1] = parts[1].substring(0, toFixed);
@@ -142,17 +141,17 @@ export class InputNumber extends Input {
 
 	handleMeasureClick = () => {
 		const {measures, onChangeMeasure, name, disabled} = this.props;
-		const i = this.currentMeasureIndex;
-		let id;
-		if (!disabled && typeof i == 'number' && typeof onChangeMeasure == 'function') {
+		const i = measures.indexOf(this.props.measure);
+		let measure;
+		if (!disabled && typeof onChangeMeasure == 'function') {
 			let idx = 0;
-			id = measures[idx].id;
-			if (measures[i + 1] instanceof Object) {
-				id = measures[i + 1].id;
+			measure = measures[idx];
+			if (i >= 0 && measures[i + 1]) {
+				measure = measures[i + 1];
 				idx = i + 1;
 			}
-			if (id) {
-				onChangeMeasure(id, idx, name);
+			if (measure) {
+				onChangeMeasure(measure, idx, name);
 			}
 		}
 	}
@@ -195,7 +194,7 @@ export class InputNumber extends Input {
 				value = '';
 			}
 			const parts = value.split('.');
-			value = ~~parts[0];			
+			value = Number(parts[0]);
 			if (add > 0) {
 				if (!negative || value < 0) {
 					value++;

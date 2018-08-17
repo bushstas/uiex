@@ -246,7 +246,7 @@ export class UIEXComponent extends React.PureComponent {
 
 	getTagName() {
 		let {tagName} = this.props; 
-		if (!tagName || typeof tagName != 'string') {
+		if (!tagName || typeof tagName != 'string' || !(/^[a-z]/i).test(tagName.charAt(0))) {
 			tagName = 'div';
 		}
 		return tagName;

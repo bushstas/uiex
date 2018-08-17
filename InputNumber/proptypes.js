@@ -7,10 +7,11 @@ export const InputNumberPropTypes = {
 	positive: PropTypes.bool,
 	negative: PropTypes.bool,
 	decimal: PropTypes.bool,
+	correctionOnBlur: PropTypes.bool,
 	toFixed: PROPTYPE.STRNUM,
 	minValue: PROPTYPE.STRNUM,
 	maxValue: PROPTYPE.STRNUM,
-	measure: PROPTYPE.STRINGS,
+	measure: PropTypes.string,
 	measures: PROPTYPE.INPUT_MEASURES,
 	onChangeMeasure: PropTypes.func
 }

@@ -264,6 +264,9 @@ export class Input extends UIEXComponent {
 
 	filterValue(value, props) {
 		const {customFilter, defaultValue} = props;
+		if (value == null) {
+			value = '';
+		}
 		if (value === '') {
 			return defaultValue || '';
 		}

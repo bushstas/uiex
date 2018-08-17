@@ -4,6 +4,18 @@
 	&.uiex-textarea {
 		height: 80px;
 	}
+	&.uiex-align-center {
+		input,
+		textarea {
+			text-align: center;
+		}
+	}
+	&.uiex-align-right {
+		input,
+		textarea {
+			text-align: right;
+		}
+	}
 
 	&.uiex-disabled {
 		input,

@@ -13,32 +13,29 @@ import './style.scss';
 
 const VALUES_PROPS_LIST = ['value', 'defaultValue'];
 const PROPS_LIST = ['pickerShown', ...VALUES_PROPS_LIST];
-const stateMaster = new StateMaster();
+const stateMaster = new StateMaster(PROPS_LIST);
+
+const getDerivedStateFromProps = (nextProps, prevProps, state, component) => {
+	const {add, isChanged, isChangedAny} = stateMaster;
+	if (isChanged('pickerShown', false) && state.pickerShown) {
+		add('pickerShown', false);
+	}
+	if (isChangedAny(VALUES_PROPS_LIST)) {
+		const {value, defaultValue} = nextProps;
+		const color = getColor(replace(/^#+/, '', value || defaultValue));
+		const isValidColor = color.isValid();
+		add('isValidColor', isValidColor);
+		add('colorStyle', isValidColor ? {backgroundColor: '#' + color.toHex()} : null);
+	}
+}
 
 export class InputColor extends Input {
 	static propTypes = InputColorPropTypes;
 	static className = 'color-input';
 	static isControl = true;
 
-	constructor(props) {
-		super(props);
-		this.state = stateMaster.getInitialState(props, PROPS_LIST, this.state);
-	}
-
 	static getDerivedStateFromProps(props, state) {
-		const {getDerivedState, add, isChanged, isChangedAny} = stateMaster;
-		return getDerivedState(props, state, PROPS_LIST, () => {
-			if (isChanged('pickerShown', false) && state.pickerShown) {
-				add('pickerShown', false);
-			}
-			if (isChangedAny(VALUES_PROPS_LIST)) {
-				const {value, defaultValue} = props;
-				const color = getColor(replace(/^#+/, '', value || defaultValue));
-				const isValidColor = color.isValid();
-				add('isValidColor', isValidColor);
-				add('colorStyle', isValidColor ? {backgroundColor: '#' + color.toHex()} : null);
-			}
-		});
+		return stateMaster.getDerivedState(props, state, getDerivedStateFromProps, Input);
 	}
 
 	addClassNames(add) {

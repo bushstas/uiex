@@ -12,24 +12,28 @@ import {
 import {FORM_BUTTON_DISPLAY} from './consts';
 
 const PROPS_LIST = ['width', 'height', 'fontSize', 'style'];
-const stateMaster = new StateMaster();
+const stateMaster = new StateMaster(PROPS_LIST);
+
+const getDerivedStateFromProps = (nextProps, prevProps, state, component) => {
+	const {add, isChangedAny} = stateMaster;
+	if (isChangedAny()) {
+		add('mainStyle', component.getMainStyle());
+	}
+}
 
 export class UIEXComponent extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.stylesChanged = {};
 		this.styles = {};
-		this.state = this.getUpdatedState(props);
+		this.state = {};
+		stateMaster.subscribe(this);
 	}
-
-	getUpdatedState(nextProps, prevProps) {
-		// stateMaster.init(nextProps, prevProps);
-		// if (stateMaster.check(PROPS_LIST)) {
-		// 	stateMaster.add('mainStyle', this.getMainStyle());
-		// }
-		// return stateMaster.get();
+	
+	static getDerivedStateFromProps(props, state) {
+		return stateMaster.getDerivedState(props, state, getDerivedStateFromProps);
 	}
-
+	
 	componentWillReceiveProps(nextProps) {		
 		// const {width, height, fontSize, style} = nextProps;
 		// this.stylesChanged.main = (
@@ -75,7 +79,7 @@ export class UIEXComponent extends React.PureComponent {
 		return this.styles[name];
 	}
 
-	getMainStyle(withoutPropStyle = false) {		
+	getMainStyle(withoutPropStyle = false) {
 		const {fontSize, style: propStyle} = this.props;
 		const width = this.getWidthProp();
 		const height = this.getHeightProp();
@@ -110,10 +114,6 @@ export class UIEXComponent extends React.PureComponent {
 		const {onUpdate} = this.props;
 		if (typeof onUpdate == 'function') {
 			onUpdate(this);
-		}
-		const newState = this.getUpdatedState(this.props, prevProps);
-		if (newState) {
-			this.setState(newState);
 		}
 	}
 

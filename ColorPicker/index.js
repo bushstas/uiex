@@ -1,4 +1,5 @@
 import React from 'react';
+import {StateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {InputColor} from '../InputColor';
 import {InputNumber} from '../InputNumber';
@@ -11,6 +12,21 @@ import '../style.scss';
 import './style.scss';
 
 const DEFAULT_COLOR = 'FFFFFF';
+const stateMaster = new StateMaster(['value', 'hue']);
+
+
+const getDerivedStateFromProps = (nextProps, prevProps, state, component) => {
+	const {add, isChanged, merge} = stateMaster;
+	if (isChanged('value')) {
+		const colorState = component.getStateFromColor(getColor(nextProps.value));
+		merge(colorState);
+		add('value');
+	}
+	if (isChanged('hue') && typeof nextProps.hue == 'number') {
+		add('hue');
+	}
+}
+
 
 export class ColorPicker extends UIEXComponent {
 	static propTypes = ColorPickerPropTypes;
@@ -20,33 +36,12 @@ export class ColorPicker extends UIEXComponent {
 		value: DEFAULT_COLOR
 	}
 
-	constructor(props) {
-		super(props);
-		this.initColor(props.value, props.hue);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		if (this.state.hex != nextProps.value) {
-			this.initColor(nextProps.value);
-		}
+	static getDerivedStateFromProps(props, state) {
+		return stateMaster.getDerivedState(props, state, getDerivedStateFromProps, UIEXComponent);
 	}
 
 	componentDidMount() {
 		this.update();
-	}
-
-	initColor(hex, hue = null) {
-		const state = this.getStateFromColor(getColor(hex));
-		if (!this.state) {
-			state.value = state.hex;
-			if (typeof hue == 'number') {
-				state.hue = hue;
-			}
-			this.state = state;
-		} else {
-			this.setState(state, this.update);
-		}
 	}
 
 	update = () => {
@@ -266,11 +261,12 @@ export class ColorPicker extends UIEXComponent {
 	}
 
 	getStateFromColor(color) {
+		const isInitial = !this.state.value;
 		let hex = color.toHex();
 		let value = color.getValue();
 		let isValid = color.isValid();
 		let state;
-		const isInitialInvalid = !isValid && !this.state;
+		const isInitialInvalid = !isValid && isInitial;
 		if (isInitialInvalid) {
 			hex = DEFAULT_COLOR;
 			value = DEFAULT_COLOR;
@@ -282,7 +278,7 @@ export class ColorPicker extends UIEXComponent {
 			const {r, g, b} = color.toRgb();
 			const {h, s, v} = color.toHsv();			
 			state = {hex, r, g, b, hue, sat, l, a, h, s, v, isValid};
-			if (hue === 0 && this.state) {
+			if (hue === 0 && !isInitial) {
 				delete state.hue;
 				delete state.h;
 			}
@@ -307,8 +303,8 @@ export class ColorPicker extends UIEXComponent {
 	fireChange = (color, callback) => {
 		const state = this.getStateFromColor(color);
 		const originalValue = color.getValue();
-		const {hex, r, g, b, h = 0, s, v, hue = 0, sat, l, value, isValid} = state;
-		if (this.props.value.toUpperCase() != value.toUpperCase()) {
+		const {hex, r, g, b, h = 0, s, v, hue = 0, sat, l, isValid, value} = state;
+		if (this.props.value.toUpperCase() != hex.toUpperCase()) {
 			let data;
 			if (isValid) {
 				data = {
@@ -329,7 +325,7 @@ export class ColorPicker extends UIEXComponent {
 			this.setState(state, () => {
 				const {onChange} = this.props;
 				if (typeof onChange == 'function') {
-					onChange(hex, data);
+					onChange(value, data);
 				}
 				if (typeof callback == 'function') {
 					callback();

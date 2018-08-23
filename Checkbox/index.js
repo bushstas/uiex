@@ -1,10 +1,20 @@
 import React from 'react';
+import {StateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
 import {CheckboxPropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
+const stateMaster = new StateMaster('checked');
+
+const getDerivedStateFromProps = (nextProps, prevProps, state, component) => {
+	const {add, isChanged, merge} = stateMaster;
+	merge(UIEXComponent.getDerivedStateFromProps(nextProps, state));
+	if (isChanged('checked')) {
+		add('checked', nextProps.checked);
+	}
+}
 
 export class Checkbox extends UIEXComponent {
 	static propTypes = CheckboxPropTypes;
@@ -12,13 +22,6 @@ export class Checkbox extends UIEXComponent {
 	static properChildren = 'CheckboxGroup';
 	static properChildrenMaxCount = 1;
 	static isControl = true;
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			checked: props.checked
-		}
-	}
 
 	addClassNames(add) {
 		let {icon, multiline, readOnly} = this.props;
@@ -35,12 +38,8 @@ export class Checkbox extends UIEXComponent {
 		add('with-child-groups', this.properChildrenCount > 0);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {checked} = this.props;
-		if (checked !== nextProps.checked) {
-			this.setState({checked: nextProps.checked});
-		}
+	static getDerivedStateFromProps(props, state) {
+		return stateMaster.getDerivedState(props, state, getDerivedStateFromProps, UIEXComponent);
 	}
 
 	addChildProps(child, props) {

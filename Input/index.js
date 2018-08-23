@@ -7,6 +7,10 @@ import {InputPropTypes} from './proptypes';
 import '../style.scss';
 import './style.scss';
 
+const INITIAL_STATE = {
+	focused: false
+};
+
 export class Input extends UIEXComponent {
 	static propTypes = InputPropTypes;
 	static isControl = true;
@@ -20,8 +24,9 @@ export class Input extends UIEXComponent {
 		this.handleChange = this.inputHandler.bind(this);
 		this.isValid = null;
 		this.state = {
-			focused: false
-		}
+			...this.state,
+			...INITIAL_STATE
+		};
 	}
 
 	componentDidMount() {

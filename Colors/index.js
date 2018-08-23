@@ -10,8 +10,6 @@ import './style.scss';
 
 const DEFAULT_COLUMNS = 8;
 
-const stateMaster = new StateMaster();
-
 export class Colors extends UIEXComponent {
 	static propTypes = ColorsPropTypes;
 
@@ -57,26 +55,20 @@ export class Colors extends UIEXComponent {
 	}
 }
 
+const stateMaster = new StateMaster('value');
+
+const getDerivedStateFromProps = (nextProps) => {
+	const {add, isChanged} = stateMaster;
+	if (isChanged('value') && typeof nextProps.value == 'string') {
+		add('bgColorStyle', {backgroundColor: '#' + replace(/^\#/, '', nextProps.value)});
+	}
+}
+
 export class Color extends UIEXComponent {
 	static propTypes = ColorPropTypes;
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			...this.state,
-			...this.getUpdatedState(props)
-		}
-	}
-
-	getUpdatedState(nextProps, prevProps) {
-		// stateMaster.init(nextProps, prevProps);
-		// if (stateMaster.check('value')) {
-		// 	const {value} = nextProps;
-		// 	if (typeof value == 'string') {
-		// 		stateMaster.add('bgColorStyle', {backgroundColor: '#' + replace(/^\#/, '', value)});
-		// 	}			
-		// }
-		// return stateMaster.get();
+	static getDerivedStateFromProps(props, state) {
+		return stateMaster.getDerivedState(props, state, getDerivedStateFromProps, UIEXComponent);
 	}
 
 	getCustomProps() {

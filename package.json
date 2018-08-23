@@ -11,9 +11,9 @@
     "email": "bushstas@mail.ru"
   },
   "dependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "prop-types": "^15.0.0",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "prop-types": "^16.4.0",
     "state-master": "^1.0.0"
   }
 }

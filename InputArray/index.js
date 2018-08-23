@@ -1,10 +1,10 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
-import {Input} from '../Input';
 import {AutoComplete} from '../AutoComplete';
 import {Icon} from '../Icon';
 import {isValidAndNotEmptyNumericStyle, getNumber} from '../utils';
 import {ARRAY_INPUT_TYPES} from '../consts';
+import {replace} from '../utils';
 import {INPUT_ARRAY_PLACEHOLDER} from '../texts';
 import {InputArrayPropTypes} from './proptypes';
 
@@ -341,7 +341,7 @@ export class InputArray extends UIEXComponent {
 				if (typeof n == 'number') {
 					inputValue = n;
 				} else {
-					inputValue = (inputValue.charAt(0) == '-' ? '-' : '') + inputValue.replace(/[^\d]/g, '');
+					inputValue = (inputValue.charAt(0) == '-' ? '-' : '') + replace(/[^\d]/g, '', inputValue);
 				}
 			} else if (onlyType == 'regexp' && inputValue[0] != '/') {
 				inputValue = '/' + inputValue + '/';
@@ -475,7 +475,7 @@ export class InputArray extends UIEXComponent {
 	getRegexpFromValue(value, flags = '') {
 		let regexp = value;
 		try {
-			regexp = new RegExp(value.replace(/^\/|\/$/g, ''), flags);
+			regexp = new RegExp(replace(/^\/|\/$/g, '', value), flags);
 		} catch(e) {}
 		return regexp;
 	}

@@ -3,6 +3,7 @@ import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
 import {Draggable} from '../Draggable';
 import {ModalPropTypes} from './proptypes';
+import {replace} from '../utils';
 
 import '../style.scss';
 import './style.scss';
@@ -155,7 +156,7 @@ export class Modal extends UIEXComponent {
 		const container = this.getContainer();
 		let {width, height} = this.props;
 		if (!expanded && typeof height == 'string' && (/%$/).test(height)) {
-			height = ~~height.replace(/%$/, '');
+			height = ~~replace(/%$/, '', height);
 			if (height) {
 				height = window.innerHeight * height / 100;
 				container.style.height = height + 'px';

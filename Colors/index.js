@@ -1,13 +1,16 @@
 import React from 'react';
+import {StateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {CellGroup, Cell} from '../CellGroup';
-import {getNumber} from '../utils';
+import {getNumber, replace} from '../utils';
 import {ColorsPropTypes, ColorPropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
 
 const DEFAULT_COLUMNS = 8;
+
+const stateMaster = new StateMaster();
 
 export class Colors extends UIEXComponent {
 	static propTypes = ColorsPropTypes;
@@ -59,22 +62,21 @@ export class Color extends UIEXComponent {
 
 	constructor(props) {
 		super(props);
-		this.initColor(props.value);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		if (this.props.value != nextProps.value) {
-			this.initColor(nextProps.value);				
+		this.state = {
+			...this.state,
+			...this.getUpdatedState(props)
 		}
 	}
 
-	initColor(color) {
-		if (typeof color == 'string') {
-			this.bgColorStyle = {
-				backgroundColor: '#' + color.replace(/^\#/, '')
-			}
-		}
+	getUpdatedState(nextProps, prevProps) {
+		// stateMaster.init(nextProps, prevProps);
+		// if (stateMaster.check('value')) {
+		// 	const {value} = nextProps;
+		// 	if (typeof value == 'string') {
+		// 		stateMaster.add('bgColorStyle', {backgroundColor: '#' + replace(/^\#/, '', value)});
+		// 	}			
+		// }
+		// return stateMaster.get();
 	}
 
 	getCustomProps() {
@@ -86,7 +88,7 @@ export class Color extends UIEXComponent {
 	renderInternal() {
 		return (
 			<div {...this.getProps()}>
-				<div className={this.getClassName('bg')} style={this.bgColorStyle}/>
+				<div className={this.getClassName('bg')} style={this.state.bgColorStyle}/>
 			</div>
 		)
 	}
@@ -95,7 +97,7 @@ export class Color extends UIEXComponent {
 		let {onSelect, value} = this.props;
 		if (typeof onSelect == 'function') {
 			if (typeof value == 'string') {
-				value = value.replace(/^\#/, '');
+				value = replace(/^\#/, '', value);
 			}
 			onSelect(value);
 		}

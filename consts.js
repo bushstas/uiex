@@ -32,6 +32,8 @@ const OPTION_SHAPE = PropTypes.shape({
 	withBottomDelimiter: PropTypes.bool
 });
 
+const STRING_ARRAY = PropTypes.arrayOf(PropTypes.string);
+
 export const PROPTYPE = {
 	REACT_NODES: PropTypes.oneOfType([
 		PropTypes.arrayOf(PropTypes.node),
@@ -86,7 +88,7 @@ export const PROPTYPE = {
 	ANIM_EFFECTS: PropTypes.oneOf(ANIM_EFFECTS),
 	ANIM_SPEED: PropTypes.oneOf(ANIM_SPEED),
 	ANIM_TYPE: PropTypes.oneOf(ANIM_TYPE),
-	INPUT_MEASURES: PropTypes.arrayOf(PropTypes.string),
+	INPUT_MEASURES: STRING_ARRAY,
 	OPTIONS: PropTypes.oneOfType([
 		PropTypes.object,
 		PropTypes.func,
@@ -116,5 +118,6 @@ export const PROPTYPE = {
 	ARRAY_INPUT_TYPES: PropTypes.oneOfType([
 		ARRAY_INPUT_TYPE,
 		PropTypes.arrayOf(ARRAY_INPUT_TYPE)
-	])
+	]),
+	STRING_ARRAY
 }

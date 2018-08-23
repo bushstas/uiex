@@ -1,5 +1,11 @@
 .uiex-input {
 	display: inline-block;
+	min-width: 40px !important;
+
+	.uiex-input-inner {
+		position: relative;
+		height: 100%;
+	}
 	
 	&.uiex-textarea {
 		height: 80px;
@@ -42,25 +48,29 @@
 		}
 	}
 	&.uiex-valid {
-		input,
-		textarea {
-			border-color: #78bb00 !important;
-    		box-shadow: inset -3px -3px 5px #ddead6;
-			&:focus {
-				border-color: #60a000 !important;
-    			box-shadow: inset 3px 3px 5px #d8e8cb;
+		& > .uiex-input-inner {
+			& > input,
+			& > textarea {
+				border-color: #78bb00 !important;
+    			box-shadow: inset -3px -3px 5px #ddead6;
+				&:focus {
+					border-color: #60a000 !important;
+    				box-shadow: inset 3px 3px 5px #d8e8cb;
+				}
 			}
 		}
 	}
 	&.uiex-invalid {
-		input,
-		textarea {
-			color: #b70909 !important;
-			border-color: #ff8387 !important;
-			box-shadow: inset -3px -3px 5px #ffddde;
-			&:focus {
-				border-color: #d4050b !important;
-				box-shadow: inset 3px 3px 5px #f1c9ca;
+		& > .uiex-input-inner {
+			& > input,
+			& > textarea {
+				color: #b70909 !important;
+				border-color: #ff8387 !important;
+				box-shadow: inset -3px -3px 5px #ffddde;
+				&:focus {
+					border-color: #d4050b !important;
+					box-shadow: inset 3px 3px 5px #f1c9ca;
+				}
 			}
 		}
 	}
@@ -157,5 +167,11 @@
 	}
 	textarea:focus:-ms-input-placeholder {
 		color: #ddd;
+	}
+	.uiex-input-indicator {
+		font-size: 13px;
+		text-align: right;
+		color: #888;
+		padding-top: 4px;
 	}
 }

@@ -1,25 +1,29 @@
 .uiex-input.uiex-regexp-input {
-	&:before {
-		content: '/';
-		display: flex;
-		align-items: center;
-		position: absolute;
-		top: 0;
-		bottom: 3px;
-		left: 8px;
-		color: #aaa;
-		font-size: 18px;
-	}
-	&:after {
-		content: '/';
-		display: flex;
-		align-items: center;
-		position: absolute;
-		top: 0;
-		bottom: 3px;
-		right: 8px;
-		color: #aaa;
-		font-size: 18px;
+	.uiex-input-inner {	
+		&:before {
+			content: '/';
+			display: flex;
+			align-items: center;
+			position: absolute;
+			top: 0;
+			bottom: 3px;
+			left: 8px;
+			color: #aaa;
+			font-size: 18px;
+			z-index: 2;
+		}
+		&:after {
+			content: '/';
+			display: flex;
+			align-items: center;
+			position: absolute;
+			top: 0;
+			bottom: 3px;
+			right: 8px;
+			color: #aaa;
+			font-size: 18px;
+			z-index: 2;
+		}
 	}
 	input {
 		padding-left: 20px;
@@ -29,14 +33,18 @@
 		input {
 			padding-right: 42px;
 		}
-		&:after {
-			right: 32px;
+		.uiex-input-inner {	
+			&:after {
+				right: 32px;
+			}
 		}
 	}
 	&.uiex-focused {
-		&:before,
-		&:after {
-			color: #333;
+		.uiex-input-inner {	
+			&:before,
+			&:after {
+				color: #333;
+			}
 		}
 	}
 }

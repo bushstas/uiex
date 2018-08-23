@@ -7,6 +7,7 @@ export const SelectObjectPropTypes = {
 	value: PropTypes.any,
 	options: PropTypes.array,
 	placeholder: PropTypes.string,
+	empty: PropTypes.bool,
 	onChange: PropTypes.func,
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,

@@ -6,7 +6,7 @@ export const ColorsPropTypes = {
 	...UIEXComponentPropTypes,
 	value: PropTypes.string,
 	columns: PROPTYPE.STRNUM,
-	colors: PropTypes.arrayOf(PropTypes.string),
+	colors: PROPTYPE.STRING_ARRAY,
 	colorHeight: PROPTYPE.STRNUM,
 	onSelect: PropTypes.func,
 	onDisabledClick: PropTypes.func

@@ -12,6 +12,7 @@ export const InputPropTypes = {
 	textarea: PropTypes.bool,
 	clearable: PropTypes.bool,
 	valid: PropTypes.bool,
+	withIndicator: PropTypes.bool,
 	invalid: PropTypes.bool,
 	focusStyle: PropTypes.object,
 	clearButtonStyle: PropTypes.object,

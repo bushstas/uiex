@@ -4,5 +4,11 @@ import {PROPTYPE} from '../consts';
 
 export const InputColorPropTypes = {
 	...InputPropTypes,
-	withoutPicker: PropTypes.bool
+	withoutPicker: PropTypes.bool,
+	withoutHash: PropTypes.bool,
+	fullWidthPicker: PropTypes.bool,
+	pickerShown: PropTypes.bool,
+	presetColors: PROPTYPE.STRING_ARRAY,
+	onChangePicker: PropTypes.func,
+	onInput: PropTypes.func
 }

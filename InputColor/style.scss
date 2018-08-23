@@ -1,9 +1,9 @@
 .uiex-input.uiex-color-input {
 	.uiex-color-input-left-side {
 		position: absolute;
-		top: 0;
+		top: 1px;
 		left: 0;
-		bottom: 0;
+		bottom: 1px;
 		width: 37px;
 		display: flex;
 		align-items: center;
@@ -52,25 +52,48 @@
 			color: #ddd;
 		}
 	}
-	& > input {
-		padding-left: 60px !important;
+	& > .uiex-input-inner {
+		& > input {
+			padding-left: 60px !important;
+		}
 	}
 	.uiex-color-picker {
 		position: absolute;
 		top: 100%;
-		margin-top: -1px;
+		margin-top: 2px;
 		left: 0;
 		z-index: 100;
 		border-color: #888;
 	}
+	&.uiex-full-with-picker {
+		.uiex-color-picker {
+			width: auto !important;
+			right: 0;
+		}
+	}
 	&.uiex-disabled {
 		.uiex-color-input-left-side {
+			border-color: #ccc;
 			.uiex-color-input-color {
 				cursor: not-allowed;
+				opacity: 0.7;
 				&:after {
 					opacity: 0.2 !important;
 				}
 			}
+		}
+		.uiex-color-input-hash {
+			color: #ccc;
+		}
+	}
+	&.uiex-valid {
+		.uiex-color-input-left-side {
+			border-color: #78bb00;
+		}
+	}
+	&.uiex-invalid {
+		.uiex-color-input-left-side {
+			border-color: #ff8387;
 		}
 	}
 }

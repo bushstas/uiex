@@ -17,6 +17,7 @@ export class Input extends UIEXComponent {
 		this.handleFocus = this.focusHandler.bind(this);
 		this.handleBlur = this.blurHandler.bind(this);
 		this.handleClick = this.clickHandler.bind(this);
+		this.handleChange = this.inputHandler.bind(this);
 		this.isValid = null;
 		this.state = {
 			focused: false
@@ -31,11 +32,11 @@ export class Input extends UIEXComponent {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
+	componentDidUpdate(prevProps) {
+		super.componentDidUpdate(prevProps);
 		const {value} = this.props;
-		if (nextProps.value != value) {
-			this.checkValidity(nextProps.value, nextProps);
+		if (prevProps.value != value) {
+			this.checkValidity(value, this.props);
 		}
 	}
 
@@ -55,8 +56,12 @@ export class Input extends UIEXComponent {
 		const TagName = this.getTagName();
 		return (
 			<TagName {...this.getProps()}>
-				{this.renderInput()}
-				{this.renderClearButton()}
+				<div className="uiex-input-inner">
+					{this.renderInput()}
+					{this.renderClearButton()}
+					{this.renderAdditionalInnerContent()}
+				</div>
+				{this.renderIndicator()}
 				{this.renderAdditionalContent()}
 			</TagName>
 		)
@@ -70,12 +75,18 @@ export class Input extends UIEXComponent {
 		}
 		const TagName = !textarea ? 'input' : 'textarea';
 		const customInputProps = this.getCustomInputProps();
+		const value = this.getValue();
+		if (typeof value == 'string' || typeof value == 'number') {
+			this.valueLength = value.toString().length;
+		} else {
+			this.valueLength = 0;
+		}
 		return (
 			<TagName 
 				ref="input"
 				type={!textarea ? type : null}
 				name={name}
-				value={this.getValue()}
+				value={value}
 				placeholder={placeholder}
 				maxLength={maxLength}
 				autoComplete="off"
@@ -92,8 +103,10 @@ export class Input extends UIEXComponent {
 	}
 
 	getValue() {
-		const {defaultValue} = this.props;
-		let {value = defaultValue} = this.props;
+		let {value, defaultValue} = this.props;
+		if (!value) {
+			value = defaultValue;
+		}
 		if (value == null) {
 			value = '';
 		}
@@ -114,6 +127,17 @@ export class Input extends UIEXComponent {
 		}
 	}
 
+	renderIndicator() {
+		const {withIndicator, maxLength} = this.props;
+		if (withIndicator) {
+			return (
+				<div className="uiex-input-indicator">
+					{this.valueLength} / {maxLength || '-'}
+				</div>
+			)
+		}
+	}
+
 	handleMouseDown = (e) => {
 		e.stopPropagation();
 		const {disabled, readOnly, onDisabledClick, name} = this.props;
@@ -125,7 +149,7 @@ export class Input extends UIEXComponent {
 		}
 	}
 
-	handleChange = () => {
+	inputHandler() {
 		const {disabled, readOnly} = this.props;
 		if (!disabled && !readOnly) {
 			this.fireChange(this.props);
@@ -166,13 +190,13 @@ export class Input extends UIEXComponent {
 				}
 			}
 		}
-		if (isValid === false && this.isValid == null) {
-			return;
-		}
 		this.fireChangeValidity(isValid, value);
 	}
 
 	fireChangeValidity(isValid, value = undefined) {
+		if (isValid === false && this.isValid == null) {
+			return;
+		}
 		if (isValid !== this.isValid) {
 			const {name, onChangeValidity} = this.props;
 			this.isValid = isValid;
@@ -199,8 +223,8 @@ export class Input extends UIEXComponent {
 		}
 	}
 
-	blurHandler(value, name) {
-		const {onBlur, focusStyle, disabled, readOnly} = this.props;
+	blurHandler() {
+		const {onBlur, focusStyle, disabled, readOnly, value, name} = this.props;
 		if (!disabled && !readOnly) {
 			if (focusStyle instanceof Object) {
 				const {input} = this.refs;
@@ -242,6 +266,7 @@ export class Input extends UIEXComponent {
 					if (typeof onEnter == 'function') {
 						onEnter(value, name);
 					}
+					this.handleEnter();
 				}
 			break;
 
@@ -250,6 +275,7 @@ export class Input extends UIEXComponent {
 					this.blur();
 					onChange(this.valueBeforeFocus, name);
 				}
+				this.handleEscape();
 			break;
 		}
 	}
@@ -278,4 +304,7 @@ export class Input extends UIEXComponent {
 
 	getCustomInputProps() {}
 	renderAdditionalContent() {}
+	renderAdditionalInnerContent() {}
+	handleEnter() {}
+	handleEscape() {}
 }

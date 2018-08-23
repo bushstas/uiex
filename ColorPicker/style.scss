@@ -1,4 +1,6 @@
 .uiex-color-picker {
+	min-width: 180px;
+	width: 220px;
 	display: inline-block;
 	box-shadow: 0px 0px 4px #ddd;	
 	border: 1px solid #ccc;
@@ -17,7 +19,6 @@
 	}
 
 	.uiex-color-picker-selector {
-		width: 200px;
 		border-radius: 3px;
 		padding: 10px;
 		position: relative;
@@ -125,13 +126,17 @@
 		width: 100%;
 		margin-top: 10px;
 		&.uiex-input {
-			input {
-				padding: 5px 12px;
-				padding-left: 52px !important;
+			.uiex-input-inner {
+				input {
+					padding: 5px 12px;
+					padding-left: 52px !important;
+				}
 			}
 		}
 		.uiex-color-input-left-side {
 			width: 30px !important;
+			top: 0 !important;
+			bottom: 0 !important;
 		}
 		.uiex-color-input-color {
 			cursor: default !important;
@@ -159,12 +164,12 @@
 			text-align: center;
 		}
 		margin-right: 4px;
+		flex-grow: 1;
 		&:last-child {
 			margin-right: 0;
 		}
 	}
 	.uiex-colors {
-		width: 205px;
 		padding: 0 7px 10px 7px;
 	}
 }

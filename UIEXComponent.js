@@ -1,4 +1,5 @@
 import React from 'react';
+import {StateMaster} from 'state-master';
 import {BoxCommonPropTypes} from './Box/proptypes';
 import {
 	showImproperChildError,
@@ -10,31 +11,43 @@ import {
 } from './utils';
 import {FORM_BUTTON_DISPLAY} from './consts';
 
+const PROPS_LIST = ['width', 'height', 'fontSize', 'style'];
+const stateMaster = new StateMaster();
+
 export class UIEXComponent extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.stylesChanged = {};
 		this.styles = {};
+		this.state = this.getUpdatedState(props);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const {width, height, fontSize, style} = nextProps;
-		this.stylesChanged.main = (
-			width != this.props.width ||
-			height != this.props.height || 
-			fontSize != this.props.fontSize || 
-			style != this.props.style
-		);
-		const {styleNames} = this.constructor;
-		if (styleNames) {
-			if (typeof styleNames == 'string') {
-				this.initStyleChange(styleNames, nextProps);
-			} else if (styleNames instanceof Array) {
-				for (let i = 0; i < styleNames.length; i++) {
-					this.initStyleChange(styleNames[i], nextProps);
-				}
-			}
-		}
+	getUpdatedState(nextProps, prevProps) {
+		// stateMaster.init(nextProps, prevProps);
+		// if (stateMaster.check(PROPS_LIST)) {
+		// 	stateMaster.add('mainStyle', this.getMainStyle());
+		// }
+		// return stateMaster.get();
+	}
+
+	componentWillReceiveProps(nextProps) {		
+		// const {width, height, fontSize, style} = nextProps;
+		// this.stylesChanged.main = (
+		// 	width != this.props.width ||
+		// 	height != this.props.height || 
+		// 	fontSize != this.props.fontSize || 
+		// 	style != this.props.style
+		// );
+		// const {styleNames} = this.constructor;
+		// if (styleNames) {
+		// 	if (typeof styleNames == 'string') {
+		// 		this.initStyleChange(styleNames, nextProps);
+		// 	} else if (styleNames instanceof Array) {
+		// 		for (let i = 0; i < styleNames.length; i++) {
+		// 			this.initStyleChange(styleNames[i], nextProps);
+		// 		}
+		// 	}
+		// }
 	}
 
 	initStyleChange(name, props) {
@@ -62,23 +75,20 @@ export class UIEXComponent extends React.PureComponent {
 		return this.styles[name];
 	}
 
-	getMainStyle(withoutPropStyle = false) {
-		if (!this.styles.main || this.stylesChanged.main) {
-			const {fontSize, style: propStyle} = this.props;
-			const width = this.getWidthProp();
-			const height = this.getHeightProp();
-			let style = null;		
-			style = addObject(this.getDefaultStyle(), style);
-			style = addObject(this.getCustomStyle(), style);
-			if (!withoutPropStyle) {
-				style = addObject(propStyle, style);
-			}
-			style = addStyleProperty(width, 'width', style);
-			style = addStyleProperty(height, 'height', style);
-			style = addStyleProperty(fontSize, 'fontSize', style);
-			this.styles.main = style;
+	getMainStyle(withoutPropStyle = false) {		
+		const {fontSize, style: propStyle} = this.props;
+		const width = this.getWidthProp();
+		const height = this.getHeightProp();
+		let style = null;		
+		style = addObject(this.getDefaultStyle(), style);
+		style = addObject(this.getCustomStyle(), style);
+		if (!withoutPropStyle) {
+			style = addObject(propStyle, style);
 		}
-		return this.styles.main;
+		style = addStyleProperty(width, 'width', style);
+		style = addStyleProperty(height, 'height', style);
+		style = addStyleProperty(fontSize, 'fontSize', style);
+		return style;
 	}
 
 	getWidthProp() {
@@ -96,10 +106,14 @@ export class UIEXComponent extends React.PureComponent {
 		}
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps) {
 		const {onUpdate} = this.props;
 		if (typeof onUpdate == 'function') {
 			onUpdate(this);
+		}
+		const newState = this.getUpdatedState(this.props, prevProps);
+		if (newState) {
+			this.setState(newState);
 		}
 	}
 
@@ -193,8 +207,8 @@ export class UIEXComponent extends React.PureComponent {
 		if (typeof title == 'string') {
 			componentProps.title = title;
 		}
-		if (withStyle) {
-			const style = this.getMainStyle();
+		if (withStyle && this.state instanceof Object) {
+			const style = this.state.mainStyle;
 			if (style) {
 				componentProps.style = style;
 			}

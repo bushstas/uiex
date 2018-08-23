@@ -1,6 +1,6 @@
 import React from 'react';
 import {Input} from '../Input';
-import {regexEscape} from '../utils';
+import {replace} from '../utils';
 import {InputRegexpPropTypes} from './proptypes';
 
 import '../style.scss';
@@ -19,7 +19,7 @@ export class InputRegexp extends Input {
 	getValue() {
 		let value = super.getValue();
 		if (value instanceof RegExp) {
-			value = value.toString().replace(/^\/|\/$/g, '');
+			value = replace(/^\/|\/$/g, '', value);
 		}
 		return value;
 	}

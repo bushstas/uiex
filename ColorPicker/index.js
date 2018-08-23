@@ -5,6 +5,7 @@ import {InputNumber} from '../InputNumber';
 import {Colors} from '../Colors';
 import {ColorPickerPropTypes} from './proptypes';
 import {getColor} from '../color';
+import {replace} from '../utils';
 
 import '../style.scss';
 import './style.scss';
@@ -148,7 +149,7 @@ export class ColorPicker extends UIEXComponent {
 
 	getProperValue(value) {
 		if (value && typeof value == 'string') {
-			return value.replace(/^\#+/, '');
+			return replace(/^\#+/, '', value);
 		}
 	}
 

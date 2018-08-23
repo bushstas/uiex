@@ -6,7 +6,7 @@ import {InputNumberPropTypes} from './proptypes';
 import '../style.scss';
 import './style.scss';
 
-const PROPS_LIST = ['positive', 'negative', 'decimal', 'toFixed', 'minValue', 'maxValue'];
+const PROPS_LIST = ['positive', 'negative', 'decimal', 'toFixed', 'minValue', 'maxValue', 'valueWithMeasure'];
 
 export class InputNumber extends Input {
 	static propTypes = InputNumberPropTypes;
@@ -32,7 +32,7 @@ export class InputNumber extends Input {
 		add('with-measure', measure && typeof measure == 'string');
 	}
 
-	renderAdditionalContent() {
+	renderAdditionalInnerContent() {
 		const data = this.getMeasure();
 		if (data) {
 			const [measure, isMultiple] = data;
@@ -62,8 +62,15 @@ export class InputNumber extends Input {
 
 	getValue() {
 		let value = super.getValue();
-		if (value === '-0') {
-			value = '-';
+		if (value && typeof value == 'string') {
+			if (value === '-0') {
+				value = '-';
+			} else {				
+				const parts = value.split(/[^\d]/);
+				if (parts.length > 1) {
+					value = parts[0];
+				}
+			}
 		}
 		return value;
 	}
@@ -71,16 +78,10 @@ export class InputNumber extends Input {
 	filterValue(value, props) {
 		value = super.filterValue(value, props);
 		if (value) {
-			let {maxValue, minValue, positive, negative, decimal, toFixed} = props;
+			let {maxValue, minValue, positive, negative, decimal, toFixed, valueWithMeasure, measure, correctionOnBlur} = props;
 			if (negative && positive) {
 				positive = false;
-			}
-			if (typeof maxValue == 'string') {
-				maxValue = getNumberOrNull(maxValue);
-			}
-			if (typeof minValue == 'string') {
-				minValue = getNumberOrNull(minValue);
-			}
+			}			
 			if (typeof toFixed == 'string') {
 				toFixed = getNumberOrNull(toFixed);
 			}
@@ -101,15 +102,11 @@ export class InputNumber extends Input {
 			if ((isNegative || negative) && value) {
 				value *= -1;
 			}
-			if (typeof maxValue == 'number') {
-				value = Math.min(maxValue, value);
-				if (value == maxValue) {
+			if (!correctionOnBlur) {
+				value = this.correctValue(value);
+				if (typeof maxValue == 'number' && value == maxValue) {
 					decimal = false;
-				}
-			}
-			if (typeof minValue == 'number') {
-				value = Math.max(minValue, value);
-				if (value == minValue) {
+				} else if (typeof minValue == 'number' && value == minValue) {
 					decimal = false;
 				}
 			}
@@ -135,6 +132,26 @@ export class InputNumber extends Input {
 			if (!value && isNegative) {
 				return '-0';
 			}
+			if (valueWithMeasure && measure && typeof measure == 'string') {
+				value += measure;
+			}
+		}
+		return value;
+	}
+
+	correctValue(value) {
+		let {maxValue, minValue} = this.props;
+		if (typeof maxValue == 'string') {
+			maxValue = getNumberOrNull(maxValue);
+		}
+		if (typeof minValue == 'string') {
+			minValue = getNumberOrNull(minValue);
+		}
+		if (typeof maxValue == 'number') {
+			value = Math.min(maxValue, value);
+		}
+		if (typeof minValue == 'number') {
+			value = Math.max(minValue, value);
 		}
 		return value;
 	}
@@ -216,6 +233,17 @@ export class InputNumber extends Input {
 			}
 			value = this.filterValue(String(value), this.props);
 			onChange(value, name);
+		}
+	}
+	
+	blurHandler() {
+		super.blurHandler();
+		const {correctionOnBlur, value, onChange, name} = this.props;
+		if (correctionOnBlur && typeof onChange == 'function') {
+			const correctedValue = this.correctValue(value);
+			if (correctedValue != value) {
+				onChange(correctedValue, name);
+			}
 		}
 	}
 }

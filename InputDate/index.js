@@ -1,6 +1,6 @@
 import React from 'react';
 import {Input} from '../Input';
-import {getNumberOrNull, propsChanged} from '../utils';
+import {getNumberOrNull, propsChanged, replace} from '../utils';
 import {InputDatePropTypes} from './proptypes';
 
 import '../style.scss';
@@ -84,7 +84,7 @@ export class InputDate extends Input {
 		if (typeof value != 'string') {
 			value = '';
 		}
-		value = value.replace(/[^\d]/g, '');
+		value = replace(/[^\d]/g, '', value);
 		let year = '', month = '', day = '', hour = '', minute = '';
 		for (let i = 0; i < value.length; i++) {
 			if (yearFirst) {
@@ -282,12 +282,14 @@ export class InputDate extends Input {
 	}
 
 	checkValidity(value, props = this.props) {
-		const {withTime} = props;
-		const length = withTime ? 16 : 10;
-		const isValid = value.length == length;
-		if (isValid === false && this.isValid == null) {
-			return;
+		const {withTime, required} = props;
+		if (value || required) {			
+			const length = withTime ? 16 : 10;
+			const isValid = value.length == length;
+			if (isValid === false && this.isValid == null) {
+				return;
+			}
+			this.fireChangeValidity(isValid, value);
 		}
-		this.fireChangeValidity(isValid, value);
 	}
 }

@@ -31,7 +31,7 @@ export const removeClass = (element, cn) => {
 		let {className} = element;
 		if (typeof className == 'string') {
 			const regexp = new RegExp(regexEscape(cn));
-			className = className.replace(regexp, '');
+			className = replace(regexp, '', className);
 			element.className = className;
 		}
 	} else if (typeof element == 'string') {
@@ -115,7 +115,7 @@ export const getNumberInPxOrPercent = (n) => {
 }
 
 export const regexEscape = (str) => {
-	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	return replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&', str);
 }
 
 export const showImproperChildError = (child, parent) => {
@@ -258,7 +258,7 @@ export const inPercent = (value) => {
 
 export const getSizeInPercentageOfWindow = (value, attr) => {
 	if (typeof value == 'string') {
-		value = Number(value.replace(/%$/, ''));
+		value = Number(replace(/%$/, '', value));
 	}
 	if (typeof value == 'number') {
 		return Math.round((attr == 'width' ? window.innerWidth : window.innerHeight) * value / 100);
@@ -288,3 +288,12 @@ export const replace = (regexp, to, str) => {
 	}
 	return str.replace(regexp, to);
 }
+
+export const modObject = (key, value, obj) => {
+	if (!obj || !(obj instanceof Object)) {
+		obj = {};
+	}
+	obj[key] = value;
+	return obj;
+}
+

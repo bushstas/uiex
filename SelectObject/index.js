@@ -114,8 +114,24 @@ export class SelectObject extends UIEXComponent {
 	}
 
 	renderOptions() {		
-		const {options, value} = this.props;
+		const {options, value, empty} = this.props;
 		const items = [];
+		if (empty) {
+			items.push(
+				<div key={null} className={this.getClassName('item', !value ? 'uiex-active' : '')}>
+					<Radio 
+						checked={!value} 
+						value={null} 
+						onChange={this.handleRadioClick}
+					/>
+					<JsonPreview 
+						ref={'preview'}
+						data={null} 
+						onClick={this.handleItemClick}
+					/>
+				</div>
+			);
+		}
 		if (options instanceof Array) {
 			for (let i = 0; i < options.length; i++) {
 				let active;
@@ -178,6 +194,9 @@ export class SelectObject extends UIEXComponent {
 	}
 
 	handleRadioClick = (name, value) => {
+		if (value == null) {
+			value = '';
+		}
 		this.refs['preview' + value].refs.main.click();
 	}
 

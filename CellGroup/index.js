@@ -1,10 +1,14 @@
 import React from 'react';
+import {StateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {getNumber, addToClassName, isValidAndNotEmptyNumericStyle} from '../utils';
 import {CellGroupPropTypes, CellGroupRowPropTypes, CellPropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
+
+const stateMaster = new StateMaster();
+const PROPS_LIST = ['rowMargin', 'height'];
 
 export class CellGroup extends UIEXComponent {
 	static className = 'cell-group';
@@ -17,7 +21,10 @@ export class CellGroup extends UIEXComponent {
 
 	constructor(props) {
 		super(props);
-		this.initRowMarginStyle(props.rowMargin, props.height);
+		this.state = {
+			...this.state,
+			...this.getUpdatedState(props)
+		};
 	}
 
 	componentDidMount() {
@@ -28,12 +35,22 @@ export class CellGroup extends UIEXComponent {
 		window.removeEventListener('resize', this.handleWindowResize, false);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {rowMargin, height} = this.props;
-		if (rowMargin != nextProps.rowMargin || height != nextProps.height) {
-			this.initRowMarginStyle(nextProps.rowMargin, nextProps.height);
-		}
+	getUpdatedState(nextProps, prevProps) {
+		// stateMaster.init(nextProps, prevProps);
+		// if (stateMaster.check(PROPS_LIST)) {
+		// 	let {rowMargin, height} = nextProps;
+		// 	let rowStyle = null;
+		// 	rowMargin = getNumber(rowMargin);
+		// 	if (rowMargin) {
+		// 		if (isValidAndNotEmptyNumericStyle(height)) {
+		// 			rowStyle = {paddingTop: rowMargin};
+		// 		} else {
+		// 			rowStyle = {marginTop: rowMargin};
+		// 		}
+		// 		stateMaster.add('rowStyle', rowStyle);
+		// 	}
+		// }
+		// return stateMaster.get();
 	}
 
 	addClassNames(add) {
@@ -41,23 +58,6 @@ export class CellGroup extends UIEXComponent {
 		add('align-' + cellAlign, cellAlign);
 		add('side-shrinked', sideShrink);
 		add('cell-auto-height', cellAutoHeight);
-	}
-
-	initRowMarginStyle(rowMargin, height) {
-		rowMargin = getNumber(rowMargin);
-		if (rowMargin) {
-			if (isValidAndNotEmptyNumericStyle(height)) {
-				this.rowStyle = {
-					paddingTop: rowMargin
-				};
-			} else {
-				this.rowStyle = {
-					marginTop: rowMargin
-				};
-			}
-		} else {
-			this.rowStyle = null;
-		}
 	}
 
 	initRendering() {
@@ -113,7 +113,7 @@ export class CellGroup extends UIEXComponent {
 				<CellGroupRow
 					className={this.rowSizes[idx] == this.columns ? 'uiex-complete-row' : 'uiex-incomplete-row'}
 					key={idx} 
-					style={idx > 0 ? this.rowStyle : null}
+					style={idx > 0 ? this.state.rowStyle : null}
 					height={100 / rows + '%'}
 				>
 					{row}
@@ -340,15 +340,18 @@ export class CellGroup extends UIEXComponent {
 	}
 }
 
+const CELL_PROPS_LIST = ['leftPadding', 'rightPadding', 'leftMargin', 'minHeight', 'width', 'height', 'fontSize', 'style'];
+
 export class Cell extends UIEXComponent {
 	static propTypes = CellPropTypes;
 
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {leftPadding: l, rightPadding: r, leftMargin: m, minHeight: mh} = this.props;
-		if (l != nextProps.leftPadding || r != nextProps.rightPadding || m != nextProps.leftMargin || mh != nextProps.minHeight) {
-			this.setStyleChanged(true);
-		}
+	getUpdatedState(nextProps, prevProps) {
+		// stateMaster.init(nextProps, prevProps);
+		// console.log(nextProps)
+		// if (stateMaster.check(CELL_PROPS_LIST)) {
+		// 	stateMaster.add('mainStyle', this.getMainStyle(true));
+		// }
+		// return stateMaster.get();
 	}
 
 	addClassNames(add) {
@@ -383,10 +386,6 @@ export class Cell extends UIEXComponent {
 		return {
 			onClick: this.handleClick
 		}
-	}
-
-	getMainStyle() {
-		return super.getMainStyle(true);
 	}
 
 	renderInternal() {

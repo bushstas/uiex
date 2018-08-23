@@ -1,6 +1,6 @@
 {
   "name": "uiex",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "UI library",
   "repository": {
     "type": "git",
@@ -13,6 +13,7 @@
   "dependencies": {
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "prop-types": "^15.0.0"
+    "prop-types": "^15.0.0",
+    "state-master": "^1.0.0"
   }
 }

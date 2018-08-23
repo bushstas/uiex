@@ -1,6 +1,6 @@
 import React from 'react';
 import {Input} from '../Input';
-import {regexEscape} from '../utils';
+import {regexEscape, replace} from '../utils';
 import {InputPhonePropTypes} from './proptypes';
 
 import '../style.scss';
@@ -51,14 +51,14 @@ export class InputPhone extends Input {
 
 	filterValue(value, props) {		
 		const {numeric} = props;
-		return numeric ? this.getWithCode(value).replace(/[^\d]/g, '') : this.getWithCode(this.getMaskedValue(value));
+		return numeric ? replace(/[^\d]/g, '', this.getWithCode(value)) : this.getWithCode(this.getMaskedValue(value));
 	}
 
 	getMaskedValue(value) {
 		let properValue = value;
 		let {mask, code, withCode} = this.props;
 		if (typeof mask == 'string') {
-			value = value.replace(/[^\d]/g, '');
+			value = replace(/[^\d]/g, '', value);
 			mask = mask.trim();
 			const l = mask.length;
 			let idx = 0;
@@ -100,10 +100,10 @@ export class InputPhone extends Input {
 		if (withCode && code) {
 			code = regexEscape(code);
 			if (numeric) {
-				code = code.replace(/[^\d]/g, '');
+				code = replace(/[^\d]/g, '', code);
 			}
 			const regex = new RegExp('^' + code);
-			value = value.replace(regex, '');
+			value = replace(regex, '', value);
 		}
 		return value;
 	}

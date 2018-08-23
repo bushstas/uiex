@@ -8,6 +8,7 @@ export const InputNumberPropTypes = {
 	negative: PropTypes.bool,
 	decimal: PropTypes.bool,
 	correctionOnBlur: PropTypes.bool,
+	valueWithMeasure: PropTypes.bool,
 	toFixed: PROPTYPE.STRNUM,
 	minValue: PROPTYPE.STRNUM,
 	maxValue: PROPTYPE.STRNUM,

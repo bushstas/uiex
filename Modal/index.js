@@ -1,4 +1,5 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
 import {Draggable} from '../Draggable';
@@ -8,19 +9,31 @@ import {replace} from '../utils';
 import '../style.scss';
 import './style.scss';
 
-export class Modal extends UIEXComponent {
+const PROPS_LIST = ['isOpen', 'expanded', 'width', 'height'];
+
+class ModalComponent extends UIEXComponent {
 	static propTypes = ModalPropTypes;
 	static styleNames = ['body', 'header', 'footer', 'mask', 'controls'];
+	static displayName = 'Modal';
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			isOpen: props.isOpen,
-			expanded: props.expanded
+	static makeDerivedStateFromProps({addIfChanged, isChangedAny, isChanged, nextProps, call}) {
+		addIfChanged('expanded');
+		if (isChanged('isOpen')) {
+			call(() => {
+				if (nextProps.isOpen) {
+					this.animateShowing();
+				} else {
+					this.animateHiding();
+				}
+			});
+		}
+		if (isChangedAny('width', 'height')) {
+			call(this.initPosition);
 		}
 	}
 
 	componentDidMount() {
+		super.componentDidMount();
 		if (this.props.isOpen) {
 			this.animateShowing();
 		}
@@ -28,26 +41,8 @@ export class Modal extends UIEXComponent {
 	}
 
 	componentWillUnmount() {
+		super.componentWillUnmount();
 		window.removeEventListener('resize', this.handleResize, false);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {isOpen, expanded} = this.state;
-		if (isOpen != nextProps.isOpen) {
-			if (nextProps.isOpen) {
-				this.animateShowing();
-			} else {
-				this.animateHiding();
-			}
-		}
-		if (expanded != nextProps.expanded) {
-			this.setState({expanded: nextProps.expanded});
-		}
-		const {width, height} = this.props;
-		if (width != nextProps.width || height != nextProps.height) {
-			setTimeout(this.initPosition, 10);
-		}
 	}
 
 	animateShowing() {
@@ -324,3 +319,5 @@ export class Modal extends UIEXComponent {
 		return this.refs.drag.refs.element;
 	}
 }
+
+export const Modal = withStateMaster(ModalComponent, PROPS_LIST);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StateMaster} from 'state-master';
+import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {InputColor} from '../InputColor';
 import {InputNumber} from '../InputNumber';
@@ -12,32 +12,26 @@ import '../style.scss';
 import './style.scss';
 
 const DEFAULT_COLOR = 'FFFFFF';
-const stateMaster = new StateMaster(['value', 'hue']);
+const PROPS_LIST = ['value', 'hue'];
 
-
-const getDerivedStateFromProps = (nextProps, prevProps, state, component) => {
-	const {add, isChanged, merge} = stateMaster;
-	if (isChanged('value')) {
-		const colorState = component.getStateFromColor(getColor(nextProps.value));
-		merge(colorState);
-		add('value');
-	}
-	if (isChanged('hue') && typeof nextProps.hue == 'number') {
-		add('hue');
-	}
-}
-
-
-export class ColorPicker extends UIEXComponent {
+class ColorPickerComponent extends UIEXComponent {
 	static propTypes = ColorPickerPropTypes;
 	static className = 'color-picker';
+	static displayName = 'ColorPicker';
 
 	static defaultProps = {
 		value: DEFAULT_COLOR
 	}
 
-	static getDerivedStateFromProps(props, state) {
-		return stateMaster.getDerivedState(props, state, getDerivedStateFromProps, UIEXComponent);
+	static makeDerivedStateFromProps({nextProps, isChanged, add}) {
+		if (isChanged('value')) {
+			const colorState = this.getStateFromColor(getColor(nextProps.value));
+			add(colorState);
+			add('value');
+		}
+		if (isChanged('hue') && typeof nextProps.hue == 'number') {
+			add('hue');
+		}
 	}
 
 	componentDidMount() {
@@ -340,3 +334,5 @@ export class ColorPicker extends UIEXComponent {
 		return false;
 	}
 }
+
+export const ColorPicker = withStateMaster(ColorPickerComponent, PROPS_LIST);

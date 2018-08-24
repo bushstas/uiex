@@ -1,4 +1,5 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {Box} from '../Box';
 import {Icon} from '../Icon';
@@ -7,27 +8,19 @@ import {BoxSectionPropTypes} from './proptypes';
 import '../style.scss';
 import './style.scss';
 
-export class BoxSection extends UIEXComponent {
+const PROPS_LIST = 'isOpen';
+
+class BoxSectionComponent extends UIEXComponent {
 	static propTypes = BoxSectionPropTypes;
 	static className = 'box-section';
+	static displayName = 'BoxSection';
 
-	constructor(props) {
-		super(props);
-		
-		this.state = {
-			isOpen: props.isOpen
-		}
+	static makeDerivedStateFromProps({addIfChanged}) {
+		addIfChanged('isOpen');
 	}
-	
+
 	addClassNames(add) {
 		add('icon-at-right', this.props.iconAtRight);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		if (nextProps.isOpen != this.props.isOpen) {
-			this.setState({isOpen: nextProps.isOpen});
-		}
 	}
 
 	renderInternal() {
@@ -62,3 +55,5 @@ export class BoxSection extends UIEXComponent {
 		}
 	}
 }
+
+export const BoxSection = withStateMaster(BoxSectionComponent, PROPS_LIST);

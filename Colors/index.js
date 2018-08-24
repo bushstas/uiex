@@ -1,5 +1,5 @@
 import React from 'react';
-import {StateMaster} from 'state-master';
+import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {CellGroup, Cell} from '../CellGroup';
 import {getNumber, replace} from '../utils';
@@ -55,20 +55,16 @@ export class Colors extends UIEXComponent {
 	}
 }
 
-const stateMaster = new StateMaster('value');
+const COLOR_PROPS_LIST = 'value';
 
-const getDerivedStateFromProps = (nextProps) => {
-	const {add, isChanged} = stateMaster;
-	if (isChanged('value') && typeof nextProps.value == 'string') {
-		add('bgColorStyle', {backgroundColor: '#' + replace(/^\#/, '', nextProps.value)});
-	}
-}
-
-export class Color extends UIEXComponent {
+class ColorComponent extends UIEXComponent {
 	static propTypes = ColorPropTypes;
+	static displayName = 'Color';
 
-	static getDerivedStateFromProps(props, state) {
-		return stateMaster.getDerivedState(props, state, getDerivedStateFromProps, UIEXComponent);
+	static makeDerivedStateFromProps({add, isChanged, nextProps}) {
+		if (isChanged('value') && typeof nextProps.value == 'string') {
+			add('bgColorStyle', {backgroundColor: '#' + replace(/^\#/, '', nextProps.value)});
+		}	
 	}
 
 	getCustomProps() {
@@ -95,3 +91,5 @@ export class Color extends UIEXComponent {
 		}
 	}
 }
+
+const Color = withStateMaster(ColorComponent, COLOR_PROPS_LIST);

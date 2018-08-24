@@ -1,4 +1,5 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {Button} from '../Button';
 import {getTransitionDuration} from '../utils';
@@ -8,9 +9,22 @@ import '../style.scss';
 import './style.scss';
 
 const DEFAULT_SPEED = 'normal';
+const PROPS_LIST = 'isOpen';
 
-export class Box extends UIEXComponent {
+class BoxComponent extends UIEXComponent {
 	static propTypes = BoxPropTypes;
+	static displayName = 'Box';
+
+	static makeDerivedStateFromProps({call, isChanged, nextProps, isInitial}) {
+		if (isChanged('isOpen')) {		
+			call(() => {
+				if (!nextProps.isOpen && !isInitial) {
+					this.setHeight();
+				}
+				this.animate(nextProps.isOpen);
+			});
+		}
+	}
 
 	addClassNames(add) {
 		const {animation, effect, buttonUnder} = this.props;		
@@ -26,16 +40,6 @@ export class Box extends UIEXComponent {
 
 	componentDidMount() {
 		this.changeStyles(this.props.isOpen);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		if (nextProps.isOpen != this.props.isOpen) {
-			if (!nextProps.isOpen) {
-				this.setHeight();
-			}
-			this.animate(nextProps.isOpen);
-		}
 	}
 
 	changeStyles(isOpen) {
@@ -126,7 +130,6 @@ export class Box extends UIEXComponent {
 	}
 
 	processShowAnimation() {
-		const {outer} = this.refs;
 		const delay = this.getDelay();
 		switch (this.props.animation) {
 			case 'fall':
@@ -203,7 +206,6 @@ export class Box extends UIEXComponent {
 		const {
 			button,
 			buttonUnder,
-			isOpen
 		} = this.props;
 		const TagName = this.getTagName();
 		const withButton = button && typeof button == 'string';
@@ -262,3 +264,5 @@ export class Box extends UIEXComponent {
 		} 
 	}
 }
+
+export const Box = withStateMaster(BoxComponent, PROPS_LIST);

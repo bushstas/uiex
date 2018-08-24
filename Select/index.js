@@ -1,4 +1,5 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {UIEXBoxContainer} from '../UIEXComponent';
 import {Input} from '../Input';
 import {Icon} from '../Icon';
@@ -10,57 +11,42 @@ import './style.scss';
 
 const PENDING_ERROR = [{title: 'Pending error', value: null}];
 const PENDING_PLACEHOLDER = 'Pending...';
+const INITIAL_STATE = {
+	focused: false,
+	placeholder: null
+};
 
-export class Select extends UIEXBoxContainer {
+const PROPS_LIST = ['value', 'options'];
+
+class SelectComponent extends UIEXBoxContainer {
 	static propTypes = SelectPropTypes;
 	static className = 'select';
 	static properChildren = 'SelectOption';
 	static onlyProperChildren = true;
 	static isControl = true;
+	static displayName = 'Select';
+
+	static makeDerivedStateFromProps({add, isChanged, nextProps, state}) {
+		if (isChanged('value')) {
+			add('title', this.getTitle());
+		}
+		if (isChanged('options')) {
+			let {options} = nextProps;
+			if (typeof options == 'function') {
+				options = options();
+			} else if (options instanceof Promise) {
+				add('placeholder', this.getPendingPlaceholder());
+			}
+			add('options', options);
+		}
+	}
 
 	constructor(props) {
 		super(props);
-		let {options} = props;
-		if (typeof options == 'function') {
-			options = options();
-		}
-		this.state = {
-			focused: false,
-			placeholder: null,
-			options
-		};
 		this.selectHandler = this.handleSelect.bind(this);
 		this.selectByArrowHandler = this.handleSelectByArrow.bind(this);
 		this.enterHandler = this.handleEnter.bind(this);
 		this.clickHandler = this.handleClick.bind(this);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const state = {};
-		let changed = false;
-		if (nextProps.value != this.props.value) {
-			state.title = this.getTitle();
-			changed = true;
-		}
-		if (nextProps.options != this.props.options) {
-			let {options} = nextProps;
-			if (typeof options == 'function') {
-				options = options();
-			}
-			state.options = options;
-			changed = true;
-		}
-		if (changed) {
-			this.setState(state);
-		}
-	}
-
-	componentWillMount() {
-		const {options} = this.state;
-		if (options instanceof Promise) {
-			this.setState({placeholder: this.getPendingPlaceholder()});
-		}
 	}
 
 	componentWillUnmount() {
@@ -413,6 +399,8 @@ export class Select extends UIEXBoxContainer {
 		return false;
 	}
 }
+
+export const Select = withStateMaster(SelectComponent, PROPS_LIST, INITIAL_STATE);
 
 
 export class SelectOption extends PopupMenuItem {

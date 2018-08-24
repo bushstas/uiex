@@ -1,5 +1,5 @@
 import React from 'react';
-import {StateMaster} from 'state-master';
+import {withStateMaster} from 'state-master';
 import {Input} from '../Input';
 import {ColorPicker} from '../ColorPicker';
 import {Popup} from '../Popup';
@@ -11,31 +11,25 @@ import {InputColorPropTypes} from './proptypes';
 import '../style.scss';
 import './style.scss';
 
-const VALUES_PROPS_LIST = ['value', 'defaultValue'];
-const PROPS_LIST = ['pickerShown', ...VALUES_PROPS_LIST];
-const stateMaster = new StateMaster(PROPS_LIST);
+const PROPS_LIST = ['pickerShown', 'value', 'defaultValue'];
 
-const getDerivedStateFromProps = (nextProps, prevProps, state, component) => {
-	const {add, isChanged, isChangedAny} = stateMaster;
-	if (isChanged('pickerShown', false) && state.pickerShown) {
-		add('pickerShown', false);
-	}
-	if (isChangedAny(VALUES_PROPS_LIST)) {
-		const {value, defaultValue} = nextProps;
-		const color = getColor(replace(/^#+/, '', value || defaultValue));
-		const isValidColor = color.isValid();
-		add('isValidColor', isValidColor);
-		add('colorStyle', isValidColor ? {backgroundColor: '#' + color.toHex()} : null);
-	}
-}
-
-export class InputColor extends Input {
+class InputColorComponent extends Input {
 	static propTypes = InputColorPropTypes;
 	static className = 'color-input';
 	static isControl = true;
+	static displayName = 'InputColor';
 
-	static getDerivedStateFromProps(props, state) {
-		return stateMaster.getDerivedState(props, state, getDerivedStateFromProps, Input);
+	static makeDerivedStateFromProps({add, isChanged, isChangedAny, nextProps, state}) {
+		if (isChanged('pickerShown', false) && state.pickerShown) {
+			add('pickerShown', false);
+		}
+		if (isChangedAny('value', 'defaultValue')) {
+			const {value, defaultValue} = nextProps;
+			const color = getColor(replace(/^#+/, '', value || defaultValue));
+			const isValidColor = color.isValid();
+			add('isValidColor', isValidColor);
+			add('colorStyle', isValidColor ? {backgroundColor: '#' + color.toHex()} : null);
+		}
 	}
 
 	addClassNames(add) {
@@ -160,3 +154,4 @@ export class InputColor extends Input {
 		}
 	}
 }
+export const InputColor = withStateMaster(InputColorComponent, PROPS_LIST);

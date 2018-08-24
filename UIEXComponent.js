@@ -1,5 +1,5 @@
 import React from 'react';
-import {StateMaster} from 'state-master';
+import {withStateMaster, subscribeToStateMaster, unsubscribeFromStateMaster} from 'state-master';
 import {BoxCommonPropTypes} from './Box/proptypes';
 import {
 	showImproperChildError,
@@ -12,29 +12,22 @@ import {
 import {FORM_BUTTON_DISPLAY} from './consts';
 
 const PROPS_LIST = ['width', 'height', 'fontSize', 'style'];
-const stateMaster = new StateMaster(PROPS_LIST);
 
-const getDerivedStateFromProps = (nextProps, prevProps, state, component) => {
-	const {add, isChangedAny} = stateMaster;
-	if (isChangedAny()) {
-		add('mainStyle', component.getMainStyle());
-	}
-}
-
-export class UIEXComponent extends React.PureComponent {
+class UIEXComponentClass extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.stylesChanged = {};
 		this.styles = {};
-		this.state = {};
-		stateMaster.subscribe(this);
+		subscribeToStateMaster(this);
+	}
+
+	static makeDerivedStateFromProps({add, isChangedAny}) {
+		if (isChangedAny()) {
+			add('mainStyle', this.getMainStyle());
+		}
 	}
 	
-	static getDerivedStateFromProps(props, state) {
-		return stateMaster.getDerivedState(props, state, getDerivedStateFromProps);
-	}
-	
-	componentWillReceiveProps(nextProps) {		
+	componentWillReceiveProps_(nextProps) {
 		// const {width, height, fontSize, style} = nextProps;
 		// this.stylesChanged.main = (
 		// 	width != this.props.width ||
@@ -118,6 +111,7 @@ export class UIEXComponent extends React.PureComponent {
 	}
 
 	componentWillUnmount() {
+		unsubscribeFromStateMaster(this);
 		const {onUnmount} = this.props;
 		if (typeof onUnmount == 'function') {
 			onUnmount(this);
@@ -233,7 +227,10 @@ export class UIEXComponent extends React.PureComponent {
 	}
 
 	getNativeClassName() {
-		let {className, additionalClassName, name} = this.constructor;
+		let {className, additionalClassName, displayName, name} = this.constructor;
+		if (displayName) {
+			name = displayName;
+		}
 		className = 'uiex-' + (className || name.toLowerCase());
 		if (additionalClassName) {
 			className += ' uiex-' + additionalClassName;
@@ -348,6 +345,8 @@ export class UIEXComponent extends React.PureComponent {
 	getStyleNames() {}
 	addClassNames() {}
 }
+
+export const UIEXComponent = withStateMaster(UIEXComponentClass, PROPS_LIST);
 
 
 export class UIEXButtons extends UIEXComponent {

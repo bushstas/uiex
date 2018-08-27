@@ -15,7 +15,7 @@ class BoxComponent extends UIEXComponent {
 	static propTypes = BoxPropTypes;
 	static displayName = 'Box';
 
-	static makeDerivedStateFromProps({call, isChanged, nextProps, isInitial}) {
+	static getDerivedStateFromProps({call, isChanged, nextProps, isInitial}) {
 		if (isChanged('isOpen')) {		
 			call(() => {
 				if (!nextProps.isOpen && !isInitial) {
@@ -265,4 +265,4 @@ class BoxComponent extends UIEXComponent {
 	}
 }
 
-export const Box = withStateMaster(BoxComponent, PROPS_LIST);
+export const Box = withStateMaster(BoxComponent, PROPS_LIST, null, UIEXComponent);

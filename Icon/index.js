@@ -1,4 +1,5 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {MaterialIcon} from './MaterialIcon';
 import {FontAwesomeIcon} from './FontAwesomeIcon';
@@ -13,30 +14,22 @@ import {IcomoonIcon} from './IcomoonIcon';
 import '../style.scss';
 import './style.scss';
 
-export class Icon extends UIEXComponent {
+const PROPS_LIST = 'style';
 
-	constructor(props) {
-		super(props);
-		this.initStyle(props);
-	}
+class IconComponent extends UIEXComponent {
+	static displayName = 'Icon';
 
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {style} = this.props;
-		if (style != nextProps.style) {
-			this.initStyle(nextProps);
+	static getDerivedStateFromProps({add, isChanged, nextProps}) {
+		if (isChanged('style')) {
+			if (this.constructor.defaultStyles instanceof Object) {
+				add('style', {
+					...this.constructor.defaultStyles.main,
+					...nextProps.style
+				});
+			} else {
+				add('style');
+			}		
 		}
-	}
-
-	initStyle(props) {
-		if (this.constructor.defaultStyles instanceof Object) {
-			this.style = {
-				...this.constructor.defaultStyles.main,
-				...props.style
-			}
-		} else {
-			this.style = props.style;
-		}		
 	}
 	
 	render() {
@@ -75,7 +68,9 @@ export class Icon extends UIEXComponent {
 			break;
 		}
 		return (
-			<TypedIcon {...this.props} style={this.style}/>
+			<TypedIcon {...this.props} style={this.state.style}/>
 		)
 	}
 }
+
+export const Icon = withStateMaster(IconComponent, PROPS_LIST, null, UIEXComponent);

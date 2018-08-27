@@ -15,7 +15,7 @@ class BoxSectionComponent extends UIEXComponent {
 	static className = 'box-section';
 	static displayName = 'BoxSection';
 
-	static makeDerivedStateFromProps({addIfChanged}) {
+	static getDerivedStateFromProps({addIfChanged}) {
 		addIfChanged('isOpen');
 	}
 

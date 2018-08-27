@@ -1,9 +1,9 @@
 import React from 'react';
-import {UIEXComponent, UIEXBoxContainer} from '../UIEXComponent';
+import {withStateMaster} from 'state-master';
+import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
 import {Popup} from '../Popup';
 import {Box} from '../Box';
-import {SelectOption} from '../Select';
 import {removeClass} from '../utils';
 import {PopupMenuPropTypes, PopupMenuItemPropTypes} from './proptypes';
 
@@ -11,40 +11,34 @@ import '../style.scss';
 import './style.scss';
 
 const DEFAULT_MAX_HEIGHT = 350;
+const PROPS_LIST = 'isOpen';
+const INITIAL_STATE = {
+	currentSelected: -1
+};
 
-export class PopupMenu extends Popup {
+class PopupMenuComponent extends Popup {
 	static propTypes = PopupMenuPropTypes;
 	static properChildren = ['PopupMenuItem', 'SelectOption', 'AutoCompleteOption'];
 	static className = 'popup-menu';
 	static onlyProperChildren = true;
+	static displayName = 'PopupMenu';
 
 	static defaultProps = {
 		speed: 'fast',
 		animation: 'fade-fall'
 	}
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			isOpen: props.isOpen,
-			currentSelected: -1
-		}
-		if (props.isOpen) {
-			this.checkPosition();
-			this.addKeydownHandler();
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		if (this.props.isOpen !== nextProps.isOpen) {
-			if (nextProps.isOpen) {
-				this.checkPosition();
-				this.addKeydownHandler();
-				this.setState({isOpen: true});
-			} else {
-				this.removeKeydownHandler();
-			}
+	static getDerivedStateFromProps({add, isChanged, nextProps, call}) {
+		if (isChanged('isOpen')) {
+			add('isOpen');
+			call(() => {
+				if (nextProps.isOpen) {
+					this.checkPosition();
+					this.addKeydownHandler();
+				} else {
+					this.removeKeydownHandler();
+				}
+			});
 		}
 	}
 
@@ -154,7 +148,7 @@ export class PopupMenu extends Popup {
 			<div {...this.getProps()}>
 				<Box 					
 					ref="box"
-					isOpen={this.props.isOpen} 
+					isOpen={this.state.isOpen} 
 					{...this.getBoxProps()}
 					onHide={this.handleBoxHide}
 					noHideAnimation
@@ -322,6 +316,8 @@ export class PopupMenu extends Popup {
 		}		
 	}
 }
+
+export const PopupMenu = withStateMaster(PopupMenuComponent, PROPS_LIST, INITIAL_STATE, Popup);
 
 export class PopupMenuItem extends UIEXComponent {
 	static propTypes = PopupMenuItemPropTypes;

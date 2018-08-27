@@ -23,7 +23,7 @@ class ColorPickerComponent extends UIEXComponent {
 		value: DEFAULT_COLOR
 	}
 
-	static makeDerivedStateFromProps({nextProps, isChanged, add}) {
+	static getDerivedStateFromProps({nextProps, isChanged, add}) {
 		if (isChanged('value')) {
 			const colorState = this.getStateFromColor(getColor(nextProps.value));
 			add(colorState);

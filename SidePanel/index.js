@@ -188,16 +188,16 @@ export class SidePanel extends UIEXComponent {
 		return this.getSpeed() * 100;
 	}
 
-	getWidthProp() {
-		const {width} = this.props;
+	getWidthProp(props) {
+		const {width} = props;
 		if (inPercent(width)) {
 			return getSizeInPercentageOfWindow(width, 'width');
 		}
 		return width;
 	}
 
-	getHeightProp() {
-		const {height} = this.props;
+	getHeightProp(props) {
+		const {height} = props;
 		if (inPercent(height)) {
 			return getSizeInPercentageOfWindow(height, 'height');
 		}

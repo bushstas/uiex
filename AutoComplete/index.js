@@ -1,4 +1,5 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {Select} from '../Select';
 import {Input} from '../Input';
 import {Icon} from '../Icon';
@@ -9,43 +10,39 @@ import {AutoCompletePropTypes} from './proptypes';
 import '../style.scss';
 import './style.scss';
 
-export class AutoComplete extends Select {
+const PROPS_LIST = ['value', 'focused'];
+
+class AutoCompleteComponent extends Select {
 	static propTypes = AutoCompletePropTypes;
 	static className = 'auto-complete';
 	static properChildren = 'AutoCompleteOption';
 	static onlyProperChildren = true;
 	static isControl = true;
+	static displayName = 'AutoComplete';
 
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {value, focused} = this.props;
-		const state = {};
-		let stateChanged = false;
-		if (focused != nextProps.focused && !nextProps.disabled) { 
-			if (nextProps.focused) {
-				this.focus();
-			} else {
-				this.blur();
-			}
-			state.focused = nextProps.focused;
-			stateChanged = true;
+	static getDerivedStateFromProps({add, isChanged, nextProps, isInitial, call}) {
+		if (!isInitial && isChanged('focused') && !nextProps.disabled) {
+			call(() => {
+				if (nextProps.focused) {
+					this.focus();
+				} else {
+					this.blur();
+				}
+			});
+			add('focused');
 		}
-		if (value != nextProps.value) {
+		if (isChanged('value')) {
 			if (nextProps.value !== this.selectedValue) {
 				this.selectedValue = null;
 				this.inputedValue = nextProps.value;
 			}
 			if (!nextProps.dynamic && nextProps.passive) {
 				if (!nextProps.value) {
-					state.focused = false;
+					add('focused', false);
 				} else if (this.optionsTotalCount > 0) {
-					state.focused = true;
+					add('focused', true);
 				}
-				stateChanged = true;
 			}
-		}
-		if (stateChanged) {
-			this.setState(state);
 		}
 	}
 
@@ -237,6 +234,8 @@ export class AutoComplete extends Select {
 
 	checkValueChange() {}
 }
+
+export const AutoComplete = withStateMaster(AutoCompleteComponent, PROPS_LIST, null, Select);
 
 export class AutoCompleteOption extends PopupMenuItem {
 	static propTypes = PopupMenuItem.propTypes;

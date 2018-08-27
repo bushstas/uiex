@@ -1,5 +1,5 @@
 import React from 'react';
-import {withStateMaster, subscribeToStateMaster, unsubscribeFromStateMaster} from 'state-master';
+import {withStateMaster, registerContext, unregisterContext} from 'state-master';
 import {BoxCommonPropTypes} from './Box/proptypes';
 import {
 	showImproperChildError,
@@ -18,12 +18,12 @@ class UIEXComponentClass extends React.PureComponent {
 		super(props);
 		this.stylesChanged = {};
 		this.styles = {};
-		subscribeToStateMaster(this);
+		registerContext(this);
 	}
 
-	static makeDerivedStateFromProps({add, isChangedAny}) {
+	static getDerivedStateFromProps({nextProps, add, isChangedAny}) {
 		if (isChangedAny()) {
-			add('mainStyle', this.getMainStyle());
+			add('mainStyle', this.getMainStyle(nextProps));
 		}
 	}
 	
@@ -72,28 +72,22 @@ class UIEXComponentClass extends React.PureComponent {
 		return this.styles[name];
 	}
 
-	getMainStyle(withoutPropStyle = false) {
-		const {fontSize, style: propStyle} = this.props;
-		const width = this.getWidthProp();
-		const height = this.getHeightProp();
+	getMainStyle(props) {
 		let style = null;		
 		style = addObject(this.getDefaultStyle(), style);
-		style = addObject(this.getCustomStyle(), style);
-		if (!withoutPropStyle) {
-			style = addObject(propStyle, style);
+		style = addObject(this.getCustomStyle(), style);		
+		if (this.isWithPropStyle()) {
+			style = addObject(props.style, style);
 		}
+		
+		const width = this.getWidthProp(props);
 		style = addStyleProperty(width, 'width', style);
+		
+		const height = this.getHeightProp(props);
 		style = addStyleProperty(height, 'height', style);
-		style = addStyleProperty(fontSize, 'fontSize', style);
+		
+		style = addStyleProperty(props.fontSize, 'fontSize', style);
 		return style;
-	}
-
-	getWidthProp() {
-		return this.props.width;
-	}
-
-	getHeightProp() {
-		return this.props.height;
 	}
 
 	componentDidMount() {
@@ -111,7 +105,7 @@ class UIEXComponentClass extends React.PureComponent {
 	}
 
 	componentWillUnmount() {
-		unsubscribeFromStateMaster(this);
+		unregisterContext(this);
 		const {onUnmount} = this.props;
 		if (typeof onUnmount == 'function') {
 			onUnmount(this);
@@ -338,6 +332,18 @@ class UIEXComponentClass extends React.PureComponent {
 
 	prepareChildren(children) {
 		return children;
+	}
+
+	getWidthProp(props) {
+		return props.width;
+	}
+
+	getHeightProp(props) {
+		return props.height;
+	}
+
+	isWithPropStyle() {
+		return true;
 	}
 
 	initRendering() {}

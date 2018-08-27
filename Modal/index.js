@@ -16,7 +16,7 @@ class ModalComponent extends UIEXComponent {
 	static styleNames = ['body', 'header', 'footer', 'mask', 'controls'];
 	static displayName = 'Modal';
 
-	static makeDerivedStateFromProps({addIfChanged, isChangedAny, isChanged, nextProps, call}) {
+	static getDerivedStateFromProps({addIfChanged, isChangedAny, isChanged, nextProps, call}) {
 		addIfChanged('expanded');
 		if (isChanged('isOpen')) {
 			call(() => {
@@ -192,7 +192,7 @@ class ModalComponent extends UIEXComponent {
 			outerContent
 		} = this.props;
 
-		const {expanded, isOpen} = this.state;
+		const {expanded, mainStyle} = this.state;
 		const TagName = this.getTagName();	
 		return (
 			<TagName {...this.getProps(null, false)} onClick={this.handleClick}>
@@ -216,7 +216,7 @@ class ModalComponent extends UIEXComponent {
 					dragWithinScreen={dragWithinScreen}
 					onDragEnd={onDragEnd}
 					className={this.getClassName('container')}
-					style={this.getMainStyle()}
+					style={mainStyle}
 				>
 					{(expandable || !unclosable) && 
 						<div className={this.getClassName('controls')} style={this.getStyle('controls')}>

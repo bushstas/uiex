@@ -19,7 +19,7 @@ class InputColorComponent extends Input {
 	static isControl = true;
 	static displayName = 'InputColor';
 
-	static makeDerivedStateFromProps({add, isChanged, isChangedAny, nextProps, state}) {
+	static getDerivedStateFromProps({add, isChanged, isChangedAny, nextProps, state}) {
 		if (isChanged('pickerShown', false) && state.pickerShown) {
 			add('pickerShown', false);
 		}
@@ -154,4 +154,4 @@ class InputColorComponent extends Input {
 		}
 	}
 }
-export const InputColor = withStateMaster(InputColorComponent, PROPS_LIST);
+export const InputColor = withStateMaster(InputColorComponent, PROPS_LIST, null, Input);

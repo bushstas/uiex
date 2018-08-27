@@ -1,33 +1,31 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {UIEXBoxContainer} from '../UIEXComponent';
 import {PopupPropTypes} from './proptypes';
 
 import '../style.scss';
 
-export class Popup extends UIEXBoxContainer {
+const PROPS_LIST = 'isOpen';
+
+class PopupComponent extends UIEXBoxContainer {
 	static propTypes = PopupPropTypes;
+	static displayName = 'Popup';
+
+	static getDerivedStateFromProps({isChanged, nextProps, call, isInitial}) {
+		if (isChanged('isOpen')) {
+			call(() => {			
+				if (nextProps.isOpen) {
+					this.addBodyClickHandler();
+				} else if (!isInitial) {
+					this.removeBodyClickHandler();
+				}
+			});
+		}
+	}
 	
-	constructor(props) {
-		super(props);
-		if (props.isOpen) {
-			this.addBodyClickHandler();
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {isOpen} = this.props;
-		if (isOpen !== nextProps.isOpen) {
-			if (nextProps.isOpen) {
-				this.addBodyClickHandler();
-			} else {
-				this.removeBodyClickHandler();
-			}
-		}
-	}
-
 	componentWillUnmount() {
 		this.removeBodyClickHandler();
+		super.componentWillUnmount();
 	}
 
 	addBodyClickHandler() {
@@ -58,3 +56,5 @@ export class Popup extends UIEXBoxContainer {
 		}
 	}
 }
+
+export const Popup = withStateMaster(PopupComponent, PROPS_LIST, null, UIEXBoxContainer);

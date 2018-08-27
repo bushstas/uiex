@@ -1,6 +1,6 @@
 import React from 'react';
 import {withStateMaster} from 'state-master';
-import {UIEXBoxContainer} from '../UIEXComponent';
+import {UIEXBoxContainer, UIEXComponent} from '../UIEXComponent';
 import {Input} from '../Input';
 import {Icon} from '../Icon';
 import {PopupMenu, PopupMenuItem} from '../PopupMenu';
@@ -16,7 +16,7 @@ const INITIAL_STATE = {
 	placeholder: null
 };
 
-const PROPS_LIST = ['value', 'options'];
+const PROPS_LIST = 'options';
 
 class SelectComponent extends UIEXBoxContainer {
 	static propTypes = SelectPropTypes;
@@ -26,11 +26,8 @@ class SelectComponent extends UIEXBoxContainer {
 	static isControl = true;
 	static displayName = 'Select';
 
-	static makeDerivedStateFromProps({add, isChanged, nextProps, state}) {
-		if (isChanged('value')) {
-			add('title', this.getTitle());
-		}
-		if (isChanged('options')) {
+	static getDerivedStateFromProps({add, changed, nextProps}) {
+		if (changed) {
 			let {options} = nextProps;
 			if (typeof options == 'function') {
 				options = options();
@@ -60,7 +57,9 @@ class SelectComponent extends UIEXBoxContainer {
 			if (value instanceof Array) {
 				value = value[0];
 			}
-			return this.values[value] || '';
+			if (this.values) {
+				return this.values[value] || '';
+			}
 		}
 		return '';
 	}
@@ -400,7 +399,7 @@ class SelectComponent extends UIEXBoxContainer {
 	}
 }
 
-export const Select = withStateMaster(SelectComponent, PROPS_LIST, INITIAL_STATE);
+export const Select = withStateMaster(SelectComponent, PROPS_LIST, INITIAL_STATE, UIEXComponent);
 
 
 export class SelectOption extends PopupMenuItem {

@@ -19,8 +19,8 @@ class CellGroupComponent extends UIEXComponent {
 	static defaultCellSize = 1;
 	static displayName = 'CellGroup';
 
-	static makeDerivedStateFromProps({nextProps, isChangedAny, add}) {
-		if (isChangedAny()) {
+	static getDerivedStateFromProps({nextProps, changed, add}) {
+		if (changed) {
 			let {rowMargin, height} = nextProps;
 			let rowStyle = null;
 			rowMargin = getNumber(rowMargin);
@@ -340,8 +340,10 @@ class CellComponent extends UIEXComponent {
 	static propTypes = CellPropTypes;
 	static displayName = 'Cell';
 
-	static makeDerivedStateFromProps({addIfChangedAny}) {		
-		addIfChangedAny('mainStyle', this.getMainStyle(true));
+	static getDerivedStateFromProps({nextProps, add, isChangedAny}) {
+		if (isChangedAny()) {
+			add('mainStyle', this.getMainStyle(nextProps));
+		}
 	}
 
 	addClassNames(add) {
@@ -398,6 +400,10 @@ class CellComponent extends UIEXComponent {
 		if (typeof onClick == 'function') {
 			onClick(cellKey);
 		}
+	}
+
+	isWithPropStyle() {
+		return false;
 	}
 }
 

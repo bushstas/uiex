@@ -17,7 +17,7 @@ class CheckboxComponent extends UIEXComponent {
 	static isControl = true;
 	static displayName = 'Checkbox';
 
-	static makeDerivedStateFromProps({addIfChanged}) {
+	static getDerivedStateFromProps({addIfChanged}) {
 		addIfChanged('checked');
 	}
 

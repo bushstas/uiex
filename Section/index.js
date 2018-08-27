@@ -1,64 +1,50 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {SectionPropTypes} from './proptypes';
-import {getNumberInPxOrPercent, addStyleProperty, addObject} from '../utils';
+import {getNumberInPxOrPercent, addObject} from '../utils';
 
 import '../style.scss';
 import './style.scss';
 
-export class Section extends UIEXComponent {
+const PROPS_LIST = ['borderWidth', 'borderColor', 'borderStyle', 'borderRadius', 'bgColor', 'padding'];
+
+class SectionComponent extends UIEXComponent {
 	static propTypes = SectionPropTypes;
 	static styleNames = ['caption', 'note', 'content'];
+	static displayName = 'Section';
 
-	constructor(props) {
-		super(props);
-		this.initStyle(props);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {borderWidth, borderColor, borderStyle, borderRadius, bgColor, padding} = this.props;
-		if (
-			borderWidth != nextProps.borderWidth || 
-			borderColor != nextProps.borderColor || 
-			borderStyle != nextProps.borderStyle || 
-			borderRadius != nextProps.borderRadius || 
-			bgColor != nextProps.bgColor || 
-			padding != nextProps.padding
-		) {
-			this.setStyleChanged(true);
-			this.initStyle(nextProps);
-		}
-	}
-
-	initStyle(props) {
-		this.customStyle = null;
-		let {borderColor, borderWidth, borderStyle, borderRadius, bgColor: backgroundColor, padding} = props;
-		borderWidth = getNumberInPxOrPercent(borderWidth);
-		padding = getNumberInPxOrPercent(padding);
-		borderRadius = getNumberInPxOrPercent(borderRadius);
-		if (padding) {
-			this.customStyle = addObject({padding}, this.customStyle);
-		}
-		if (borderWidth) {
-			this.customStyle = addObject({borderWidth}, this.customStyle);
-		}
-		if (borderColor) {
-			this.customStyle = addObject({borderColor}, this.customStyle);
-		}
-		if (borderStyle) {
-			this.customStyle = addObject({borderStyle}, this.customStyle);
-		}
-		if (borderRadius) {
-			this.customStyle = addObject({borderRadius}, this.customStyle);
-		}
-		if (backgroundColor) {
-			this.customStyle = addObject({backgroundColor}, this.customStyle);
+	static getDerivedStateFromProps({add, nextProps, isChangedAny}) {
+		if (isChangedAny()) {
+			let customStyle = {};
+			let {borderColor, borderWidth, borderStyle, borderRadius, bgColor: backgroundColor, padding} = nextProps;
+			borderWidth = getNumberInPxOrPercent(borderWidth);
+			padding = getNumberInPxOrPercent(padding);
+			borderRadius = getNumberInPxOrPercent(borderRadius);
+			if (padding) {
+				customStyle.padding = padding;
+			}
+			if (borderWidth) {
+				customStyle.borderWidth = borderWidth;
+			}
+			if (borderColor) {
+				customStyle.borderColor = borderColor;
+			}
+			if (borderStyle) {
+				customStyle.borderStyle = borderStyle;
+			}
+			if (borderRadius) {
+				customStyle.borderRadius = borderRadius;
+			}
+			if (backgroundColor) {
+				customStyle.backgroundColor = backgroundColor;
+			}
+			add('customStyle', customStyle);
 		}
 	}
 
 	getCustomStyle() {
-		return this.customStyle;
+		return this.state.customStyle;
 	}
 
 	renderInternal() {
@@ -84,3 +70,5 @@ export class Section extends UIEXComponent {
 		)
 	}
 }
+
+export const Section = withStateMaster(SectionComponent, PROPS_LIST, null, UIEXComponent);

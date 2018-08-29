@@ -8,6 +8,7 @@ import './style.scss';
 
 export class Label extends UIEXComponent {
 	static propTypes = LabelPropTypes;
+	static displayName = 'Label';
 
 	addClassNames(add) {
 		add('removable', this.props.removable);

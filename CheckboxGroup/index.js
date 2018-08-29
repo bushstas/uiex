@@ -15,6 +15,7 @@ export class CheckboxGroup extends UIEXComponent {
 	static className = 'checkbox-group';
 	static onlyProperChildren = true;
 	static isControl = true;
+	static displayName = 'CheckboxGroup';
 
 	static flatten(obj) {
 

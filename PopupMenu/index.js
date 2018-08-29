@@ -55,7 +55,6 @@ class PopupMenuComponent extends Popup {
 	}
 
 	componentDidUpdate() {
-		super.componentDidUpdate();
 		if (this.props.isOpen && this.refs.selected) {
 			const {main} = this.refs.selected.refs;
 			if (main instanceof Element) {
@@ -322,6 +321,7 @@ export const PopupMenu = withStateMaster(PopupMenuComponent, PROPS_LIST, INITIAL
 export class PopupMenuItem extends UIEXComponent {
 	static propTypes = PopupMenuItemPropTypes;
 	static className = 'popup-menu-item';
+	static displayName = 'PopupMenuItem';
 
 	addClassNames(add) {
 		const {selected, checked, icon, withTopDelimiter, withBottomDelimiter} = this.props;

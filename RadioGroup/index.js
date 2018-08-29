@@ -13,6 +13,7 @@ export class RadioGroup extends UIEXComponent {
 	static properChildren = 'Radio';
 	static onlyProperChildren = true;
 	static isControl = true;
+	static displayName = 'RadioGroup';
 
 	constructor(props) {
 		super(props);

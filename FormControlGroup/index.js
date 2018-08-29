@@ -15,6 +15,7 @@ export class FormControlGroup extends CellGroup {
 	static defaultColumns = 10;
 	static defaultCellMargin = 12;
 	static defaultCellSize = 2;
+	static displayName = 'FormControlGroup';
 
 	addChildProps(child, props, idx) {
 		super.addChildProps(child, props, idx);

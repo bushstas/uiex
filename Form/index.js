@@ -13,6 +13,7 @@ const DEFAULT_LINE_MARGIN = 15;
 export class Form extends UIEXComponent {
 	static propTypes = FormPropTypes;
 	static properChildren = ['FormControl', 'FormControlGroup'];
+	static displayName = 'Form';
 
 	addChildProps(child, props) {
 		const {type: control} = child;

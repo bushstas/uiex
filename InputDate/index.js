@@ -1,6 +1,7 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {Input} from '../Input';
-import {getNumberOrNull, propsChanged, replace} from '../utils';
+import {getNumberOrNull, replace} from '../utils';
 import {InputDatePropTypes} from './proptypes';
 
 import '../style.scss';
@@ -8,19 +9,20 @@ import './style.scss';
 
 const PROPS_LIST = ['yearFirst', 'past', 'future', 'withTime', 'delimiter', 'minYear', 'maxYear', 'periodFrom', 'periodTo'];
 
-export class InputDate extends Input {
+class InputDateComponent extends Input {
 	static propTypes = InputDatePropTypes;
 	static className = 'input';
 	static isControl = true;
+	static displayName = 'InputDate';
 
 	addClassNames(add) {
 		super.addClassNames(add);
 		add('date-input');
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate({changed}) {
 		let {onChange, name, value} = this.props;
-		if (value && propsChanged(prevProps, this.props, PROPS_LIST)) {
+		if (value && changed) {
 			if (typeof onChange == 'function') {
 				const newValue = this.filterValue(value, this.props);
 				if (newValue != value) {
@@ -293,3 +295,5 @@ export class InputDate extends Input {
 		}
 	}
 }
+
+export const InputDate = withStateMaster(InputDateComponent, PROPS_LIST, null, Input);

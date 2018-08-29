@@ -405,4 +405,5 @@ export const Select = withStateMaster(SelectComponent, PROPS_LIST, INITIAL_STATE
 export class SelectOption extends PopupMenuItem {
 	static propTypes = PopupMenuItem.propTypes;
 	static className = PopupMenuItem.className;
+	static displayName = 'SelectOption';
 }

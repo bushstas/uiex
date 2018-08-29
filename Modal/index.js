@@ -33,7 +33,6 @@ class ModalComponent extends UIEXComponent {
 	}
 
 	componentDidMount() {
-		super.componentDidMount();
 		if (this.props.isOpen) {
 			this.animateShowing();
 		}
@@ -320,4 +319,4 @@ class ModalComponent extends UIEXComponent {
 	}
 }
 
-export const Modal = withStateMaster(ModalComponent, PROPS_LIST);
+export const Modal = withStateMaster(ModalComponent, PROPS_LIST, null, UIEXComponent);

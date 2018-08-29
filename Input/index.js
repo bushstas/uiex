@@ -14,6 +14,7 @@ const INITIAL_STATE = {
 export class Input extends UIEXComponent {
 	static propTypes = InputPropTypes;
 	static isControl = true;
+	static displayName = 'Input';
 
 	constructor(props) {
 		super(props);
@@ -30,7 +31,6 @@ export class Input extends UIEXComponent {
 	}
 
 	componentDidMount() {
-		super.componentDidMount();
 		const {value} = this.props;
 		if (value) {
 			this.checkValidity(value);
@@ -38,7 +38,6 @@ export class Input extends UIEXComponent {
 	}
 
 	componentDidUpdate(prevProps) {
-		super.componentDidUpdate(prevProps);
 		const {value} = this.props;
 		if (prevProps.value != value) {
 			this.checkValidity(value, this.props);

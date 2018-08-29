@@ -19,7 +19,7 @@ class CellGroupComponent extends UIEXComponent {
 	static defaultCellSize = 1;
 	static displayName = 'CellGroup';
 
-	static getDerivedStateFromProps({nextProps, changed, add}) {
+	static getDerivedStateFromProps({nextProps, changed}) {
 		if (changed) {
 			let {rowMargin, height} = nextProps;
 			let rowStyle = null;
@@ -30,13 +30,12 @@ class CellGroupComponent extends UIEXComponent {
 				} else {
 					rowStyle = {marginTop: rowMargin};
 				}
-				add('rowStyle', rowStyle);
+				return {rowStyle};
 			}
 		}
 	}
 
 	componentDidMount() {
-		super.componentDidMount();
 		window.addEventListener('resize', this.handleWindowResize, false);
 	}
 
@@ -293,7 +292,6 @@ class CellGroupComponent extends UIEXComponent {
 	}
 
 	getSize(props, key, defaultSize) {
-		const {innerWidth: w} = window;
 		const ws = this.windowSize;
 		let value;
 		if (ws == 0) {
@@ -332,7 +330,7 @@ class CellGroupComponent extends UIEXComponent {
 	}
 }
 
-export const CellGroup = withStateMaster(CellGroupComponent, PROPS_LIST);
+export const CellGroup = withStateMaster(CellGroupComponent, PROPS_LIST, null, UIEXComponent);
 
 const CELL_PROPS_LIST = ['leftPadding', 'rightPadding', 'leftMargin', 'minHeight', 'width', 'height', 'fontSize', 'style'];
 
@@ -340,8 +338,8 @@ class CellComponent extends UIEXComponent {
 	static propTypes = CellPropTypes;
 	static displayName = 'Cell';
 
-	static getDerivedStateFromProps({nextProps, add, isChangedAny}) {
-		if (isChangedAny()) {
+	static getDerivedStateFromProps({nextProps, add, changed}) {
+		if (changed) {
 			add('mainStyle', this.getMainStyle(nextProps));
 		}
 	}
@@ -350,8 +348,8 @@ class CellComponent extends UIEXComponent {
 		add('align-self-' + this.props.alignSelf, this.props.alignSelf);
 	}
 
-	getCustomStyle() {
-		let {leftPadding: l, rightPadding: r, leftMargin: m, minHeight: mh} = this.props;
+	getCustomStyle(props) {
+		let {leftPadding: l, rightPadding: r, leftMargin: m, minHeight: mh} = props;
 		let style;
 		if (l) {
 			style = {paddingLeft: l};
@@ -412,21 +410,23 @@ export const Cell = withStateMaster(CellComponent, CELL_PROPS_LIST);
 class CellGroupRow extends UIEXComponent {
 	static propTypes = CellGroupRowPropTypes;
 	static className = 'cell-group-row';
+	static displayName = 'CellGroupRow';
 }
 
-class CellContent extends UIEXComponent {
-	static className = 'cell-content';
+const CELL_CONTENT_PROPS_LIST = ['minHeight', 'style'];
 
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {minHeight: mh} = this.props;
-		if (mh != nextProps.minHeight) {
-			this.setStyleChanged(true);
+class CellContentComponent extends UIEXComponent {
+	static className = 'cell-content';
+	static displayName = 'CellContent';
+
+	static getDerivedStateFromProps({nextProps, add, changed}) {
+		if (changed) {
+			add('mainStyle', this.getMainStyle(nextProps));
 		}
 	}
 
-	getCustomStyle() {
-		let {minHeight: mh} = this.props;
+	getCustomStyle(props) {
+		let {minHeight: mh} = props;
 		
 		if (mh) {
 			mh = getNumber(mh);
@@ -446,3 +446,5 @@ class CellContent extends UIEXComponent {
 		)
 	}
 }
+
+const CellContent = withStateMaster(CellContentComponent, CELL_CONTENT_PROPS_LIST);

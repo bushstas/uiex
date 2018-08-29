@@ -1,6 +1,7 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {Input} from '../Input';
-import {getNumberOrNull, propsChanged, replace} from '../utils';
+import {getNumberOrNull, replace} from '../utils';
 import {InputNumberPropTypes} from './proptypes';
 
 import '../style.scss';
@@ -8,14 +9,15 @@ import './style.scss';
 
 const PROPS_LIST = ['positive', 'negative', 'decimal', 'toFixed', 'minValue', 'maxValue', 'valueWithMeasure'];
 
-export class InputNumber extends Input {
+class InputNumberComponent extends Input {
 	static propTypes = InputNumberPropTypes;
 	static className = 'input';
 	static isControl = true;
+	static displayName = 'InputNumber';
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate({changed}) {
 		let {onChange, name, value} = this.props;
-		if (value && propsChanged(prevProps, this.props, PROPS_LIST)) {
+		if (value && changed) {
 			if (typeof onChange == 'function') {
 				const newValue = this.filterValue(value, this.props);
 				if (newValue != value) {
@@ -61,14 +63,30 @@ export class InputNumber extends Input {
 	}
 
 	getValue() {
+		const {decimal, positive} = this.props;
 		let value = super.getValue();
 		if (value && typeof value == 'string') {
 			if (value === '-0') {
 				value = '-';
-			} else {				
+			} else {
+				let withMinus = false;
+				let withPoint = false;
+				if (!positive && value.charAt(0) == '-') {
+					withMinus = true;
+					value = replace(/^-/, '', value);
+				}
+				if (decimal && value.charAt(value.length - 1) == '.') {
+					withPoint = true;
+				}
 				const parts = value.split(/[^\d]/);
 				if (parts.length > 1) {
 					value = parts[0];
+				}
+				if (withMinus) {
+					value = '-' + value;
+				}
+				if (withPoint) {
+					value += '.';
 				}
 			}
 		}
@@ -247,3 +265,5 @@ export class InputNumber extends Input {
 		}
 	}
 }
+
+export const InputNumber = withStateMaster(InputNumberComponent, PROPS_LIST, null, Input);

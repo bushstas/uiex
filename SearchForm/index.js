@@ -1,4 +1,5 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {UIEXForm} from '../UIEXComponent';
 import {Input} from '../Input';
 import {Button} from '../Button';
@@ -9,25 +10,15 @@ import '../style.scss';
 import './style.scss';
 
 const DEFAULT_ICON = 'search';
+const PROPS_LIST = 'value';
 
-export class SearchForm extends UIEXForm {
+class SearchFormComponent extends UIEXForm {
 	static propTypes = SearchFormPropTypes;
 	static className = 'search-form';
+	static displayName = 'SearchForm';
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			value: props.value,
-			focused: false
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {value} = this.props;
-		if (value != nextProps.value) {
-			this.setState({value: nextProps.value});
-		}
+	static getDerivedStateFromProps({addIfChanged}) {
+		addIfChanged('value');
 	}
 
 	addClassNames(add) {
@@ -131,3 +122,5 @@ export class SearchForm extends UIEXForm {
 		}
 	}
 }
+
+export const SearchForm = withStateMaster(SearchFormComponent, PROPS_LIST, null, UIEXForm);

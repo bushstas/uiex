@@ -240,4 +240,5 @@ export const AutoComplete = withStateMaster(AutoCompleteComponent, PROPS_LIST, n
 export class AutoCompleteOption extends PopupMenuItem {
 	static propTypes = PopupMenuItem.propTypes;
 	static className = PopupMenuItem.className;
+	static displayName = 'AutoCompleteOption';
 }

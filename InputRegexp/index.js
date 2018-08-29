@@ -10,6 +10,7 @@ export class InputRegexp extends Input {
 	static propTypes = InputRegexpPropTypes;
 	static className = 'input';
 	static isControl = true;
+	static displayName = 'InputRegexp';
 
 	addClassNames(add) {
 		super.addClassNames(add);

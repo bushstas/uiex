@@ -1,4 +1,5 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {Popup} from '../Popup';
 import {getTransitionDuration, getNumber, inPercent, getSizeInPercentageOfWindow} from '../utils';
@@ -9,24 +10,25 @@ import './style.scss';
 
 const DEFAULT_SPEED = 'normal';
 const DEFAULT_SIZE = 300;
+const PROPS_LIST = 'isOpen';
 
-export class SidePanel extends UIEXComponent {
+class SidePanelComponent extends UIEXComponent {
 	static propTypes = SidePanelPropTypes;
 	static className = 'side-panel';
+	static displayName = 'SidePanel';
 
 	componentDidMount() {
 		this.changeStyles(this.props.isOpen);
 	}
-
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		if (nextProps.isOpen != this.props.isOpen) {
-			if (!nextProps.isOpen) {
+	
+	componentDidUpdate({changed}) {
+		if (changed) {
+			if (!this.props.isOpen) {
 				this.setSize();
 			} else {
 				clearTimeout(this.timeout);
 			}
-			this.animate(nextProps.isOpen);
+			this.animate(this.props.isOpen);
 		}
 	}
 
@@ -240,3 +242,5 @@ export class SidePanel extends UIEXComponent {
 		return this.refs.popup.refs.main;
 	}
 }
+
+export const SidePanel = withStateMaster(SidePanelComponent, PROPS_LIST, null, UIEXComponent);

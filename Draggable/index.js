@@ -5,6 +5,7 @@ import '../style.scss';
 import './style.scss';
 
 export class Draggable extends React.PureComponent {
+	static displayName = 'Draggable';
 
 	componentDidMount() {		
 		const {disabled, dragWithinScreen} = this.props;

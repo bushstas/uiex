@@ -9,6 +9,7 @@ export class ButtonGroup extends UIEXButtons {
 	static propTypes = ButtonGroupPropTypes;
 	static className = 'button-group';
 	static properChildren = 'Button';
+	static displayName = 'ButtonGroup';
 	
 	addChildProps(child, props) {
 		this.addCommonButtonsProps(child, props);

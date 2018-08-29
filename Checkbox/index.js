@@ -188,4 +188,4 @@ class CheckboxComponent extends UIEXComponent {
 	}
 }
 
-export const Checkbox = withStateMaster(CheckboxComponent, PROPS_LIST);
+export const Checkbox = withStateMaster(CheckboxComponent, PROPS_LIST, null, UIEXComponent);

@@ -8,6 +8,7 @@ import './style.scss';
 export class Radio extends UIEXComponent {
 	static propTypes = RadioPropTypes;
 	static isControl = true;
+	static displayName = 'Radio';
 
 	addClassNames(add) {
 		const {children, multiline, checked, label} = this.props;

@@ -9,6 +9,7 @@ export class FormControl extends Cell {
 	static propTypes = FormControlPropTypes;
 	static className = 'form-control';
 	static properChildrenSign = 'isControl';
+	static displayName = 'FormControl';
 
 	addChildProps(child, props) {
 		const {type: control} = child;

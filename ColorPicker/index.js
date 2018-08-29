@@ -335,4 +335,4 @@ class ColorPickerComponent extends UIEXComponent {
 	}
 }
 
-export const ColorPicker = withStateMaster(ColorPickerComponent, PROPS_LIST);
+export const ColorPicker = withStateMaster(ColorPickerComponent, PROPS_LIST, null, UIEXComponent);

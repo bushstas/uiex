@@ -8,6 +8,7 @@ import './style.scss';
 
 export class Button extends UIEXComponent {
 	static propTypes = ButtonPropTypes;
+	static displayName = 'Button';
 	
 	addClassNames(add) {
 		const {iconAtRight, icon, children, gradient} = this.props;		

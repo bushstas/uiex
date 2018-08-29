@@ -12,6 +12,7 @@ const DEFAULT_COLUMNS = 8;
 
 export class Colors extends UIEXComponent {
 	static propTypes = ColorsPropTypes;
+	static displayName = 'Colors';
 
 	renderInternal() {
 		const {colors, colorHeight} = this.props;
@@ -61,7 +62,7 @@ class ColorComponent extends UIEXComponent {
 	static propTypes = ColorPropTypes;
 	static displayName = 'Color';
 
-	static makeDerivedStateFromProps({add, isChanged, nextProps}) {
+	static getDerivedStateFromProps({add, isChanged, nextProps}) {
 		if (isChanged('value') && typeof nextProps.value == 'string') {
 			add('bgColorStyle', {backgroundColor: '#' + replace(/^\#/, '', nextProps.value)});
 		}	
@@ -92,4 +93,4 @@ class ColorComponent extends UIEXComponent {
 	}
 }
 
-const Color = withStateMaster(ColorComponent, COLOR_PROPS_LIST);
+const Color = withStateMaster(ColorComponent, COLOR_PROPS_LIST, null, UIEXComponent);

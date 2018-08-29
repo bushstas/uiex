@@ -10,6 +10,7 @@ export class LabelGroup extends UIEXComponent {
 	static className = 'label-group';
 	static properChildren = 'Label';
 	static onlyProperChildren = true;
+	static displayName = 'LabelGroup';
 	
 	addChildProps(child, props) {
 		const {

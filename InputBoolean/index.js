@@ -13,6 +13,7 @@ export class InputBoolean extends UIEXComponent {
 	static propTypes = InputBooleanPropTypes;
 	static className = 'input-boolean';
 	static isControl = true;
+	static displayName = 'InputBoolean';
 
 	addClassNames(add) {
 		add('control');

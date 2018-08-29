@@ -10,6 +10,7 @@ export class InputPhone extends Input {
 	static propTypes = InputPhonePropTypes;
 	static className = 'input';
 	static isControl = true;
+	static displayName = 'InputPhone';
 
 	addClassNames(add) {
 		super.addClassNames(add);

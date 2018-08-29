@@ -1,6 +1,5 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
-import {Icon} from '../Icon';
 import {JsonPreviewPropTypes} from './proptypes';
 
 import '../style.scss';
@@ -22,6 +21,7 @@ const TAB = {
 export class JsonPreview extends UIEXComponent {
 	static propTypes = JsonPreviewPropTypes;
 	static className = 'json-preview';
+	static displayName = 'JsonPreview';
 
 	initRendering() {
 		this.tab = 0;

@@ -15,6 +15,7 @@ export class InputArray extends UIEXComponent {
 	static propTypes = InputArrayPropTypes;
 	static className = 'array-input';
 	static isControl = true;
+	static displayName = 'InputArray';
 
 	constructor(props) {
 		super(props);

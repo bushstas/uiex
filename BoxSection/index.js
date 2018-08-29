@@ -56,4 +56,4 @@ class BoxSectionComponent extends UIEXComponent {
 	}
 }
 
-export const BoxSection = withStateMaster(BoxSectionComponent, PROPS_LIST);
+export const BoxSection = withStateMaster(BoxSectionComponent, PROPS_LIST, null, UIEXComponent);

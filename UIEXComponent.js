@@ -18,10 +18,11 @@ class UIEXComponentClass extends React.PureComponent {
 		super(props);
 		this.stylesChanged = {};
 		this.styles = {};
-		registerContext(this);
+		this.state = {};
+		registerContext(this);		
 	}
 
-	static getDerivedStateFromProps({nextProps, add, isChangedAny}) {
+	static getDerivedStateFromProps({nextProps, add, isChangedAny, isInitial}) {
 		if (isChangedAny()) {
 			add('mainStyle', this.getMainStyle(nextProps));
 		}
@@ -75,7 +76,7 @@ class UIEXComponentClass extends React.PureComponent {
 	getMainStyle(props) {
 		let style = null;		
 		style = addObject(this.getDefaultStyle(), style);
-		style = addObject(this.getCustomStyle(), style);		
+		style = addObject(this.getCustomStyle(props), style);		
 		if (this.isWithPropStyle()) {
 			style = addObject(props.style, style);
 		}
@@ -90,26 +91,8 @@ class UIEXComponentClass extends React.PureComponent {
 		return style;
 	}
 
-	componentDidMount() {
-		const {onMount} = this.props;
-		if (typeof onMount == 'function') {
-			onMount(this);
-		}
-	}
-
-	componentDidUpdate(prevProps) {
-		const {onUpdate} = this.props;
-		if (typeof onUpdate == 'function') {
-			onUpdate(this);
-		}
-	}
-
 	componentWillUnmount() {
 		unregisterContext(this);
-		const {onUnmount} = this.props;
-		if (typeof onUnmount == 'function') {
-			onUnmount(this);
-		}
 		this.isUnmounted = true;
 	}
 
@@ -271,9 +254,9 @@ class UIEXComponentClass extends React.PureComponent {
 			const {properChildren, properChildrenSign} = this.constructor;
 			if (properChildren) {
 				if (typeof properChildren == 'string') {
-					return child.name == properChildren;
+					return child.displayName == properChildren;
 				} else if (properChildren instanceof Array) {
-					return properChildren.indexOf(child.name) > -1;
+					return properChildren.indexOf(child.displayName) > -1;
 				}
 			}
 			if (typeof properChildrenSign == 'string') {

@@ -108,11 +108,8 @@ export class Input extends UIEXComponent {
 
 	getValue() {
 		let {value, defaultValue} = this.props;
-		if (!value) {
-			value = defaultValue;
-		}
 		if (value == null) {
-			value = '';
+			value = defaultValue || '';
 		}
 		return value;
 	}

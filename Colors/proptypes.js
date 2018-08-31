@@ -8,12 +8,17 @@ export const ColorsPropTypes = {
 	columns: PROPTYPE.STRNUM,
 	colors: PROPTYPE.STRING_ARRAY,
 	colorHeight: PROPTYPE.STRNUM,
+	margin: PROPTYPE.STRNUM,
+	selectable: PropTypes.bool,
+	round: PropTypes.bool,
+	withoutBorder: PropTypes.bool,
 	onSelect: PropTypes.func,
 	onDisabledClick: PropTypes.func
 }
 
 export const ColorPropTypes = {
 	...UIEXComponentPropTypes,
+	active: PropTypes.bool,
 	value: PropTypes.string,
 	onSelect: PropTypes.func
 }

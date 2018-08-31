@@ -8,6 +8,7 @@ import '../style.scss';
 import './style.scss';
 
 const PROPS_LIST = ['positive', 'negative', 'decimal', 'toFixed', 'minValue', 'maxValue', 'valueWithMeasure'];
+const ADD_STEP = 1;
 
 class InputNumberComponent extends Input {
 	static propTypes = InputNumberPropTypes;
@@ -99,8 +100,10 @@ class InputNumberComponent extends Input {
 			let {maxValue, minValue, positive, negative, decimal, toFixed, valueWithMeasure, measure, correctionOnBlur} = props;
 			if (negative && positive) {
 				positive = false;
-			}			
-			if (typeof toFixed == 'string') {
+			}
+			if (toFixed === 0 || toFixed === '0') {
+				toFixed = 1;
+			} else if (typeof toFixed == 'string') {
 				toFixed = getNumberOrNull(toFixed);
 			}
 			let isNegative = false;
@@ -158,6 +161,9 @@ class InputNumberComponent extends Input {
 	}
 
 	correctValue(value) {
+		if (value === '') {
+			return '';
+		}
 		let {maxValue, minValue} = this.props;
 		if (typeof maxValue == 'string') {
 			maxValue = getNumberOrNull(maxValue);
@@ -220,7 +226,8 @@ class InputNumberComponent extends Input {
 	}
 
 	changeValue(add) {
-		let {disabled, name, value, onChange, negative, positive, decimal} = this.props;
+		let {disabled, name, value, onChange, negative, positive, decimal, addStep} = this.props;
+		addStep = getNumberOrNull(addStep) || ADD_STEP;
 		if (!disabled && typeof onChange == 'function') {
 			if (typeof value == 'number') {
 				value = String(value);
@@ -232,13 +239,13 @@ class InputNumberComponent extends Input {
 			value = Number(parts[0]);
 			if (add > 0) {
 				if (!negative || value < 0) {
-					value++;
+					value += addStep;
 				} else {
 					decimal = false;
 				}
 			} else {
 				if (!positive || value > 0) {
-					value--;
+					value -= addStep;
 				} else {
 					decimal = false;
 				}

@@ -1,4 +1,5 @@
 import React from 'react';
+import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {AutoComplete} from '../AutoComplete';
 import {Icon} from '../Icon';
@@ -11,37 +12,36 @@ import {InputArrayPropTypes} from './proptypes';
 import '../style.scss';
 import './style.scss';
 
-export class InputArray extends UIEXComponent {
+const PROPS_LIST = ['uniqueItems', 'onlyType', 'allowedTypes', 'exceptTypes'];
+const INITIAL_STATE = {
+	selectedIndex: -1,
+	selectedValue: null,
+	inputValue: ''
+};
+
+class InputArrayComponent extends UIEXComponent {
 	static propTypes = InputArrayPropTypes;
 	static className = 'array-input';
 	static isControl = true;
 	static displayName = 'InputArray';
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			selectedIndex: -1,
-			selectedValue: null,
-			inputValue: ''
-		};
+	static getDerivedStateFromProps({add, nextProps, state}) {
+		if (state.selectedIndex && !nextProps.withControls) {
+			add('selectedIndex', -1);
+		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		super.componentWillReceiveProps(nextProps);
-		const {uniqueItems, onlyType, allowedTypes, exceptTypes} = this.props;
-		let value = this.getValue(nextProps);
+	componentDidUpdate({isChanged, isChangedAny}) {
+		let value = this.getValue(this.props);
 		const prevLength = value.length;
-		if (!uniqueItems && nextProps.uniqueItems) {
+		if (isChanged('uniqueItems', true)) {
 			value = this.filterUnique(value);
 		}
-		if (onlyType != nextProps.onlyType || allowedTypes != nextProps.allowedTypes || exceptTypes != nextProps.exceptTypes) {
-			value = this.filterByType(value, nextProps);
+		if (isChangedAny('onlyType', 'allowedTypes', 'exceptTypes')) {
+			value = this.filterByType(value, this.props);
 		}
 		if (prevLength != value.length) {
-			setTimeout(() => this.fireChange(value, 10));
-		}
-		if (this.state.selectedIndex && !nextProps.withControls) {
-			this.setState({selectedIndex: -1});
+			this.fireChange(value);
 		}
 	}
 
@@ -558,3 +558,5 @@ class InputArrayItem extends React.PureComponent {
 		this.props.onDoubleClick(e, this.props.index);
 	}
 }
+
+export const InputArray = withStateMaster(InputArrayComponent, PROPS_LIST, INITIAL_STATE, UIEXComponent);

@@ -30,8 +30,8 @@ class CellGroupComponent extends UIEXComponent {
 				} else {
 					rowStyle = {marginTop: rowMargin};
 				}
-				return {rowStyle};
 			}
+			return {rowStyle};
 		}
 	}
 

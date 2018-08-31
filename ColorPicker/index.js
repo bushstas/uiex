@@ -27,7 +27,7 @@ class ColorPickerComponent extends UIEXComponent {
 		if (isChanged('value')) {
 			const colorState = this.getStateFromColor(getColor(nextProps.value));
 			add(colorState);
-			add('value');
+			add('inputValue', nextProps.value);
 		}
 		if (isChanged('hue') && typeof nextProps.hue == 'number') {
 			add('hue');
@@ -36,6 +36,12 @@ class ColorPickerComponent extends UIEXComponent {
 
 	componentDidMount() {
 		this.update();
+	}
+
+	componentDidUpdate({isChanged}) {
+		if (isChanged('value')) {
+			this.update();
+		}
 	}
 
 	update = () => {
@@ -107,7 +113,6 @@ class ColorPickerComponent extends UIEXComponent {
 		const {hueDiv, huePos, satval} = this.refs;
 		const {pageXOffset, pageYOffset} = window;
 		const width = hueDiv.clientWidth;
-		const height = hueDiv.clientHeight;
 		const x = typeof e.pageX === 'number' ? e.pageX : e.touches[0].pageX;
 		const y = typeof e.pageY === 'number' ? e.pageY : e.touches[0].pageY;
 		let {left, top} = hueDiv.getBoundingClientRect();
@@ -157,7 +162,7 @@ class ColorPickerComponent extends UIEXComponent {
 
 	renderInternal() {
 		const {presetColors} = this.props;
-		const {value, r, g, b} = this.state;
+		const {inputValue, inputR, inputG, inputB, r, g, b} = this.state;
 		const TagName = this.getTagName();
 		return (
 			<TagName {...this.getProps()}>
@@ -172,32 +177,35 @@ class ColorPickerComponent extends UIEXComponent {
 					</div>
 					<div className={this.getClassName('controls')}>
 						<InputNumber
-							value={r}
+							value={inputR != null ? inputR : r}
 							maxLength="3"
 							maxValue="255"
 							positive
 							className={this.getClassName('rgb-input')}
 							onChange={this.handleRInputChange}
+							onBlur={this.handleRInputBlur}
 						/>
 						<InputNumber
-							value={g}
+							value={inputG != null ? inputG : g}
 							maxLength="3"
 							maxValue="255"
 							positive
 							className={this.getClassName('rgb-input')}
 							onChange={this.handleGInputChange}
+							onBlur={this.handleGInputBlur}
 						/>
 						<InputNumber
-							value={b}
+							value={inputB != null ? inputB : b}
 							maxLength="3"
 							maxValue="255"
 							positive
 							className={this.getClassName('rgb-input')}
 							onChange={this.handleBInputChange}
+							onBlur={this.handleBInputBlur}
 						/>
 					</div>
 					<InputColor
-						value={value}
+						value={inputValue}
 						className={this.getClassName('input')}						
 						onChange={this.handleInputChange}
 						withoutPicker
@@ -215,7 +223,8 @@ class ColorPickerComponent extends UIEXComponent {
 	}
 
 	handleInputChange = (value) => {
-		this.fireChange(getColor(value), this.update);
+		this.setState({inputValue: value});
+		this.fireChange(getColor(value), this.update, 'value');
 	}
 
 	handleRInputChange = (r) => {
@@ -230,7 +239,26 @@ class ColorPickerComponent extends UIEXComponent {
 		this.handleRGBChange('b', b);
 	}
 
+	handleRInputBlur = (r) => {
+		this.handleRGBBlur('r', r);
+	}
+
+	handleGInputBlur = (g) => {
+		this.handleRGBBlur('g', g);
+	}
+
+	handleBInputBlur = (b) => {
+		this.handleRGBBlur('b', b);
+	}
+
+	handleRGBBlur = (color, value) => {
+		if (value === '') {
+			this.setState({['input' + color.toUpperCase()]: 0});
+		}
+	}
+
 	handleRGBChange(key, value) {
+		this.setState({['input' + key.toUpperCase()]: value});
 		let {r, g, b} = this.state;
 		if (key == 'r') {
 			r = value;
@@ -239,7 +267,7 @@ class ColorPickerComponent extends UIEXComponent {
 		} else {
 			b = value;
 		}
-		this.fireChange(getColor({r, g, b}), this.update);
+		this.fireChange(getColor({r, g, b}), this.update, 'rgb');
 	}
 
 	preventDefault = (e) => {
@@ -294,10 +322,19 @@ class ColorPickerComponent extends UIEXComponent {
 		return state;
 	}
 
-	fireChange = (color, callback) => {
+	fireChange = (color, callback = null, changeSource = null) => {
 		const state = this.getStateFromColor(color);
+		if (changeSource != 'rgb') {
+			state.inputR = state.r;
+			state.inputG = state.g;
+			state.inputB = state.b;
+		}
+		if (changeSource != 'value') {
+			state.inputValue = state.hex;
+		}
 		const originalValue = color.getValue();
 		const {hex, r, g, b, h = 0, s, v, hue = 0, sat, l, isValid, value} = state;
+
 		if (this.props.value.toUpperCase() != hex.toUpperCase()) {
 			let data;
 			if (isValid) {

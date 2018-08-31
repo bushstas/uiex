@@ -2,36 +2,45 @@ import React from 'react';
 import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {CellGroup, Cell} from '../CellGroup';
-import {getNumber, replace} from '../utils';
+import {getNumber, replace, getNumberOrNull} from '../utils';
 import {ColorsPropTypes, ColorPropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
 
 const DEFAULT_COLUMNS = 8;
+const DEFAULT_MARGIN = 5;
 
 export class Colors extends UIEXComponent {
 	static propTypes = ColorsPropTypes;
 	static displayName = 'Colors';
 
+	addClassNames(add) {
+		add('round', this.props.round);
+		add('without-border', this.props.withoutBorder);
+	}
+
 	renderInternal() {
-		const {colors, colorHeight} = this.props;
+		let {colors, colorHeight, selectable, value: currentValue, margin} = this.props;
+		margin = getNumberOrNull(margin) != null ? margin : DEFAULT_MARGIN;
 		const columns = this.getColumns();
 		const TagName = this.getTagName();
 		return (
 			<TagName {...this.getProps()}>
 				<CellGroup 
 					columns={columns}
-					cellMargin="5"
-					rowMargin="5"
+					cellMargin={margin}
+					rowMargin={margin}
 					cellHeight={colorHeight}
 					sideShrink
 				>
 					{colors instanceof Array && colors.map((value, idx) => {
+						const active = selectable && currentValue == value;
 						return (
 							<Cell key={value}>
 								<Color 
 									value={value}
+									active={active}
 									onSelect={this.handleSelect}
 								/>
 							</Cell>

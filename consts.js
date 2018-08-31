@@ -18,6 +18,12 @@ export const MODAL_ANIMATION = ['fade', 'fade-fall', 'fade-float', 'fade-scale']
 export const ARRAY_INPUT_TYPES = ['null', 'string', 'number', 'boolean', 'array', 'object', 'function', 'regexp'];
 
 const ARRAY_INPUT_TYPE = PropTypes.oneOf(ARRAY_INPUT_TYPES);
+const ARRAY_OF_STRNUMS = PropTypes.arrayOf(
+	PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number
+	])
+);
 
 const OPTION_SHAPE = PropTypes.shape({
 	value: PropTypes.oneOfType([
@@ -46,12 +52,7 @@ export const PROPTYPE = {
 	STRNUMS: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.number,
-		PropTypes.arrayOf(
-			PropTypes.oneOfType([
-				PropTypes.string,
-				PropTypes.number
-			])
-		)
+		ARRAY_OF_STRNUMS
 	]),
 	STRBOOL:PropTypes.oneOfType([
 		PropTypes.string,
@@ -67,12 +68,7 @@ export const PROPTYPE = {
 			PropTypes.string
 		)
 	]),
-	STRARR: PropTypes.arrayOf(
-		PropTypes.oneOfType([
-			PropTypes.string,
-			PropTypes.number
-		])
-	),
+	STRARR: ARRAY_OF_STRNUMS,
 	ARROBJ: PropTypes.oneOfType([
 		PropTypes.array,
 		PropTypes.object
@@ -102,12 +98,7 @@ export const PROPTYPE = {
 		)
 	]),	
 	CHECKBOX_GROUP_VALUE: PropTypes.oneOfType([
-		PropTypes.arrayOf(
-			PropTypes.oneOfType([
-				PropTypes.string,
-				PropTypes.number
-			])
-		),
+		ARRAY_OF_STRNUMS,
 		PropTypes.object
 	]),
 	FORM_BUTTON_DISPLAY: PropTypes.oneOf(FORM_BUTTON_DISPLAY),

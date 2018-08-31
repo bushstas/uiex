@@ -10,6 +10,7 @@ export const InputNumberPropTypes = {
 	correctionOnBlur: PropTypes.bool,
 	valueWithMeasure: PropTypes.bool,
 	toFixed: PROPTYPE.STRNUM,
+	addStep: PROPTYPE.STRNUM,
 	minValue: PROPTYPE.STRNUM,
 	maxValue: PROPTYPE.STRNUM,
 	measure: PropTypes.string,

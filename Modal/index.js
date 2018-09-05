@@ -1,23 +1,24 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
-import {Draggable} from '../Draggable';
+import {Draggable, DragHandleArea} from '../Draggable';
 import {ModalPropTypes} from './proptypes';
 import {replace} from '../utils';
 
 import '../style.scss';
 import './style.scss';
 
-const PROPS_LIST = ['isOpen', 'expanded', 'width', 'height'];
+const PROPS_LIST = ['isOpen', 'width', 'height', 'withoutPortal'];
+const ROOT_ID = 'uiex-modal-root';
 
 class ModalComponent extends UIEXComponent {
 	static propTypes = ModalPropTypes;
 	static styleNames = ['body', 'header', 'footer', 'mask', 'controls'];
 	static displayName = 'Modal';
 
-	static getDerivedStateFromProps({addIfChanged, isChangedAny, isChanged, nextProps, call}) {
-		addIfChanged('expanded');
+	static getDerivedStateFromProps({add, isChangedAny, isChanged, nextProps, call, isInitial}) {
 		if (isChanged('isOpen')) {
 			call(() => {
 				if (nextProps.isOpen) {
@@ -29,6 +30,19 @@ class ModalComponent extends UIEXComponent {
 		}
 		if (isChangedAny('width', 'height')) {
 			call(this.initPosition);
+		}
+		if (isInitial || isChanged('withoutPortal')) {
+			const {withoutPortal} = nextProps;
+			let root = null;
+			if (!withoutPortal) {
+				root = document.getElementById(ROOT_ID);
+				if (!root) {
+					root = document.createElement('div');
+					root.id = ROOT_ID;
+					document.body.appendChild(root);
+				}
+			}
+			add('root', root);
 		}
 	}
 
@@ -46,6 +60,9 @@ class ModalComponent extends UIEXComponent {
 
 	animateShowing() {
 		const container = this.getContainer();
+		if (!container) {
+			return;
+		}
 		const {mask} = this.refs;
 		const {animation} = this.props;
 
@@ -94,6 +111,9 @@ class ModalComponent extends UIEXComponent {
 
 	animateHiding(isAction = false) {
 		const container = this.getContainer();
+		if (!container) {
+			return;
+		}
 		const {mask} = this.refs;
 		const {animation} = this.props;
 		if (animation) {
@@ -132,23 +152,23 @@ class ModalComponent extends UIEXComponent {
 
 	initPosition = () => {
 		if (this.state.isOpen) {
+			const {scrollWidth} = document.body;
 			this.positionInited = true;
 			this.initSize();
 			const container = this.getContainer();
 			let {width, height} = container.getBoundingClientRect();
-			const left = (window.innerWidth - width) / 2;
-			const top = (window.innerHeight - height) / 2;
-			container.style.left = left + 'px';
-			container.style.top = top + 'px';
+			const x = (scrollWidth - width) / 2;
+			const y = (window.innerHeight - height) / 2;
+			this.setState({x, y});
 		} else {
 			this.positionInited = false;
 		}
 	}
 
 	initSize() {
-		const {expanded} = this.state;
 		const container = this.getContainer();
-		let {width, height} = this.props;
+		const {scrollWidth} = document.body;
+		let {width, height, expanded} = this.props;
 		if (!expanded && typeof height == 'string' && (/%$/).test(height)) {
 			height = ~~replace(/%$/, '', height);
 			if (height) {
@@ -159,8 +179,8 @@ class ModalComponent extends UIEXComponent {
 		container.style.maxWidth = '';
 		container.style.maxHeight = '';
 		width = container.getBoundingClientRect().width;
-		if (width > window.innerWidth) {
-			width = window.innerWidth - 50;
+		if (width > scrollWidth) {
+			width = scrollWidth - 50;
 			container.style.maxWidth = width + 'px';
 		}
 		height = container.getBoundingClientRect().height;
@@ -171,11 +191,10 @@ class ModalComponent extends UIEXComponent {
 	}
 
 	addClassNames(add) {
-		const {expandable, draggable, animation, maskOpacity} = this.props;
+		const {expandable, animation, maskOpacity, expanded} = this.props;
 		add('expandable', expandable);
 		add('shown', this.state.isOpen);
-		add('expanded', this.state.expanded);
-		add('draggable', draggable);
+		add('expanded', expanded);
 		add('animation-' + animation, animation);
 		add('opacity-' + maskOpacity, maskOpacity);
 	}
@@ -184,16 +203,21 @@ class ModalComponent extends UIEXComponent {
 		const {
 			withoutMask, 
 			draggable, 
-			expandable, 
+			expandable,
+			expanded, 
 			unclosable,
 			onDragEnd,
-			dragWithinScreen,
-			outerContent
+			dragWithinWindow,
+			outerContent,
+			isOpen
 		} = this.props;
 
-		const {expanded, mainStyle} = this.state;
+		if (!isOpen && !this.state.isOpen) {
+			return null;
+		}
+		const {mainStyle, x, y, root} = this.state;
 		const TagName = this.getTagName();	
-		return (
+		const content = (
 			<TagName {...this.getProps(null, false)} onClick={this.handleClick}>
 				{!withoutMask && 
 					<div 
@@ -210,12 +234,15 @@ class ModalComponent extends UIEXComponent {
 				}
 				<Draggable 
 					ref="drag"
-					disabled={!draggable || expanded}
-					dragAreaClassName={this.getClassName('header')}
-					dragWithinScreen={dragWithinScreen}
-					onDragEnd={onDragEnd}
 					className={this.getClassName('container')}
 					style={mainStyle}
+					x={x}
+					y={y}
+					fixed
+					dragLimits={dragWithinWindow ? 'window' : null}
+					disabled={!draggable || expanded}
+					onDrag={this.handleDrag}
+					onDragEnd={onDragEnd}					
 				>
 					{(expandable || !unclosable) && 
 						<div className={this.getClassName('controls')} style={this.getStyle('controls')}>
@@ -231,17 +258,21 @@ class ModalComponent extends UIEXComponent {
 				</Draggable>
 			</TagName>
 		)
+		console.log(root)
+		return root ? ReactDOM.createPortal(content, root) : content;
 	}
 
 	renderHeader() {
 		const {header} = this.props;
 		return (
-			<div 
-				className={this.getClassName('header')} 
-				style={this.getStyle('header')}
-				onDoubleClick={this.handleHeaderDoubleClick}>
-				{header}
-			</div>
+			<DragHandleArea>
+				<div 
+					className={this.getClassName('header')} 
+					style={this.getStyle('header')}
+					onDoubleClick={this.handleHeaderDoubleClick}>
+					{header}
+				</div>
+			</DragHandleArea>
 		)
 	}
 
@@ -254,6 +285,11 @@ class ModalComponent extends UIEXComponent {
 				</div>
 			)
 		}
+	}
+
+	handleDrag = (x, y) => {
+		this.dragged = true;
+		this.setState({x, y});
 	}
 
 	handleClick = (e) => {
@@ -272,26 +308,10 @@ class ModalComponent extends UIEXComponent {
 	}
 
 	handleExpand = () => {
-		const container = this.getContainer();
-		const expanded = !this.state.expanded;
-		if (expanded) {
-			const {style} = container;
-			this.cachedCoords = [style.top, style.left];
+		const {onExpand, expanded} = this.props;
+		if (typeof onExpand == 'function') {
+			onExpand(!expanded);
 		}
-		this.setState({expanded}, () => {
-			if (!expanded) {
-				if (this.cachedCoords instanceof Array) {					
-					container.style.top = this.cachedCoords[0];
-					container.style.left = this.cachedCoords[1];
-				} else {
-					this.initPosition();
-				}
-			}
-			const {onExpand} = this.props;
-			if (typeof onExpand == 'function') {
-				onExpand(expanded);
-			}
-		});
 	}
 
 	handleHeaderDoubleClick = () => {
@@ -302,11 +322,9 @@ class ModalComponent extends UIEXComponent {
 	}
 
 	handleResize = () => {
-		const {expanded} = this.state;
+		const {expanded} = this.props;
 		if (!expanded) {
-			const {drag} = this.refs;
-			const isDragged = drag ? drag.isDragged() : false;
-			if (!isDragged) {
+			if (!this.dragged) {
 				this.initPosition();
 			} else {
 				this.initSize();
@@ -315,7 +333,9 @@ class ModalComponent extends UIEXComponent {
 	}
 
 	getContainer() {
-		return this.refs.drag.refs.element;
+		if (this.refs.drag) {
+			return this.refs.drag.refs.main;
+		}
 	}
 }
 

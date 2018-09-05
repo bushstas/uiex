@@ -73,10 +73,10 @@ class UIEXComponentClass extends React.PureComponent {
 		return this.styles[name];
 	}
 
-	getMainStyle(props) {
+	getMainStyle(props, styleProps = null) {
 		let style = null;		
 		style = addObject(this.getDefaultStyle(), style);
-		style = addObject(this.getCustomStyle(props), style);		
+		style = addObject(this.getCustomStyle(styleProps || props), style);		
 		if (this.isWithPropStyle()) {
 			style = addObject(props.style, style);
 		}
@@ -224,10 +224,11 @@ class UIEXComponentClass extends React.PureComponent {
 	}
 
 	renderInternal() {
+		const content = this.renderChildren();
 		const TagName = this.getTagName();
 		return (
 			<TagName {...this.getProps()}>
-				{this.renderChildren()}
+				{content}
 			</TagName>
 		)
 	}

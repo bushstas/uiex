@@ -1,6 +1,6 @@
 import React from 'react';
 import {UIEXComponent} from '../UIEXComponent';
-import {Icon} from '../Icon';
+import {Draggable} from '../Draggable';
 import {SliderScalePropTypes} from './proptypes';
 
 import '../style.scss';
@@ -13,8 +13,7 @@ export class SliderScale extends UIEXComponent {
 	static isControl = true;
 
 	addClassNames(add) {
-		add('removable', this.props.removable);
-		add('with-gradient', this.props.gradient);
+	
 	}
 
 	getCustomProps() {
@@ -24,23 +23,37 @@ export class SliderScale extends UIEXComponent {
 	}
 
 	renderInternal() {
-		let {children, removable} = this.props;
+		const {width, height} = this.props;
+		const {x, y} = this.state;
 		const TagName = this.getTagName(); 
 		return (
 			<TagName {...this.getProps()}>				
-				<span className="uiex-label-content">
-					{children} 
-					{removable &&
-						<span className="uiex-label-close" onClick={this.handleRemove}>
-							<Icon name="clear" fontSize="14"/>
-						</span>
-					}
-				</span>				
+				<div className={this.getClassName('track')}>
+					<div className={this.getClassName('track-inner')} onClick={this.handleTrackClick}>
+						<Draggable 
+							areaWidth={width}
+							areaHeight={height}
+							x={x}
+							y={y}
+							className={this.getClassName('runner')}
+							dragLimits="parent-in-out"
+							horizontal
+							onDrag={this.handleDrag}
+						/>
+					</div>
+				</div>
+				<div className={this.getClassName('numbers')}>
+					1111
+				</div>
 			</TagName>
 		)
 	}
 
-	handleClick = (e) => {
+	handleDrag = (x, y) => {
+		this.setState({x, y});
+	}
+
+	handleTrackClick = (e) => {
 		const {onClick, value, disabled, onDisabledClick} = this.props;
 		if (!disabled && typeof onClick == 'function') {
 			e.stopPropagation();
@@ -48,14 +61,6 @@ export class SliderScale extends UIEXComponent {
 		} else if (disabled && typeof onDisabledClick == 'function') {
 			e.stopPropagation();
 			onDisabledClick(value);
-		}
-	}
-
-	handleRemove = (e) => {
-		e.stopPropagation();
-		const {onRemove, value, disabled} = this.props;
-		if (!disabled && typeof onRemove == 'function') {
-			onRemove(value);
 		}
 	}
 }

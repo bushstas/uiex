@@ -1,13 +1,14 @@
 import React from 'react';
 import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
-import {getNumberOrNull} from '../utils';
+import {getNumberOrNull, replace} from '../utils';
+import {DRAG_POSITION_X, DRAG_POSITION_Y} from '../consts';
 import {DraggablePropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
 
-const PROPS_LIST = ['dragLimits', 'x', 'y', 'z', 'areaWidth', 'areaHeight'];
+const PROPS_LIST = ['dragLimits', 'fixed', 'x', 'y', 'z', 'areaWidth', 'areaHeight', 'initialPositionX', 'initialPositionY'];
 const CLASS_NAME = 'draggable-handle-area';
 
 class DraggableComponent extends UIEXComponent {
@@ -17,54 +18,50 @@ class DraggableComponent extends UIEXComponent {
 
 	componentDidMount() {
 		window.addEventListener('resize', this.handleResize, false);
-		const {initialPositionX, initialPositionY, dragLimits} = this.props;
-		if (initialPositionX) {
-			//console.log(this.refs.main.getBoundingClientRect())
+		let {initialPositionX, initialPositionY, x, y, z} = this.props;
+		if ((initialPositionX && x == null) || (initialPositionY && y == null)) {
+			x = this.getPositionX(x, this.props);
+			y = this.getPositionY(y, this.props);
+			this.setState({
+				mainStyle: this.getMainStyle(this.props, {x, y, z}), 
+				x,
+				y
+			});
 		}
 	}
 
-	static getDerivedStateFromProps({isChanged, isChangedAny, nextProps, add, isInitial}) {
-		if (isChangedAny('x', 'y', 'z')) {
+	static getDerivedStateFromProps({isChangedAny, nextProps, add, isInitial}) {
+		if (isChangedAny('x', 'y', 'z', 'initialPositionX', 'initialPositionY')) {
 			let {x, y, z} = nextProps;
-			x = getNumberOrNull(x) || 0;
-			y = getNumberOrNull(y) || 0;
+			x = this.getPositionX(x, nextProps);
+			y = this.getPositionY(y, nextProps);
 			add({
 				mainStyle: this.getMainStyle(nextProps, {x, y, z}), 
 				x,
 				y
 			});
 		}
-		if (!isInitial && isChanged('dragLimits')) {
-			this.cachedOwnRect = this.refs.main.getBoundingClientRect();
-		}
+		// if (!isInitial && isChangedAny('dragLimits', 'fixed')) {
+		// 	this.cachedOwnRect = this.refs.main.getBoundingClientRect();
+		// }
 	}
 
-	componentDidUpdate({isChanged}) {
-		if (isChanged('dragLimits')) {
-			const {dragLimits, fixed} = this.props;
-			const ownRect = this.cachedOwnRect;
-			this.limitXZero = null;
-			this.limitYZero = null;
-			this.limitX = null;
-			this.limitY = null;
-			this.limitXLeft = null;
-			this.limitXRight = null;
-			this.limitYTop = null;
-			this.limitYBottom = null;
-			const {onDrag} = this.props;
-			if (typeof onDrag == 'function') {
-				if (fixed || dragLimits == 'window') {
-					onDrag(ownRect.x, ownRect.y);
-				} else if (dragLimits == 'parent-out') {
-					onDrag(-ownRect.width, -ownRect.height);
-				} else if (dragLimits == 'parent-in-out') {
-					onDrag(-ownRect.width / 2, -ownRect.height / 2);
-				} else {
-					onDrag(0, 0);
-				}
-			}
-		}		
-	}
+	// componentDidUpdate({isChangedAny}) {
+	// 	const {onDrag} = this.props;
+	// 	if (typeof onDrag == 'function' && isChangedAny('dragLimits', 'fixed')) {
+	// 		const {dragLimits, fixed} = this.props;
+	// 		const ownRect = this.cachedOwnRect;			
+	// 		if (fixed || dragLimits == 'window') {
+	// 			onDrag(ownRect.x, ownRect.y);
+	// 		} else if (dragLimits == 'parent-out') {
+	// 			onDrag(-ownRect.width, -ownRect.height);
+	// 		} else if (dragLimits == 'parent-in-out') {
+	// 			onDrag(-ownRect.width / 2, -ownRect.height / 2);
+	// 		} else {
+	// 			onDrag(0, 0);
+	// 		}
+	// 	}
+	// }
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.handleResize, false);
@@ -72,13 +69,13 @@ class DraggableComponent extends UIEXComponent {
 	}
 
 	addClassNames(add) {
-		const {dragLimits, withOwnPosition, fixed} = this.props;
+		const {dragLimits, withOwnPosition, fixed, disabled} = this.props;
 		if (fixed) {
 			add('fixed', true);
 		} else {
 			add('drag-limits-' + dragLimits, !withOwnPosition && dragLimits);
 		}
-		add(CLASS_NAME, !withOwnPosition && !this.properChildrenCount);
+		add(CLASS_NAME, !disabled && !this.properChildrenCount);
 		add('with-own-position', withOwnPosition);
 	}
 
@@ -112,6 +109,140 @@ class DraggableComponent extends UIEXComponent {
 		}
 	}
 
+	getPositionX(x, props) {
+		x = getNumberOrNull(x);
+		if (x != null) {
+			return x;
+		}
+		if (!this.refs.main) {
+			return 0;
+		}
+		let {initialPositionX: ix, dragLimits, fixed} = props;
+		if (ix && typeof ix == 'string') {
+			let nx;
+			const ownRect = this.refs.main.getBoundingClientRect();
+			const isInPercent = ix.charAt(ix.length - 1) == '%';
+			const isConst = !isInPercent && DRAG_POSITION_X.indexOf(ix) > -1;
+			const isValidPosition = isInPercent || isConst;
+			if (isValidPosition) {
+				let parentWidth;
+				if (dragLimits == 'window' || fixed) {
+					parentWidth = document.body.scrollWidth;
+				} else {
+					const {parentNode} = this.refs.main;
+					const {width} = parentNode.getBoundingClientRect();
+					parentWidth = width;
+				}
+				parentWidth -= ownRect.width;
+				if (isInPercent) {
+					const pn = Number(replace(/%$/, '', ix));
+					if (!isNaN(pn)) {
+						nx = pn * parentWidth / 100;
+					}
+				} else {
+					switch (ix) {
+						case 'left-out':
+							nx = -ownRect.width;
+						break;
+
+						case 'left-in-out':
+							nx = -ownRect.width / 2;
+						break;
+
+						case 'left':
+							nx = 0;
+						break;
+
+						case 'center':
+							nx = 50 * parentWidth / 100;
+						break;
+
+						case 'right':
+							nx = parentWidth;
+						break;
+
+						case 'right-out':
+							nx = parentWidth + ownRect.width;
+						break;
+						
+						case 'right-in-out':
+							nx = parentWidth + ownRect.width / 2;
+						break;
+					}
+				}
+			}
+			return nx;
+		}
+		return 0;		
+	}
+
+	getPositionY(y, props) {
+		y = getNumberOrNull(y);
+		if (y != null) {
+			return y;
+		}
+		if (!this.refs.main) {
+			return 0;
+		}
+		let {initialPositionY: iy, dragLimits, fixed} = props;
+		if (iy && typeof iy == 'string') {
+			let ny;
+			const ownRect = this.refs.main.getBoundingClientRect();
+			const isInPercent = iy.charAt(iy.length - 1) == '%';
+			const isConst = !isInPercent && DRAG_POSITION_Y.indexOf(iy) > -1;
+			const isValidPosition = isInPercent || isConst;
+			if (isValidPosition) {
+				let parentHeight;
+				if (dragLimits == 'window' || fixed) {
+					parentHeight = window.innerHeight;
+				} else {
+					const {parentNode} = this.refs.main;
+					const {height} = parentNode.getBoundingClientRect();
+					parentHeight = height;
+				}
+				parentHeight -= ownRect.height;
+				if (isInPercent) {
+					const pn = Number(replace(/%$/, '', iy));
+					if (!isNaN(pn)) {
+						ny = pn * parentHeight / 100;
+					}
+				} else {
+					switch (iy) {
+						case 'top-out':
+							ny = -ownRect.height;
+						break;
+
+						case 'top-in-out':
+							ny = -ownRect.height / 2;
+						break;
+
+						case 'top':
+							ny = 0;
+						break;
+
+						case 'center':
+							ny = 50 * parentHeight / 100;
+						break;
+
+						case 'bottom':
+							ny = parentHeight;
+						break;
+
+						case 'bottom-out':
+							ny = parentHeight + ownRect.height;
+						break;
+						
+						case 'bottom-in-out':
+							ny = parentHeight + ownRect.height / 2;
+						break;
+					}
+				}
+			}
+			return ny;
+		}
+		return 0;
+	}
+
 	initDragLimits = () => {
 		const {dragLimits} = this.props;
 		if (dragLimits) {
@@ -122,6 +253,10 @@ class DraggableComponent extends UIEXComponent {
 				this.limitYZero = 0;
 				this.limitX = scrollWidth - ownRect.width;
 				this.limitY = window.innerHeight - ownRect.height;
+				this.limitXLeft = null;
+				this.limitXRight = null;
+				this.limitYTop = null;
+				this.limitYBottom = null;
 			} else {
 				const {parentNode} = this.refs.main;
 				let {left, top, width, height} = parentNode.getBoundingClientRect();
@@ -161,6 +296,15 @@ class DraggableComponent extends UIEXComponent {
 					break;
 				}
 			}
+		} else {
+			this.limitXZero = null;
+			this.limitYZero = null;
+			this.limitX = null;
+			this.limitY = null;
+			this.limitXLeft = null;
+			this.limitXRight = null;
+			this.limitYTop = null;
+			this.limitYBottom = null;
 		}
 	}
 

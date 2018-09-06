@@ -33,6 +33,7 @@ export class SliderScale extends UIEXComponent {
 						<Draggable 
 							areaWidth={width}
 							areaHeight={height}
+							initialPositionX="center"
 							x={x}
 							y={y}
 							className={this.getClassName('runner')}

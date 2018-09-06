@@ -50,7 +50,7 @@ export class Input extends UIEXComponent {
 		add('control');
 		add('textarea', textarea);
 		add('readonly', readOnly);
-		add('clearable', properValue && clearable);
+		add('clearable', (properValue || properValue === 0) && clearable);
 		add('valid', valid);
 		add('invalid', invalid);
 		add('focused', this.state.focused);
@@ -116,7 +116,7 @@ export class Input extends UIEXComponent {
 
 	renderClearButton() {
 		const {value, clearable, readOnly, defaultValue} = this.props;
-		if (value && clearable && !readOnly && (!defaultValue || (defaultValue && value != defaultValue))) {
+		if ((value || value === 0) && clearable && !readOnly && (!defaultValue || (defaultValue && value !== defaultValue))) {
 			return (
 				<div 
 					className="uiex-input-clear"

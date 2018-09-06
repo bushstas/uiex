@@ -1,5 +1,10 @@
 @import "./variables";
 
+#uiex-modal-root {
+	position: relative;
+	z-index: 1000;
+}
+
 .uiex-scrollable {
 	&::-webkit-scrollbar {
 		width: 7px;

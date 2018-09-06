@@ -93,14 +93,14 @@ export const getNumber = (n, d = 0) => {
 	return 0;
 }
 
-export const getNumberOrNull = (n) => {
+export const getNumberOrNull = (n, d = null) => {
 	if (n !== '' && typeof n == 'string' && n == Number(n)) {
 		n = Number(n);
 	}
 	if (typeof n == 'number') {
 		return n;
 	}
-	return null;
+	return d;
 }
 
 export const getNumberInPxOrPercent = (n) => {

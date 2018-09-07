@@ -30,8 +30,8 @@ class DraggableComponent extends UIEXComponent {
 		}
 	}
 
-	static getDerivedStateFromProps({isChangedAny, nextProps, add, isInitial}) {
-		if (isChangedAny('x', 'y', 'z', 'initialPositionX', 'initialPositionY')) {
+	static getDerivedStateFromProps({isChangedAny, nextProps, add}) {
+		if (isChangedAny('x', 'y', 'z', 'initialPositionX', 'initialPositionY', 'dragLimits')) {
 			let {x, y, z} = nextProps;
 			x = this.getPositionX(x, nextProps);
 			y = this.getPositionY(y, nextProps);

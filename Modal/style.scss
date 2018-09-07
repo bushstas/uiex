@@ -19,8 +19,8 @@
                 transition: opacity 0.2s ease-out;
             }
         }
-        &.uiex-animation-fade-float,
-        &.uiex-animation-fade-fall {
+        &.uiex-animation-float,
+        &.uiex-animation-fall {
             .uiex-modal-mask {
                 transition: opacity 0.2s ease-out;   
             }
@@ -28,7 +28,10 @@
                 transition: margin-top 0.2s, opacity 0.2s ease-out;
             }
         }
-        &.uiex-animation-fade-scale {
+        &.uiex-animation-perspective-top,
+        &.uiex-animation-perspective-bottom,
+        &.uiex-animation-scale-down,
+        &.uiex-animation-scale-up {
             .uiex-modal-mask {
                 transition: opacity 0.2s ease-out;   
             }
@@ -134,10 +137,13 @@
             opacity: 1;
         }
     }
+    .uiex-modal-outer-container {
+        position: relative;
+    	z-index: 3;
+    }
 
     .uiex-modal-container {
     	position: absolute;
-    	z-index: 3;
     	min-width: 300px;
     	background-color: #fff;
     	border-radius: 3px;

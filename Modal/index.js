@@ -19,19 +19,7 @@ class ModalComponent extends UIEXComponent {
 	static styleNames = ['body', 'header', 'footer', 'mask', 'controls'];
 	static displayName = 'Modal';
 
-	static getDerivedStateFromProps({add, isChangedAny, isChanged, nextProps, call, isInitial}) {
-		if (isChanged('isOpen')) {
-			call(() => {
-				if (nextProps.isOpen) {
-					this.animateShowing();
-				} else {
-					this.animateHiding();
-				}
-			});
-		}
-		if (isChangedAny('width', 'height')) {
-			call(this.initPosition);
-		}
+	static getDerivedStateFromProps({add, isChanged, nextProps, isInitial}) {
 		if (isInitial || isChanged('withoutPortal')) {
 			const {withoutPortal} = nextProps;
 			let root = null;
@@ -54,6 +42,19 @@ class ModalComponent extends UIEXComponent {
 		window.addEventListener('resize', this.handleResize, false);
 	}
 
+	componentDidUpdate({isChanged, isChangedAny}) {
+		if (isChanged('isOpen')) {
+			if (this.props.isOpen) {
+				this.animateShowing();
+			} else {
+				this.animateHiding();
+			}
+		}
+		if (isChangedAny('width', 'height')) {
+			this.initPosition();
+		}
+	}
+
 	componentWillUnmount() {
 		super.componentWillUnmount();
 		window.removeEventListener('resize', this.handleResize, false);
@@ -64,9 +65,9 @@ class ModalComponent extends UIEXComponent {
 		if (!container) {
 			return;
 		}
-		const {mask} = this.refs;
+		const {mask, outer} = this.refs;
 		const {animation, maskOpacity, maskColor} = this.props;
-
+		
 		container.style.opacity = '';
 		if (mask) {
 			mask.style.opacity = '';
@@ -82,19 +83,30 @@ class ModalComponent extends UIEXComponent {
 			if (mask) {
 				mask.style.opacity = '0';
 			}
-			if (animation == 'fade-fall') {
-				container.style.marginTop = '-50px';
-			} else if (animation == 'fade-float') {
-				container.style.marginTop = '50px';
-			} else if (animation == 'fade-scale') {
-				container.style.transform = 'scale(0.5)';
+			if (animation == 'perspective-top' || animation == 'perspective-bottom') {
+				outer.style.perspective = '1500px';
+			} else {
+				outer.style.perspective = '';
 			}
 			setTimeout(() => {
 				this.setState({isOpen: true}, () => {
 					this.initPosition();
+					if (animation == 'fall') {
+						container.style.marginTop = '-50px';
+					} else if (animation == 'float') {
+						container.style.marginTop = '50px';
+					} else if (animation == 'scale-up') {
+						container.style.transform = 'scale(0.5)';
+					} else if (animation == 'scale-down') {
+						container.style.transform = 'scale(2)';
+					} else if (animation == 'perspective-top') {
+						container.style.transform = 'rotateX(-60deg)';
+					} else if (animation == 'perspective-bottom') {
+						container.style.transform = 'rotateX(60deg)';
+					}
 					setTimeout(() => {
 						container.style.marginTop = '0px';
-						container.style.transform = 'scale(1)';
+						container.style.transform = 'scale(1) rotateX(0deg)';
 						container.style.opacity = '1';
 						if (mask) {
 							let o = getNumberOrNull(maskOpacity, DEFAULT_MASK_OPACITY);
@@ -122,12 +134,18 @@ class ModalComponent extends UIEXComponent {
 			if (mask) {
 				mask.style.opacity = '0';
 			}
-			if (animation == 'fade-fall') {
+			if (animation == 'fall') {
 				container.style.marginTop = '-50px';
-			} else if (animation == 'fade-float') {
+			} else if (animation == 'float') {
 				container.style.marginTop = '50px';
-			} else if (animation == 'fade-scale') {
+			} else if (animation == 'scale-up') {
 				container.style.transform = 'scale(0.5)';
+			} else if (animation == 'scale-down') {
+				container.style.transform = 'scale(2)';
+			} else if (animation == 'perspective-top') {
+				container.style.transform = 'rotateX(-60deg)';
+			} else if (animation == 'perspective-bottom') {
+				container.style.transform = 'rotateX(60deg)';
 			}
 			setTimeout(() => {
 				this.setState({isOpen: false}, () => {
@@ -156,13 +174,8 @@ class ModalComponent extends UIEXComponent {
 		if (isOpen && !this.dragged) {
 			const {scrollWidth} = document.body;
 			this.initSize();
-			const {animation} = this.props;
 			const container = this.getContainer();
 			let {width, height} = container.getBoundingClientRect();
-			if (animation == 'fade-scale') {
-				width *= 2;
-				height *= 2;
-			}
 			const x = (scrollWidth - width) / 2;
 			const y = (window.innerHeight - height) / 2;
 			this.setState({x, y});
@@ -247,46 +260,48 @@ class ModalComponent extends UIEXComponent {
 						{outerContent}
 					</div>
 				}
-				<Draggable 
-					ref="drag"
-					className={this.getClassName('container')}
-					style={mainStyle}
-					x={x}
-					y={y}
-					fixed
-					dragLimits={dragWithinWindow ? 'window' : null}
-					disabled={!canDrag}
-					onDragStart={onDragStart}
-					onDrag={this.handleDrag}
-					onDragEnd={onDragEnd}					
-				>
-					{(expandable || !unclosable) && 
-						<div className={this.getClassName('controls')} style={this.getStyle('controls')}>
-							{!header && canDrag && 
-								<DragHandleArea>
-									<Icon name="drag_handle"/>
-								</DragHandleArea>
-							}
-							{expandable && 
-								<Icon 
-									name={expanded ? 'crop_7_5' : 'crop_3_2'} 
-									onClick={this.handleExpand}
-								/>
-							}
-							{!unclosable && 
-								<Icon 
-									name="close" 
-									onClick={this.handleClose}
-								/>
-							}
+				<div ref="outer" className={this.getClassName('outer-container')}>
+					<Draggable 
+						ref="drag"
+						className={this.getClassName('container')}
+						style={mainStyle}
+						x={x}
+						y={y}
+						fixed
+						dragLimits={dragWithinWindow ? 'window' : null}
+						disabled={!canDrag}
+						onDragStart={onDragStart}
+						onDrag={this.handleDrag}
+						onDragEnd={onDragEnd}					
+					>
+						{(expandable || !unclosable) && 
+							<div className={this.getClassName('controls')} style={this.getStyle('controls')}>
+								{!header && canDrag && 
+									<DragHandleArea>
+										<Icon name="drag_handle"/>
+									</DragHandleArea>
+								}
+								{expandable && 
+									<Icon 
+										name={expanded ? 'crop_7_5' : 'crop_3_2'} 
+										onClick={this.handleExpand}
+									/>
+								}
+								{!unclosable && 
+									<Icon 
+										name="close" 
+										onClick={this.handleClose}
+									/>
+								}
+							</div>
+						}
+						{this.renderHeader()}
+						<div className={this.getClassName('body', 'uiex-scrollable')} style={this.getStyle('body')}>
+							{this.renderChildren()}
 						</div>
-					}
-					{this.renderHeader()}
-					<div className={this.getClassName('body', 'uiex-scrollable')} style={this.getStyle('body')}>
-						{this.renderChildren()}
-					</div>
-					{this.renderFooter()}
-				</Draggable>
+						{this.renderFooter()}
+					</Draggable>
+				</div>
 			</TagName>
 		)
 		return root ? ReactDOM.createPortal(content, root) : content;

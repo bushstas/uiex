@@ -45,12 +45,11 @@ export class Input extends UIEXComponent {
 	}
 
 	addClassNames(add) {
-		const {textarea, readOnly, clearable, valid, invalid, value} = this.props;
-		const properValue = this.getValue(value);
+		const {textarea, readOnly, valid, invalid} = this.props;
 		add('control');
 		add('textarea', textarea);
 		add('readonly', readOnly);
-		add('clearable', (properValue || properValue === 0) && clearable);
+		add('clearable', this.isClearable());
 		add('valid', valid);
 		add('invalid', invalid);
 		add('focused', this.state.focused);
@@ -114,9 +113,13 @@ export class Input extends UIEXComponent {
 		return value;
 	}
 
-	renderClearButton() {
+	isClearable() {
 		const {value, clearable, readOnly, defaultValue} = this.props;
-		if ((value || value === 0) && clearable && !readOnly && (!defaultValue || (defaultValue && value !== defaultValue))) {
+		return (value || value === 0) && clearable && !readOnly && (!defaultValue || (defaultValue && value !== defaultValue));
+	}
+
+	renderClearButton() {
+		if (this.isClearable()) {
 			return (
 				<div 
 					className="uiex-input-clear"
@@ -225,7 +228,7 @@ export class Input extends UIEXComponent {
 	}
 
 	blurHandler() {
-		const {onBlur, focusStyle, disabled, readOnly, value, name} = this.props;
+		const {onBlur, focusStyle, disabled, readOnly, value, name, defaultValue, onChange} = this.props;
 		if (!disabled && !readOnly) {
 			if (focusStyle instanceof Object) {
 				const {input} = this.refs;
@@ -237,6 +240,9 @@ export class Input extends UIEXComponent {
 				onBlur(value, name);
 			}
 			this.setState({focused: false});
+			if (defaultValue && typeof onChange == 'function' && value === '') {
+				onChange(defaultValue, name);
+			}
 		}
 	}
 
@@ -248,10 +254,14 @@ export class Input extends UIEXComponent {
 	}
 
 	handleClear = () => {
-		const {onChange, name, disabled, readOnly} = this.props;
-		if (!disabled && !readOnly && typeof onChange == 'function') {
-			const value = this.filterValue('', this.props);
-			onChange(value, name);
+		const {onClear, onChange, name, disabled, readOnly, defaultValue} = this.props;
+		if (!disabled && !readOnly) {
+			if (typeof onChange == 'function') {
+				onChange(defaultValue || '', name);
+			}
+			if (typeof onClear == 'function') {
+				onClear();
+			}
 		}
 	}
 
@@ -290,12 +300,9 @@ export class Input extends UIEXComponent {
 	}
 
 	filterValue(value, props) {
-		const {customFilter, defaultValue} = props;
+		const {customFilter} = props;
 		if (value == null) {
 			value = '';
-		}
-		if (value === '') {
-			return defaultValue || '';
 		}
 		if (typeof customFilter == 'function') {
 			return customFilter(value);

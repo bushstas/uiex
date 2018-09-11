@@ -1,7 +1,7 @@
 import React from 'react';
 import {withStateMaster} from 'state-master';
 import {Input} from '../Input';
-import {getNumberOrNull, replace} from '../utils';
+import {getNumberOrNull, replace, propsChanged} from '../utils';
 import {InputNumberPropTypes} from './proptypes';
 
 import '../style.scss';
@@ -16,9 +16,9 @@ class InputNumberComponent extends Input {
 	static isControl = true;
 	static displayName = 'InputNumber';
 
-	componentDidUpdate({changed}) {
+	componentDidUpdate(prevProps) {
 		let {onChange, name, value} = this.props;
-		if (value && changed) {
+		if (value && propsChanged(prevProps, this.props, PROPS_LIST)) {
 			if (typeof onChange == 'function') {
 				const newValue = this.filterValue(value, this.props);
 				if (newValue != value) {
@@ -264,7 +264,7 @@ class InputNumberComponent extends Input {
 	blurHandler() {
 		super.blurHandler();
 		const {correctionOnBlur, value, onChange, name} = this.props;
-		if (correctionOnBlur && typeof onChange == 'function') {
+		if (value && correctionOnBlur && typeof onChange == 'function') {
 			const correctedValue = this.correctValue(value);
 			if (correctedValue != value) {
 				onChange(correctedValue, name);

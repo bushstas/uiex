@@ -21,8 +21,8 @@ class SidePanelComponent extends UIEXComponent {
 		this.changeStyles(this.props.isOpen);
 	}
 	
-	componentDidUpdate({changed}) {
-		if (changed) {
+	componentDidUpdate(prevProps) {
+		if (prevProps.isOpen != this.props.isOpen) {
 			if (!this.props.isOpen) {
 				this.setSize();
 			} else {

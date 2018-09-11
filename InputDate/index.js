@@ -1,13 +1,14 @@
 import React from 'react';
 import {withStateMaster} from 'state-master';
 import {Input} from '../Input';
-import {getNumberOrNull, replace} from '../utils';
+import {getNumberOrNull, replace, propsChanged} from '../utils';
 import {InputDatePropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
 
 const PROPS_LIST = ['yearFirst', 'past', 'future', 'withTime', 'delimiter', 'minYear', 'maxYear', 'periodFrom', 'periodTo'];
+const DEFAULT_DELIMITER = '.';
 
 class InputDateComponent extends Input {
 	static propTypes = InputDatePropTypes;
@@ -20,9 +21,9 @@ class InputDateComponent extends Input {
 		add('date-input');
 	}
 
-	componentDidUpdate({changed}) {
+	componentDidUpdate(prevProps) {
 		let {onChange, name, value} = this.props;
-		if (value && changed) {
+		if (value && propsChanged(prevProps, this.props, PROPS_LIST)) {
 			if (typeof onChange == 'function') {
 				const newValue = this.filterValue(value, this.props);
 				if (newValue != value) {
@@ -45,19 +46,33 @@ class InputDateComponent extends Input {
 		return {maxLength}
 	}
 
-	filterValue(value, props) {
-		let {delimiter, withTime, yearFirst} = props;
+	getDelimiter(props) {
+		let {delimiter} = props;
 		if (!delimiter || typeof delimiter != 'string') {
-			delimiter = '.';
+			delimiter = DEFAULT_DELIMITER;
+		} else {
+			if (delimiter.length > 1) {
+				delimiter = delimiter.charAt(0);
+			}
+			if ((/\d/).test(delimiter)) {
+				delimiter = DEFAULT_DELIMITER;
+			}
 		}
+		return delimiter;
+	}
+
+	filterValue(value, props) {
+		value = super.filterValue(value, props);
+		let {withTime, yearFirst} = props;
+		const delimiter = this.getDelimiter(props);
 		let mask;
 		if (yearFirst) {
-			mask = 'XXXX' + delimiter + 'XX' + delimiter + 'XX';
+			mask = '9999' + delimiter + '99' + delimiter + '99';
 		} else {
-			mask = 'XX' + delimiter + 'XX' + delimiter + 'XXXX';
+			mask = '99' + delimiter + '99' + delimiter + '9999';
 		}
 		if (withTime) {
-			mask += ' XX:XX';
+			mask += ' 99:99';
 		}		
 		let properValue = value;
 		value = this.getProperDateValue(value);
@@ -69,7 +84,7 @@ class InputDateComponent extends Input {
 		}
 		for (let i = 0; i < l; i++) {
 			const maskChar = mask.charAt(i);
-			if (!(/^[\da-z]/i).test(maskChar)) {
+			if (!(/^[\d]/i).test(maskChar)) {
 				properValue += maskChar;
 			} else {
 				properValue += value[idx++];
@@ -86,7 +101,17 @@ class InputDateComponent extends Input {
 		if (typeof value != 'string') {
 			value = '';
 		}
+		const originalValue = value;
+		const thirdSymbol = originalValue.charAt(2);
 		value = replace(/[^\d]/g, '', value);
+		if (thirdSymbol && originalValue.length > 9) {
+			const isThirdSymbolNumber = (/\d/).test(thirdSymbol);
+			if (!yearFirst && isThirdSymbolNumber) {
+				value = value.substr(6, 2) + value.substr(4, 2) + value.substr(0, 4) + value.substr(8, 10);
+			} else if (yearFirst && !isThirdSymbolNumber) {
+				value = value.substr(4, 4) + value.substr(2, 2) + value.substr(0, 2) + value.substr(8, 10);
+			}
+		}
 		let year = '', month = '', day = '', hour = '', minute = '';
 		for (let i = 0; i < value.length; i++) {
 			if (yearFirst) {

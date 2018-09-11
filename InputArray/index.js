@@ -3,7 +3,7 @@ import {withStateMaster} from 'state-master';
 import {UIEXComponent} from '../UIEXComponent';
 import {AutoComplete} from '../AutoComplete';
 import {Icon} from '../Icon';
-import {isValidAndNotEmptyNumericStyle, getNumber} from '../utils';
+import {isValidAndNotEmptyNumericStyle, getNumber, propsChanged} from '../utils';
 import {ARRAY_INPUT_TYPES} from '../consts';
 import {replace} from '../utils';
 import {INPUT_ARRAY_PLACEHOLDER} from '../texts';
@@ -31,14 +31,11 @@ class InputArrayComponent extends UIEXComponent {
 		}
 	}
 
-	componentDidUpdate({isChanged, isChangedAny}) {
+	componentDidUpdate(prevProps) {
 		let value = this.getValue(this.props);
 		const prevLength = value.length;
-		if (isChanged('uniqueItems', true)) {
-			value = this.filterUnique(value);
-		}
-		if (isChangedAny('onlyType', 'allowedTypes', 'exceptTypes')) {
-			value = this.filterByType(value, this.props);
+		if (propsChanged(prevProps, this.props, PROPS_LIST)) {
+			value = this.filterUnique(this.filterByType(value));
 		}
 		if (prevLength != value.length) {
 			this.fireChange(value);
@@ -347,7 +344,6 @@ class InputArrayComponent extends UIEXComponent {
 			} else if (onlyType == 'regexp' && inputValue[0] != '/') {
 				inputValue = '/' + inputValue + '/';
 			}
-			console.log(inputValue)
 			
 			if (autoDefine && onlyType != 'string') {
 				switch (inputValue) {
@@ -481,8 +477,8 @@ class InputArrayComponent extends UIEXComponent {
 		return regexp;
 	}
 
-	filterByType(value, props = this.props) {
-		let {onlyType, allowedTypes, exceptTypes} = props;
+	filterByType(value) {
+		let {onlyType, allowedTypes, exceptTypes} = this.props;
 		const filteredValue = [];
 		if (onlyType && typeof onlyType == 'string' && ARRAY_INPUT_TYPES.indexOf(onlyType) != -1) {
 			for (let i = 0; i < value.length; i++) {

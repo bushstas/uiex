@@ -42,6 +42,12 @@ class BoxComponent extends UIEXComponent {
 		this.changeStyles(this.props.isOpen);
 	}
 
+	componentWillUnmount() {
+		clearTimeout(this.mainTimeout);
+		clearTimeout(this.timeout);
+		super.componentWillUnmount();
+	}
+
 	changeStyles(isOpen) {
 		if (isOpen) {
 			this.showAllStyles();
@@ -117,7 +123,8 @@ class BoxComponent extends UIEXComponent {
 		if (animation) {
 			this.refs.outer.style.transitionDuration = this.getSpeed() / 10 + 's';
 			const delay = this.getDelay();
-			setTimeout(callback, delay);
+			clearTimeout(this.mainTimeout);
+			this.mainTimeout = setTimeout(callback, delay);
 		} else {
 			this.refs.outer.style.transitionDuration = '';
 			callback();
@@ -131,6 +138,7 @@ class BoxComponent extends UIEXComponent {
 
 	processShowAnimation() {
 		const delay = this.getDelay();
+		clearTimeout(this.timeout);
 		switch (this.props.animation) {
 			case 'fall':
 			case 'roll':
@@ -138,8 +146,10 @@ class BoxComponent extends UIEXComponent {
 			case 'fade-roll':
 				this.showStyles();
 				this.setHeight();
-				setTimeout(this.showOverflowStyles, delay);
-				setTimeout(this.resetHeight, delay);
+				this.timeout = setTimeout(() => {
+					this.showOverflowStyles();
+					this.resetHeight();
+				}, delay);
 			break;
 
 			default:
@@ -151,10 +161,11 @@ class BoxComponent extends UIEXComponent {
 	processHideAnimation(animation) {
 		const {outer} = this.refs;
 		const delay = this.getDelay();
+		clearTimeout(this.timeout);
 		switch (animation) {
 			case 'fade':
 				outer.style.opacity = '0';
-				setTimeout(this.hideStyles, delay);
+				this.timeout = setTimeout(this.hideStyles, delay);
 			break;
 
 			case 'fade-fall':
@@ -162,14 +173,14 @@ class BoxComponent extends UIEXComponent {
 				outer.style.opacity = '0';
 				outer.style.height = '0';
 				outer.style.overflow = 'hidden';
-				setTimeout(this.hideStyles, delay);
+				this.timeout = setTimeout(this.hideStyles, delay);
 			break;
 
 			case 'fall':
 			case 'roll':
 				outer.style.height = '0';
 				outer.style.overflow = 'hidden';
-				setTimeout(this.hideStyles, delay);
+				this.timeout = setTimeout(this.hideStyles, delay);
 			break;
 
 			default:

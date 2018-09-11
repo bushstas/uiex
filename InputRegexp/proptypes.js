@@ -5,5 +5,6 @@ import {PROPTYPE} from '../consts';
 export const InputRegexpPropTypes = {
 	...InputPropTypes,
 	value: PROPTYPE.STRREGEXP,
+	defaultValue: PROPTYPE.STRREGEXP,
 	stringified: PropTypes.bool
 }

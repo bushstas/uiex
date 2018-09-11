@@ -41,27 +41,7 @@ class DraggableComponent extends UIEXComponent {
 				y
 			});
 		}
-		// if (!isInitial && isChangedAny('dragLimits', 'fixed')) {
-		// 	this.cachedOwnRect = this.refs.main.getBoundingClientRect();
-		// }
 	}
-
-	// componentDidUpdate({isChangedAny}) {
-	// 	const {onDrag} = this.props;
-	// 	if (typeof onDrag == 'function' && isChangedAny('dragLimits', 'fixed')) {
-	// 		const {dragLimits, fixed} = this.props;
-	// 		const ownRect = this.cachedOwnRect;			
-	// 		if (fixed || dragLimits == 'window') {
-	// 			onDrag(ownRect.x, ownRect.y);
-	// 		} else if (dragLimits == 'parent-out') {
-	// 			onDrag(-ownRect.width, -ownRect.height);
-	// 		} else if (dragLimits == 'parent-in-out') {
-	// 			onDrag(-ownRect.width / 2, -ownRect.height / 2);
-	// 		} else {
-	// 			onDrag(0, 0);
-	// 		}
-	// 	}
-	// }
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.handleResize, false);
@@ -244,7 +224,7 @@ class DraggableComponent extends UIEXComponent {
 	}
 
 	initDragLimits = () => {
-		const {dragLimits} = this.props;
+		const {dragLimits, fixed} = this.props;
 		if (dragLimits) {
 			const ownRect = this.refs.main.getBoundingClientRect();
 			if (dragLimits == 'window') {
@@ -257,7 +237,8 @@ class DraggableComponent extends UIEXComponent {
 				this.limitXRight = null;
 				this.limitYTop = null;
 				this.limitYBottom = null;
-			} else {
+				return;
+			} else if (!fixed) {
 				const {parentNode} = this.refs.main;
 				let {left, top, width, height} = parentNode.getBoundingClientRect();
 				
@@ -271,7 +252,7 @@ class DraggableComponent extends UIEXComponent {
 						this.limitXRight = left + width;
 						this.limitYTop = top;
 						this.limitYBottom = top + height;
-					break;
+						return;
 
 					case 'parent-out':
 						this.limitXZero = -ownRect.width;
@@ -282,7 +263,7 @@ class DraggableComponent extends UIEXComponent {
 						this.limitXRight = left + width + ownRect.width;
 						this.limitYTop = top - ownRect.height;
 						this.limitYBottom = top + height + ownRect.height;
-					break;
+						return;
 
 					case 'parent-in-out':
 						this.limitXZero = -ownRect.width / 2;
@@ -293,19 +274,18 @@ class DraggableComponent extends UIEXComponent {
 						this.limitXRight = left + width + ownRect.width;
 						this.limitYTop = top - ownRect.height;
 						this.limitYBottom = top + height + ownRect.height;
-					break;
+						return;
 				}
 			}
-		} else {
-			this.limitXZero = null;
-			this.limitYZero = null;
-			this.limitX = null;
-			this.limitY = null;
-			this.limitXLeft = null;
-			this.limitXRight = null;
-			this.limitYTop = null;
-			this.limitYBottom = null;
 		}
+		this.limitXZero = null;
+		this.limitYZero = null;
+		this.limitX = null;
+		this.limitY = null;
+		this.limitXLeft = null;
+		this.limitXRight = null;
+		this.limitYTop = null;
+		this.limitYBottom = null;
 	}
 
 	handleResize = () => {
@@ -333,19 +313,19 @@ class DraggableComponent extends UIEXComponent {
 	}
 
 	handleMouseDown = (e) => {
-		const {dragLimits, onDragStart} = this.props;
+		const {onDragStart, name} = this.props;
 		this.x = e.clientX;
 		this.y = e.clientY;
 		document.body.addEventListener('mousemove', this.handleMouseMove, false);
 		document.body.addEventListener('mouseup', this.handleMouseUp, false);
 		this.initDragLimits();
 		if (typeof onDragStart == 'function') {
-			onDragStart(this.state.x, this.state.y);
+			onDragStart(this.state.x, this.state.y, name);
 		}
 	}
 
 	handleMouseMove = (e) => {
-		let {horizontal, vertical, dragLimits, onDrag} = this.props;
+		let {horizontal, vertical, dragLimits, onDrag, fixed, name} = this.props;
 		if (typeof onDrag == 'function') {
 			if (horizontal && vertical) {
 				horizontal = false;
@@ -355,7 +335,7 @@ class DraggableComponent extends UIEXComponent {
 			let mx = x || 0;
 			let my = y || 0;
 			let {clientX, clientY} = e;
-				if (dragLimits && dragLimits != 'window') {
+				if (!fixed && dragLimits && dragLimits != 'window') {
 				if (!vertical) {
 					if (clientX < this.limitXLeft) {
 						clientX = this.limitXLeft;
@@ -399,14 +379,14 @@ class DraggableComponent extends UIEXComponent {
 					}
 				}
 			}
-			onDrag(mx, my);
+			onDrag(mx, my, name);
 		}
 	}
 
 	handleMouseUp = () => {
-		const {onDragEnd} = this.props;
+		const {onDragEnd, name} = this.props;
 		if (typeof onDragEnd == 'function') {
-			onDragEnd(this.state.x, this.state.y);
+			onDragEnd(this.state.x, this.state.y, name);
 		}
 		document.body.removeEventListener('mousemove', this.handleMouseMove, false);
  		document.body.removeEventListener('mouseup', this.handleMouseUp, false);

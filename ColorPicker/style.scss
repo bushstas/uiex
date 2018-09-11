@@ -17,6 +17,14 @@
 			display: none !important;
 		}
 	}
+	&.uiex-disabled {
+		.uiex-color-picker-hue,
+		.uiex-color-picker-satval {
+			cursor: not-allowed !important;
+			filter: grayscale(100%);
+			opacity: 0.7;
+		}
+	}
 
 	.uiex-color-picker-selector {
 		border-radius: 3px;

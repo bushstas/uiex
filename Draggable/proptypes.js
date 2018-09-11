@@ -4,6 +4,7 @@ import {PROPTYPE} from '../consts';
 
 export const DraggablePropTypes = {
 	...UIEXComponentPropTypes,
+	name: PropTypes.string,
 	areaWidth: PROPTYPE.STRNUM,
 	areaHeight: PROPTYPE.STRNUM,
 	x: PROPTYPE.STRNUM,

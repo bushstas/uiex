@@ -11,6 +11,7 @@ export const ColorsPropTypes = {
 	margin: PROPTYPE.STRNUM,
 	selectable: PropTypes.bool,
 	round: PropTypes.bool,
+	square: PropTypes.bool,
 	withoutBorder: PropTypes.bool,
 	onSelect: PropTypes.func,
 	onDisabledClick: PropTypes.func

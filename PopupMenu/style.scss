@@ -86,11 +86,17 @@
 		&.uiex-selected {
 			border-color: #a1a1a1;
 		}
+		&:first-child {
+			border-top: 0 !important;
+		}
 	}
 	&.uiex-with-bottom-delimiter {
 		border-bottom: 1px solid #c1c1c1;
 		&.uiex-selected {
 			border-color: #a1a1a1;
+		}
+		&:last-child {
+			border-top: 0 !important;
 		}
 	}
 }

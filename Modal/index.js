@@ -5,7 +5,7 @@ import {UIEXComponent} from '../UIEXComponent';
 import {Icon} from '../Icon';
 import {Draggable, DragHandleArea} from '../Draggable';
 import {ModalPropTypes} from './proptypes';
-import {replace, getNumberOrNull} from '../utils';
+import {replace, getNumberOrNull, addClass, removeClass} from '../utils';
 
 import '../style.scss';
 import './style.scss';
@@ -13,6 +13,7 @@ import './style.scss';
 const PROPS_LIST = ['isOpen', 'width', 'height', 'withoutPortal'];
 const ROOT_ID = 'uiex-modal-root';
 const DEFAULT_MASK_OPACITY = 6;
+const DEFAULT_BLUR_VALUE = 2;
 
 class ModalComponent extends UIEXComponent {
 	static propTypes = ModalPropTypes;
@@ -42,15 +43,28 @@ class ModalComponent extends UIEXComponent {
 		window.addEventListener('resize', this.handleResize, false);
 	}
 
-	componentDidUpdate({isChanged, isChangedAny}) {
-		if (isChanged('isOpen')) {
+	componentDidUpdate(prevProps) {
+		if (prevProps.isOpen != this.props.isOpen) {
+			let {blurSelector, blurValue, withoutPortal} = this.props;
+			if (!withoutPortal && blurSelector && typeof blurSelector == 'string') {
+				let elementToBlur = document.querySelector(blurSelector);
+				if (blurValue === 0) {
+					blurValue = '0';
+				}
+				const blurClassName = 'uiex-blured-' + (blurValue || DEFAULT_BLUR_VALUE);
+				if (this.props.isOpen) {
+					addClass(elementToBlur, blurClassName);
+				} else {
+					removeClass(elementToBlur, blurClassName);
+				}
+			}
 			if (this.props.isOpen) {
 				this.animateShowing();
 			} else {
 				this.animateHiding();
 			}
 		}
-		if (isChangedAny('width', 'height')) {
+		if (prevProps.width != this.props.width || prevProps.height != this.props.height) {
 			this.initPosition();
 		}
 	}

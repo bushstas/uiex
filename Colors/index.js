@@ -16,8 +16,10 @@ export class Colors extends UIEXComponent {
 	static displayName = 'Colors';
 
 	addClassNames(add) {
-		add('round', this.props.round);
-		add('without-border', this.props.withoutBorder);
+		const {square, round, withoutBorder} = this.props;
+		add('square', square);
+		add('round', round);
+		add('without-border', withoutBorder);
 	}
 
 	renderInternal() {

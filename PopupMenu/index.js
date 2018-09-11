@@ -170,9 +170,11 @@ class PopupMenuComponent extends Popup {
 				onEnter();
 			}
 		} else {
-			const value = this.itemValues[this.state.currentSelected];
+			const idx = this.state.currentSelected;
+			const value = this.itemValues[idx];
 			if (typeof value != 'undefined') {
-				this.handleSelect(value);
+				const option = this.getOption(idx);
+				this.handleSelect(value, idx, option);
 			}
 		}
 	}
@@ -244,15 +246,21 @@ class PopupMenuComponent extends Popup {
 			onSelectByArrow(value);
 		}
 		this.fireChange(value);
-		
-		const child = this.children[idx];
-		if (child && typeof onSelectOption == 'function') {
+		const option = this.getOption(idx);
+		if (typeof onSelectOption == 'function') {
+			onSelectOption(idx, option);
+		}		
+	}
+
+	getOption(childIdx) {
+		const child = this.children[childIdx];
+		if (child) {
 			const {props} = child;
 			let {value, children, icon, iconType, withTopDelimiter, withBottomDelimiter, single} = props;
 			if (!iconType) {
 				iconType = this.props.iconType;
 			}
-			const option = {
+			return {
 				value,
 				title: children,
 				icon,
@@ -261,8 +269,8 @@ class PopupMenuComponent extends Popup {
 				withBottomDelimiter,
 				single
 			}
-			onSelectOption(idx, option);
 		}
+		return null;
 	}
 
 	fireChange(value) {

@@ -38,8 +38,8 @@ class ColorPickerComponent extends UIEXComponent {
 		this.update();
 	}
 
-	componentDidUpdate({isChanged}) {
-		if (isChanged('value')) {
+	componentDidUpdate(prevProps) {
+		if (prevProps.value != this.props.value) {
 			this.update();
 		}
 	}
@@ -56,9 +56,11 @@ class ColorPickerComponent extends UIEXComponent {
 	}
 
 	handleMouseDownOnSatval = (e) => {
- 		this.handleChangeSatval(e, true);
-    	window.addEventListener('mousemove', this.handleChangeSatval);
-    	window.addEventListener('mouseup', this.handleMouseUpOnSatval);
+		if (!this.props.disabled) { 
+			this.handleChangeSatval(e, true);
+			window.addEventListener('mousemove', this.handleChangeSatval);
+			window.addEventListener('mouseup', this.handleMouseUpOnSatval);
+		}
 	}
 
 	handleMouseUpOnSatval = (e) => {
@@ -98,9 +100,11 @@ class ColorPickerComponent extends UIEXComponent {
 	}
 
 	handleMouseDownOnHue = (e) => {
- 		this.handleChangeHue(e, true);
-    	window.addEventListener('mousemove', this.handleChangeHue);
-    	window.addEventListener('mouseup', this.handleMouseUpOnHue);
+		if (!this.props.disabled) {  
+			this.handleChangeHue(e, true);
+			window.addEventListener('mousemove', this.handleChangeHue);
+			window.addEventListener('mouseup', this.handleMouseUpOnHue);
+		}
 	}
 
 	handleMouseUpOnHue = (e) => {
@@ -161,7 +165,7 @@ class ColorPickerComponent extends UIEXComponent {
 	}
 
 	renderInternal() {
-		const {presetColors} = this.props;
+		const {presetColors, disabled} = this.props;
 		const {inputValue, inputR, inputG, inputB, r, g, b} = this.state;
 		const TagName = this.getTagName();
 		return (
@@ -181,6 +185,7 @@ class ColorPickerComponent extends UIEXComponent {
 							maxLength="3"
 							maxValue="255"
 							positive
+							disabled={disabled}
 							className={this.getClassName('rgb-input')}
 							onChange={this.handleRInputChange}
 							onBlur={this.handleRInputBlur}
@@ -190,6 +195,7 @@ class ColorPickerComponent extends UIEXComponent {
 							maxLength="3"
 							maxValue="255"
 							positive
+							disabled={disabled}
 							className={this.getClassName('rgb-input')}
 							onChange={this.handleGInputChange}
 							onBlur={this.handleGInputBlur}
@@ -199,6 +205,7 @@ class ColorPickerComponent extends UIEXComponent {
 							maxLength="3"
 							maxValue="255"
 							positive
+							disabled={disabled}
 							className={this.getClassName('rgb-input')}
 							onChange={this.handleBInputChange}
 							onBlur={this.handleBInputBlur}
@@ -208,12 +215,14 @@ class ColorPickerComponent extends UIEXComponent {
 						value={inputValue}
 						className={this.getClassName('input')}						
 						onChange={this.handleInputChange}
+						disabled={disabled}
 						withoutPicker
 						withoutHash
 					/>
 				</div>
 				{presetColors instanceof Array && presetColors.length > 0 && 
 					<Colors 
+						disabled={disabled}
 						colors={presetColors}
 						onSelect={this.handleSelectPresetColor}
 					/>

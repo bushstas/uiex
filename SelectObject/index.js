@@ -103,6 +103,7 @@ export class SelectObject extends UIEXComponent {
 	renderModal() {
 		return (
 			<Modal 
+				className="uiex-select-object-modal"
 				width="800"
 				header="Choose a value"
 				isOpen={this.state.focused}
@@ -118,17 +119,18 @@ export class SelectObject extends UIEXComponent {
 		const items = [];
 		if (empty) {
 			items.push(
-				<div key={null} className={this.getClassName('item', !value ? 'uiex-active' : '')}>
+				<div key={null} className={'uiex-select-object-item' + (!value ? ' uiex-active' : '')}>
 					<Radio 
 						checked={!value} 
 						value={null} 
 						onChange={this.handleRadioClick}
-					/>
-					<JsonPreview 
-						ref={'preview'}
-						data={null} 
-						onClick={this.handleItemClick}
-					/>
+					>
+						<JsonPreview 
+							ref={'preview'}
+							data={null} 
+							onClick={this.handleItemClick}
+						/>
+					</Radio>
 				</div>
 			);
 		}
@@ -141,17 +143,18 @@ export class SelectObject extends UIEXComponent {
 					active = options[i] == value;
 				}
 				items.push(
-					<div key={i} className={this.getClassName('item', active ? 'uiex-active' : '')}>
+					<div key={i} className={'uiex-select-object-item' + (active ? ' uiex-active' : '')}>
 						<Radio 
 							checked={active} 
 							value={i} 
 							onChange={this.handleRadioClick}
-						/>
-						<JsonPreview 
-							ref={'preview' + i}
-							data={options[i]} 
-							onClick={this.handleItemClick}
-						/>
+						>
+							<JsonPreview 
+								ref={'preview' + i}
+								data={options[i]} 
+								onClick={this.handleItemClick}
+							/>
+						</Radio>
 					</div>
 				);
 			}

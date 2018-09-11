@@ -5,9 +5,9 @@
 	}
 	.uiex-phone-code {
 		position: absolute;
-		top: 0;
+		top: 1px;
 		left: 0;
-		bottom: 0;
+		bottom: 1px;
 		width: 36px;
 		display: flex;
 		font-size: 14px;
@@ -15,5 +15,15 @@
 		justify-content: center;
 		border-right: 1px solid #aaa;
 		color: #777;
+	}
+	&.uiex-valid {
+		.uiex-phone-code {
+			border-right-color: #78bb00;
+		}
+	}
+	&.uiex-invalid {
+		.uiex-phone-code {
+			border-right-color: #fb3239;
+		}
 	}
 }

@@ -32,7 +32,7 @@ export const removeClass = (element, cn) => {
 		if (typeof className == 'string') {
 			const regexp = new RegExp(regexEscape(cn));
 			className = replace(regexp, '', className);
-			element.className = className;
+			element.className = className.trim();
 		}
 	} else if (typeof element == 'string') {
 		const classNames = element.split(' ');
@@ -50,10 +50,14 @@ export const removeClass = (element, cn) => {
 
 export const addClass = (element, cn) => {
 	if (element instanceof Element) {
-		const classes = (element.className || '').split(' ');
-		if (classes.indexOf(cn) == -1) {
-			classes.push(cn);
-			element.className = classes.join(' ');
+		if (!element.className) {
+			element.className = cn;
+		} else {
+			const classes = element.className.split(' ');
+			if (classes.indexOf(cn) == -1) {
+				classes.push(cn);
+				element.className = classes.join(' ');
+			}
 		}
 	}
 }

@@ -20,6 +20,19 @@
 			}
 		}
 	}
+	&.uiex-square {
+		.uiex-color {
+			.uiex-color-bg {
+				border-radius: 0;
+				&:before {
+					border-radius: 0 !important;
+				}
+				&:after {
+					border-radius: 0;
+				}
+			}
+		}
+	}
 	&.uiex-without-border {
 		.uiex-color:not(.uiex-active) {
 			.uiex-color-bg {

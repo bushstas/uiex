@@ -19,6 +19,8 @@ export const ModalPropTypes = {
 	maskOpacity: PROPTYPE.STRNUM,
 	maskColor: PropTypes.string,
 	animation: PROPTYPE.MODAL_ANIMATION,
+	blurSelector: PropTypes.string,
+	blurValue: PROPTYPE.STRNUM,
 	onClose: PropTypes.func,
 	onExpand: PropTypes.func,
 	onDragStart: PropTypes.func,

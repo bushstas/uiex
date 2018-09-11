@@ -29,6 +29,6 @@ export const InputPropTypes = {
 	onFocus: PropTypes.func,
 	onBlur: PropTypes.func,
 	onEnter: PropTypes.func,
-	onClick: PropTypes.func,
+	onClear: PropTypes.func,
 	onDisabledClick: PropTypes.func
 }

@@ -44,9 +44,6 @@ export class InputPhone extends Input {
 	getValue() {
 		const {numeric} = this.props;
 		let value = this.getWithoutCode(super.getValue());
-		if (!numeric) {
-			return value;
-		}
 		return this.getMaskedValue(value);
 	}
 
@@ -57,7 +54,7 @@ export class InputPhone extends Input {
 
 	getMaskedValue(value) {
 		let properValue = value;
-		let {mask, code, withCode} = this.props;
+		let {mask} = this.props;
 		if (typeof mask == 'string') {
 			value = replace(/[^\d]/g, '', value);
 			mask = mask.trim();

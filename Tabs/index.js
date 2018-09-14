@@ -7,6 +7,7 @@ import {getClassNameBuilder} from '../utils';
 import {TabsPropTypes} from './proptypes';
 
 import '../style.scss';
+import '../ButtonGroup/style.scss';
 import './style.scss';
 
 const NEW_TAB_CAPTION = 'New tab';
@@ -76,7 +77,10 @@ export class Tabs extends UIEXButtons {
 	}
 
 	renderContent() {
-		const {children} = this.props;
+		let {children} = this.props;
+		if (!(children instanceof Array)) {
+			children = [children];
+		}
 		const activeTab = this.activeTab;
 		return children.map((child, idx) => this.isProperChild(child.type) && this.isTabActive(child, idx) ? child.props.children : null);
 	}

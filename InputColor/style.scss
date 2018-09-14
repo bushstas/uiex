@@ -57,18 +57,23 @@
 			padding-left: 60px !important;
 		}
 	}
-	.uiex-color-picker {
+	.uiex-popup {
 		position: absolute;
 		top: 100%;
 		margin-top: 2px;
 		left: 0;
 		z-index: 100;
-		border-color: #888;
+		.uiex-color-picker {
+			border-color: #888;
+		}
 	}
 	&.uiex-full-with-picker {
-		.uiex-color-picker {
+		.uiex-popup {
 			width: auto !important;
 			right: 0;
+			.uiex-color-picker {
+				width: 100% !important;
+			}
 		}
 	}
 	&.uiex-disabled {

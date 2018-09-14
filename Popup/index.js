@@ -4,6 +4,7 @@ import {UIEXBoxContainer} from '../UIEXComponent';
 import {PopupPropTypes} from './proptypes';
 
 import '../style.scss';
+import './style.scss';
 
 const PROPS_LIST = 'isOpen';
 
@@ -28,6 +29,10 @@ class PopupComponent extends UIEXBoxContainer {
 		super.componentWillUnmount();
 	}
 
+	addClassNames(add) {
+		add('open', this.props.isOpen);
+	}
+
 	addBodyClickHandler() {
 		document.body.addEventListener('mousedown', this.handleBodyClick, false);
 	}
@@ -40,6 +45,18 @@ class PopupComponent extends UIEXBoxContainer {
 		return {
 			onMouseDown: this.handleMouseDown
 		}
+	}
+
+	renderInternal() {
+		const content = this.renderChildren();
+		const TagName = this.getTagName();
+		return (
+			<TagName {...this.getProps()}>
+				<div ref="inner" className={this.getClassName('inner')}>
+					{content}
+				</div>
+			</TagName>
+		)
 	}
 
 	handleMouseDown = (e) => {

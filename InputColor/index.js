@@ -36,6 +36,9 @@ class InputColorComponent extends Input {
 		super.addClassNames(add);
 		add('input');
 		add('full-with-picker', this.props.fullWidthPicker);
+		if (this.refs.popup && (this.props.pickerShown || this.state.pickerShown)) {
+			console.log(this.refs.popup.refs.inner.getBoundingClientRect())
+		}
 	}
 
 	getCustomInputProps() {
@@ -71,9 +74,10 @@ class InputColorComponent extends Input {
 						#
 					</div>
 				</div>
-				{!withoutPicker && pickerShown && 
+				{!withoutPicker && 
 					<Popup
-						isOpen={true}
+						ref="popup"
+						isOpen={pickerShown}
 						onCollapse={this.handlePopupCollapse}
 					>
 						<ColorPicker 

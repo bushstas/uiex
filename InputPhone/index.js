@@ -1,16 +1,31 @@
 import React from 'react';
 import {Input} from '../Input';
-import {regexEscape, replace} from '../utils';
+import {regexEscape, replace, propsChanged} from '../utils';
 import {InputPhonePropTypes} from './proptypes';
 
 import '../style.scss';
 import './style.scss';
+
+const PROPS_LIST = ['numeric', 'withCode', 'code', 'mask', 'numericCode'];
 
 export class InputPhone extends Input {
 	static propTypes = InputPhonePropTypes;
 	static className = 'input';
 	static isControl = true;
 	static displayName = 'InputPhone';
+
+	componentDidUpdate(prevProps) {
+		super.componentDidUpdate(prevProps);
+		let {onChange, name, value} = this.props;
+		if (value && propsChanged(prevProps, this.props, PROPS_LIST)) {
+			if (typeof onChange == 'function') {
+				const newValue = this.filterValue(this.getWithoutCode(value, prevProps), this.props);
+				if (newValue != value) {
+					onChange(newValue, name);
+				}
+			}
+		}
+	}
 
 	addClassNames(add) {
 		super.addClassNames(add);
@@ -42,7 +57,6 @@ export class InputPhone extends Input {
 	}
 
 	getValue() {
-		const {numeric} = this.props;
 		let value = this.getWithoutCode(super.getValue());
 		return this.getMaskedValue(value);
 	}
@@ -92,17 +106,52 @@ export class InputPhone extends Input {
 
 	getWithoutCode(value) {
 		let {numeric, code, withCode, numericCode} = this.props;
-		if (numeric && numericCode) {
-			code = numericCode;
-		}
-		if (withCode && code) {
-			code = regexEscape(code);
-			if (numeric) {
-				code = replace(/[^\d]/g, '', code);
+		if (withCode) {
+			if (numeric && numericCode) {
+				code = numericCode;
 			}
-			const regex = new RegExp('^' + code);
-			value = replace(regex, '', value);
+			if (code) {
+				code = regexEscape(code);
+				if (numeric) {
+					code = replace(/[^\d]/g, '', code);
+				}
+				const regex = new RegExp('^' + code);
+				return replace(regex, '', value);
+			}
 		}
 		return value;
+	}
+
+	getProperDefaultValue() {
+		const {defaultValue} = this.props;
+		if (defaultValue) {
+			return this.getMaskedValue(defaultValue);
+		}
+		return '';
+	}
+
+	checkValidity(value, props = this.props) {
+		let {withCode, required, code, numeric, numericCode, mask} = props;
+		if (value || required) {
+			if (typeof mask != 'string') {
+				mask = '';
+			}
+			let {length} = !!numeric && !!mask ? replace(/[^\da-z]/ig, '', mask) : mask;
+			if (withCode) {
+				if (numeric) {
+					if (numericCode || numericCode === 0) {
+						code = numericCode;
+					}
+				}
+				if (code) {
+					length += String(code).length;
+				}
+			}
+			const isValid = value.length == length;
+			if (isValid === false && this.isValid == null) {
+				return;
+			}
+			this.fireChangeValidity(isValid, value);
+		}
 	}
 }

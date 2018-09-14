@@ -6,6 +6,7 @@
 	border: 1px solid #ccc;
 	border-radius: 3px;
 	background-color: #FFFFFF;
+	box-sizing: border-box;
 	
 	&.uiex-without-input {
 		.uiex-color-picker-input {

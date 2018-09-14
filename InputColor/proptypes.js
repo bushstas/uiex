@@ -8,6 +8,7 @@ export const InputColorPropTypes = {
 	withoutHash: PropTypes.bool,
 	fullWidthPicker: PropTypes.bool,
 	pickerShown: PropTypes.bool,
+	pickerOnTop: PropTypes.bool,
 	presetColors: PROPTYPE.STRING_ARRAY,
 	onChangePicker: PropTypes.func,
 	onInput: PropTypes.func

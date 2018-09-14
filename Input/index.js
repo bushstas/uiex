@@ -228,7 +228,7 @@ export class Input extends UIEXComponent {
 	}
 
 	blurHandler() {
-		const {onBlur, focusStyle, disabled, readOnly, value, name, defaultValue, onChange} = this.props;
+		const {onBlur, focusStyle, disabled, readOnly, value, name, onChange} = this.props;
 		if (!disabled && !readOnly) {
 			if (focusStyle instanceof Object) {
 				const {input} = this.refs;
@@ -240,8 +240,8 @@ export class Input extends UIEXComponent {
 				onBlur(value, name);
 			}
 			this.setState({focused: false});
-			if (defaultValue && typeof onChange == 'function' && value === '') {
-				onChange(defaultValue, name);
+			if (typeof onChange == 'function' && value === '') {
+				onChange(this.getProperDefaultValue(), name);
 			}
 		}
 	}
@@ -254,10 +254,10 @@ export class Input extends UIEXComponent {
 	}
 
 	handleClear = () => {
-		const {onClear, onChange, name, disabled, readOnly, defaultValue} = this.props;
+		const {onClear, onChange, name, disabled, readOnly} = this.props;
 		if (!disabled && !readOnly) {
 			if (typeof onChange == 'function') {
-				onChange(defaultValue || '', name);
+				onChange(this.getProperDefaultValue(), name);
 			}
 			if (typeof onClear == 'function') {
 				onClear();
@@ -308,6 +308,10 @@ export class Input extends UIEXComponent {
 			return customFilter(value);
 		}
 		return value;
+	}
+
+	getProperDefaultValue() {
+		return this.props.defaultValue || '';
 	}
 
 	getCustomInputProps() {}

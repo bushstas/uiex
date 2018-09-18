@@ -1,6 +1,6 @@
 {
   "name": "uiex",
-  "version": "0.0.7",
+  "version": "0.0.82",
   "description": "UI library",
   "repository": {
     "type": "git",
@@ -9,8 +9,5 @@
   "author": {
     "name": "Bushmakin Stas",
     "email": "bushstas@mail.ru"
-  },
-  "dependencies": {
-    "state-master": "^1.0.0"
   }
 }

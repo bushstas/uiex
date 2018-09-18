@@ -1,0 +1,24 @@
+.uiex-select-object-item {
+  display: flex;
+  padding: 15px;
+  border-radius: 3px;
+  border: 1px solid #e1e1e1;
+  margin-bottom: 10px;
+  cursor: pointer;
+  box-shadow: inset 0 0 20px #eee;
+}
+.uiex-select-object-item:last-child {
+  margin-bottom: 0;
+}
+.uiex-select-object-item.uiex-active {
+  box-shadow: inset 0 0 20px #ccc !important;
+  border-color: #c1c1c1 !important;
+}
+.uiex-select-object-item:hover {
+  box-shadow: inset 0 0 20px #ddd;
+  border-color: #d1d1d1;
+}
+.uiex-select-object-item .uiex-json-preview {
+  flex-grow: 1;
+  margin-left: 10px;
+}

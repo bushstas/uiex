@@ -1,0 +1,73 @@
+.uiex-cell-group {
+  position: relative;
+  display: block;
+}
+.uiex-cell-group:not(.uiex-side-shrinked).uiex-align-right .uiex-cell-group-row.uiex-complete-row .uiex-cell.uiex-first-cell-in-row {
+  padding-left: 0 !important;
+}
+.uiex-cell-group:not(.uiex-side-shrinked).uiex-align-right .uiex-cell-group-row.uiex-incomplete-row .uiex-cell:last-child {
+  padding-right: 0 !important;
+}
+.uiex-cell-group:not(.uiex-side-shrinked):not(.uiex-align-right) .uiex-cell.uiex-first-cell-in-row {
+  padding-left: 0 !important;
+}
+.uiex-cell-group.uiex-align-center .uiex-cell-group-row {
+  justify-content: center;
+}
+.uiex-cell-group.uiex-align-right .uiex-cell-group-row {
+  justify-content: flex-end;
+}
+.uiex-cell-group.uiex-cell-auto-height .uiex-cell-group-row {
+  align-items: flex-start;
+}
+
+.uiex-cell-group-row {
+  line-height: 0px;
+  font-size: 0;
+  letter-spacing: -1px;
+  white-space: nowrap;
+  display: flex;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+}
+
+.uiex-cell {
+  min-height: 20px;
+  pointer-events: auto;
+  vertical-align: top;
+  box-sizing: border-box !important;
+  position: relative;
+  display: inline-block;
+  letter-spacing: 0;
+  font-size: 14px;
+  line-height: 18px;
+  white-space: normal;
+  min-width: unset !important;
+  max-width: unset !important;
+  text-align: left;
+  word-break: break-word;
+}
+.uiex-cell.uiex-align-self-start {
+  align-self: flex-start;
+}
+.uiex-cell.uiex-align-self-center {
+  align-self: center;
+}
+.uiex-cell.uiex-align-self-end {
+  align-self: flex-end;
+}
+.uiex-cell.uiex-last-cell-in-row {
+  padding-right: 0 !important;
+}
+.uiex-cell .uiex-cell-content {
+  position: relative;
+  box-sizing: border-box !important;
+  height: 100% !important;
+}
+.uiex-cell .uiex-cell-content .uiex-cell-content-inner {
+  position: relative;
+  box-sizing: border-box !important;
+  height: 100% !important;
+  overflow: auto;
+}

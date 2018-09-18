@@ -1,0 +1,159 @@
+.uiex-array-input {
+  position: relative;
+  display: inline-block;
+  min-width: 300px;
+  box-sizing: border-box;
+  font-size: 14px;
+  border-radius: 2px;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  box-shadow: inset -3px -3px 7px #f1f1f1;
+  color: #555;
+}
+.uiex-array-input.uiex-without-input {
+  min-height: 40px;
+}
+.uiex-array-input.uiex-empty:not(.uiex-with-height) .uiex-array-input-content .uiex-input {
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.uiex-array-input.uiex-disabled {
+  opacity: 0.6;
+}
+.uiex-array-input.uiex-color-types .uiex-array-input-item.uiex-type-string {
+  background-color: #dff1de;
+  color: #455a44;
+}
+.uiex-array-input.uiex-color-types .uiex-array-input-item.uiex-type-number {
+  background-color: #dde5f7;
+  color: #374556;
+}
+.uiex-array-input.uiex-color-types .uiex-array-input-item.uiex-type-boolean {
+  background-color: #eae9c1;
+  color: #696842;
+}
+.uiex-array-input.uiex-color-types .uiex-array-input-item.uiex-type-function {
+  background-color: #fbd2d2;
+  color: #805959;
+}
+.uiex-array-input.uiex-color-types .uiex-array-input-item.uiex-type-array {
+  background-color: #ecceec;
+  color: #7b5c7b;
+}
+.uiex-array-input.uiex-color-types .uiex-array-input-item.uiex-type-object {
+  background-color: #ffdeae;
+  color: #7d5e31;
+}
+.uiex-array-input.uiex-color-types .uiex-array-input-item.uiex-type-regexp {
+  background-color: #cfe9ea;
+  color: #577273;
+}
+.uiex-array-input.uiex-color-types .uiex-array-input-item.uiex-type-symbol {
+  background-color: #e5f1be;
+  color: #646d49;
+}
+.uiex-array-input .uiex-array-input-input-control {
+  border-bottom: 1px solid #e1e1e1;
+  margin-bottom: 7px;
+  padding-bottom: 7px;
+}
+.uiex-array-input .uiex-array-input-input-control .uiex-auto-complete {
+  width: 100% !important;
+}
+.uiex-array-input .uiex-array-input-input-control .uiex-auto-complete > .uiex-popup-menu {
+  border: 1px solid #aaa !important;
+}
+.uiex-array-input .uiex-array-input-content {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 7px 9px;
+  position: relative;
+}
+.uiex-array-input .uiex-array-input-content .uiex-input {
+  display: block !important;
+}
+.uiex-array-input .uiex-array-input-content .uiex-input > input {
+  border: 0;
+  padding: 5px;
+  box-shadow: none;
+}
+.uiex-array-input .uiex-array-input-item {
+  user-select: none;
+  display: inline-block;
+  padding: 2px 10px 4px 10px;
+  margin: 3px;
+  background-color: #eee;
+  color: #777;
+  font-size: 13px;
+  border-radius: 3px;
+  cursor: pointer;
+  max-width: 48%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+.uiex-array-input .uiex-array-input-item:hover {
+  background-color: #ddd;
+  color: #000;
+}
+.uiex-array-input .uiex-array-input-item.uiex-selected {
+  background-color: #555 !important;
+  color: #fff !important;
+}
+.uiex-array-input.uiex-with-height .uiex-array-input-content {
+  display: flex;
+  flex-direction: column;
+}
+.uiex-array-input.uiex-with-height .uiex-array-input-items {
+  flex-grow: 1;
+  overflow: auto;
+}
+.uiex-array-input.uiex-input-under .uiex-array-input-input-control {
+  border-bottom: 0;
+  border-top: 1px solid #e1e1e1;
+  margin-top: 7px;
+  padding-top: 7px;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.uiex-array-input.uiex-with-controls:after {
+  content: "";
+  position: absolute;
+  right: 45px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #e1e1e1;
+}
+.uiex-array-input.uiex-with-controls .uiex-array-input-content {
+  padding-right: 55px;
+}
+.uiex-array-input .uiex-array-input-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 44px;
+  padding: 6px 0;
+  text-align: center;
+}
+.uiex-array-input .uiex-array-input-controls > div {
+  cursor: pointer;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 5px;
+  border: 1px solid #e1e1e1;
+  border-radius: 3px;
+}
+.uiex-array-input .uiex-array-input-controls > div:hover {
+  border-color: #ccc;
+}
+.uiex-array-input .uiex-array-input-controls .uiex-icon {
+  font-size: 26px;
+}

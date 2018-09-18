@@ -1,0 +1,59 @@
+.uiex-search-form {
+  display: block;
+}
+.uiex-search-form .uiex-search-form-controls:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+.uiex-search-form .uiex-search-form-submit .uiex-icon {
+  font-size: 22px;
+}
+.uiex-search-form.uiex-form-with-focused-width {
+  transition: width 0.2s ease-in-out;
+}
+.uiex-search-form.uiex-form-button-standart .uiex-search-form-controls, .uiex-search-form.uiex-form-button-united .uiex-search-form-controls {
+  display: flex;
+  align-items: stretch;
+}
+.uiex-search-form.uiex-form-button-standart .uiex-search-form-controls .uiex-search-form-input, .uiex-search-form.uiex-form-button-united .uiex-search-form-controls .uiex-search-form-input {
+  flex-grow: 1;
+}
+.uiex-search-form.uiex-form-button-standart .uiex-search-form-controls .uiex-search-form-submit, .uiex-search-form.uiex-form-button-united .uiex-search-form-controls .uiex-search-form-submit {
+  height: auto !important;
+}
+.uiex-search-form.uiex-form-button-standart .uiex-search-form-submit {
+  height: auto !important;
+  margin-left: 5px;
+}
+.uiex-search-form:not(.uiex-form-width-hidden-button).uiex-form-button-united .uiex-search-form-input, .uiex-search-form.uiex-form-focused.uiex-form-button-united .uiex-search-form-input {
+  flex-grow: 1;
+}
+.uiex-search-form:not(.uiex-form-width-hidden-button).uiex-form-button-united .uiex-search-form-input input, .uiex-search-form.uiex-form-focused.uiex-form-button-united .uiex-search-form-input input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-right: 0;
+}
+.uiex-search-form:not(.uiex-form-width-hidden-button).uiex-form-button-united .uiex-search-form-submit, .uiex-search-form.uiex-form-focused.uiex-form-button-united .uiex-search-form-submit {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.uiex-search-form.uiex-form-button-under-left .uiex-search-form-input, .uiex-search-form.uiex-form-button-under-right .uiex-search-form-input, .uiex-search-form.uiex-form-button-under-center .uiex-search-form-input, .uiex-search-form.uiex-form-button-under-stretch .uiex-search-form-input {
+  display: block;
+  margin-bottom: 7px;
+}
+.uiex-search-form.uiex-form-button-under-left .uiex-search-form-controls {
+  text-align: left;
+}
+.uiex-search-form.uiex-form-button-under-right .uiex-search-form-controls {
+  text-align: right;
+}
+.uiex-search-form.uiex-form-button-under-center .uiex-search-form-controls {
+  text-align: center;
+}
+.uiex-search-form.uiex-form-button-under-stretch .uiex-search-form-submit {
+  display: flex;
+  width: 100% !important;
+}

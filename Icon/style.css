@@ -1,0 +1,7 @@
+.uiex-icon {
+  user-select: none;
+}
+.uiex-icon.uiex-disabled {
+  cursor: default !important;
+  opacity: 0.3;
+}

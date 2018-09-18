@@ -1,0 +1,6 @@
+.uiex-select.uiex-auto-complete .uiex-input:not(.uiex-disabled) input {
+  cursor: text !important;
+}
+.uiex-select.uiex-auto-complete .uiex-select-arrow-icon {
+  right: 0;
+}

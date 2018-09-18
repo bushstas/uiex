@@ -1,0 +1,47 @@
+.uiex-checkbox-group {
+  font-size: 14px;
+  border-radius: 2px;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  box-shadow: inset -3px -3px 7px #f1f1f1;
+  padding: 10px 0;
+  font-weight: normal;
+  display: block;
+}
+.uiex-checkbox-group.uiex-control {
+  display: block;
+}
+.uiex-checkbox-group .uiex-checkbox {
+  display: block;
+  margin-bottom: 5px;
+}
+.uiex-checkbox-group .uiex-checkbox:last-child {
+  margin-bottom: 0;
+}
+.uiex-checkbox-group .uiex-checkbox-group-top {
+  margin-bottom: 10px;
+  padding: 0 10px 10px 10px;
+  border-bottom: 1px solid #aaa;
+}
+.uiex-checkbox-group .uiex-checkbox-group-top .uiex-checkbox {
+  margin-bottom: 0;
+}
+.uiex-checkbox-group .uiex-checkbox-group-controls {
+  overflow: auto;
+  padding: 0 10px;
+}
+.uiex-checkbox-group.uiex-with-columns > .uiex-checkbox-group-controls > .uiex-checkbox {
+  vertical-align: top;
+  display: inline-block;
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+.uiex-checkbox-group.uiex-with-columns > .uiex-checkbox-group-controls > .uiex-checkbox:before {
+  display: none;
+}
+.uiex-checkbox-group.uiex-without-border {
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+}

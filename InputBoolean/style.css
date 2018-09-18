@@ -1,0 +1,16 @@
+.uiex-input-boolean {
+  position: relative;
+  display: inline-block;
+}
+.uiex-input-boolean .uiex-input {
+  width: 100%;
+}
+.uiex-input-boolean .uiex-input input {
+  padding-left: 35px;
+  cursor: pointer !important;
+}
+.uiex-input-boolean .uiex-checkbox {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}

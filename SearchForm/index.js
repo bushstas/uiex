@@ -1,126 +1,184 @@
-import React from 'react';
-import {withStateMaster} from 'state-master';
-import {UIEXForm} from '../UIEXComponent';
-import {Input} from '../Input';
-import {Button} from '../Button';
-import {SearchFormPropTypes} from './proptypes';
-import {getNumberInPxOrPercent} from '../utils';
+'use strict';
 
-import '../style.scss';
-import './style.scss';
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.SearchForm = undefined;
 
-const DEFAULT_ICON = 'search';
-const PROPS_LIST = 'value';
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-class SearchFormComponent extends UIEXForm {
-	static propTypes = SearchFormPropTypes;
-	static className = 'search-form';
-	static displayName = 'SearchForm';
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-	static getDerivedStateFromProps({addIfChanged}) {
-		addIfChanged('value');
-	}
+var _react = require('react');
 
-	addClassNames(add) {
-		super.addClassNames(add);
-		const {focusedWidth, hiddenButton} = this.props;
-		const {focused} = this.state;
-		add('form-with-focused-width', focusedWidth);
-		add('form-focused', focused);
-		add('form-width-hidden-button', hiddenButton);
-	}
+var _react2 = _interopRequireDefault(_react);
 
-	renderContent() {
-		let {			
-			buttonColor,
-			buttonWidth,
-			buttonHeight,
-			placeholder,
-			icon,
-			iconType,
-			buttonTitle,
-			disabled,
-			hiddenButton,
-			onDisabledClick
-		} = this.props;
+var _stateMaster = require('../state-master');
 
-		if (!buttonTitle && !icon) {
-			iconType = null
-			icon = DEFAULT_ICON;
+var _UIEXComponent = require('../UIEXComponent');
+
+var _Input = require('../Input');
+
+var _Button = require('../Button');
+
+var _proptypes = require('./proptypes');
+
+var _utils = require('../utils');
+
+require('../style.css');
+
+require('./style.css');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DEFAULT_ICON = 'search';
+var PROPS_LIST = 'value';
+
+var SearchFormComponent = function (_UIEXForm) {
+	_inherits(SearchFormComponent, _UIEXForm);
+
+	function SearchFormComponent() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, SearchFormComponent);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
 		}
 
-		return (
-			<div className={this.getClassName('controls')}>
-				<Input
-					value={this.state.value}
-					className={this.getClassName('input')}
-					placeholder={placeholder}
-					disabled={disabled}
-					onChange={this.handleChange}
-					onEnter={this.handleSubmit}
-					onFocus={this.handleFocus}
-					onBlur={this.handleBlur}
-					onDisabledClick={onDisabledClick}
-				/>
-				{(!hiddenButton || this.state.focused) &&
-					<Button 
-						icon={icon}
-						iconType={iconType}
-						className={this.getClassName('submit')}
-						width={buttonWidth}
-						height={buttonHeight}
-						color={buttonColor}
-						disabled={disabled}
-						onClick={this.handleSubmit}
-						onDisabledClick={onDisabledClick}
-					>
-						{buttonTitle}
-					</Button>
-				}
-			</div>
-		)
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SearchFormComponent.__proto__ || Object.getPrototypeOf(SearchFormComponent)).call.apply(_ref, [this].concat(args))), _this), _this.handleChange = function (value) {
+			var onChange = _this.props.onChange;
+
+
+			if (typeof onChange == 'function') {
+				onChange(value);
+			}
+			_this.setState({ value: value });
+		}, _this.handleSubmit = function (value) {
+			var onSubmit = _this.props.onSubmit;
+
+			if (typeof onSubmit == 'function') {
+				onSubmit(_this.state.value);
+			}
+		}, _this.handleFocus = function () {
+			_this.setState({ focused: true });
+			var _this$props = _this.props,
+			    focusedWidth = _this$props.focusedWidth,
+			    onFocus = _this$props.onFocus;
+
+			if (focusedWidth) {
+				clearTimeout(_this.timeout);
+				_this.refs.main.style.width = (0, _utils.getNumberInPxOrPercent)(focusedWidth);
+			}
+			if (typeof onFocus == 'function') {
+				onFocus();
+			}
+		}, _this.handleBlur = function () {
+			setTimeout(function () {
+				return _this.setState({ focused: false });
+			}, 100);
+			var _this$props2 = _this.props,
+			    focusedWidth = _this$props2.focusedWidth,
+			    width = _this$props2.width,
+			    onBlur = _this$props2.onBlur;
+
+			if (focusedWidth) {
+				_this.timeout = setTimeout(function () {
+					_this.refs.main.style.width = (0, _utils.getNumberInPxOrPercent)(width);
+				}, 200);
+			}
+			if (typeof onBlur == 'function') {
+				onBlur();
+			}
+		}, _temp), _possibleConstructorReturn(_this, _ret);
 	}
 
-	handleChange = (value) => {
-		const {onChange} = this.props;
+	_createClass(SearchFormComponent, [{
+		key: 'addClassNames',
+		value: function addClassNames(add) {
+			_get(SearchFormComponent.prototype.__proto__ || Object.getPrototypeOf(SearchFormComponent.prototype), 'addClassNames', this).call(this, add);
+			var _props = this.props,
+			    focusedWidth = _props.focusedWidth,
+			    hiddenButton = _props.hiddenButton;
+			var focused = this.state.focused;
 
-		if (typeof onChange == 'function') {
-			onChange(value);
+			add('form-with-focused-width', focusedWidth);
+			add('form-focused', focused);
+			add('form-width-hidden-button', hiddenButton);
 		}
-		this.setState({value});
-	}
+	}, {
+		key: 'renderContent',
+		value: function renderContent() {
+			var _props2 = this.props,
+			    buttonColor = _props2.buttonColor,
+			    buttonWidth = _props2.buttonWidth,
+			    buttonHeight = _props2.buttonHeight,
+			    placeholder = _props2.placeholder,
+			    icon = _props2.icon,
+			    iconType = _props2.iconType,
+			    buttonTitle = _props2.buttonTitle,
+			    disabled = _props2.disabled,
+			    hiddenButton = _props2.hiddenButton,
+			    onDisabledClick = _props2.onDisabledClick;
 
-	handleSubmit = (value) => {
-		const {onSubmit} = this.props;
-		if (typeof onSubmit == 'function') {
-			onSubmit(this.state.value);
-		}
-	}
 
-	handleFocus = () => {
-		this.setState({focused: true});
-		const {focusedWidth, onFocus} = this.props;
-		if (focusedWidth) {
-			clearTimeout(this.timeout);
-			this.refs.main.style.width = getNumberInPxOrPercent(focusedWidth);
-		}
-		if (typeof onFocus == 'function') {
-			onFocus();
-		}
-	}
+			if (!buttonTitle && !icon) {
+				iconType = null;
+				icon = DEFAULT_ICON;
+			}
 
-	handleBlur = () => {
-		setTimeout(() => this.setState({focused: false}), 100);
-		const {focusedWidth, width, onBlur} = this.props;
-		if (focusedWidth) {
-			this.timeout = setTimeout(() => {			
-				this.refs.main.style.width = getNumberInPxOrPercent(width);	
-			}, 200);
-		}		
-		if (typeof onBlur == 'function') {
-			onBlur();
+			return _react2.default.createElement(
+				'div',
+				{ className: this.getClassName('controls') },
+				_react2.default.createElement(_Input.Input, {
+					value: this.state.value,
+					className: this.getClassName('input'),
+					placeholder: placeholder,
+					disabled: disabled,
+					onChange: this.handleChange,
+					onEnter: this.handleSubmit,
+					onFocus: this.handleFocus,
+					onBlur: this.handleBlur,
+					onDisabledClick: onDisabledClick
+				}),
+				(!hiddenButton || this.state.focused) && _react2.default.createElement(
+					_Button.Button,
+					{
+						icon: icon,
+						iconType: iconType,
+						className: this.getClassName('submit'),
+						width: buttonWidth,
+						height: buttonHeight,
+						color: buttonColor,
+						disabled: disabled,
+						onClick: this.handleSubmit,
+						onDisabledClick: onDisabledClick
+					},
+					buttonTitle
+				)
+			);
 		}
-	}
-}
+	}], [{
+		key: 'getDerivedStateFromProps',
+		value: function getDerivedStateFromProps(_ref2) {
+			var addIfChanged = _ref2.addIfChanged;
 
-export const SearchForm = withStateMaster(SearchFormComponent, PROPS_LIST, null, UIEXForm);
+			addIfChanged('value');
+		}
+	}]);
+
+	return SearchFormComponent;
+}(_UIEXComponent.UIEXForm);
+
+SearchFormComponent.propTypes = _proptypes.SearchFormPropTypes;
+SearchFormComponent.className = 'search-form';
+SearchFormComponent.displayName = 'SearchForm';
+var SearchForm = exports.SearchForm = (0, _stateMaster.withStateMaster)(SearchFormComponent, PROPS_LIST, null, _UIEXComponent.UIEXForm);

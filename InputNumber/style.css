@@ -1,0 +1,32 @@
+.uiex-input.uiex-with-measure input,
+.uiex-input.uiex-with-measure textarea {
+  padding-right: 40px;
+}
+.uiex-input.uiex-with-measure.uiex-clearable input,
+.uiex-input.uiex-with-measure.uiex-clearable textarea {
+  padding-right: 70px;
+}
+.uiex-input.uiex-with-measure.uiex-clearable .uiex-input-measure {
+  right: 40px;
+}
+.uiex-input.uiex-with-measure.uiex-disabled .uiex-input-measure {
+  cursor: not-allowed;
+  color: #bbb;
+}
+.uiex-input.uiex-with-measure .uiex-input-measure {
+  position: absolute;
+  right: 12px;
+  color: #777;
+  font-size: 14px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+.uiex-input.uiex-with-measure .uiex-input-measure.uiex-multi-measure {
+  cursor: pointer;
+}
+.uiex-input.uiex-with-measure .uiex-input-measure.uiex-multi-measure:hover {
+  color: #000;
+}

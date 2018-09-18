@@ -1,191 +1,274 @@
-import React from 'react';
-import {withStateMaster} from 'state-master';
-import {UIEXComponent} from '../UIEXComponent';
-import {Icon} from '../Icon';
-import {CheckboxPropTypes} from './proptypes';
+'use strict';
 
-import '../style.scss';
-import './style.scss';
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.Checkbox = undefined;
 
-const PROPS_LIST = 'checked';
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-class CheckboxComponent extends UIEXComponent {
-	static propTypes = CheckboxPropTypes;
-	static styleNames = ['control', 'marker', 'label'];
-	static properChildren = 'CheckboxGroup';
-	static properChildrenMaxCount = 1;
-	static isControl = true;
-	static displayName = 'Checkbox';
+var _react = require('react');
 
-	static getDerivedStateFromProps({addIfChanged}) {
-		addIfChanged('checked');
-	}
+var _react2 = _interopRequireDefault(_react);
 
-	addClassNames(add) {
-		let {icon, multiline, readOnly} = this.props;
-		const {checked} = this.state;
-		add('control');
-		add('with-icon', icon);
-		add('multilined', multiline);
-		add('read-only', readOnly);
-		if (checked) {
-			add('checked');
-		} else if (checked === null) {
-			add('undetermined');
-		}
-		add('with-child-groups', this.properChildrenCount > 0);
-	}
+var _stateMaster = require('../state-master');
 
-	addChildProps(child, props) {
-		let {value, icon, iconType, multiline, onDisabledClick} = this.props;
-		props.checkAll = false;
-		props.maxHeight = null;
-		props.icon = icon;
-		props.iconType = iconType;
-		if (typeof child.props.multiline != 'boolean') {
-			props.multiline = multiline;
-		}
-		props.onChange = this.handleChangeChildGroup;
-		props.onDisabledClick = onDisabledClick;
-		props.mapped = true;
-		props.onMount = this.handleChildGroupMount;
-		props.onUnmount = this.handleChildGroupUnmount;
-		props.onUpdate = this.handleChildGroupUpdate;
-		props.name = value;
-		if (value instanceof Object) {
-			props.name = this.props.name;
-			props.value = value;
-		}
-	}
+var _UIEXComponent2 = require('../UIEXComponent');
 
-	renderInternal() {
-		let {children, iconType, label} = this.props;
-		let {icon} = this.props;
-		if (icon && typeof icon != 'string') {
-			icon = 'check';
+var _Icon = require('../Icon');
+
+var _proptypes = require('./proptypes');
+
+require('../style.css');
+
+require('./style.css');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PROPS_LIST = 'checked';
+
+var CheckboxComponent = function (_UIEXComponent) {
+	_inherits(CheckboxComponent, _UIEXComponent);
+
+	function CheckboxComponent() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, CheckboxComponent);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
 		}
 
-		const content = this.renderChildren();
-		let additionalContent;
-		if (!label) {
-			label = content;
-		} else {
-			additionalContent = content;
-		}
-		const TagName = this.getTagName();
-		return (
-			<TagName {...this.getProps()}>
-				<span 
-					className="uiex-checkbox-control"
-					onClick={this.handleClick}
-					style={this.getStyle('control')}
-				>
-					<span 
-						className="uiex-checkbox-marker"
-						style={this.getStyle('marker')}
-					>
-						{icon &&
-							<Icon name={icon} type={iconType}/>
-						}
-					</span>
-				</span>
-				{label &&
-					<div 
-						className="uiex-checkbox-label uiex-checkbox-content"
-						style={this.getStyle('label')}
-					>
-						<span onClick={this.handleClick}>
-							{label}
-						</span>
-					</div>
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CheckboxComponent.__proto__ || Object.getPrototypeOf(CheckboxComponent)).call.apply(_ref, [this].concat(args))), _this), _this.handleClick = function (e) {
+			e.stopPropagation();
+			var _this$props = _this.props,
+			    value = _this$props.value,
+			    name = _this$props.name,
+			    onChange = _this$props.onChange,
+			    readOnly = _this$props.readOnly;
+
+			if (readOnly) {
+				return;
+			}
+			var checked = _this.state.checked;
+
+
+			if (typeof onChange == 'function') {
+				if (_this.properChildrenCount > 0) {
+					var objectValue = {};
+					_this.fillValues(_this.itemValues, objectValue);
+					onChange(!checked, name, objectValue);
+				} else {
+					onChange(!checked, name, value);
 				}
-				{additionalContent && 
-					<div className="uiex-checkbox-content">
-						{additionalContent}
-					</div>
+			}
+		}, _this.handleChangeChildGroup = function (groupValue, groupName) {
+			var _this$props2 = _this.props,
+			    value = _this$props2.value,
+			    name = _this$props2.name,
+			    onChange = _this$props2.onChange;
+
+			if (typeof onChange == 'function') {
+				var isCheckedAll = false;
+				var count = groupValue instanceof Array ? groupValue.length : Object.keys(groupValue).length;
+				if (count > 0) {
+					isCheckedAll = null;
+					if (count == _this.itemValues.length) {
+						isCheckedAll = true;
+					}
 				}
-			</TagName>
-		)
+				onChange(isCheckedAll, name, groupValue);
+			}
+		}, _this.handleChildGroupMount = function (checkboxGroup) {
+			var itemValues = checkboxGroup.itemValues;
+
+			_this.itemValues = itemValues;
+			_this.changeCheckedStatus(checkboxGroup.isCheckedAll());
+		}, _this.handleChildGroupUpdate = function (checkboxGroup) {
+			_this.changeCheckedStatus(checkboxGroup.isCheckedAll());
+		}, _this.handleChildGroupUnmount = function () {
+			_this.itemValues = [];
+			var isCheckedAll = _this.state.checked;
+			_this.changeCheckedStatus(isCheckedAll || isCheckedAll === null);
+		}, _temp), _possibleConstructorReturn(_this, _ret);
 	}
 
-	handleClick = (e) => {
-		e.stopPropagation();
-		const {
-			value,
-			name,
-			onChange,
-			readOnly
-		} = this.props;
-		if (readOnly) {
-			return;
-		}
-		const {checked} = this.state;
+	_createClass(CheckboxComponent, [{
+		key: 'addClassNames',
+		value: function addClassNames(add) {
+			var _props = this.props,
+			    icon = _props.icon,
+			    multiline = _props.multiline,
+			    readOnly = _props.readOnly;
+			var checked = this.state.checked;
 
-		if (typeof onChange == 'function') {
-			if (this.properChildrenCount > 0) {
-				const objectValue = {};
-				this.fillValues(this.itemValues, objectValue);
-				onChange(!checked, name, objectValue);
+			add('control');
+			add('with-icon', icon);
+			add('multilined', multiline);
+			add('read-only', readOnly);
+			if (checked) {
+				add('checked');
+			} else if (checked === null) {
+				add('undetermined');
+			}
+			add('with-child-groups', this.properChildrenCount > 0);
+		}
+	}, {
+		key: 'addChildProps',
+		value: function addChildProps(child, props) {
+			var _props2 = this.props,
+			    value = _props2.value,
+			    icon = _props2.icon,
+			    iconType = _props2.iconType,
+			    multiline = _props2.multiline,
+			    onDisabledClick = _props2.onDisabledClick;
+
+			props.checkAll = false;
+			props.maxHeight = null;
+			props.icon = icon;
+			props.iconType = iconType;
+			if (typeof child.props.multiline != 'boolean') {
+				props.multiline = multiline;
+			}
+			props.onChange = this.handleChangeChildGroup;
+			props.onDisabledClick = onDisabledClick;
+			props.mapped = true;
+			props.onMount = this.handleChildGroupMount;
+			props.onUnmount = this.handleChildGroupUnmount;
+			props.onUpdate = this.handleChildGroupUpdate;
+			props.name = value;
+			if (value instanceof Object) {
+				props.name = this.props.name;
+				props.value = value;
+			}
+		}
+	}, {
+		key: 'renderInternal',
+		value: function renderInternal() {
+			var _props3 = this.props,
+			    children = _props3.children,
+			    iconType = _props3.iconType,
+			    label = _props3.label;
+			var icon = this.props.icon;
+
+			if (icon && typeof icon != 'string') {
+				icon = 'check';
+			}
+
+			var content = this.renderChildren();
+			var additionalContent = void 0;
+			if (!label) {
+				label = content;
 			} else {
-				onChange(!checked, name, value);
+				additionalContent = content;
 			}
+			var TagName = this.getTagName();
+			return _react2.default.createElement(
+				TagName,
+				this.getProps(),
+				_react2.default.createElement(
+					'span',
+					{
+						className: 'uiex-checkbox-control',
+						onClick: this.handleClick,
+						style: this.getStyle('control')
+					},
+					_react2.default.createElement(
+						'span',
+						{
+							className: 'uiex-checkbox-marker',
+							style: this.getStyle('marker')
+						},
+						icon && _react2.default.createElement(_Icon.Icon, { name: icon, type: iconType })
+					)
+				),
+				label && _react2.default.createElement(
+					'div',
+					{
+						className: 'uiex-checkbox-label uiex-checkbox-content',
+						style: this.getStyle('label')
+					},
+					_react2.default.createElement(
+						'span',
+						{ onClick: this.handleClick },
+						label
+					)
+				),
+				additionalContent && _react2.default.createElement(
+					'div',
+					{ className: 'uiex-checkbox-content' },
+					additionalContent
+				)
+			);
 		}
-	}
+	}, {
+		key: 'fillValues',
+		value: function fillValues(items, value) {
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
 
-	fillValues(items, value) {
-		for (let item of items) {
-			if (item instanceof Object) {
-				const filledValue = {};
-				this.fillValues(item.items, filledValue);
-				value[item.value] = filledValue;
-			} else {
-				value[item] = true;
-			}
-		}
-	}
+			try {
+				for (var _iterator = items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var item = _step.value;
 
-	handleChangeChildGroup = (groupValue, groupName) => {
-		const {
-			value,
-			name,
-			onChange
-		} = this.props;
-		if (typeof onChange == 'function') {
-			let isCheckedAll = false;
-			const count = groupValue instanceof Array ? groupValue.length : Object.keys(groupValue).length;
-			if (count > 0) {
-				isCheckedAll = null;
-				if (count == this.itemValues.length) {
-					isCheckedAll = true;
+					if (item instanceof Object) {
+						var filledValue = {};
+						this.fillValues(item.items, filledValue);
+						value[item.value] = filledValue;
+					} else {
+						value[item] = true;
+					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
 				}
 			}
-			onChange(isCheckedAll, name, groupValue);
 		}
-	}
+	}, {
+		key: 'changeCheckedStatus',
+		value: function changeCheckedStatus(checked) {
+			this.setState({ checked: checked });
+			var onUpdateStatus = this.props.onUpdateStatus;
 
-	handleChildGroupMount = (checkboxGroup) => {
-		const {itemValues} = checkboxGroup;
-		this.itemValues = itemValues;
-		this.changeCheckedStatus(checkboxGroup.isCheckedAll());
-	}
+			if (typeof onUpdateStatus == 'function') {
+				onUpdateStatus(checked, this);
+			}
+		}
+	}], [{
+		key: 'getDerivedStateFromProps',
+		value: function getDerivedStateFromProps(_ref2) {
+			var addIfChanged = _ref2.addIfChanged;
 
-	handleChildGroupUpdate = (checkboxGroup) => {
-		this.changeCheckedStatus(checkboxGroup.isCheckedAll());
-	}
+			addIfChanged('checked');
+		}
+	}]);
 
-	handleChildGroupUnmount = () => {
-		this.itemValues = [];
-		let isCheckedAll = this.state.checked;
-		this.changeCheckedStatus(isCheckedAll || isCheckedAll === null);
-	}
+	return CheckboxComponent;
+}(_UIEXComponent2.UIEXComponent);
 
-	changeCheckedStatus(checked) {
-		this.setState({checked});
-		const {onUpdateStatus} = this.props;
-		if (typeof onUpdateStatus == 'function') {
-			onUpdateStatus(checked, this);
-		}		
-	}
-}
-
-export const Checkbox = withStateMaster(CheckboxComponent, PROPS_LIST, null, UIEXComponent);
+CheckboxComponent.propTypes = _proptypes.CheckboxPropTypes;
+CheckboxComponent.styleNames = ['control', 'marker', 'label'];
+CheckboxComponent.properChildren = 'CheckboxGroup';
+CheckboxComponent.properChildrenMaxCount = 1;
+CheckboxComponent.isControl = true;
+CheckboxComponent.displayName = 'Checkbox';
+var Checkbox = exports.Checkbox = (0, _stateMaster.withStateMaster)(CheckboxComponent, PROPS_LIST, null, _UIEXComponent2.UIEXComponent);

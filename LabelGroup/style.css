@@ -1,0 +1,24 @@
+.uiex-label-group {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.uiex-label-group .uiex-label-group-inner {
+  display: block;
+  width: 100%;
+}
+.uiex-label-group .uiex-label:first-child {
+  margin-left: 0;
+}
+.uiex-label-group .uiex-label.uiex-float-right {
+  margin-right: 0 !important;
+  margin-left: 6px;
+}
+.uiex-label-group .uiex-label.uiex-block {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  margin-bottom: 4px;
+}
+.uiex-label-group .uiex-label.uiex-block:last-child {
+  margin-bottom: 0;
+}

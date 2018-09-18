@@ -1,0 +1,97 @@
+.uiex-popup-menu {
+  overflow: auto;
+  max-height: 350px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  margin-top: 1px;
+  background-color: #fff;
+  border: 1px solid #888;
+  border-radius: 2px;
+  z-index: 100;
+  visibility: hidden;
+  height: 0;
+  display: block;
+}
+.uiex-popup-menu.uiex-options-on-top {
+  top: auto;
+  margin-top: 0;
+  bottom: 100%;
+  margin-bottom: 1px;
+}
+.uiex-popup-menu.uiex-shown {
+  visibility: visible;
+  height: auto;
+}
+.uiex-popup-menu.uiex-multiple .uiex-popup-menu-item.uiex-checked {
+  background-color: #e8f3d8;
+  color: #1e3300;
+}
+.uiex-popup-menu.uiex-multiple .uiex-popup-menu-item.uiex-checked:hover {
+  background-color: #daecbf;
+}
+.uiex-popup-menu.uiex-multiple .uiex-popup-menu-item.uiex-checked.uiex-selected {
+  background-color: #bfde9b;
+}
+.uiex-popup-menu.uiex-multiple .uiex-popup-menu-item.uiex-checked .uiex-icon {
+  color: green;
+}
+.uiex-popup-menu .uiex-box {
+  margin-bottom: 0;
+}
+.uiex-popup-menu.uiex-disabled {
+  border-color: #bbb !important;
+}
+.uiex-popup-menu.uiex-disabled .uiex-popup-menu-item {
+  background-color: #f1f1f1 !important;
+  color: #c1c1c1 !important;
+}
+
+.uiex-popup-menu-item {
+  padding: 0 12px;
+  color: #555;
+  height: 38px;
+  font-size: 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+}
+.uiex-popup-menu-item.uiex-empty-item {
+  color: #aaa;
+}
+.uiex-popup-menu-item.uiex-selected {
+  background-color: #d1d1d1;
+  color: #000;
+}
+.uiex-popup-menu-item:hover:not(.uiex-selected) {
+  background-color: #f1f1f1;
+  color: #000;
+}
+.uiex-popup-menu-item.uiex-with-icon {
+  padding-left: 8px;
+}
+.uiex-popup-menu-item.uiex-with-icon .uiex-icon {
+  margin-right: 5px;
+  font-size: 20px;
+}
+.uiex-popup-menu-item.uiex-with-top-delimiter {
+  border-top: 1px solid #c1c1c1;
+}
+.uiex-popup-menu-item.uiex-with-top-delimiter.uiex-selected {
+  border-color: #a1a1a1;
+}
+.uiex-popup-menu-item.uiex-with-top-delimiter:first-child {
+  border-top: 0 !important;
+}
+.uiex-popup-menu-item.uiex-with-bottom-delimiter {
+  border-bottom: 1px solid #c1c1c1;
+}
+.uiex-popup-menu-item.uiex-with-bottom-delimiter.uiex-selected {
+  border-color: #a1a1a1;
+}
+.uiex-popup-menu-item.uiex-with-bottom-delimiter:last-child {
+  border-top: 0 !important;
+}

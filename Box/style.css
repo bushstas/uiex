@@ -1,0 +1,35 @@
+.uiex-box {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 15px;
+  display: block;
+}
+.uiex-box.uiex-not-animated {
+  height: auto !important;
+}
+.uiex-box.uiex-animated.uiex-animation-roll {
+  transition-property: height, marginTop, marginBottom, paddingTop, paddingBottom;
+}
+.uiex-box.uiex-animated.uiex-animation-fall {
+  transition-property: height, marginTop, marginBottom, paddingTop, paddingBottom;
+  display: flex;
+  align-items: flex-end;
+}
+.uiex-box.uiex-animated.uiex-animation-fade {
+  transition-property: opacity;
+}
+.uiex-box.uiex-animated.uiex-animation-fade-fall {
+  display: flex;
+  align-items: flex-end;
+  transition-property: height, opacity, marginTop, marginBottom, paddingTop, paddingBottom;
+}
+.uiex-box.uiex-animated.uiex-animation-fade-roll {
+  transition-property: height, opacity, marginTop, marginBottom, paddingTop, paddingBottom;
+}
+.uiex-box .uiex-box-inner {
+  width: 100%;
+}
+
+.uiex-box-button {
+  margin-bottom: 15px;
+}

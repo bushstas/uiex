@@ -1,0 +1,2953 @@
+@charset "UTF-8";
+@font-face {
+  font-family: "Ionicons";
+  src: url("./fonts/ionicons.eot?v=2.0.1");
+  src: url("./fonts/ionicons.eot?v=2.0.1#iefix") format("embedded-opentype"), url("./fonts/ionicons.ttf?v=2.0.1") format("truetype"), url("./fonts/ionicons.woff?v=2.0.1") format("woff"), url("./fonts/ionicons.svg?v=2.0.1#Ionicons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+.uiex-ion, .uiex-ion-alert:before, .uiex-ion-alert-circled:before, .uiex-ion-android-add:before, .uiex-ion-android-add-circle:before, .uiex-ion-android-alarm-clock:before, .uiex-ion-android-alert:before, .uiex-ion-android-apps:before, .uiex-ion-android-archive:before, .uiex-ion-android-arrow-back:before, .uiex-ion-android-arrow-down:before, .uiex-ion-android-arrow-dropdown:before, .uiex-ion-android-arrow-dropdown-circle:before, .uiex-ion-android-arrow-dropleft:before, .uiex-ion-android-arrow-dropleft-circle:before, .uiex-ion-android-arrow-dropright:before, .uiex-ion-android-arrow-dropright-circle:before, .uiex-ion-android-arrow-dropup:before, .uiex-ion-android-arrow-dropup-circle:before, .uiex-ion-android-arrow-forward:before, .uiex-ion-android-arrow-up:before, .uiex-ion-android-attach:before, .uiex-ion-android-bar:before, .uiex-ion-android-bicycle:before, .uiex-ion-android-boat:before, .uiex-ion-android-bookmark:before, .uiex-ion-android-bulb:before, .uiex-ion-android-bus:before, .uiex-ion-android-calendar:before, .uiex-ion-android-call:before, .uiex-ion-android-camera:before, .uiex-ion-android-cancel:before, .uiex-ion-android-car:before, .uiex-ion-android-cart:before, .uiex-ion-android-chat:before, .uiex-ion-android-checkbox:before, .uiex-ion-android-checkbox-blank:before, .uiex-ion-android-checkbox-outline:before, .uiex-ion-android-checkbox-outline-blank:before, .uiex-ion-android-checkmark-circle:before, .uiex-ion-android-clipboard:before, .uiex-ion-android-close:before, .uiex-ion-android-cloud:before, .uiex-ion-android-cloud-circle:before, .uiex-ion-android-cloud-done:before, .uiex-ion-android-cloud-outline:before, .uiex-ion-android-color-palette:before, .uiex-ion-android-compass:before, .uiex-ion-android-contact:before, .uiex-ion-android-contacts:before, .uiex-ion-android-contract:before, .uiex-ion-android-create:before, .uiex-ion-android-delete:before, .uiex-ion-android-desktop:before, .uiex-ion-android-document:before, .uiex-ion-android-done:before, .uiex-ion-android-done-all:before, .uiex-ion-android-download:before, .uiex-ion-android-drafts:before, .uiex-ion-android-exit:before, .uiex-ion-android-expand:before, .uiex-ion-android-favorite:before, .uiex-ion-android-favorite-outline:before, .uiex-ion-android-film:before, .uiex-ion-android-folder:before, .uiex-ion-android-folder-open:before, .uiex-ion-android-funnel:before, .uiex-ion-android-globe:before, .uiex-ion-android-hand:before, .uiex-ion-android-hangout:before, .uiex-ion-android-happy:before, .uiex-ion-android-home:before, .uiex-ion-android-image:before, .uiex-ion-android-laptop:before, .uiex-ion-android-list:before, .uiex-ion-android-locate:before, .uiex-ion-android-lock:before, .uiex-ion-android-mail:before, .uiex-ion-android-map:before, .uiex-ion-android-menu:before, .uiex-ion-android-microphone:before, .uiex-ion-android-microphone-off:before, .uiex-ion-android-more-horizontal:before, .uiex-ion-android-more-vertical:before, .uiex-ion-android-navigate:before, .uiex-ion-android-notifications:before, .uiex-ion-android-notifications-none:before, .uiex-ion-android-notifications-off:before, .uiex-ion-android-open:before, .uiex-ion-android-options:before, .uiex-ion-android-people:before, .uiex-ion-android-person:before, .uiex-ion-android-person-add:before, .uiex-ion-android-phone-landscape:before, .uiex-ion-android-phone-portrait:before, .uiex-ion-android-pin:before, .uiex-ion-android-plane:before, .uiex-ion-android-playstore:before, .uiex-ion-android-print:before, .uiex-ion-android-radio-button-off:before, .uiex-ion-android-radio-button-on:before, .uiex-ion-android-refresh:before, .uiex-ion-android-remove:before, .uiex-ion-android-remove-circle:before, .uiex-ion-android-restaurant:before, .uiex-ion-android-sad:before, .uiex-ion-android-search:before, .uiex-ion-android-send:before, .uiex-ion-android-settings:before, .uiex-ion-android-share:before, .uiex-ion-android-share-alt:before, .uiex-ion-android-star:before, .uiex-ion-android-star-half:before, .uiex-ion-android-star-outline:before, .uiex-ion-android-stopwatch:before, .uiex-ion-android-subway:before, .uiex-ion-android-sunny:before, .uiex-ion-android-sync:before, .uiex-ion-android-textsms:before, .uiex-ion-android-time:before, .uiex-ion-android-train:before, .uiex-ion-android-unlock:before, .uiex-ion-android-upload:before, .uiex-ion-android-volume-down:before, .uiex-ion-android-volume-mute:before, .uiex-ion-android-volume-off:before, .uiex-ion-android-volume-up:before, .uiex-ion-android-walk:before, .uiex-ion-android-warning:before, .uiex-ion-android-watch:before, .uiex-ion-android-wifi:before, .uiex-ion-aperture:before, .uiex-ion-archive:before, .uiex-ion-arrow-down-a:before, .uiex-ion-arrow-down-b:before, .uiex-ion-arrow-down-c:before, .uiex-ion-arrow-expand:before, .uiex-ion-arrow-graph-down-left:before, .uiex-ion-arrow-graph-down-right:before, .uiex-ion-arrow-graph-up-left:before, .uiex-ion-arrow-graph-up-right:before, .uiex-ion-arrow-left-a:before, .uiex-ion-arrow-left-b:before, .uiex-ion-arrow-left-c:before, .uiex-ion-arrow-move:before, .uiex-ion-arrow-resize:before, .uiex-ion-arrow-return-left:before, .uiex-ion-arrow-return-right:before, .uiex-ion-arrow-right-a:before, .uiex-ion-arrow-right-b:before, .uiex-ion-arrow-right-c:before, .uiex-ion-arrow-shrink:before, .uiex-ion-arrow-swap:before, .uiex-ion-arrow-up-a:before, .uiex-ion-arrow-up-b:before, .uiex-ion-arrow-up-c:before, .uiex-ion-asterisk:before, .uiex-ion-at:before, .uiex-ion-backspace:before, .uiex-ion-backspace-outline:before, .uiex-ion-bag:before, .uiex-ion-battery-charging:before, .uiex-ion-battery-empty:before, .uiex-ion-battery-full:before, .uiex-ion-battery-half:before, .uiex-ion-battery-low:before, .uiex-ion-beaker:before, .uiex-ion-beer:before, .uiex-ion-bluetooth:before, .uiex-ion-bonfire:before, .uiex-ion-bookmark:before, .uiex-ion-bowtie:before, .uiex-ion-briefcase:before, .uiex-ion-bug:before, .uiex-ion-calculator:before, .uiex-ion-calendar:before, .uiex-ion-camera:before, .uiex-ion-card:before, .uiex-ion-cash:before, .uiex-ion-chatbox:before, .uiex-ion-chatbox-working:before, .uiex-ion-chatboxes:before, .uiex-ion-chatbubble:before, .uiex-ion-chatbubble-working:before, .uiex-ion-chatbubbles:before, .uiex-ion-checkmark:before, .uiex-ion-checkmark-circled:before, .uiex-ion-checkmark-round:before, .uiex-ion-chevron-down:before, .uiex-ion-chevron-left:before, .uiex-ion-chevron-right:before, .uiex-ion-chevron-up:before, .uiex-ion-clipboard:before, .uiex-ion-clock:before, .uiex-ion-close:before, .uiex-ion-close-circled:before, .uiex-ion-close-round:before, .uiex-ion-closed-captioning:before, .uiex-ion-cloud:before, .uiex-ion-code:before, .uiex-ion-code-download:before, .uiex-ion-code-working:before, .uiex-ion-coffee:before, .uiex-ion-compass:before, .uiex-ion-compose:before, .uiex-ion-connection-bars:before, .uiex-ion-contrast:before, .uiex-ion-crop:before, .uiex-ion-cube:before, .uiex-ion-disc:before, .uiex-ion-document:before, .uiex-ion-document-text:before, .uiex-ion-drag:before, .uiex-ion-earth:before, .uiex-ion-easel:before, .uiex-ion-edit:before, .uiex-ion-egg:before, .uiex-ion-eject:before, .uiex-ion-email:before, .uiex-ion-email-unread:before, .uiex-ion-erlenmeyer-flask:before, .uiex-ion-erlenmeyer-flask-bubbles:before, .uiex-ion-eye:before, .uiex-ion-eye-disabled:before, .uiex-ion-female:before, .uiex-ion-filing:before, .uiex-ion-film-marker:before, .uiex-ion-fireball:before, .uiex-ion-flag:before, .uiex-ion-flame:before, .uiex-ion-flash:before, .uiex-ion-flash-off:before, .uiex-ion-folder:before, .uiex-ion-fork:before, .uiex-ion-fork-repo:before, .uiex-ion-forward:before, .uiex-ion-funnel:before, .uiex-ion-gear-a:before, .uiex-ion-gear-b:before, .uiex-ion-grid:before, .uiex-ion-hammer:before, .uiex-ion-happy:before, .uiex-ion-happy-outline:before, .uiex-ion-headphone:before, .uiex-ion-heart:before, .uiex-ion-heart-broken:before, .uiex-ion-help:before, .uiex-ion-help-buoy:before, .uiex-ion-help-circled:before, .uiex-ion-home:before, .uiex-ion-icecream:before, .uiex-ion-image:before, .uiex-ion-images:before, .uiex-ion-information:before, .uiex-ion-information-circled:before, .uiex-ion-ionic:before, .uiex-ion-ios-alarm:before, .uiex-ion-ios-alarm-outline:before, .uiex-ion-ios-albums:before, .uiex-ion-ios-albums-outline:before, .uiex-ion-ios-americanfootball:before, .uiex-ion-ios-americanfootball-outline:before, .uiex-ion-ios-analytics:before, .uiex-ion-ios-analytics-outline:before, .uiex-ion-ios-arrow-back:before, .uiex-ion-ios-arrow-down:before, .uiex-ion-ios-arrow-forward:before, .uiex-ion-ios-arrow-left:before, .uiex-ion-ios-arrow-right:before, .uiex-ion-ios-arrow-thin-down:before, .uiex-ion-ios-arrow-thin-left:before, .uiex-ion-ios-arrow-thin-right:before, .uiex-ion-ios-arrow-thin-up:before, .uiex-ion-ios-arrow-up:before, .uiex-ion-ios-at:before, .uiex-ion-ios-at-outline:before, .uiex-ion-ios-barcode:before, .uiex-ion-ios-barcode-outline:before, .uiex-ion-ios-baseball:before, .uiex-ion-ios-baseball-outline:before, .uiex-ion-ios-basketball:before, .uiex-ion-ios-basketball-outline:before, .uiex-ion-ios-bell:before, .uiex-ion-ios-bell-outline:before, .uiex-ion-ios-body:before, .uiex-ion-ios-body-outline:before, .uiex-ion-ios-bolt:before, .uiex-ion-ios-bolt-outline:before, .uiex-ion-ios-book:before, .uiex-ion-ios-book-outline:before, .uiex-ion-ios-bookmarks:before, .uiex-ion-ios-bookmarks-outline:before, .uiex-ion-ios-box:before, .uiex-ion-ios-box-outline:before, .uiex-ion-ios-briefcase:before, .uiex-ion-ios-briefcase-outline:before, .uiex-ion-ios-browsers:before, .uiex-ion-ios-browsers-outline:before, .uiex-ion-ios-calculator:before, .uiex-ion-ios-calculator-outline:before, .uiex-ion-ios-calendar:before, .uiex-ion-ios-calendar-outline:before, .uiex-ion-ios-camera:before, .uiex-ion-ios-camera-outline:before, .uiex-ion-ios-cart:before, .uiex-ion-ios-cart-outline:before, .uiex-ion-ios-chatboxes:before, .uiex-ion-ios-chatboxes-outline:before, .uiex-ion-ios-chatbubble:before, .uiex-ion-ios-chatbubble-outline:before, .uiex-ion-ios-checkmark:before, .uiex-ion-ios-checkmark-empty:before, .uiex-ion-ios-checkmark-outline:before, .uiex-ion-ios-circle-filled:before, .uiex-ion-ios-circle-outline:before, .uiex-ion-ios-clock:before, .uiex-ion-ios-clock-outline:before, .uiex-ion-ios-close:before, .uiex-ion-ios-close-empty:before, .uiex-ion-ios-close-outline:before, .uiex-ion-ios-cloud:before, .uiex-ion-ios-cloud-download:before, .uiex-ion-ios-cloud-download-outline:before, .uiex-ion-ios-cloud-outline:before, .uiex-ion-ios-cloud-upload:before, .uiex-ion-ios-cloud-upload-outline:before, .uiex-ion-ios-cloudy:before, .uiex-ion-ios-cloudy-night:before, .uiex-ion-ios-cloudy-night-outline:before, .uiex-ion-ios-cloudy-outline:before, .uiex-ion-ios-cog:before, .uiex-ion-ios-cog-outline:before, .uiex-ion-ios-color-filter:before, .uiex-ion-ios-color-filter-outline:before, .uiex-ion-ios-color-wand:before, .uiex-ion-ios-color-wand-outline:before, .uiex-ion-ios-compose:before, .uiex-ion-ios-compose-outline:before, .uiex-ion-ios-contact:before, .uiex-ion-ios-contact-outline:before, .uiex-ion-ios-copy:before, .uiex-ion-ios-copy-outline:before, .uiex-ion-ios-crop:before, .uiex-ion-ios-crop-strong:before, .uiex-ion-ios-download:before, .uiex-ion-ios-download-outline:before, .uiex-ion-ios-drag:before, .uiex-ion-ios-email:before, .uiex-ion-ios-email-outline:before, .uiex-ion-ios-eye:before, .uiex-ion-ios-eye-outline:before, .uiex-ion-ios-fastforward:before, .uiex-ion-ios-fastforward-outline:before, .uiex-ion-ios-filing:before, .uiex-ion-ios-filing-outline:before, .uiex-ion-ios-film:before, .uiex-ion-ios-film-outline:before, .uiex-ion-ios-flag:before, .uiex-ion-ios-flag-outline:before, .uiex-ion-ios-flame:before, .uiex-ion-ios-flame-outline:before, .uiex-ion-ios-flask:before, .uiex-ion-ios-flask-outline:before, .uiex-ion-ios-flower:before, .uiex-ion-ios-flower-outline:before, .uiex-ion-ios-folder:before, .uiex-ion-ios-folder-outline:before, .uiex-ion-ios-football:before, .uiex-ion-ios-football-outline:before, .uiex-ion-ios-game-controller-a:before, .uiex-ion-ios-game-controller-a-outline:before, .uiex-ion-ios-game-controller-b:before, .uiex-ion-ios-game-controller-b-outline:before, .uiex-ion-ios-gear:before, .uiex-ion-ios-gear-outline:before, .uiex-ion-ios-glasses:before, .uiex-ion-ios-glasses-outline:before, .uiex-ion-ios-grid-view:before, .uiex-ion-ios-grid-view-outline:before, .uiex-ion-ios-heart:before, .uiex-ion-ios-heart-outline:before, .uiex-ion-ios-help:before, .uiex-ion-ios-help-empty:before, .uiex-ion-ios-help-outline:before, .uiex-ion-ios-home:before, .uiex-ion-ios-home-outline:before, .uiex-ion-ios-infinite:before, .uiex-ion-ios-infinite-outline:before, .uiex-ion-ios-information:before, .uiex-ion-ios-information-empty:before, .uiex-ion-ios-information-outline:before, .uiex-ion-ios-ionic-outline:before, .uiex-ion-ios-keypad:before, .uiex-ion-ios-keypad-outline:before, .uiex-ion-ios-lightbulb:before, .uiex-ion-ios-lightbulb-outline:before, .uiex-ion-ios-list:before, .uiex-ion-ios-list-outline:before, .uiex-ion-ios-location:before, .uiex-ion-ios-location-outline:before, .uiex-ion-ios-locked:before, .uiex-ion-ios-locked-outline:before, .uiex-ion-ios-loop:before, .uiex-ion-ios-loop-strong:before, .uiex-ion-ios-medical:before, .uiex-ion-ios-medical-outline:before, .uiex-ion-ios-medkit:before, .uiex-ion-ios-medkit-outline:before, .uiex-ion-ios-mic:before, .uiex-ion-ios-mic-off:before, .uiex-ion-ios-mic-outline:before, .uiex-ion-ios-minus:before, .uiex-ion-ios-minus-empty:before, .uiex-ion-ios-minus-outline:before, .uiex-ion-ios-monitor:before, .uiex-ion-ios-monitor-outline:before, .uiex-ion-ios-moon:before, .uiex-ion-ios-moon-outline:before, .uiex-ion-ios-more:before, .uiex-ion-ios-more-outline:before, .uiex-ion-ios-musical-note:before, .uiex-ion-ios-musical-notes:before, .uiex-ion-ios-navigate:before, .uiex-ion-ios-navigate-outline:before, .uiex-ion-ios-nutrition:before, .uiex-ion-ios-nutrition-outline:before, .uiex-ion-ios-paper:before, .uiex-ion-ios-paper-outline:before, .uiex-ion-ios-paperplane:before, .uiex-ion-ios-paperplane-outline:before, .uiex-ion-ios-partlysunny:before, .uiex-ion-ios-partlysunny-outline:before, .uiex-ion-ios-pause:before, .uiex-ion-ios-pause-outline:before, .uiex-ion-ios-paw:before, .uiex-ion-ios-paw-outline:before, .uiex-ion-ios-people:before, .uiex-ion-ios-people-outline:before, .uiex-ion-ios-person:before, .uiex-ion-ios-person-outline:before, .uiex-ion-ios-personadd:before, .uiex-ion-ios-personadd-outline:before, .uiex-ion-ios-photos:before, .uiex-ion-ios-photos-outline:before, .uiex-ion-ios-pie:before, .uiex-ion-ios-pie-outline:before, .uiex-ion-ios-pint:before, .uiex-ion-ios-pint-outline:before, .uiex-ion-ios-play:before, .uiex-ion-ios-play-outline:before, .uiex-ion-ios-plus:before, .uiex-ion-ios-plus-empty:before, .uiex-ion-ios-plus-outline:before, .uiex-ion-ios-pricetag:before, .uiex-ion-ios-pricetag-outline:before, .uiex-ion-ios-pricetags:before, .uiex-ion-ios-pricetags-outline:before, .uiex-ion-ios-printer:before, .uiex-ion-ios-printer-outline:before, .uiex-ion-ios-pulse:before, .uiex-ion-ios-pulse-strong:before, .uiex-ion-ios-rainy:before, .uiex-ion-ios-rainy-outline:before, .uiex-ion-ios-recording:before, .uiex-ion-ios-recording-outline:before, .uiex-ion-ios-redo:before, .uiex-ion-ios-redo-outline:before, .uiex-ion-ios-refresh:before, .uiex-ion-ios-refresh-empty:before, .uiex-ion-ios-refresh-outline:before, .uiex-ion-ios-reload:before, .uiex-ion-ios-reverse-camera:before, .uiex-ion-ios-reverse-camera-outline:before, .uiex-ion-ios-rewind:before, .uiex-ion-ios-rewind-outline:before, .uiex-ion-ios-rose:before, .uiex-ion-ios-rose-outline:before, .uiex-ion-ios-search:before, .uiex-ion-ios-search-strong:before, .uiex-ion-ios-settings:before, .uiex-ion-ios-settings-strong:before, .uiex-ion-ios-shuffle:before, .uiex-ion-ios-shuffle-strong:before, .uiex-ion-ios-skipbackward:before, .uiex-ion-ios-skipbackward-outline:before, .uiex-ion-ios-skipforward:before, .uiex-ion-ios-skipforward-outline:before, .uiex-ion-ios-snowy:before, .uiex-ion-ios-speedometer:before, .uiex-ion-ios-speedometer-outline:before, .uiex-ion-ios-star:before, .uiex-ion-ios-star-half:before, .uiex-ion-ios-star-outline:before, .uiex-ion-ios-stopwatch:before, .uiex-ion-ios-stopwatch-outline:before, .uiex-ion-ios-sunny:before, .uiex-ion-ios-sunny-outline:before, .uiex-ion-ios-telephone:before, .uiex-ion-ios-telephone-outline:before, .uiex-ion-ios-tennisball:before, .uiex-ion-ios-tennisball-outline:before, .uiex-ion-ios-thunderstorm:before, .uiex-ion-ios-thunderstorm-outline:before, .uiex-ion-ios-time:before, .uiex-ion-ios-time-outline:before, .uiex-ion-ios-timer:before, .uiex-ion-ios-timer-outline:before, .uiex-ion-ios-toggle:before, .uiex-ion-ios-toggle-outline:before, .uiex-ion-ios-trash:before, .uiex-ion-ios-trash-outline:before, .uiex-ion-ios-undo:before, .uiex-ion-ios-undo-outline:before, .uiex-ion-ios-unlocked:before, .uiex-ion-ios-unlocked-outline:before, .uiex-ion-ios-upload:before, .uiex-ion-ios-upload-outline:before, .uiex-ion-ios-videocam:before, .uiex-ion-ios-videocam-outline:before, .uiex-ion-ios-volume-high:before, .uiex-ion-ios-volume-low:before, .uiex-ion-ios-wineglass:before, .uiex-ion-ios-wineglass-outline:before, .uiex-ion-ios-world:before, .uiex-ion-ios-world-outline:before, .uiex-ion-ipad:before, .uiex-ion-iphone:before, .uiex-ion-ipod:before, .uiex-ion-jet:before, .uiex-ion-key:before, .uiex-ion-knife:before, .uiex-ion-laptop:before, .uiex-ion-leaf:before, .uiex-ion-levels:before, .uiex-ion-lightbulb:before, .uiex-ion-link:before, .uiex-ion-load-a:before, .uiex-ion-load-b:before, .uiex-ion-load-c:before, .uiex-ion-load-d:before, .uiex-ion-location:before, .uiex-ion-lock-combination:before, .uiex-ion-locked:before, .uiex-ion-log-in:before, .uiex-ion-log-out:before, .uiex-ion-loop:before, .uiex-ion-magnet:before, .uiex-ion-male:before, .uiex-ion-man:before, .uiex-ion-map:before, .uiex-ion-medkit:before, .uiex-ion-merge:before, .uiex-ion-mic-a:before, .uiex-ion-mic-b:before, .uiex-ion-mic-c:before, .uiex-ion-minus:before, .uiex-ion-minus-circled:before, .uiex-ion-minus-round:before, .uiex-ion-model-s:before, .uiex-ion-monitor:before, .uiex-ion-more:before, .uiex-ion-mouse:before, .uiex-ion-music-note:before, .uiex-ion-navicon:before, .uiex-ion-navicon-round:before, .uiex-ion-navigate:before, .uiex-ion-network:before, .uiex-ion-no-smoking:before, .uiex-ion-nuclear:before, .uiex-ion-outlet:before, .uiex-ion-paintbrush:before, .uiex-ion-paintbucket:before, .uiex-ion-paper-airplane:before, .uiex-ion-paperclip:before, .uiex-ion-pause:before, .uiex-ion-person:before, .uiex-ion-person-add:before, .uiex-ion-person-stalker:before, .uiex-ion-pie-graph:before, .uiex-ion-pin:before, .uiex-ion-pinpoint:before, .uiex-ion-pizza:before, .uiex-ion-plane:before, .uiex-ion-planet:before, .uiex-ion-play:before, .uiex-ion-playstation:before, .uiex-ion-plus:before, .uiex-ion-plus-circled:before, .uiex-ion-plus-round:before, .uiex-ion-podium:before, .uiex-ion-pound:before, .uiex-ion-power:before, .uiex-ion-pricetag:before, .uiex-ion-pricetags:before, .uiex-ion-printer:before, .uiex-ion-pull-request:before, .uiex-ion-qr-scanner:before, .uiex-ion-quote:before, .uiex-ion-radio-waves:before, .uiex-ion-record:before, .uiex-ion-refresh:before, .uiex-ion-reply:before, .uiex-ion-reply-all:before, .uiex-ion-ribbon-a:before, .uiex-ion-ribbon-b:before, .uiex-ion-sad:before, .uiex-ion-sad-outline:before, .uiex-ion-scissors:before, .uiex-ion-search:before, .uiex-ion-settings:before, .uiex-ion-share:before, .uiex-ion-shuffle:before, .uiex-ion-skip-backward:before, .uiex-ion-skip-forward:before, .uiex-ion-social-android:before, .uiex-ion-social-android-outline:before, .uiex-ion-social-angular:before, .uiex-ion-social-angular-outline:before, .uiex-ion-social-apple:before, .uiex-ion-social-apple-outline:before, .uiex-ion-social-bitcoin:before, .uiex-ion-social-bitcoin-outline:before, .uiex-ion-social-buffer:before, .uiex-ion-social-buffer-outline:before, .uiex-ion-social-chrome:before, .uiex-ion-social-chrome-outline:before, .uiex-ion-social-codepen:before, .uiex-ion-social-codepen-outline:before, .uiex-ion-social-css3:before, .uiex-ion-social-css3-outline:before, .uiex-ion-social-designernews:before, .uiex-ion-social-designernews-outline:before, .uiex-ion-social-dribbble:before, .uiex-ion-social-dribbble-outline:before, .uiex-ion-social-dropbox:before, .uiex-ion-social-dropbox-outline:before, .uiex-ion-social-euro:before, .uiex-ion-social-euro-outline:before, .uiex-ion-social-facebook:before, .uiex-ion-social-facebook-outline:before, .uiex-ion-social-foursquare:before, .uiex-ion-social-foursquare-outline:before, .uiex-ion-social-freebsd-devil:before, .uiex-ion-social-github:before, .uiex-ion-social-github-outline:before, .uiex-ion-social-google:before, .uiex-ion-social-google-outline:before, .uiex-ion-social-googleplus:before, .uiex-ion-social-googleplus-outline:before, .uiex-ion-social-hackernews:before, .uiex-ion-social-hackernews-outline:before, .uiex-ion-social-html5:before, .uiex-ion-social-html5-outline:before, .uiex-ion-social-instagram:before, .uiex-ion-social-instagram-outline:before, .uiex-ion-social-javascript:before, .uiex-ion-social-javascript-outline:before, .uiex-ion-social-linkedin:before, .uiex-ion-social-linkedin-outline:before, .uiex-ion-social-markdown:before, .uiex-ion-social-nodejs:before, .uiex-ion-social-octocat:before, .uiex-ion-social-pinterest:before, .uiex-ion-social-pinterest-outline:before, .uiex-ion-social-python:before, .uiex-ion-social-reddit:before, .uiex-ion-social-reddit-outline:before, .uiex-ion-social-rss:before, .uiex-ion-social-rss-outline:before, .uiex-ion-social-sass:before, .uiex-ion-social-skype:before, .uiex-ion-social-skype-outline:before, .uiex-ion-social-snapchat:before, .uiex-ion-social-snapchat-outline:before, .uiex-ion-social-tumblr:before, .uiex-ion-social-tumblr-outline:before, .uiex-ion-social-tux:before, .uiex-ion-social-twitch:before, .uiex-ion-social-twitch-outline:before, .uiex-ion-social-twitter:before, .uiex-ion-social-twitter-outline:before, .uiex-ion-social-usd:before, .uiex-ion-social-usd-outline:before, .uiex-ion-social-vimeo:before, .uiex-ion-social-vimeo-outline:before, .uiex-ion-social-whatsapp:before, .uiex-ion-social-whatsapp-outline:before, .uiex-ion-social-windows:before, .uiex-ion-social-windows-outline:before, .uiex-ion-social-wordpress:before, .uiex-ion-social-wordpress-outline:before, .uiex-ion-social-yahoo:before, .uiex-ion-social-yahoo-outline:before, .uiex-ion-social-yen:before, .uiex-ion-social-yen-outline:before, .uiex-ion-social-youtube:before, .uiex-ion-social-youtube-outline:before, .uiex-ion-soup-can:before, .uiex-ion-soup-can-outline:before, .uiex-ion-speakerphone:before, .uiex-ion-speedometer:before, .uiex-ion-spoon:before, .uiex-ion-star:before, .uiex-ion-stats-bars:before, .uiex-ion-steam:before, .uiex-ion-stop:before, .uiex-ion-thermometer:before, .uiex-ion-thumbsdown:before, .uiex-ion-thumbsup:before, .uiex-ion-toggle:before, .uiex-ion-toggle-filled:before, .uiex-ion-transgender:before, .uiex-ion-trash-a:before, .uiex-ion-trash-b:before, .uiex-ion-trophy:before, .uiex-ion-tshirt:before, .uiex-ion-tshirt-outline:before, .uiex-ion-umbrella:before, .uiex-ion-university:before, .uiex-ion-unlocked:before, .uiex-ion-upload:before, .uiex-ion-usb:before, .uiex-ion-videocamera:before, .uiex-ion-volume-high:before, .uiex-ion-volume-low:before, .uiex-ion-volume-medium:before, .uiex-ion-volume-mute:before, .uiex-ion-wand:before, .uiex-ion-waterdrop:before, .uiex-ion-wifi:before, .uiex-ion-wineglass:before, .uiex-ion-woman:before, .uiex-ion-wrench:before, .uiex-ion-xbox:before {
+  display: inline-block;
+  font-family: "Ionicons";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.uiex-ion-alert:before {
+  content: "";
+}
+
+.uiex-ion-alert-circled:before {
+  content: "";
+}
+
+.uiex-ion-android-add:before {
+  content: "";
+}
+
+.uiex-ion-android-add-circle:before {
+  content: "";
+}
+
+.uiex-ion-android-alarm-clock:before {
+  content: "";
+}
+
+.uiex-ion-android-alert:before {
+  content: "";
+}
+
+.uiex-ion-android-apps:before {
+  content: "";
+}
+
+.uiex-ion-android-archive:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-back:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-down:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-dropdown:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-dropdown-circle:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-dropleft:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-dropleft-circle:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-dropright:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-dropright-circle:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-dropup:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-dropup-circle:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-forward:before {
+  content: "";
+}
+
+.uiex-ion-android-arrow-up:before {
+  content: "";
+}
+
+.uiex-ion-android-attach:before {
+  content: "";
+}
+
+.uiex-ion-android-bar:before {
+  content: "";
+}
+
+.uiex-ion-android-bicycle:before {
+  content: "";
+}
+
+.uiex-ion-android-boat:before {
+  content: "";
+}
+
+.uiex-ion-android-bookmark:before {
+  content: "";
+}
+
+.uiex-ion-android-bulb:before {
+  content: "";
+}
+
+.uiex-ion-android-bus:before {
+  content: "";
+}
+
+.uiex-ion-android-calendar:before {
+  content: "";
+}
+
+.uiex-ion-android-call:before {
+  content: "";
+}
+
+.uiex-ion-android-camera:before {
+  content: "";
+}
+
+.uiex-ion-android-cancel:before {
+  content: "";
+}
+
+.uiex-ion-android-car:before {
+  content: "";
+}
+
+.uiex-ion-android-cart:before {
+  content: "";
+}
+
+.uiex-ion-android-chat:before {
+  content: "";
+}
+
+.uiex-ion-android-checkbox:before {
+  content: "";
+}
+
+.uiex-ion-android-checkbox-blank:before {
+  content: "";
+}
+
+.uiex-ion-android-checkbox-outline:before {
+  content: "";
+}
+
+.uiex-ion-android-checkbox-outline-blank:before {
+  content: "";
+}
+
+.uiex-ion-android-checkmark-circle:before {
+  content: "";
+}
+
+.uiex-ion-android-clipboard:before {
+  content: "";
+}
+
+.uiex-ion-android-close:before {
+  content: "";
+}
+
+.uiex-ion-android-cloud:before {
+  content: "";
+}
+
+.uiex-ion-android-cloud-circle:before {
+  content: "";
+}
+
+.uiex-ion-android-cloud-done:before {
+  content: "";
+}
+
+.uiex-ion-android-cloud-outline:before {
+  content: "";
+}
+
+.uiex-ion-android-color-palette:before {
+  content: "";
+}
+
+.uiex-ion-android-compass:before {
+  content: "";
+}
+
+.uiex-ion-android-contact:before {
+  content: "";
+}
+
+.uiex-ion-android-contacts:before {
+  content: "";
+}
+
+.uiex-ion-android-contract:before {
+  content: "";
+}
+
+.uiex-ion-android-create:before {
+  content: "";
+}
+
+.uiex-ion-android-delete:before {
+  content: "";
+}
+
+.uiex-ion-android-desktop:before {
+  content: "";
+}
+
+.uiex-ion-android-document:before {
+  content: "";
+}
+
+.uiex-ion-android-done:before {
+  content: "";
+}
+
+.uiex-ion-android-done-all:before {
+  content: "";
+}
+
+.uiex-ion-android-download:before {
+  content: "";
+}
+
+.uiex-ion-android-drafts:before {
+  content: "";
+}
+
+.uiex-ion-android-exit:before {
+  content: "";
+}
+
+.uiex-ion-android-expand:before {
+  content: "";
+}
+
+.uiex-ion-android-favorite:before {
+  content: "";
+}
+
+.uiex-ion-android-favorite-outline:before {
+  content: "";
+}
+
+.uiex-ion-android-film:before {
+  content: "";
+}
+
+.uiex-ion-android-folder:before {
+  content: "";
+}
+
+.uiex-ion-android-folder-open:before {
+  content: "";
+}
+
+.uiex-ion-android-funnel:before {
+  content: "";
+}
+
+.uiex-ion-android-globe:before {
+  content: "";
+}
+
+.uiex-ion-android-hand:before {
+  content: "";
+}
+
+.uiex-ion-android-hangout:before {
+  content: "";
+}
+
+.uiex-ion-android-happy:before {
+  content: "";
+}
+
+.uiex-ion-android-home:before {
+  content: "";
+}
+
+.uiex-ion-android-image:before {
+  content: "";
+}
+
+.uiex-ion-android-laptop:before {
+  content: "";
+}
+
+.uiex-ion-android-list:before {
+  content: "";
+}
+
+.uiex-ion-android-locate:before {
+  content: "";
+}
+
+.uiex-ion-android-lock:before {
+  content: "";
+}
+
+.uiex-ion-android-mail:before {
+  content: "";
+}
+
+.uiex-ion-android-map:before {
+  content: "";
+}
+
+.uiex-ion-android-menu:before {
+  content: "";
+}
+
+.uiex-ion-android-microphone:before {
+  content: "";
+}
+
+.uiex-ion-android-microphone-off:before {
+  content: "";
+}
+
+.uiex-ion-android-more-horizontal:before {
+  content: "";
+}
+
+.uiex-ion-android-more-vertical:before {
+  content: "";
+}
+
+.uiex-ion-android-navigate:before {
+  content: "";
+}
+
+.uiex-ion-android-notifications:before {
+  content: "";
+}
+
+.uiex-ion-android-notifications-none:before {
+  content: "";
+}
+
+.uiex-ion-android-notifications-off:before {
+  content: "";
+}
+
+.uiex-ion-android-open:before {
+  content: "";
+}
+
+.uiex-ion-android-options:before {
+  content: "";
+}
+
+.uiex-ion-android-people:before {
+  content: "";
+}
+
+.uiex-ion-android-person:before {
+  content: "";
+}
+
+.uiex-ion-android-person-add:before {
+  content: "";
+}
+
+.uiex-ion-android-phone-landscape:before {
+  content: "";
+}
+
+.uiex-ion-android-phone-portrait:before {
+  content: "";
+}
+
+.uiex-ion-android-pin:before {
+  content: "";
+}
+
+.uiex-ion-android-plane:before {
+  content: "";
+}
+
+.uiex-ion-android-playstore:before {
+  content: "";
+}
+
+.uiex-ion-android-print:before {
+  content: "";
+}
+
+.uiex-ion-android-radio-button-off:before {
+  content: "";
+}
+
+.uiex-ion-android-radio-button-on:before {
+  content: "";
+}
+
+.uiex-ion-android-refresh:before {
+  content: "";
+}
+
+.uiex-ion-android-remove:before {
+  content: "";
+}
+
+.uiex-ion-android-remove-circle:before {
+  content: "";
+}
+
+.uiex-ion-android-restaurant:before {
+  content: "";
+}
+
+.uiex-ion-android-sad:before {
+  content: "";
+}
+
+.uiex-ion-android-search:before {
+  content: "";
+}
+
+.uiex-ion-android-send:before {
+  content: "";
+}
+
+.uiex-ion-android-settings:before {
+  content: "";
+}
+
+.uiex-ion-android-share:before {
+  content: "";
+}
+
+.uiex-ion-android-share-alt:before {
+  content: "";
+}
+
+.uiex-ion-android-star:before {
+  content: "";
+}
+
+.uiex-ion-android-star-half:before {
+  content: "";
+}
+
+.uiex-ion-android-star-outline:before {
+  content: "";
+}
+
+.uiex-ion-android-stopwatch:before {
+  content: "";
+}
+
+.uiex-ion-android-subway:before {
+  content: "";
+}
+
+.uiex-ion-android-sunny:before {
+  content: "";
+}
+
+.uiex-ion-android-sync:before {
+  content: "";
+}
+
+.uiex-ion-android-textsms:before {
+  content: "";
+}
+
+.uiex-ion-android-time:before {
+  content: "";
+}
+
+.uiex-ion-android-train:before {
+  content: "";
+}
+
+.uiex-ion-android-unlock:before {
+  content: "";
+}
+
+.uiex-ion-android-upload:before {
+  content: "";
+}
+
+.uiex-ion-android-volume-down:before {
+  content: "";
+}
+
+.uiex-ion-android-volume-mute:before {
+  content: "";
+}
+
+.uiex-ion-android-volume-off:before {
+  content: "";
+}
+
+.uiex-ion-android-volume-up:before {
+  content: "";
+}
+
+.uiex-ion-android-walk:before {
+  content: "";
+}
+
+.uiex-ion-android-warning:before {
+  content: "";
+}
+
+.uiex-ion-android-watch:before {
+  content: "";
+}
+
+.uiex-ion-android-wifi:before {
+  content: "";
+}
+
+.uiex-ion-aperture:before {
+  content: "";
+}
+
+.uiex-ion-archive:before {
+  content: "";
+}
+
+.uiex-ion-arrow-down-a:before {
+  content: "";
+}
+
+.uiex-ion-arrow-down-b:before {
+  content: "";
+}
+
+.uiex-ion-arrow-down-c:before {
+  content: "";
+}
+
+.uiex-ion-arrow-expand:before {
+  content: "";
+}
+
+.uiex-ion-arrow-graph-down-left:before {
+  content: "";
+}
+
+.uiex-ion-arrow-graph-down-right:before {
+  content: "";
+}
+
+.uiex-ion-arrow-graph-up-left:before {
+  content: "";
+}
+
+.uiex-ion-arrow-graph-up-right:before {
+  content: "";
+}
+
+.uiex-ion-arrow-left-a:before {
+  content: "";
+}
+
+.uiex-ion-arrow-left-b:before {
+  content: "";
+}
+
+.uiex-ion-arrow-left-c:before {
+  content: "";
+}
+
+.uiex-ion-arrow-move:before {
+  content: "";
+}
+
+.uiex-ion-arrow-resize:before {
+  content: "";
+}
+
+.uiex-ion-arrow-return-left:before {
+  content: "";
+}
+
+.uiex-ion-arrow-return-right:before {
+  content: "";
+}
+
+.uiex-ion-arrow-right-a:before {
+  content: "";
+}
+
+.uiex-ion-arrow-right-b:before {
+  content: "";
+}
+
+.uiex-ion-arrow-right-c:before {
+  content: "";
+}
+
+.uiex-ion-arrow-shrink:before {
+  content: "";
+}
+
+.uiex-ion-arrow-swap:before {
+  content: "";
+}
+
+.uiex-ion-arrow-up-a:before {
+  content: "";
+}
+
+.uiex-ion-arrow-up-b:before {
+  content: "";
+}
+
+.uiex-ion-arrow-up-c:before {
+  content: "";
+}
+
+.uiex-ion-asterisk:before {
+  content: "";
+}
+
+.uiex-ion-at:before {
+  content: "";
+}
+
+.uiex-ion-backspace:before {
+  content: "";
+}
+
+.uiex-ion-backspace-outline:before {
+  content: "";
+}
+
+.uiex-ion-bag:before {
+  content: "";
+}
+
+.uiex-ion-battery-charging:before {
+  content: "";
+}
+
+.uiex-ion-battery-empty:before {
+  content: "";
+}
+
+.uiex-ion-battery-full:before {
+  content: "";
+}
+
+.uiex-ion-battery-half:before {
+  content: "";
+}
+
+.uiex-ion-battery-low:before {
+  content: "";
+}
+
+.uiex-ion-beaker:before {
+  content: "";
+}
+
+.uiex-ion-beer:before {
+  content: "";
+}
+
+.uiex-ion-bluetooth:before {
+  content: "";
+}
+
+.uiex-ion-bonfire:before {
+  content: "";
+}
+
+.uiex-ion-bookmark:before {
+  content: "";
+}
+
+.uiex-ion-bowtie:before {
+  content: "";
+}
+
+.uiex-ion-briefcase:before {
+  content: "";
+}
+
+.uiex-ion-bug:before {
+  content: "";
+}
+
+.uiex-ion-calculator:before {
+  content: "";
+}
+
+.uiex-ion-calendar:before {
+  content: "";
+}
+
+.uiex-ion-camera:before {
+  content: "";
+}
+
+.uiex-ion-card:before {
+  content: "";
+}
+
+.uiex-ion-cash:before {
+  content: "";
+}
+
+.uiex-ion-chatbox:before {
+  content: "";
+}
+
+.uiex-ion-chatbox-working:before {
+  content: "";
+}
+
+.uiex-ion-chatboxes:before {
+  content: "";
+}
+
+.uiex-ion-chatbubble:before {
+  content: "";
+}
+
+.uiex-ion-chatbubble-working:before {
+  content: "";
+}
+
+.uiex-ion-chatbubbles:before {
+  content: "";
+}
+
+.uiex-ion-checkmark:before {
+  content: "";
+}
+
+.uiex-ion-checkmark-circled:before {
+  content: "";
+}
+
+.uiex-ion-checkmark-round:before {
+  content: "";
+}
+
+.uiex-ion-chevron-down:before {
+  content: "";
+}
+
+.uiex-ion-chevron-left:before {
+  content: "";
+}
+
+.uiex-ion-chevron-right:before {
+  content: "";
+}
+
+.uiex-ion-chevron-up:before {
+  content: "";
+}
+
+.uiex-ion-clipboard:before {
+  content: "";
+}
+
+.uiex-ion-clock:before {
+  content: "";
+}
+
+.uiex-ion-close:before {
+  content: "";
+}
+
+.uiex-ion-close-circled:before {
+  content: "";
+}
+
+.uiex-ion-close-round:before {
+  content: "";
+}
+
+.uiex-ion-closed-captioning:before {
+  content: "";
+}
+
+.uiex-ion-cloud:before {
+  content: "";
+}
+
+.uiex-ion-code:before {
+  content: "";
+}
+
+.uiex-ion-code-download:before {
+  content: "";
+}
+
+.uiex-ion-code-working:before {
+  content: "";
+}
+
+.uiex-ion-coffee:before {
+  content: "";
+}
+
+.uiex-ion-compass:before {
+  content: "";
+}
+
+.uiex-ion-compose:before {
+  content: "";
+}
+
+.uiex-ion-connection-bars:before {
+  content: "";
+}
+
+.uiex-ion-contrast:before {
+  content: "";
+}
+
+.uiex-ion-crop:before {
+  content: "";
+}
+
+.uiex-ion-cube:before {
+  content: "";
+}
+
+.uiex-ion-disc:before {
+  content: "";
+}
+
+.uiex-ion-document:before {
+  content: "";
+}
+
+.uiex-ion-document-text:before {
+  content: "";
+}
+
+.uiex-ion-drag:before {
+  content: "";
+}
+
+.uiex-ion-earth:before {
+  content: "";
+}
+
+.uiex-ion-easel:before {
+  content: "";
+}
+
+.uiex-ion-edit:before {
+  content: "";
+}
+
+.uiex-ion-egg:before {
+  content: "";
+}
+
+.uiex-ion-eject:before {
+  content: "";
+}
+
+.uiex-ion-email:before {
+  content: "";
+}
+
+.uiex-ion-email-unread:before {
+  content: "";
+}
+
+.uiex-ion-erlenmeyer-flask:before {
+  content: "";
+}
+
+.uiex-ion-erlenmeyer-flask-bubbles:before {
+  content: "";
+}
+
+.uiex-ion-eye:before {
+  content: "";
+}
+
+.uiex-ion-eye-disabled:before {
+  content: "";
+}
+
+.uiex-ion-female:before {
+  content: "";
+}
+
+.uiex-ion-filing:before {
+  content: "";
+}
+
+.uiex-ion-film-marker:before {
+  content: "";
+}
+
+.uiex-ion-fireball:before {
+  content: "";
+}
+
+.uiex-ion-flag:before {
+  content: "";
+}
+
+.uiex-ion-flame:before {
+  content: "";
+}
+
+.uiex-ion-flash:before {
+  content: "";
+}
+
+.uiex-ion-flash-off:before {
+  content: "";
+}
+
+.uiex-ion-folder:before {
+  content: "";
+}
+
+.uiex-ion-fork:before {
+  content: "";
+}
+
+.uiex-ion-fork-repo:before {
+  content: "";
+}
+
+.uiex-ion-forward:before {
+  content: "";
+}
+
+.uiex-ion-funnel:before {
+  content: "";
+}
+
+.uiex-ion-gear-a:before {
+  content: "";
+}
+
+.uiex-ion-gear-b:before {
+  content: "";
+}
+
+.uiex-ion-grid:before {
+  content: "";
+}
+
+.uiex-ion-hammer:before {
+  content: "";
+}
+
+.uiex-ion-happy:before {
+  content: "";
+}
+
+.uiex-ion-happy-outline:before {
+  content: "";
+}
+
+.uiex-ion-headphone:before {
+  content: "";
+}
+
+.uiex-ion-heart:before {
+  content: "";
+}
+
+.uiex-ion-heart-broken:before {
+  content: "";
+}
+
+.uiex-ion-help:before {
+  content: "";
+}
+
+.uiex-ion-help-buoy:before {
+  content: "";
+}
+
+.uiex-ion-help-circled:before {
+  content: "";
+}
+
+.uiex-ion-home:before {
+  content: "";
+}
+
+.uiex-ion-icecream:before {
+  content: "";
+}
+
+.uiex-ion-image:before {
+  content: "";
+}
+
+.uiex-ion-images:before {
+  content: "";
+}
+
+.uiex-ion-information:before {
+  content: "";
+}
+
+.uiex-ion-information-circled:before {
+  content: "";
+}
+
+.uiex-ion-ionic:before {
+  content: "";
+}
+
+.uiex-ion-ios-alarm:before {
+  content: "";
+}
+
+.uiex-ion-ios-alarm-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-albums:before {
+  content: "";
+}
+
+.uiex-ion-ios-albums-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-americanfootball:before {
+  content: "";
+}
+
+.uiex-ion-ios-americanfootball-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-analytics:before {
+  content: "";
+}
+
+.uiex-ion-ios-analytics-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-arrow-back:before {
+  content: "";
+}
+
+.uiex-ion-ios-arrow-down:before {
+  content: "";
+}
+
+.uiex-ion-ios-arrow-forward:before {
+  content: "";
+}
+
+.uiex-ion-ios-arrow-left:before {
+  content: "";
+}
+
+.uiex-ion-ios-arrow-right:before {
+  content: "";
+}
+
+.uiex-ion-ios-arrow-thin-down:before {
+  content: "";
+}
+
+.uiex-ion-ios-arrow-thin-left:before {
+  content: "";
+}
+
+.uiex-ion-ios-arrow-thin-right:before {
+  content: "";
+}
+
+.uiex-ion-ios-arrow-thin-up:before {
+  content: "";
+}
+
+.uiex-ion-ios-arrow-up:before {
+  content: "";
+}
+
+.uiex-ion-ios-at:before {
+  content: "";
+}
+
+.uiex-ion-ios-at-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-barcode:before {
+  content: "";
+}
+
+.uiex-ion-ios-barcode-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-baseball:before {
+  content: "";
+}
+
+.uiex-ion-ios-baseball-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-basketball:before {
+  content: "";
+}
+
+.uiex-ion-ios-basketball-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-bell:before {
+  content: "";
+}
+
+.uiex-ion-ios-bell-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-body:before {
+  content: "";
+}
+
+.uiex-ion-ios-body-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-bolt:before {
+  content: "";
+}
+
+.uiex-ion-ios-bolt-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-book:before {
+  content: "";
+}
+
+.uiex-ion-ios-book-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-bookmarks:before {
+  content: "";
+}
+
+.uiex-ion-ios-bookmarks-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-box:before {
+  content: "";
+}
+
+.uiex-ion-ios-box-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-briefcase:before {
+  content: "";
+}
+
+.uiex-ion-ios-briefcase-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-browsers:before {
+  content: "";
+}
+
+.uiex-ion-ios-browsers-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-calculator:before {
+  content: "";
+}
+
+.uiex-ion-ios-calculator-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-calendar:before {
+  content: "";
+}
+
+.uiex-ion-ios-calendar-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-camera:before {
+  content: "";
+}
+
+.uiex-ion-ios-camera-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-cart:before {
+  content: "";
+}
+
+.uiex-ion-ios-cart-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-chatboxes:before {
+  content: "";
+}
+
+.uiex-ion-ios-chatboxes-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-chatbubble:before {
+  content: "";
+}
+
+.uiex-ion-ios-chatbubble-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-checkmark:before {
+  content: "";
+}
+
+.uiex-ion-ios-checkmark-empty:before {
+  content: "";
+}
+
+.uiex-ion-ios-checkmark-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-circle-filled:before {
+  content: "";
+}
+
+.uiex-ion-ios-circle-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-clock:before {
+  content: "";
+}
+
+.uiex-ion-ios-clock-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-close:before {
+  content: "";
+}
+
+.uiex-ion-ios-close-empty:before {
+  content: "";
+}
+
+.uiex-ion-ios-close-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-cloud:before {
+  content: "";
+}
+
+.uiex-ion-ios-cloud-download:before {
+  content: "";
+}
+
+.uiex-ion-ios-cloud-download-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-cloud-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-cloud-upload:before {
+  content: "";
+}
+
+.uiex-ion-ios-cloud-upload-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-cloudy:before {
+  content: "";
+}
+
+.uiex-ion-ios-cloudy-night:before {
+  content: "";
+}
+
+.uiex-ion-ios-cloudy-night-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-cloudy-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-cog:before {
+  content: "";
+}
+
+.uiex-ion-ios-cog-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-color-filter:before {
+  content: "";
+}
+
+.uiex-ion-ios-color-filter-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-color-wand:before {
+  content: "";
+}
+
+.uiex-ion-ios-color-wand-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-compose:before {
+  content: "";
+}
+
+.uiex-ion-ios-compose-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-contact:before {
+  content: "";
+}
+
+.uiex-ion-ios-contact-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-copy:before {
+  content: "";
+}
+
+.uiex-ion-ios-copy-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-crop:before {
+  content: "";
+}
+
+.uiex-ion-ios-crop-strong:before {
+  content: "";
+}
+
+.uiex-ion-ios-download:before {
+  content: "";
+}
+
+.uiex-ion-ios-download-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-drag:before {
+  content: "";
+}
+
+.uiex-ion-ios-email:before {
+  content: "";
+}
+
+.uiex-ion-ios-email-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-eye:before {
+  content: "";
+}
+
+.uiex-ion-ios-eye-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-fastforward:before {
+  content: "";
+}
+
+.uiex-ion-ios-fastforward-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-filing:before {
+  content: "";
+}
+
+.uiex-ion-ios-filing-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-film:before {
+  content: "";
+}
+
+.uiex-ion-ios-film-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-flag:before {
+  content: "";
+}
+
+.uiex-ion-ios-flag-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-flame:before {
+  content: "";
+}
+
+.uiex-ion-ios-flame-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-flask:before {
+  content: "";
+}
+
+.uiex-ion-ios-flask-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-flower:before {
+  content: "";
+}
+
+.uiex-ion-ios-flower-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-folder:before {
+  content: "";
+}
+
+.uiex-ion-ios-folder-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-football:before {
+  content: "";
+}
+
+.uiex-ion-ios-football-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-game-controller-a:before {
+  content: "";
+}
+
+.uiex-ion-ios-game-controller-a-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-game-controller-b:before {
+  content: "";
+}
+
+.uiex-ion-ios-game-controller-b-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-gear:before {
+  content: "";
+}
+
+.uiex-ion-ios-gear-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-glasses:before {
+  content: "";
+}
+
+.uiex-ion-ios-glasses-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-grid-view:before {
+  content: "";
+}
+
+.uiex-ion-ios-grid-view-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-heart:before {
+  content: "";
+}
+
+.uiex-ion-ios-heart-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-help:before {
+  content: "";
+}
+
+.uiex-ion-ios-help-empty:before {
+  content: "";
+}
+
+.uiex-ion-ios-help-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-home:before {
+  content: "";
+}
+
+.uiex-ion-ios-home-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-infinite:before {
+  content: "";
+}
+
+.uiex-ion-ios-infinite-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-information:before {
+  content: "";
+}
+
+.uiex-ion-ios-information-empty:before {
+  content: "";
+}
+
+.uiex-ion-ios-information-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-ionic-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-keypad:before {
+  content: "";
+}
+
+.uiex-ion-ios-keypad-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-lightbulb:before {
+  content: "";
+}
+
+.uiex-ion-ios-lightbulb-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-list:before {
+  content: "";
+}
+
+.uiex-ion-ios-list-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-location:before {
+  content: "";
+}
+
+.uiex-ion-ios-location-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-locked:before {
+  content: "";
+}
+
+.uiex-ion-ios-locked-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-loop:before {
+  content: "";
+}
+
+.uiex-ion-ios-loop-strong:before {
+  content: "";
+}
+
+.uiex-ion-ios-medical:before {
+  content: "";
+}
+
+.uiex-ion-ios-medical-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-medkit:before {
+  content: "";
+}
+
+.uiex-ion-ios-medkit-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-mic:before {
+  content: "";
+}
+
+.uiex-ion-ios-mic-off:before {
+  content: "";
+}
+
+.uiex-ion-ios-mic-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-minus:before {
+  content: "";
+}
+
+.uiex-ion-ios-minus-empty:before {
+  content: "";
+}
+
+.uiex-ion-ios-minus-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-monitor:before {
+  content: "";
+}
+
+.uiex-ion-ios-monitor-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-moon:before {
+  content: "";
+}
+
+.uiex-ion-ios-moon-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-more:before {
+  content: "";
+}
+
+.uiex-ion-ios-more-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-musical-note:before {
+  content: "";
+}
+
+.uiex-ion-ios-musical-notes:before {
+  content: "";
+}
+
+.uiex-ion-ios-navigate:before {
+  content: "";
+}
+
+.uiex-ion-ios-navigate-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-nutrition:before {
+  content: "";
+}
+
+.uiex-ion-ios-nutrition-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-paper:before {
+  content: "";
+}
+
+.uiex-ion-ios-paper-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-paperplane:before {
+  content: "";
+}
+
+.uiex-ion-ios-paperplane-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-partlysunny:before {
+  content: "";
+}
+
+.uiex-ion-ios-partlysunny-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-pause:before {
+  content: "";
+}
+
+.uiex-ion-ios-pause-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-paw:before {
+  content: "";
+}
+
+.uiex-ion-ios-paw-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-people:before {
+  content: "";
+}
+
+.uiex-ion-ios-people-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-person:before {
+  content: "";
+}
+
+.uiex-ion-ios-person-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-personadd:before {
+  content: "";
+}
+
+.uiex-ion-ios-personadd-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-photos:before {
+  content: "";
+}
+
+.uiex-ion-ios-photos-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-pie:before {
+  content: "";
+}
+
+.uiex-ion-ios-pie-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-pint:before {
+  content: "";
+}
+
+.uiex-ion-ios-pint-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-play:before {
+  content: "";
+}
+
+.uiex-ion-ios-play-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-plus:before {
+  content: "";
+}
+
+.uiex-ion-ios-plus-empty:before {
+  content: "";
+}
+
+.uiex-ion-ios-plus-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-pricetag:before {
+  content: "";
+}
+
+.uiex-ion-ios-pricetag-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-pricetags:before {
+  content: "";
+}
+
+.uiex-ion-ios-pricetags-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-printer:before {
+  content: "";
+}
+
+.uiex-ion-ios-printer-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-pulse:before {
+  content: "";
+}
+
+.uiex-ion-ios-pulse-strong:before {
+  content: "";
+}
+
+.uiex-ion-ios-rainy:before {
+  content: "";
+}
+
+.uiex-ion-ios-rainy-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-recording:before {
+  content: "";
+}
+
+.uiex-ion-ios-recording-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-redo:before {
+  content: "";
+}
+
+.uiex-ion-ios-redo-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-refresh:before {
+  content: "";
+}
+
+.uiex-ion-ios-refresh-empty:before {
+  content: "";
+}
+
+.uiex-ion-ios-refresh-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-reload:before {
+  content: "";
+}
+
+.uiex-ion-ios-reverse-camera:before {
+  content: "";
+}
+
+.uiex-ion-ios-reverse-camera-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-rewind:before {
+  content: "";
+}
+
+.uiex-ion-ios-rewind-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-rose:before {
+  content: "";
+}
+
+.uiex-ion-ios-rose-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-search:before {
+  content: "";
+}
+
+.uiex-ion-ios-search-strong:before {
+  content: "";
+}
+
+.uiex-ion-ios-settings:before {
+  content: "";
+}
+
+.uiex-ion-ios-settings-strong:before {
+  content: "";
+}
+
+.uiex-ion-ios-shuffle:before {
+  content: "";
+}
+
+.uiex-ion-ios-shuffle-strong:before {
+  content: "";
+}
+
+.uiex-ion-ios-skipbackward:before {
+  content: "";
+}
+
+.uiex-ion-ios-skipbackward-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-skipforward:before {
+  content: "";
+}
+
+.uiex-ion-ios-skipforward-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-snowy:before {
+  content: "";
+}
+
+.uiex-ion-ios-speedometer:before {
+  content: "";
+}
+
+.uiex-ion-ios-speedometer-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-star:before {
+  content: "";
+}
+
+.uiex-ion-ios-star-half:before {
+  content: "";
+}
+
+.uiex-ion-ios-star-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-stopwatch:before {
+  content: "";
+}
+
+.uiex-ion-ios-stopwatch-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-sunny:before {
+  content: "";
+}
+
+.uiex-ion-ios-sunny-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-telephone:before {
+  content: "";
+}
+
+.uiex-ion-ios-telephone-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-tennisball:before {
+  content: "";
+}
+
+.uiex-ion-ios-tennisball-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-thunderstorm:before {
+  content: "";
+}
+
+.uiex-ion-ios-thunderstorm-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-time:before {
+  content: "";
+}
+
+.uiex-ion-ios-time-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-timer:before {
+  content: "";
+}
+
+.uiex-ion-ios-timer-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-toggle:before {
+  content: "";
+}
+
+.uiex-ion-ios-toggle-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-trash:before {
+  content: "";
+}
+
+.uiex-ion-ios-trash-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-undo:before {
+  content: "";
+}
+
+.uiex-ion-ios-undo-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-unlocked:before {
+  content: "";
+}
+
+.uiex-ion-ios-unlocked-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-upload:before {
+  content: "";
+}
+
+.uiex-ion-ios-upload-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-videocam:before {
+  content: "";
+}
+
+.uiex-ion-ios-videocam-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-volume-high:before {
+  content: "";
+}
+
+.uiex-ion-ios-volume-low:before {
+  content: "";
+}
+
+.uiex-ion-ios-wineglass:before {
+  content: "";
+}
+
+.uiex-ion-ios-wineglass-outline:before {
+  content: "";
+}
+
+.uiex-ion-ios-world:before {
+  content: "";
+}
+
+.uiex-ion-ios-world-outline:before {
+  content: "";
+}
+
+.uiex-ion-ipad:before {
+  content: "";
+}
+
+.uiex-ion-iphone:before {
+  content: "";
+}
+
+.uiex-ion-ipod:before {
+  content: "";
+}
+
+.uiex-ion-jet:before {
+  content: "";
+}
+
+.uiex-ion-key:before {
+  content: "";
+}
+
+.uiex-ion-knife:before {
+  content: "";
+}
+
+.uiex-ion-laptop:before {
+  content: "";
+}
+
+.uiex-ion-leaf:before {
+  content: "";
+}
+
+.uiex-ion-levels:before {
+  content: "";
+}
+
+.uiex-ion-lightbulb:before {
+  content: "";
+}
+
+.uiex-ion-link:before {
+  content: "";
+}
+
+.uiex-ion-load-a:before {
+  content: "";
+}
+
+.uiex-ion-load-b:before {
+  content: "";
+}
+
+.uiex-ion-load-c:before {
+  content: "";
+}
+
+.uiex-ion-load-d:before {
+  content: "";
+}
+
+.uiex-ion-location:before {
+  content: "";
+}
+
+.uiex-ion-lock-combination:before {
+  content: "";
+}
+
+.uiex-ion-locked:before {
+  content: "";
+}
+
+.uiex-ion-log-in:before {
+  content: "";
+}
+
+.uiex-ion-log-out:before {
+  content: "";
+}
+
+.uiex-ion-loop:before {
+  content: "";
+}
+
+.uiex-ion-magnet:before {
+  content: "";
+}
+
+.uiex-ion-male:before {
+  content: "";
+}
+
+.uiex-ion-man:before {
+  content: "";
+}
+
+.uiex-ion-map:before {
+  content: "";
+}
+
+.uiex-ion-medkit:before {
+  content: "";
+}
+
+.uiex-ion-merge:before {
+  content: "";
+}
+
+.uiex-ion-mic-a:before {
+  content: "";
+}
+
+.uiex-ion-mic-b:before {
+  content: "";
+}
+
+.uiex-ion-mic-c:before {
+  content: "";
+}
+
+.uiex-ion-minus:before {
+  content: "";
+}
+
+.uiex-ion-minus-circled:before {
+  content: "";
+}
+
+.uiex-ion-minus-round:before {
+  content: "";
+}
+
+.uiex-ion-model-s:before {
+  content: "";
+}
+
+.uiex-ion-monitor:before {
+  content: "";
+}
+
+.uiex-ion-more:before {
+  content: "";
+}
+
+.uiex-ion-mouse:before {
+  content: "";
+}
+
+.uiex-ion-music-note:before {
+  content: "";
+}
+
+.uiex-ion-navicon:before {
+  content: "";
+}
+
+.uiex-ion-navicon-round:before {
+  content: "";
+}
+
+.uiex-ion-navigate:before {
+  content: "";
+}
+
+.uiex-ion-network:before {
+  content: "";
+}
+
+.uiex-ion-no-smoking:before {
+  content: "";
+}
+
+.uiex-ion-nuclear:before {
+  content: "";
+}
+
+.uiex-ion-outlet:before {
+  content: "";
+}
+
+.uiex-ion-paintbrush:before {
+  content: "";
+}
+
+.uiex-ion-paintbucket:before {
+  content: "";
+}
+
+.uiex-ion-paper-airplane:before {
+  content: "";
+}
+
+.uiex-ion-paperclip:before {
+  content: "";
+}
+
+.uiex-ion-pause:before {
+  content: "";
+}
+
+.uiex-ion-person:before {
+  content: "";
+}
+
+.uiex-ion-person-add:before {
+  content: "";
+}
+
+.uiex-ion-person-stalker:before {
+  content: "";
+}
+
+.uiex-ion-pie-graph:before {
+  content: "";
+}
+
+.uiex-ion-pin:before {
+  content: "";
+}
+
+.uiex-ion-pinpoint:before {
+  content: "";
+}
+
+.uiex-ion-pizza:before {
+  content: "";
+}
+
+.uiex-ion-plane:before {
+  content: "";
+}
+
+.uiex-ion-planet:before {
+  content: "";
+}
+
+.uiex-ion-play:before {
+  content: "";
+}
+
+.uiex-ion-playstation:before {
+  content: "";
+}
+
+.uiex-ion-plus:before {
+  content: "";
+}
+
+.uiex-ion-plus-circled:before {
+  content: "";
+}
+
+.uiex-ion-plus-round:before {
+  content: "";
+}
+
+.uiex-ion-podium:before {
+  content: "";
+}
+
+.uiex-ion-pound:before {
+  content: "";
+}
+
+.uiex-ion-power:before {
+  content: "";
+}
+
+.uiex-ion-pricetag:before {
+  content: "";
+}
+
+.uiex-ion-pricetags:before {
+  content: "";
+}
+
+.uiex-ion-printer:before {
+  content: "";
+}
+
+.uiex-ion-pull-request:before {
+  content: "";
+}
+
+.uiex-ion-qr-scanner:before {
+  content: "";
+}
+
+.uiex-ion-quote:before {
+  content: "";
+}
+
+.uiex-ion-radio-waves:before {
+  content: "";
+}
+
+.uiex-ion-record:before {
+  content: "";
+}
+
+.uiex-ion-refresh:before {
+  content: "";
+}
+
+.uiex-ion-reply:before {
+  content: "";
+}
+
+.uiex-ion-reply-all:before {
+  content: "";
+}
+
+.uiex-ion-ribbon-a:before {
+  content: "";
+}
+
+.uiex-ion-ribbon-b:before {
+  content: "";
+}
+
+.uiex-ion-sad:before {
+  content: "";
+}
+
+.uiex-ion-sad-outline:before {
+  content: "";
+}
+
+.uiex-ion-scissors:before {
+  content: "";
+}
+
+.uiex-ion-search:before {
+  content: "";
+}
+
+.uiex-ion-settings:before {
+  content: "";
+}
+
+.uiex-ion-share:before {
+  content: "";
+}
+
+.uiex-ion-shuffle:before {
+  content: "";
+}
+
+.uiex-ion-skip-backward:before {
+  content: "";
+}
+
+.uiex-ion-skip-forward:before {
+  content: "";
+}
+
+.uiex-ion-social-android:before {
+  content: "";
+}
+
+.uiex-ion-social-android-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-angular:before {
+  content: "";
+}
+
+.uiex-ion-social-angular-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-apple:before {
+  content: "";
+}
+
+.uiex-ion-social-apple-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-bitcoin:before {
+  content: "";
+}
+
+.uiex-ion-social-bitcoin-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-buffer:before {
+  content: "";
+}
+
+.uiex-ion-social-buffer-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-chrome:before {
+  content: "";
+}
+
+.uiex-ion-social-chrome-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-codepen:before {
+  content: "";
+}
+
+.uiex-ion-social-codepen-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-css3:before {
+  content: "";
+}
+
+.uiex-ion-social-css3-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-designernews:before {
+  content: "";
+}
+
+.uiex-ion-social-designernews-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-dribbble:before {
+  content: "";
+}
+
+.uiex-ion-social-dribbble-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-dropbox:before {
+  content: "";
+}
+
+.uiex-ion-social-dropbox-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-euro:before {
+  content: "";
+}
+
+.uiex-ion-social-euro-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-facebook:before {
+  content: "";
+}
+
+.uiex-ion-social-facebook-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-foursquare:before {
+  content: "";
+}
+
+.uiex-ion-social-foursquare-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-freebsd-devil:before {
+  content: "";
+}
+
+.uiex-ion-social-github:before {
+  content: "";
+}
+
+.uiex-ion-social-github-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-google:before {
+  content: "";
+}
+
+.uiex-ion-social-google-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-googleplus:before {
+  content: "";
+}
+
+.uiex-ion-social-googleplus-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-hackernews:before {
+  content: "";
+}
+
+.uiex-ion-social-hackernews-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-html5:before {
+  content: "";
+}
+
+.uiex-ion-social-html5-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-instagram:before {
+  content: "";
+}
+
+.uiex-ion-social-instagram-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-javascript:before {
+  content: "";
+}
+
+.uiex-ion-social-javascript-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-linkedin:before {
+  content: "";
+}
+
+.uiex-ion-social-linkedin-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-markdown:before {
+  content: "";
+}
+
+.uiex-ion-social-nodejs:before {
+  content: "";
+}
+
+.uiex-ion-social-octocat:before {
+  content: "";
+}
+
+.uiex-ion-social-pinterest:before {
+  content: "";
+}
+
+.uiex-ion-social-pinterest-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-python:before {
+  content: "";
+}
+
+.uiex-ion-social-reddit:before {
+  content: "";
+}
+
+.uiex-ion-social-reddit-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-rss:before {
+  content: "";
+}
+
+.uiex-ion-social-rss-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-sass:before {
+  content: "";
+}
+
+.uiex-ion-social-skype:before {
+  content: "";
+}
+
+.uiex-ion-social-skype-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-snapchat:before {
+  content: "";
+}
+
+.uiex-ion-social-snapchat-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-tumblr:before {
+  content: "";
+}
+
+.uiex-ion-social-tumblr-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-tux:before {
+  content: "";
+}
+
+.uiex-ion-social-twitch:before {
+  content: "";
+}
+
+.uiex-ion-social-twitch-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-twitter:before {
+  content: "";
+}
+
+.uiex-ion-social-twitter-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-usd:before {
+  content: "";
+}
+
+.uiex-ion-social-usd-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-vimeo:before {
+  content: "";
+}
+
+.uiex-ion-social-vimeo-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-whatsapp:before {
+  content: "";
+}
+
+.uiex-ion-social-whatsapp-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-windows:before {
+  content: "";
+}
+
+.uiex-ion-social-windows-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-wordpress:before {
+  content: "";
+}
+
+.uiex-ion-social-wordpress-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-yahoo:before {
+  content: "";
+}
+
+.uiex-ion-social-yahoo-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-yen:before {
+  content: "";
+}
+
+.uiex-ion-social-yen-outline:before {
+  content: "";
+}
+
+.uiex-ion-social-youtube:before {
+  content: "";
+}
+
+.uiex-ion-social-youtube-outline:before {
+  content: "";
+}
+
+.uiex-ion-soup-can:before {
+  content: "";
+}
+
+.uiex-ion-soup-can-outline:before {
+  content: "";
+}
+
+.uiex-ion-speakerphone:before {
+  content: "";
+}
+
+.uiex-ion-speedometer:before {
+  content: "";
+}
+
+.uiex-ion-spoon:before {
+  content: "";
+}
+
+.uiex-ion-star:before {
+  content: "";
+}
+
+.uiex-ion-stats-bars:before {
+  content: "";
+}
+
+.uiex-ion-steam:before {
+  content: "";
+}
+
+.uiex-ion-stop:before {
+  content: "";
+}
+
+.uiex-ion-thermometer:before {
+  content: "";
+}
+
+.uiex-ion-thumbsdown:before {
+  content: "";
+}
+
+.uiex-ion-thumbsup:before {
+  content: "";
+}
+
+.uiex-ion-toggle:before {
+  content: "";
+}
+
+.uiex-ion-toggle-filled:before {
+  content: "";
+}
+
+.uiex-ion-transgender:before {
+  content: "";
+}
+
+.uiex-ion-trash-a:before {
+  content: "";
+}
+
+.uiex-ion-trash-b:before {
+  content: "";
+}
+
+.uiex-ion-trophy:before {
+  content: "";
+}
+
+.uiex-ion-tshirt:before {
+  content: "";
+}
+
+.uiex-ion-tshirt-outline:before {
+  content: "";
+}
+
+.uiex-ion-umbrella:before {
+  content: "";
+}
+
+.uiex-ion-university:before {
+  content: "";
+}
+
+.uiex-ion-unlocked:before {
+  content: "";
+}
+
+.uiex-ion-upload:before {
+  content: "";
+}
+
+.uiex-ion-usb:before {
+  content: "";
+}
+
+.uiex-ion-videocamera:before {
+  content: "";
+}
+
+.uiex-ion-volume-high:before {
+  content: "";
+}
+
+.uiex-ion-volume-low:before {
+  content: "";
+}
+
+.uiex-ion-volume-medium:before {
+  content: "";
+}
+
+.uiex-ion-volume-mute:before {
+  content: "";
+}
+
+.uiex-ion-wand:before {
+  content: "";
+}
+
+.uiex-ion-waterdrop:before {
+  content: "";
+}
+
+.uiex-ion-wifi:before {
+  content: "";
+}
+
+.uiex-ion-wineglass:before {
+  content: "";
+}
+
+.uiex-ion-woman:before {
+  content: "";
+}
+
+.uiex-ion-wrench:before {
+  content: "";
+}
+
+.uiex-ion-xbox:before {
+  content: "";
+}

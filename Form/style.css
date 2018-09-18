@@ -1,0 +1,14 @@
+.uiex-form {
+  display: block;
+}
+.uiex-form .uiex-form-caption {
+  padding-bottom: 10px;
+  font-size: 18px;
+}
+.uiex-form .uiex-form-buttons {
+  margin-top: 15px;
+  text-align: right;
+}
+.uiex-form .uiex-form-control-group:last-child {
+  margin-bottom: 0 !important;
+}

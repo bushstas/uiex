@@ -1,0 +1,70 @@
+.uiex-colors {
+  min-width: 100px;
+}
+.uiex-colors.uiex-disabled {
+  filter: grayscale(100%);
+  opacity: 0.7;
+}
+.uiex-colors.uiex-disabled .uiex-color {
+  cursor: not-allowed;
+}
+.uiex-colors.uiex-round .uiex-color .uiex-color-bg {
+  border-radius: 50%;
+}
+.uiex-colors.uiex-round .uiex-color .uiex-color-bg:before {
+  border-radius: 50% !important;
+}
+.uiex-colors.uiex-round .uiex-color .uiex-color-bg:after {
+  border-radius: 50%;
+}
+.uiex-colors.uiex-square .uiex-color .uiex-color-bg {
+  border-radius: 0;
+}
+.uiex-colors.uiex-square .uiex-color .uiex-color-bg:before {
+  border-radius: 0 !important;
+}
+.uiex-colors.uiex-square .uiex-color .uiex-color-bg:after {
+  border-radius: 0;
+}
+.uiex-colors.uiex-without-border .uiex-color:not(.uiex-active) .uiex-color-bg:after {
+  border-color: transparent;
+}
+.uiex-colors .uiex-color {
+  cursor: pointer;
+  height: 100%;
+  min-height: 20px;
+}
+.uiex-colors .uiex-color:hover .uiex-color-bg:after {
+  opacity: 0.5;
+}
+.uiex-colors .uiex-color.uiex-active .uiex-color-bg:after {
+  opacity: 0.5;
+  border-width: 2px;
+}
+.uiex-colors .uiex-color.uiex-active .uiex-color-bg:before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
+  border-radius: 2px;
+  border: 1px solid #fff;
+  opacity: 0.6;
+}
+.uiex-colors .uiex-color .uiex-color-bg {
+  position: relative;
+  height: 100%;
+  border-radius: 2px;
+}
+.uiex-colors .uiex-color .uiex-color-bg:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 2px;
+  border: 1px solid #000;
+  opacity: 0.2;
+}
